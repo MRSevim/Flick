@@ -13,11 +13,21 @@
 .hidden {
   display: none;
 }
+html {
+  position: relative;
+}
 body {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   min-height: 100vh;
 }
+/*Create an Article */
+.article {
+  font-family: "Lora", serif;
+}
 .tox .tox-statusbar__branding svg {
   display: none;
+}
+.create-an-article {
+  padding-bottom: 80px;
 }
