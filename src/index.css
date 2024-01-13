@@ -22,6 +22,9 @@ body {
   min-height: 100vh;
   padding-bottom: 80px;
 }
+.wide-input {
+  width: 300px;
+}
 /*Create an Article */
 .article {
   font-family: "Lora", serif;
