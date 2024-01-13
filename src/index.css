@@ -20,6 +20,7 @@ body {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   min-height: 100vh;
+  padding-bottom: 80px;
 }
 /*Create an Article */
 .article {
@@ -27,7 +28,4 @@ body {
 }
 .tox .tox-statusbar__branding svg {
   display: none;
-}
-.create-an-article {
-  padding-bottom: 80px;
 }
