@@ -11,7 +11,7 @@ export const Login = () => {
       const modal = new bootstrap.Modal(document.getElementById("Modal"));
       modal.show();
     }
-  }, [isLoggedIn]);
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
