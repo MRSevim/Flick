@@ -6,7 +6,7 @@ export const Home = () => {
     <div className="container mt-3">
       <h2>Check out some of the popular articles...</h2>
       <Link to="/articles/1" className="text-black">
-        Go to articles page
+        Go to article page
       </Link>
     </div>
   );

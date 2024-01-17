@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ArticleSections } from "./ArticleSections";
 
 export const Article = () => {
   const { id } = useParams();
   const ref = useRef(null);
-  const [sections, setSections] = useState([]);
+  const [sections, setSections] = useState(null);
 
   useEffect(() => {
     let headers = [];
@@ -25,34 +26,30 @@ export const Article = () => {
       <div className="row justify-content-center">
         <div className="col col-12 col-lg-2">
           <h3 className="">Sections</h3>
-          {sections.length === 0 && (
+          {!sections && (
             <div className="d-flex justify-content-center article-headers">
               <div className="lds-ring ">
                 <div></div>
               </div>
             </div>
           )}
-          {sections.map((section) => {
-            return (
-              <li key={section.id}>
-                <a
-                  className="link-dark"
-                  title={section.innerText}
-                  href={"#" + section.id}
-                >
-                  {section.innerText.substring(0, 20)}...
-                </a>
-              </li>
-            );
-          })}
+          {sections && <ArticleSections sections={sections} />}
         </div>
         <div className="article col">
           <h1 className="display-4">Article {id}</h1>
           <article ref={ref} className="article-body">
-            <h1>
+            <h2>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
               sapiente!
-            </h1>
+            </h2>
+            <h3>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Voluptatem, culpa?
+            </h3>
+            <h4>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Voluptatem, culpa?
+            </h4>
             <h3>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptatem, culpa?
@@ -71,6 +68,10 @@ export const Article = () => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
               labore.
             </h2>
+            <h3>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Voluptatem, culpa?
+            </h3>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
@@ -80,14 +81,14 @@ export const Article = () => {
               ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
               alias.
             </p>
-            <h1>
+            {/*             <h1>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
               in?
             </h1>
             <h2>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
               labore.
-            </h2>
+            </h2> */}
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
@@ -97,14 +98,14 @@ export const Article = () => {
               ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
               alias.
             </p>
-            <h1>
+            {/*             <h1>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
               in?
             </h1>
             <h2>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
               labore.
-            </h2>
+            </h2> */}
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
