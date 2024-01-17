@@ -41,7 +41,7 @@ export const ArticleSections = ({ sections }) => {
       }
       sectionHeaderNumbers.push(+section.nodeName.substring(1));
     });
-  }, []);
+  }, [sections]);
 
   if (sections.length === 0) {
     return <p>No sections in the article</p>;
