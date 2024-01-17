@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "./UserContext";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [user, setUser] = useUserContext();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,6 +23,9 @@ export const SignUp = () => {
       email,
     };
     console.log(userInfo);
+    const user = { username: userInfo.username };
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
   };
   return (
     <div className="container mt-5 d-flex justify-content-center">
@@ -60,6 +73,9 @@ export const SignUp = () => {
           </label>
         </div>
         <input className="btn btn-warning mt-3" type="submit" value="Sign-up" />
+        <div className="text-center mt-3">
+          For now any entry will work. Type anything to test the website.
+        </div>
       </form>
     </div>
   );

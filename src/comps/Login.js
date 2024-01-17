@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import * as bootstrap from "bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "./UserContext";
 
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useUserContext();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const modal = new bootstrap.Modal(document.getElementById("Modal"));
-      modal.show();
+    if (user) {
+      navigate("/");
     }
   });
 
@@ -20,7 +22,9 @@ export const Login = () => {
       password,
     };
     console.log(userInfo);
-    setIsLoggedIn(true);
+    const user = { username: userInfo.username };
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
   };
 
   return (
@@ -56,43 +60,10 @@ export const Login = () => {
             </label>
           </div>
           <input className="btn btn-warning mt-3" type="submit" value="Login" />
-        </form>
-      </div>
-      <div
-        className="modal fade"
-        id="Modal"
-        tabIndex="-1"
-        aria-labelledby="ModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="ModalLabel">
-                Action
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">This action does nothing for now.</div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-                onClick={() => {
-                  setIsLoggedIn(false);
-                }}
-              >
-                Close
-              </button>
-            </div>
+          <div className="text-center mt-3">
+            For now any entry will work. Type anything to test the website.
           </div>
-        </div>
+        </form>
       </div>
     </>
   );

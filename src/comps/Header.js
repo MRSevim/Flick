@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Header.css";
+import { useUserContext } from "./UserContext";
 
 export const Header = () => {
+  const [user, setUser] = useUserContext();
+
+  const logOut = () => {
+    setUser(undefined);
+    localStorage.removeItem("user");
+  };
+
   return (
     <header className="text-bg-dark p-3">
       <div className="container">
@@ -37,18 +46,29 @@ export const Header = () => {
               aria-label="Search"
             ></input>
           </form>
-          <div className="text-end ">
-            <Link to="/login">
-              <button type="button" className="btn btn-outline-light me-2">
-                Login
+          {user ? (
+            <div className="text-end user-container d-flex align-items-center justify-content-end">
+              <p className="m-0 me-3 overflow-hidden">Hello {user.username}</p>
+              <button className="btn btn-outline-light" onClick={logOut}>
+                Logout
               </button>
-            </Link>
-            <Link to="/sign-up">
-              <button type="button" className="btn btn-warning">
-                Sign-up
-              </button>
-            </Link>
-          </div>
+            </div>
+          ) : user === undefined ? (
+            <div className="text-end user-container">
+              <Link to="/login">
+                <button type="button" className="btn btn-outline-light me-2">
+                  Login
+                </button>
+              </Link>
+              <Link to="/sign-up">
+                <button type="button" className="btn btn-warning">
+                  Sign-up
+                </button>
+              </Link>
+            </div>
+          ) : (
+            <div className="text-end user-container"></div>
+          )}
         </div>
       </div>
     </header>
