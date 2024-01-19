@@ -38,6 +38,14 @@ export const Article = () => {
         <div className="article col">
           <h1 className="display-4">Article {id}</h1>
           <article ref={ref} className="article-body">
+            <h3>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
+              sapiente!
+            </h3>
+            <h4>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
+              sapiente!
+            </h4>
             <h2>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
               sapiente!
@@ -81,14 +89,14 @@ export const Article = () => {
               ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
               alias.
             </p>
-            {/*             <h1>
+            <h6>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
               in?
-            </h1>
-            <h2>
+            </h6>
+            <h1>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
               labore.
-            </h2> */}
+            </h1>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
@@ -98,14 +106,10 @@ export const Article = () => {
               ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
               alias.
             </p>
-            {/*             <h1>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
-              in?
-            </h1>
-            <h2>
+            <h3>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
               labore.
-            </h2> */}
+            </h3>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
