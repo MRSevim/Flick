@@ -50,6 +50,14 @@ export const Article = () => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
               sapiente!
             </h2>
+            <h5>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis distinctio, voluptatem reprehenderit iure sit quis .
+            </h5>
+            <h4>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis distinctio, voluptatem reprehenderit iure sit quis .
+            </h4>
             <h3>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Voluptatem, culpa?
@@ -93,10 +101,7 @@ export const Article = () => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
               in?
             </h6>
-            <h1>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
-              labore.
-            </h1>
+
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
@@ -106,10 +111,7 @@ export const Article = () => {
               ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
               alias.
             </p>
-            <h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
-              labore.
-            </h3>
+
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!

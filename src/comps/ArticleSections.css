@@ -1,0 +1,15 @@
+.H2 {
+  transform: translateX(3px);
+}
+.H3 {
+  transform: translateX(6px);
+}
+.H4 {
+  transform: translateX(9px);
+}
+.H5 {
+  transform: translateX(12px);
+}
+.H6 {
+  transform: translateX(15px);
+}

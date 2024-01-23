@@ -1,36 +1,59 @@
 import React, { useEffect } from "react";
+import "./ArticleSections.css";
 
 export const ArticleSections = ({ sections }) => {
   const toggleHeadersBelow = (e) => {
-    const partClass = Array.from(e.target.parentNode.classList).filter(
-      (className) => {
-        return className.startsWith("part");
-      }
-    )[0];
+    const headers = document.querySelectorAll(".header");
+    const initialIndex = Array.prototype.indexOf.call(
+      headers,
+      e.target.parentNode
+    );
+    let headerClassBelow;
+    let headerClassNumber;
+    const initialHeaderClassNumber = +Array.from(
+      headers[initialIndex].classList
+    ).filter(function (className) {
+      return className.startsWith("H");
+    })[0][1];
+    let index = initialIndex;
 
-    let HeaderClassNumber = +Array.from(e.target.parentNode.classList).filter(
-      function (className) {
-        return className.startsWith("H");
+    if (headers[index + 1]) {
+      headerClassBelow = +Array.from(headers[index + 1].classList).filter(
+        function (className) {
+          return className.startsWith("H");
+        }
+      )[0][1];
+      headerClassNumber = initialHeaderClassNumber;
+      if (headerClassNumber < headerClassBelow) {
+        headers[index + 1].classList.toggle("hidden");
       }
-    )[0][1];
-
-    while (HeaderClassNumber < 7) {
-      HeaderClassNumber++;
-      const headersOneHigher = document.querySelectorAll(
-        "." + partClass + ".H" + HeaderClassNumber
-      );
-      if (headersOneHigher.length > 0) {
-        headersOneHigher.forEach((header) => {
-          header.classList.toggle("hidden");
-        });
+      index++;
+    }
+    while (headers[index + 1]) {
+      headerClassBelow = +Array.from(headers[index + 1].classList).filter(
+        function (className) {
+          return className.startsWith("H");
+        }
+      )[0][1];
+      headerClassNumber = +Array.from(headers[index].classList).filter(
+        function (className) {
+          return className.startsWith("H");
+        }
+      )[0][1];
+      if (
+        headerClassNumber >= headerClassBelow &&
+        headerClassBelow > initialHeaderClassNumber
+      ) {
+        headers[index + 1].classList.toggle("hidden");
+      }
+      index++;
+      if (headerClassBelow <= initialHeaderClassNumber) {
         break;
       }
     }
   };
 
   useEffect(() => {
-    let initialClassNumber = 1;
-    let initialClass = "part" + initialClassNumber;
     const headers = document.querySelectorAll(".header");
 
     let initialHeaderNumber = +Array.from(headers[0].classList).filter(
@@ -39,7 +62,6 @@ export const ArticleSections = ({ sections }) => {
       }
     )[0][1];
     headers.forEach((header, index) => {
-      let classList = header.classList;
       let nextHeader = headers[index + 1];
       let nextHeaderNumber;
       if (nextHeader) {
@@ -51,12 +73,8 @@ export const ArticleSections = ({ sections }) => {
         nextHeaderNumber = +nextclassStartingWithH[0][1];
       }
 
-      classList.add(initialClass);
-
       if (initialHeaderNumber >= nextHeaderNumber) {
         initialHeaderNumber = nextHeaderNumber;
-        initialClassNumber++;
-        initialClass = "part" + initialClassNumber;
       }
       if (initialHeaderNumber < nextHeaderNumber && nextHeaderNumber) {
         nextHeader.classList.add("hidden");
@@ -71,7 +89,10 @@ export const ArticleSections = ({ sections }) => {
     return (
       <div
         key={section.id}
-        className={"header header" + section.id + " " + section.nodeName}
+        className={
+          "header border-start border-end border-bottom border-dark " +
+          section.nodeName
+        }
       >
         <i
           onClick={toggleHeadersBelow}
