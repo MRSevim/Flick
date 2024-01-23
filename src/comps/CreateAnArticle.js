@@ -37,7 +37,32 @@ export const CreateAnArticle = () => {
         <Editor
           onInit={(evt, editor) => (editorRef.current = editor)}
           initialValue={initialContent}
-          init={{ height: 600, menubar: false }}
+          init={{
+            height: 600,
+            content_style: "body { font-family:Lora,serif; color:black}",
+            plugins: [
+              "advlist",
+              "autolink",
+              "lists",
+              "link",
+              "image",
+              "charmap",
+              "preview",
+              "anchor",
+              "searchreplace",
+              "visualblocks",
+              "codesample",
+              "fullscreen",
+              "insertdatetime",
+              "media",
+              "table",
+              "code",
+              "help",
+              "wordcount",
+              "image",
+              "code",
+            ],
+          }}
           onEditorChange={(newValue, editor) => {
             let content = editor.getContent();
             localStorage.setItem("editor-content", JSON.stringify(content));
@@ -53,7 +78,7 @@ export const CreateAnArticle = () => {
         </div>
         {content && (
           <div
-            className="mt-3 article "
+            className="mt-3 article"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
           ></div>
         )}

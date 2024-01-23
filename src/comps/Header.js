@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "./UserContext";
 
 export const Header = () => {
   const [user, setUser] = useUserContext();
+  const [userMenu, setUserMenu] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setUserMenu(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
 
   const logOut = () => {
     setUser(undefined);
     localStorage.removeItem("user");
+    setUserMenu(false);
   };
 
   return (
@@ -47,11 +64,31 @@ export const Header = () => {
             ></input>
           </form>
           {user ? (
-            <div className="text-end user-container d-flex align-items-center justify-content-end">
-              <p className="m-0 me-3 overflow-hidden">Hello {user.username}</p>
-              <button className="btn btn-outline-light" onClick={logOut}>
-                Logout
-              </button>
+            <div ref={wrapperRef} className="position-relative">
+              <div
+                onClick={() => {
+                  setUserMenu((prev) => !prev);
+                }}
+                className="border border-light p-2 rounded-3 pointer user-container d-flex align-items-center justify-content-between "
+              >
+                <p className="m-0 me-3 overflow-hidden">
+                  Hello {user.username}
+                </p>
+                <i
+                  className={
+                    userMenu
+                      ? "fa-solid fa-chevron-down user-menu-toggler open"
+                      : "fa-solid fa-chevron-down user-menu-toggler"
+                  }
+                ></i>
+              </div>
+              {userMenu && (
+                <div className="user-options border border-light rounded-2 position-absolute bg-dark w-100 p-2">
+                  <span className="pointer" onClick={logOut}>
+                    Logout
+                  </span>
+                </div>
+              )}
             </div>
           ) : user === undefined ? (
             <div className="text-end user-container">

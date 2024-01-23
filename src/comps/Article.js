@@ -42,6 +42,7 @@ export const Article = () => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
               sapiente!
             </h3>
+
             <h4>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
               sapiente!
@@ -101,7 +102,6 @@ export const Article = () => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
               in?
             </h6>
-
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
@@ -111,7 +111,6 @@ export const Article = () => {
               ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
               alias.
             </p>
-
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
               totam eligendi magni voluptatem quisquam magnam. Quos, commodi!

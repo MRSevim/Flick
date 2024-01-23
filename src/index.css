@@ -13,6 +13,9 @@
 .hidden {
   display: none;
 }
+.pointer {
+  cursor: pointer;
+}
 html {
   position: relative;
 }
@@ -26,8 +29,10 @@ body {
   width: 300px;
 }
 /*Create an Article */
-.article {
-  font-family: "Lora", serif;
+.article,
+.article * {
+  font-family: "Lora", serif !important;
+  color: black !important;
 }
 .tox .tox-statusbar__branding svg {
   display: none;

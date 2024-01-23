@@ -13,3 +13,9 @@
 .H6 {
   transform: translateX(15px);
 }
+.section-toggler {
+  transition: transform 0.3s;
+}
+.section-toggler.open {
+  transform: rotate(-180deg);
+}

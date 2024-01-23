@@ -1,3 +1,12 @@
 .user-container {
   width: 220px;
 }
+.user-menu-toggler {
+  transition: transform 0.3s;
+}
+.user-menu-toggler.open {
+  transform: rotate(180deg);
+}
+.user-options {
+  z-index: 100;
+}
