@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "./UserContext";
+const bootstrap = require("bootstrap");
 
-export const Login = () => {
+export const Login = ({ onHideModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useUserContext();
+  const location = useLocation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (user && location.pathname === "/login") {
       navigate("/");
     }
   });
@@ -21,17 +23,20 @@ export const Login = () => {
       username,
       password,
     };
-    console.log(userInfo);
+
     const user = { username: userInfo.username };
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
+    if (onHideModal) {
+      onHideModal();
+    }
   };
 
   return (
     <>
-      <div className="container mt-5 d-flex justify-content-center">
+      <div className="container d-flex justify-content-center">
         <form className="" onSubmit={handleSubmit}>
-          <div className="form-group ">
+          <div className="form-group">
             <label>
               Username:
               <input
@@ -60,7 +65,7 @@ export const Login = () => {
             </label>
           </div>
           <input className="btn btn-warning mt-3" type="submit" value="Login" />
-          <div className="text-center mt-3">
+          <div className="text-center mt-3 wide-input">
             For now any entry will work. Type anything to test the website.
           </div>
         </form>

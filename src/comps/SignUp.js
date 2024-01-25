@@ -22,7 +22,7 @@ export const SignUp = () => {
       password,
       email,
     };
-    console.log(userInfo);
+
     const user = { username: userInfo.username };
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
@@ -73,7 +73,7 @@ export const SignUp = () => {
           </label>
         </div>
         <input className="btn btn-warning mt-3" type="submit" value="Sign-up" />
-        <div className="text-center mt-3">
+        <div className="text-center mt-3 wide-input">
           For now any entry will work. Type anything to test the website.
         </div>
       </form>

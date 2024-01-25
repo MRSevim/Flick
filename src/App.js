@@ -19,7 +19,14 @@ function App() {
         <Header></Header>
         <Routes>
           <Route path="/most-liked" element={<MostLiked />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={
+              <div className="mt-5">
+                <Login />
+              </div>
+            }
+          />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/create-an-article" element={<CreateAnArticle />} />
           <Route path="/articles/:id" element={<Article />}></Route>
