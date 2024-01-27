@@ -84,9 +84,22 @@ export const Header = () => {
               </div>
               {userMenu && (
                 <div className="user-options border border-light rounded-2 position-absolute bg-dark w-100 p-2">
-                  <span className="pointer" onClick={logOut}>
-                    Logout
-                  </span>
+                  <p className="m-0 ">
+                    <Link
+                      to="/my-articles"
+                      className="text-white link-underline link-underline-opacity-0"
+                      onClick={() => {
+                        setUserMenu(false);
+                      }}
+                    >
+                      My Articles
+                    </Link>
+                  </p>
+                  <p className="m-0">
+                    <span className="pointer" onClick={logOut}>
+                      Logout
+                    </span>
+                  </p>
                 </div>
               )}
             </div>

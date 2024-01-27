@@ -20,7 +20,7 @@ export const Article = () => {
     setTimeout(() => {
       setSections(headers);
     }, 250);
-  }, [setSections]);
+  }, [id, setSections]);
   return (
     <div className="container mt-3 ">
       <div className="row justify-content-center">

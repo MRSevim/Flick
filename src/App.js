@@ -8,6 +8,7 @@ import { SignUp } from "./comps/SignUp.js";
 import { Home } from "./comps/Home.js";
 import { NotFound } from "./comps/NotFound.js";
 import { UserProvider } from "./comps/UserContext.js";
+import { MyArticles } from "./comps/MyArticles.js";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Article } from "./comps/Article.js";
@@ -29,6 +30,7 @@ function App() {
           />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/create-an-article" element={<CreateAnArticle />} />
+          <Route path="/my-articles" element={<MyArticles />} />
           <Route path="/articles/:id" element={<Article />}></Route>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />}></Route>

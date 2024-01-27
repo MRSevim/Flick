@@ -123,7 +123,7 @@ export const ArticleSections = ({ sections }) => {
           title={section.innerText}
           href={"#" + section.id}
         >
-          {section.nodeName.substring(1)}.{section.innerText.substring(0, 15)}
+          {section.nodeName.substring(1)}.{section.innerText.substring(0, 12)}
           ...
         </a>
       </div>
