@@ -16,7 +16,7 @@ import { Article } from "./comps/Article.js";
 function App() {
   return (
     <UserProvider>
-      <Router>
+      <Router basename="/Flick">
         <Header></Header>
         <Routes>
           <Route path="/most-liked" element={<MostLiked />} />
@@ -32,7 +32,7 @@ function App() {
           <Route path="/create-an-article" element={<CreateAnArticle />} />
           <Route path="/my-articles" element={<MyArticles />} />
           <Route path="/articles/:id" element={<Article />}></Route>
-          <Route path="/" element={<Home />} />
+          <Route exact path="/" element={<Home />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
         <Footer></Footer>
