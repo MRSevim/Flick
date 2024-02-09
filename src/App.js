@@ -7,7 +7,7 @@ import { Login } from "./comps/Login.js";
 import { SignUp } from "./comps/SignUp.js";
 import { Home } from "./comps/Home.js";
 import { NotFound } from "./comps/NotFound.js";
-import { UserProvider } from "./comps/UserContext.js";
+import { UserProvider } from "./comps/Contexts/UserContext.js";
 import { MyArticles } from "./comps/MyArticles.js";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";

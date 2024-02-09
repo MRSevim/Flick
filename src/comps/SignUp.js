@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "./UserContext";
+import { useUserContext } from "./Contexts/UserContext";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
