@@ -21,14 +21,13 @@ const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.login(username, password);
+    const user = await User.login(res, username, password);
 
     // create a token
     const token = generateToken(res, user._id);
 
     res.status(200).json({ username, token });
   } catch (error) {
-    res.status(400);
     next(error);
   }
 };
@@ -38,14 +37,13 @@ const signupUser = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   try {
-    const user = await User.signup(username, email, password);
+    const user = await User.signup(res, username, email, password);
 
     // create a token
     const token = generateToken(res, user._id);
 
     res.status(200).json({ username, token });
   } catch (error) {
-    res.status(400);
     next(error);
   }
 };
@@ -76,7 +74,6 @@ const getUserProfile = async (req, res, next) => {
       throw new Error("User is not found");
     }
   } catch (error) {
-    res.status(400);
     next(error);
   }
 };
@@ -85,14 +82,17 @@ const getUserProfile = async (req, res, next) => {
 const updateUserProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
+
     const { username, email, password } = req.body;
 
     if (user) {
       if (!username && !email && !password) {
+        res.status(400);
         throw new Error("Please send some value/values to update");
       }
 
       if (email && !validator.isEmail(email)) {
+        res.status(400);
         throw new Error("Email is not valid");
       }
 
@@ -106,14 +106,18 @@ const updateUserProfile = async (req, res, next) => {
       }
 
       if (emailExists && usernameExists) {
+        res.status(400);
         throw new Error("Email and username are already in use");
       } else if (emailExists) {
+        res.status(400);
         throw new Error("Email is already in use");
       } else if (usernameExists) {
+        res.status(400);
         throw new Error("Username is already in use");
       }
 
       if (password && !validator.isStrongPassword(password)) {
+        res.status(400);
         throw new Error("Password is not strong enough");
       }
 
@@ -136,7 +140,6 @@ const updateUserProfile = async (req, res, next) => {
       throw new Error("User is not found");
     }
   } catch (error) {
-    res.status(400);
     next(error);
   }
 };

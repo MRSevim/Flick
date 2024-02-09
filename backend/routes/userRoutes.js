@@ -21,7 +21,7 @@ router.post("/register", signupUser);
 // logout route
 router.post("/logout", logoutUser);
 
-//get and update userProfile routes
+//get and update profile routes
 router
   .route("/profile")
   .get(requireAuth, getUserProfile)

@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
-const articlesRoutes = require("./routes/articlesRoutes");
+const articleRoutes = require("./routes/articleRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 
 const app = express();
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/api/articles", articlesRoutes);
+app.use("/api/article", articleRoutes);
 app.use("/api/user", userRoutes);
 
 //error middlewares
