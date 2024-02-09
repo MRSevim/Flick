@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 app.use("/api/articles", articlesRoutes);
 app.use("/api/user", userRoutes);
 
+//error middlewares
 app.use(notFound);
 app.use(errorHandler);
 

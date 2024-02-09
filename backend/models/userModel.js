@@ -26,25 +26,25 @@ const userSchema = new mongoose.Schema(
 userSchema.statics.signup = async function (username, email, password) {
   // validation
   if (!username || !password || !email) {
-    throw Error("All fields must be filled");
+    throw new Error("All fields must be filled");
   }
   if (!validator.isEmail(email)) {
-    throw Error("Email is not valid");
+    throw new Error("Email is not valid");
   }
 
   const emailExists = await this.findOne({ email });
   const usernameExists = await this.findOne({ username });
 
   if (emailExists && usernameExists) {
-    throw Error("Email and username are already in use");
+    throw new Error("Email and username are already in use");
   } else if (emailExists) {
-    throw Error("Email is already in use");
+    throw new Error("Email is already in use");
   } else if (usernameExists) {
-    throw Error("Username is already in use");
+    throw new Error("Username is already in use");
   }
 
   if (!validator.isStrongPassword(password)) {
-    throw Error("Password is not strong enough");
+    throw new Error("Password is not strong enough");
   }
 
   const user = await this.create({ username, email, password });
@@ -55,17 +55,17 @@ userSchema.statics.signup = async function (username, email, password) {
 // static login method
 userSchema.statics.login = async function (username, password) {
   if (!username || !password) {
-    throw Error("All fields must be filled");
+    throw new Error("All fields must be filled");
   }
 
   const user = await this.findOne({ username });
   if (!user) {
-    throw Error("Incorrect username or password");
+    throw new Error("Incorrect username or password");
   }
 
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    throw Error("Incorrect username or password");
+    throw new Error("Incorrect username or password");
   }
 
   return user;

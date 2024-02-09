@@ -69,6 +69,7 @@ const getUserProfile = async (req, res, next) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        createdAt: user.createdAt,
       });
     } else {
       res.status(404);
@@ -86,36 +87,40 @@ const updateUserProfile = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     const { username, email, password } = req.body;
 
-    if (email && !validator.isEmail(email)) {
-      throw Error("Email is not valid");
-    }
-
-    let emailExists, usernameExists;
-
-    if (email) {
-      emailExists = await User.findOne({ email });
-    }
-    if (username) {
-      usernameExists = await User.findOne({ username });
-    }
-
-    if (emailExists && usernameExists) {
-      throw Error("Email and username are already in use");
-    } else if (emailExists) {
-      throw Error("Email is already in use");
-    } else if (usernameExists) {
-      throw Error("Username is already in use");
-    }
-
-    if (password && !validator.isStrongPassword(password)) {
-      throw Error("Password is not strong enough");
-    }
-
     if (user) {
-      user.username = req.body.username || user.username;
-      user.email = req.body.email || user.email;
+      if (!username && !email && !password) {
+        throw new Error("Please send some value/values to update");
+      }
 
-      if (req.body.password) {
+      if (email && !validator.isEmail(email)) {
+        throw new Error("Email is not valid");
+      }
+
+      let emailExists, usernameExists;
+
+      if (email) {
+        emailExists = await User.findOne({ email });
+      }
+      if (username) {
+        usernameExists = await User.findOne({ username });
+      }
+
+      if (emailExists && usernameExists) {
+        throw new Error("Email and username are already in use");
+      } else if (emailExists) {
+        throw new Error("Email is already in use");
+      } else if (usernameExists) {
+        throw new Error("Username is already in use");
+      }
+
+      if (password && !validator.isStrongPassword(password)) {
+        throw new Error("Password is not strong enough");
+      }
+
+      user.username = username || user.username;
+      user.email = email || user.email;
+
+      if (password) {
         user.password = req.body.password;
       }
 
