@@ -8,6 +8,8 @@ const {
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  deleteUser,
+  getPublicUser,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -21,10 +23,14 @@ router.post("/register", signupUser);
 // logout route
 router.post("/logout", logoutUser);
 
-//get and update profile routes
+//get public user profile
+router.get("/profile/:username", getPublicUser);
+
+//get, update and delete profile routes
 router
   .route("/profile")
   .get(requireAuth, getUserProfile)
-  .put(requireAuth, updateUserProfile);
+  .put(requireAuth, updateUserProfile)
+  .delete(requireAuth, deleteUser);
 
 module.exports = router;

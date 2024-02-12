@@ -57,6 +57,26 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
+//get Public User
+const getPublicUser = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    res.status(200).json({
+      _id: user._id,
+      username: user.username,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // get user profile
 const getUserProfile = async (req, res, next) => {
   try {
@@ -144,10 +164,30 @@ const updateUserProfile = async (req, res, next) => {
   }
 };
 
+// delete user
+const deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    const deleted = await user.deleteOne();
+
+    res.status(200).json({ id: user._id });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signupUser,
   loginUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  deleteUser,
+  getPublicUser,
 };

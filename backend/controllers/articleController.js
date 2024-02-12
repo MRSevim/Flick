@@ -9,7 +9,14 @@ const allowedTags = {
 //get an article
 const getArticle = async (req, res, next) => {
   try {
-    res.status(200).json({});
+    const article = await Article.findById(req.params.id);
+
+    if (!article) {
+      res.status(404);
+      throw new Error("Article is not found");
+    }
+
+    res.status(200).json(article);
   } catch (error) {
     next(error);
   }
@@ -18,7 +25,9 @@ const getArticle = async (req, res, next) => {
 //get articles of specific user
 const getArticles = async (req, res, next) => {
   try {
-    res.status(200).json({});
+    const articles = await Article.find({ userId: req.params.id });
+
+    res.status(200).json(articles);
   } catch (error) {
     next(error);
   }
@@ -33,7 +42,7 @@ const createArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const { title, content } = req.body;
+    const { title, content, isDraft } = req.body;
 
     if (!title || !content) {
       res.status(400);
@@ -47,14 +56,15 @@ const createArticle = async (req, res, next) => {
       res.status(400);
       throw new Error("Sanitized inputs can't be empty");
     }
-
+    console.log(isDraft);
     const article = await Article.create({
       title: sanitizedTitle,
       content: sanitizedContent,
+      isDraft,
       userId: user._id,
     });
 
-    res.status(200).json({ ...article._doc });
+    res.status(200).json(article);
   } catch (error) {
     next(error);
   }
@@ -64,12 +74,57 @@ const createArticle = async (req, res, next) => {
 const updateArticle = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
+    const article = await Article.findById(req.params.id);
+
+    if (!article) {
+      res.status(404);
+      throw new Error("Article is not found");
+    }
+
+    if (!user._id.equals(article.userId)) {
+      res.status(401);
+      throw new Error("You are not authorized");
+    }
     if (!user) {
       res.status(404);
       throw new Error("User is not found");
     }
 
-    res.status(200).json({});
+    const { title, content } = req.body;
+
+    if (!title && !content) {
+      res.status(400);
+      throw new Error("Please send some input to update");
+    }
+
+    let sanitizedTitle;
+    if (title) {
+      sanitizedTitle = sanitizeHtml(title);
+      if (!sanitizedTitle) {
+        res.status(400);
+        throw new Error("Sanitized inputs can't be empty");
+      }
+    }
+
+    let sanitizedContent;
+    if (content) {
+      sanitizedContent = sanitizeHtml(content, allowedTags);
+      if (!sanitizedContent) {
+        res.status(400);
+        throw new Error("Sanitized inputs can't be empty");
+      }
+    }
+
+    article.title = sanitizedTitle || article.title;
+    article.content = sanitizedContent || article.content;
+
+    const updatedArticle = await article.save();
+
+    res.status(200).json({
+      _id: updatedArticle._id,
+      title: updatedArticle.title,
+      content: updatedArticle.content,
+    });
   } catch (error) {
     next(error);
   }
@@ -78,7 +133,26 @@ const updateArticle = async (req, res, next) => {
 //authenticated user delete article
 const deleteArticle = async (req, res, next) => {
   try {
-    res.status(200).json({});
+    const user = await User.findById(req.user._id);
+    const article = await Article.findById(req.params.id);
+
+    if (!article) {
+      res.status(404);
+      throw new Error("Article is not found");
+    }
+
+    if (!user._id.equals(article.userId)) {
+      res.status(401);
+      throw new Error("You are not authorized");
+    }
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    const deleted = await article.deleteOne();
+
+    res.status(200).json({ id: article._id });
   } catch (error) {
     next(error);
   }
