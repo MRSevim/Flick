@@ -38,13 +38,13 @@ body {
   display: none;
 }
 /*loading animation*/
-.article-headers .lds-ring {
+.lds-ring {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
 }
-.article-headers .lds-ring div {
+.lds-ring div {
   box-sizing: border-box;
   display: block;
   position: absolute;

@@ -1,9 +1,13 @@
 {
+  "proxy": "http://localhost:5000/api",
   "name": "flick",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://mrsevim.github.io/Flick",
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -20,7 +24,9 @@
   },
   "scripts": {
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
+    "start": "react-scripts start ",
+    "server": "cd ./backend && npm run dev",
+    "dev": "concurrently --kill-others \"npm run start\" \"npm run server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -44,6 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "concurrently": "^8.2.2"
   }
 }

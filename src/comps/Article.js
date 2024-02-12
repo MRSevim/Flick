@@ -27,8 +27,8 @@ export const Article = () => {
         <div className="col col-12 col-lg-2">
           <h3 className="">Sections</h3>
           {!sections && (
-            <div className="d-flex justify-content-center article-headers">
-              <div className="lds-ring ">
+            <div className="d-flex justify-content-center">
+              <div className="lds-ring">
                 <div></div>
               </div>
             </div>

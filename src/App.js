@@ -12,6 +12,7 @@ import { MyArticles } from "./comps/MyArticles.js";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Article } from "./comps/Article.js";
+import { MyProfile } from "./comps/MyProfile.js";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/create-an-article" element={<CreateAnArticle />} />
           <Route path="/my-articles" element={<MyArticles />} />
+          <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/articles/:id" element={<Article />}></Route>
           <Route exact path="/" element={<Home />} />
           <Route path="*" element={<NotFound />}></Route>

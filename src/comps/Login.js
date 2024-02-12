@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
+import { useLogin } from "./Hooks/UseLogin";
 
 export const Login = ({ onHideModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useUserContext();
+  const [user] = useUserContext();
+  const { login, error, isLoading } = useLogin();
+
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -16,18 +19,15 @@ export const Login = ({ onHideModal }) => {
     }
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const userInfo = {
-      username,
-      password,
-    };
 
-    const user = { username: userInfo.username };
-    localStorage.setItem("user", JSON.stringify(user));
-    setUser(user);
-    if (onHideModal) {
-      onHideModal();
+    const response = await login(username, password);
+
+    if (response.ok) {
+      if (onHideModal) {
+        onHideModal();
+      }
     }
   };
 
@@ -63,10 +63,17 @@ export const Login = ({ onHideModal }) => {
               />
             </label>
           </div>
-          <input className="btn btn-warning mt-3" type="submit" value="Login" />
-          <div className="text-center mt-3 wide-input">
-            For now any entry will work. Type anything to test the website.
-          </div>
+          <input
+            disabled={isLoading}
+            className="btn btn-warning mt-3"
+            type="submit"
+            value="Login"
+          />
+          {error && (
+            <div className="text-center mt-3 wide-input alert alert-danger">
+              {error}
+            </div>
+          )}
         </form>
       </div>
     </>

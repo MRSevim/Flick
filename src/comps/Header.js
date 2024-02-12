@@ -2,10 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "./Contexts/UserContext";
+import { useLogout } from "./Hooks/UseLogout";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 export const Header = () => {
-  const [user, setUser] = useUserContext();
+  const [user] = useUserContext();
   const [userMenu, setUserMenu] = useState(false);
+  const { logout, error, setError } = useLogout();
   const wrapperRef = useRef(null);
 
   useEffect(() => {
@@ -22,9 +26,9 @@ export const Header = () => {
     };
   }, [wrapperRef]);
 
-  const logOut = () => {
-    setUser(undefined);
-    localStorage.removeItem("user");
+  const logOut = async () => {
+    await logout();
+
     setUserMenu(false);
   };
 
@@ -84,7 +88,18 @@ export const Header = () => {
               </div>
               {userMenu && (
                 <div className="user-options border border-light rounded-2 position-absolute bg-dark w-100 p-2">
-                  <p className="m-0 ">
+                  <p className="m-0">
+                    <Link
+                      to="/my-profile"
+                      className="text-white link-underline link-underline-opacity-0"
+                      onClick={() => {
+                        setUserMenu(false);
+                      }}
+                    >
+                      My Profile
+                    </Link>
+                  </p>
+                  <p className="m-0">
                     <Link
                       to="/my-articles"
                       className="text-white link-underline link-underline-opacity-0"
@@ -121,6 +136,18 @@ export const Header = () => {
           )}
         </div>
       </div>
+      {error && (
+        <Alert
+          className="position-absolute start-50 translate-middle"
+          severity="error"
+          onClose={() => {
+            setError(false);
+          }}
+        >
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
+      )}
     </header>
   );
 };
