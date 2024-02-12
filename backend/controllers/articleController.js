@@ -1,5 +1,6 @@
 const { Article } = require("../models/articleModel");
 const User = require("../models/userModel");
+const requireAuth = require("../middlewares/authMiddleware");
 const sanitizeHtml = require("sanitize-html");
 
 const allowedTags = {
@@ -15,6 +16,10 @@ const getArticle = async (req, res, next) => {
       res.status(404);
       throw new Error("Article is not found");
     }
+    if (article.isDraft) {
+      res.status(401);
+      throw new Error("You are not authorized");
+    }
 
     res.status(200).json(article);
   } catch (error) {
@@ -25,9 +30,71 @@ const getArticle = async (req, res, next) => {
 //get articles of specific user
 const getArticles = async (req, res, next) => {
   try {
-    const articles = await Article.find({ userId: req.params.id });
+    const articles = await Article.find({
+      userId: req.params.id,
+      isDraft: false,
+    }).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json(articles);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//authenticated user get drafts
+const getDrafts = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    const articles = await Article.find({
+      userId: user._id,
+      isDraft: true,
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(articles);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//authenticated user get drafts
+const getDraft = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    const article = await Article.findById(req.params.id);
+    console.log(req.params.id, article);
+
+    if (!article) {
+      res.status(404);
+      throw new Error("Article is not found");
+    }
+
+    if (!article.isDraft) {
+      res.status(400);
+      throw new Error(
+        "Article is not draft. Please use article/:id for non-draft articles"
+      );
+    }
+    if (!user._id.equals(article.userId)) {
+      res.status(401);
+      throw new Error("You are not authorized");
+    }
+
+    res.status(200).json(article);
   } catch (error) {
     next(error);
   }
@@ -56,7 +123,7 @@ const createArticle = async (req, res, next) => {
       res.status(400);
       throw new Error("Sanitized inputs can't be empty");
     }
-    console.log(isDraft);
+
     const article = await Article.create({
       title: sanitizedTitle,
       content: sanitizedContent,
@@ -164,4 +231,6 @@ module.exports = {
   createArticle,
   updateArticle,
   deleteArticle,
+  getDraft,
+  getDrafts,
 };

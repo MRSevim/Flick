@@ -7,11 +7,19 @@ const {
   createArticle,
   updateArticle,
   deleteArticle,
+  getDraft,
+  getDrafts,
 } = require("../controllers/articleController");
 
 const requireAuth = require("../middlewares/authMiddleware");
 
 const router = express.Router();
+
+//authenticated user get drafts route
+router.get("/draft", requireAuth, getDrafts);
+
+//authenticated user get draft route
+router.get("/draft/:id", requireAuth, getDraft);
 
 //get an article route
 router.get("/:id", getArticle);
