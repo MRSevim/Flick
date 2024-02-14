@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useUserContext } from "../Contexts/UserContext";
-import userApi from "../Utils/UserApiFunctions";
+import { useUserContext } from "../../Contexts/UserContext";
+import userApi from "../../Utils/UserApiFunctions";
 import ls from "localstorage-slim";
 
 export const useSignup = () => {

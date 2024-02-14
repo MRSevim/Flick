@@ -108,7 +108,7 @@ const updateUserProfile = async (req, res, next) => {
     if (user) {
       if (!username && !email && !password) {
         res.status(400);
-        throw new Error("Please send some value/values to update");
+        throw new Error("Please send something to update");
       }
 
       if (email && !validator.isEmail(email)) {

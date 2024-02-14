@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
-import { useLogin } from "./Hooks/UseLogin";
+import { useLogin } from "./Hooks/UserHooks/UseLogin";
 
 export const Login = ({ onHideModal }) => {
   const [username, setUsername] = useState("");

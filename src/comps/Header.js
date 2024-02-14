@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "./Contexts/UserContext";
-import { useLogout } from "./Hooks/UseLogout";
+import { useLogout } from "./Hooks/UserHooks/UseLogout";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 

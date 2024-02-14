@@ -28,6 +28,9 @@ body {
 .wide-input {
   width: 300px;
 }
+.update-form {
+  min-height: 525px;
+}
 /*Create an Article */
 .article,
 .article * {

@@ -32,5 +32,14 @@ const userApi = {
 
     return response;
   },
+  update: async (username, email, password) => {
+    const response = await fetch("/user/profile", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
+
+    return response;
+  },
 };
 export default userApi;
