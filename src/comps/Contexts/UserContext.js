@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import ls from "localstorage-slim";
 
 const UserContext = createContext(null);
 
@@ -10,7 +11,9 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("username"));
+    let user = ls.get("username");
+    user = JSON.parse(user);
+
     if (user) {
       setUser(user);
     } else {

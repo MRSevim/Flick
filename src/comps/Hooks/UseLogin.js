@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUserContext } from "../Contexts/UserContext";
 import userApi from "../Utils/UserApiFunctions";
+import ls from "localstorage-slim";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -20,10 +21,9 @@ export const useLogin = () => {
     }
     if (response.ok) {
       // save the user to local storage
-      localStorage.setItem(
-        "username",
-        JSON.stringify({ username: json.username })
-      );
+      ls.set("username", JSON.stringify({ username: json.username }), {
+        ttl: 30 * 24 * 60 * 60, // 30 days,
+      });
 
       // update the user context
       setUser({ username: json.username });
