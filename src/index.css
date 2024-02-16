@@ -31,6 +31,10 @@ body {
 .update-form {
   min-height: 525px;
 }
+.global-error {
+  top: 20%;
+  z-index: 2000;
+}
 /*Create an Article */
 .article,
 .article * {

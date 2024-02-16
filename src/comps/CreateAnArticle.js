@@ -1,23 +1,29 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useUserContext } from "./Contexts/UserContext";
 import { Login } from "./Login";
 import { Modal } from "bootstrap";
+import { useCreateArticle } from "./Hooks/ArticleHooks/UseCreateArticle";
+import ls from "localstorage-slim";
 
 export const CreateAnArticle = () => {
   const editorRef = useRef(null);
-  const [content, setContent] = useState(null);
   const [title, setTitle] = useState("");
   const [initialContent, setInitialContent] = useState(
     "<p>Start by replacing this.</p>"
   );
-
+  const navigate = useNavigate();
   const [user] = useUserContext();
+  const { createArticle, isLoading: isLoadingArticle } = useCreateArticle();
   const myModalRef = useRef(null);
+  const [myId, setMyId] = useState("");
 
   useEffect(() => {
+    const user = JSON.parse(ls.get("user"));
+    setMyId(user._id);
     const localStorageContent = JSON.parse(
       localStorage.getItem("editor-content")
     );
@@ -37,18 +43,32 @@ export const CreateAnArticle = () => {
     });
   }, []);
 
-  const submit = () => {
+  const submit = async () => {
     if (editorRef.current && user) {
-      setContent(editorRef.current.getContent());
+      const res = await createArticle(
+        DOMPurify.sanitize(title),
+        DOMPurify.sanitize(editorRef.current.getContent()),
+        false
+      );
+      if (res.ok) {
+        navigate("/articles/user/" + myId);
+      }
     }
     if (!user) {
       myModalRef.current.show();
     }
   };
 
-  const saveDraft = () => {
+  const saveDraft = async () => {
     if (editorRef.current && user) {
-      console.log(editorRef.current.getContent());
+      const res = await createArticle(
+        DOMPurify.sanitize(title),
+        DOMPurify.sanitize(editorRef.current.getContent()),
+        true
+      );
+      if (res.ok) {
+        navigate("/my-articles");
+      }
     }
     if (!user) {
       myModalRef.current.show();
@@ -79,6 +99,7 @@ export const CreateAnArticle = () => {
           </div>
         </div>
         <Editor
+          tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => (editorRef.current = editor)}
           initialValue={initialContent}
           init={{
@@ -116,18 +137,15 @@ export const CreateAnArticle = () => {
           <button className="btn btn-lg me-3 btn-warning" onClick={saveDraft}>
             Save Draft
           </button>
-          <button className="btn btn-lg btn-warning" onClick={submit}>
+          <button
+            className="btn btn-lg btn-warning"
+            disabled={isLoadingArticle}
+            onClick={submit}
+          >
             Submit
           </button>
         </div>
-        {content && (
-          <div
-            className="mt-3 article"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
-          ></div>
-        )}
       </div>
-
       <div className="modal fade" tabIndex="-1" id="loginModal">
         <div className="modal-dialog">
           <div className="modal-content mt-5">

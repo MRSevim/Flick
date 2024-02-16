@@ -21,9 +21,13 @@ export const useSignup = () => {
     }
     if (response.ok) {
       // save the user to local storage
-      ls.set("username", JSON.stringify({ username: json.username }), {
-        ttl: 30 * 24 * 60 * 60 * 1000, // 30 days,
-      });
+      ls.set(
+        "user",
+        JSON.stringify({ username: json.username, _id: json._id }),
+        {
+          ttl: 30 * 24 * 60 * 60 * 1000, // 30 days,
+        }
+      );
 
       // update the user context
       setUser({ username: json.username });

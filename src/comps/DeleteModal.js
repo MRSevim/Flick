@@ -3,7 +3,7 @@ import { useDeleteUser } from "./Hooks/UserHooks/UseDeleteUser";
 
 export const DeleteModal = () => {
   const [password, setPassword] = useState("");
-  const { deleteUser, isLoading, successMessage, error } = useDeleteUser();
+  const { deleteUser, isLoading, successMessage } = useDeleteUser();
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
@@ -34,11 +34,6 @@ export const DeleteModal = () => {
           type="submit"
           value="Delete"
         />
-        {error && (
-          <div className="text-center mt-3 wide-input alert alert-danger">
-            {error}
-          </div>
-        )}
         {successMessage && (
           <div className="text-center mt-3 wide-input alert alert-success">
             {successMessage}

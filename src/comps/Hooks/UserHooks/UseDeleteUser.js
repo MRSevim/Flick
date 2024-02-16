@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useUserContext } from "../../Contexts/UserContext";
+import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import userApi from "../../Utils/UserApiFunctions";
 
 export const useDeleteUser = () => {
-  const [error, setError] = useState(null);
+  const [, setGlobalError] = useGlobalErrorContext();
   const [successMessage, setSuccessMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [, setUser] = useUserContext();
@@ -12,21 +13,22 @@ export const useDeleteUser = () => {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     setIsLoading(true);
-    setError(null);
+    setGlobalError(null);
 
     const response = await userApi.delete(password);
     const json = await response.json();
 
     if (!response.ok) {
       setIsLoading(false);
-      setError(json.message);
+      setGlobalError(json.message);
     }
     if (response.ok) {
       setSuccessMessage("User is deleted. Logging out in 5 seconds...");
-      await delay(5000);
 
       // remove from local storage
-      localStorage.removeItem("username");
+      localStorage.removeItem("user");
+
+      await delay(5000);
 
       // update the user context
       setUser(undefined);
@@ -37,5 +39,5 @@ export const useDeleteUser = () => {
     return response;
   };
 
-  return { deleteUser, isLoading, successMessage, error };
+  return { deleteUser, isLoading, successMessage };
 };

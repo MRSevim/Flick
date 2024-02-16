@@ -21,14 +21,16 @@ export const useUpdateUser = () => {
     }
     if (response.ok) {
       // update the user in local storage
-      let user = JSON.parse(localStorage.getItem("username"));
+      let user = JSON.parse(localStorage.getItem("user"));
 
       const { ttl } = user;
       const now = new Date().getTime();
       const milliseconds = ttl - now;
       const seconds = milliseconds / 1000;
 
-      ls.set("username", JSON.stringify({ username }), { ttl: seconds });
+      ls.set("user", JSON.stringify({ username, _id: json._id }), {
+        ttl: seconds,
+      });
 
       // update the user context
       setUser({ username: json.username });

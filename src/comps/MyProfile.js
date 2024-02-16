@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
 import userApi from "./Utils/UserApiFunctions";
 import { useUpdateUser } from "./Hooks/UserHooks/UseUpdateUser";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
+import { useGlobalErrorContext } from "./Contexts/GlobalErrorContext";
+
 import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
 
@@ -18,7 +18,7 @@ export const MyProfile = () => {
   const [memberSince, setMemberSince] = useState("");
   const [formVisible, setFormVisible] = useState(false);
   const [user] = useUserContext();
-  const [getProfileError, setGetProfileError] = useState(null);
+  const [, setGlobalError] = useGlobalErrorContext();
   const [successMessage, setSuccessMessage] = useState(null);
   const { update, isLoading, error, setError } = useUpdateUser();
   const myModalRef = useRef(null);
@@ -29,12 +29,14 @@ export const MyProfile = () => {
     if (user === undefined) {
       myModalRef.current.hide();
       navigate("/");
+      return;
     }
     const getUser = async () => {
       const res = await userApi.getProfile();
       const json = await res.json();
 
       if (res.ok) {
+        setGlobalError(null);
         setInitialUsername(json.username);
         setInitialEmail(json.email);
         setUsername(json.username);
@@ -48,11 +50,11 @@ export const MyProfile = () => {
         setMemberSince(formattedDate);
         setFormVisible(true);
       } else {
-        setGetProfileError(json.message);
+        setGlobalError(json.message);
       }
     };
     getUser();
-  }, [navigate, user]);
+  }, [navigate, user, setGlobalError]);
 
   useEffect(() => {
     myModalRef.current = new Modal(document.getElementById("deleteModal"), {
@@ -91,18 +93,6 @@ export const MyProfile = () => {
 
   return (
     <>
-      {getProfileError && (
-        <Alert
-          className="position-absolute start-50 translate-middle"
-          severity="error"
-          onClose={() => {
-            setGetProfileError(null);
-          }}
-        >
-          <AlertTitle>Error</AlertTitle>
-          {getProfileError}
-        </Alert>
-      )}
       {formVisible ? (
         <div className="container mt-5 d-flex flex-column align-items-center">
           <form className="update-form" onSubmit={handleSubmit}>

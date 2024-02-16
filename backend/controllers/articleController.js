@@ -10,7 +10,10 @@ const allowedTags = {
 //get an article
 const getArticle = async (req, res, next) => {
   try {
-    const article = await Article.findById(req.params.id);
+    const article = await Article.findById(req.params.id).populate(
+      "user",
+      "id username"
+    );
 
     if (!article) {
       res.status(404);
@@ -31,11 +34,13 @@ const getArticle = async (req, res, next) => {
 const getArticles = async (req, res, next) => {
   try {
     const articles = await Article.find({
-      userId: req.params.id,
+      user: req.params.id,
       isDraft: false,
-    }).sort({
-      createdAt: -1,
-    });
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("user", "id username");
 
     res.status(200).json(articles);
   } catch (error) {
@@ -54,11 +59,13 @@ const getDrafts = async (req, res, next) => {
     }
 
     const articles = await Article.find({
-      userId: user._id,
+      user: user._id,
       isDraft: true,
-    }).sort({
-      createdAt: -1,
-    });
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("user", "id username");
 
     res.status(200).json(articles);
   } catch (error) {
@@ -75,7 +82,10 @@ const getDraft = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const article = await Article.findById(req.params.id);
+    const article = await Article.findById(req.params.id).populate(
+      "user",
+      "id username"
+    );
     console.log(req.params.id, article);
 
     if (!article) {
@@ -89,7 +99,7 @@ const getDraft = async (req, res, next) => {
         "Article is not draft. Please use article/:id for non-draft articles"
       );
     }
-    if (!user._id.equals(article.userId)) {
+    if (!user._id.equals(article.user._id)) {
       res.status(401);
       throw new Error("You are not authorized");
     }
@@ -128,7 +138,7 @@ const createArticle = async (req, res, next) => {
       title: sanitizedTitle,
       content: sanitizedContent,
       isDraft,
-      userId: user._id,
+      user: user._id,
     });
 
     res.status(200).json(article);
@@ -148,7 +158,7 @@ const updateArticle = async (req, res, next) => {
       throw new Error("Article is not found");
     }
 
-    if (!user._id.equals(article.userId)) {
+    if (!user._id.equals(article.user)) {
       res.status(401);
       throw new Error("You are not authorized");
     }
@@ -208,7 +218,7 @@ const deleteArticle = async (req, res, next) => {
       throw new Error("Article is not found");
     }
 
-    if (!user._id.equals(article.userId)) {
+    if (!user._id.equals(article.user)) {
       res.status(401);
       throw new Error("You are not authorized");
     }

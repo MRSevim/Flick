@@ -1,24 +1,24 @@
-import { useState } from "react";
 import { useUserContext } from "../../Contexts/UserContext";
+import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import userApi from "../../Utils/UserApiFunctions";
 
 export const useLogout = () => {
-  const [error, setError] = useState(null);
+  const [, setGlobalError] = useGlobalErrorContext();
 
   const [, setUser] = useUserContext();
 
   const logout = async () => {
-    setError(null);
+    setGlobalError(null);
 
     const response = await userApi.logout();
     const json = await response.json();
 
     if (!response.ok) {
-      setError(json.message);
+      setGlobalError(json.message);
     }
     if (response.ok) {
       // remove from local storage
-      localStorage.removeItem("username");
+      localStorage.removeItem("user");
 
       // update the user context
       setUser(undefined);
@@ -27,5 +27,5 @@ export const useLogout = () => {
     return response;
   };
 
-  return { logout, error, setError };
+  return { logout };
 };

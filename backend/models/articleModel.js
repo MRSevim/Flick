@@ -5,7 +5,7 @@ const articleSchema = new mongoose.Schema(
     title: { type: String, required: true },
     content: { type: String, required: true },
     isDraft: { type: Boolean, default: false },
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

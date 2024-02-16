@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const user = JSON.parse(ls.get("username"));
+    const user = JSON.parse(ls.get("user"));
 
     if (user) {
       setUser(user);

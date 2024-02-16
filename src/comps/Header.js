@@ -2,17 +2,19 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "./Contexts/UserContext";
+import ls from "localstorage-slim";
 import { useLogout } from "./Hooks/UserHooks/UseLogout";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 
 export const Header = () => {
   const [user] = useUserContext();
   const [userMenu, setUserMenu] = useState(false);
-  const { logout, error, setError } = useLogout();
+  const [myId, setMyId] = useState("");
+  const { logout } = useLogout();
   const wrapperRef = useRef(null);
 
   useEffect(() => {
+    const user = JSON.parse(ls.get("user"));
+    setMyId(user._id);
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setUserMenu(false);
@@ -102,7 +104,7 @@ export const Header = () => {
                     </p>
                     <p className="m-0">
                       <Link
-                        to="/my-articles"
+                        to={"/articles/user/" + myId}
                         className="text-white link-underline link-underline-opacity-0"
                         onClick={() => {
                           setUserMenu(false);
@@ -138,18 +140,6 @@ export const Header = () => {
           </div>
         </div>
       </header>
-      {error && (
-        <Alert
-          className="position-absolute start-50 translate-middle"
-          severity="error"
-          onClose={() => {
-            setError(null);
-          }}
-        >
-          <AlertTitle>Error</AlertTitle>
-          {error}
-        </Alert>
-      )}
     </>
   );
 };
