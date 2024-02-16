@@ -27,7 +27,6 @@ export const useUpdateUser = () => {
       const now = new Date().getTime();
       const milliseconds = ttl - now;
       const seconds = milliseconds / 1000;
-      console.log(ttl, now, seconds);
 
       ls.set("username", JSON.stringify({ username }), { ttl: seconds });
 

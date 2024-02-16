@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
 
 const generateToken = (res, userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -168,10 +169,21 @@ const updateUserProfile = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
+    const { password } = req.body;
 
     if (!user) {
       res.status(404);
       throw new Error("User is not found");
+    }
+    if (!password) {
+      res.status(400);
+      throw new Error("Please send a password");
+    }
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      res.status(400);
+      throw new Error("Incorrect password");
     }
 
     const deleted = await user.deleteOne();

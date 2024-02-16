@@ -17,12 +17,14 @@ export const useLogout = () => {
       setError(json.message);
     }
     if (response.ok) {
-      // save the user to local storage
+      // remove from local storage
       localStorage.removeItem("username");
 
       // update the user context
       setUser(undefined);
     }
+
+    return response;
   };
 
   return { logout, error, setError };

@@ -41,5 +41,14 @@ const userApi = {
 
     return response;
   },
+  delete: async (password) => {
+    const response = await fetch("/user/profile", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    return response;
+  },
 };
 export default userApi;

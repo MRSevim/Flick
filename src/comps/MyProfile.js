@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
 import userApi from "./Utils/UserApiFunctions";
 import { useUpdateUser } from "./Hooks/UserHooks/UseUpdateUser";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { Modal } from "bootstrap";
+import { DeleteModal } from "./DeleteModal";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -16,14 +18,16 @@ export const MyProfile = () => {
   const [memberSince, setMemberSince] = useState("");
   const [formVisible, setFormVisible] = useState(false);
   const [user] = useUserContext();
-  const [getUserError, setGetUserError] = useState(null);
+  const [getProfileError, setGetProfileError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const { update, isLoading, error, setError } = useUpdateUser();
+  const myModalRef = useRef(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user === undefined) {
+      myModalRef.current.hide();
       navigate("/");
     }
     const getUser = async () => {
@@ -44,11 +48,19 @@ export const MyProfile = () => {
         setMemberSince(formattedDate);
         setFormVisible(true);
       } else {
-        setGetUserError(json.message);
+        setGetProfileError(json.message);
       }
     };
     getUser();
   }, [navigate, user]);
+
+  useEffect(() => {
+    myModalRef.current = new Modal(document.getElementById("deleteModal"), {
+      backdrop: true,
+      focus: true,
+      keyboard: true,
+    });
+  }, []);
 
   const handleSubmit = async (e) => {
     setSuccessMessage(null);
@@ -73,20 +85,22 @@ export const MyProfile = () => {
     }
   };
 
-  const handleDeleteAccount = () => {};
+  const handleDeleteAccount = async () => {
+    myModalRef.current.show();
+  };
 
   return (
     <>
-      {getUserError && (
+      {getProfileError && (
         <Alert
           className="position-absolute start-50 translate-middle"
           severity="error"
           onClose={() => {
-            setGetUserError(null);
+            setGetProfileError(null);
           }}
         >
           <AlertTitle>Error</AlertTitle>
-          {getUserError}
+          {getProfileError}
         </Alert>
       )}
       {formVisible ? (
@@ -178,6 +192,23 @@ export const MyProfile = () => {
           </div>
         </div>
       )}
+      <div className="modal fade" tabIndex="-1" id="deleteModal">
+        <div className="modal-dialog">
+          <div className="modal-content mt-5">
+            <div className="modal-body">
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+              <div className="mt-4 mb-5">
+                <DeleteModal></DeleteModal>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
