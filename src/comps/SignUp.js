@@ -31,8 +31,8 @@ export const SignUp = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <form className="" onSubmit={handleSubmit}>
-        <div className="form-group ">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
           <label>
             Username:
             <input

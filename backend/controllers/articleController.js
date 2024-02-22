@@ -141,7 +141,7 @@ const createArticle = async (req, res, next) => {
       user: user._id,
     });
 
-    res.status(200).json(article);
+    res.status(201).json(article);
   } catch (error) {
     next(error);
   }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -23,7 +23,9 @@ export const CreateAnArticle = () => {
 
   useEffect(() => {
     const user = JSON.parse(ls.get("user"));
-    setMyId(user._id);
+    if (user) {
+      setMyId(user._id);
+    }
     const localStorageContent = JSON.parse(
       localStorage.getItem("editor-content")
     );
@@ -163,6 +165,17 @@ export const CreateAnArticle = () => {
                   }}
                 ></Login>
               </div>
+              <p className="text-center">
+                Don't have an account?{" "}
+                <Link
+                  onClick={() => {
+                    myModalRef.current.hide();
+                  }}
+                  to={"/sign-up"}
+                >
+                  Create one...
+                </Link>
+              </p>
             </div>
           </div>
         </div>

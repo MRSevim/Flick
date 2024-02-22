@@ -14,7 +14,9 @@ export const Header = () => {
 
   useEffect(() => {
     const user = JSON.parse(ls.get("user"));
-    setMyId(user._id);
+    if (user) {
+      setMyId(user._id);
+    }
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setUserMenu(false);

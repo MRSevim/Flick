@@ -27,7 +27,7 @@ const loginUser = async (req, res, next) => {
     // create a token
     const token = generateToken(res, user._id);
 
-    res.status(200).json({ _id: user._id, username, token });
+    res.status(201).json({ _id: user._id, username, token });
   } catch (error) {
     next(error);
   }
@@ -43,7 +43,7 @@ const signupUser = async (req, res, next) => {
     // create a token
     const token = generateToken(res, user._id);
 
-    res.status(200).json({ _id: user._id, username, token });
+    res.status(201).json({ _id: user._id, username, token });
   } catch (error) {
     next(error);
   }
@@ -84,7 +84,7 @@ const getUserProfile = async (req, res, next) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-      res.json({
+      res.status(200).json({
         _id: user._id,
         username: user.username,
         email: user.email,
@@ -151,7 +151,7 @@ const updateUserProfile = async (req, res, next) => {
 
       const updatedUser = await user.save();
 
-      res.json({
+      res.status(200).json({
         _id: updatedUser._id,
         username: updatedUser.username,
         email: updatedUser.email,
