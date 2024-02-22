@@ -1,6 +1,5 @@
 const { Article } = require("../models/articleModel");
 const User = require("../models/userModel");
-const requireAuth = require("../middlewares/authMiddleware");
 const sanitizeHtml = require("sanitize-html");
 
 const allowedTags = {
