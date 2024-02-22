@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
 import { useLogin } from "./Hooks/UserHooks/UseLogin";
 
@@ -34,7 +34,10 @@ export const Login = ({ onHideModal }) => {
   return (
     <>
       <div className="container d-flex justify-content-center">
-        <form className="" onSubmit={handleSubmit}>
+        <form
+          className="bg-dark text-white p-5 border border-3 rounded"
+          onSubmit={handleSubmit}
+        >
           <div className="form-group">
             <label>
               Username:
@@ -69,6 +72,18 @@ export const Login = ({ onHideModal }) => {
             type="submit"
             value="Login"
           />
+          <p className="text-center mt-3">
+            Don't have an account?
+            <Link to={"/sign-up"}>
+              <button
+                onClick={onHideModal}
+                type="button"
+                className="btn btn-outline-light ms-2"
+              >
+                Create one...
+              </button>
+            </Link>
+          </p>
           {error && (
             <div className="text-center mt-3 wide-input alert alert-danger">
               {error}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -151,7 +151,7 @@ export const CreateAnArticle = () => {
       <div className="modal fade" tabIndex="-1" id="loginModal">
         <div className="modal-dialog">
           <div className="modal-content mt-5">
-            <div className="modal-body">
+            <div className="modal-body bg-light">
               <button
                 type="button"
                 className="btn-close"
@@ -165,17 +165,6 @@ export const CreateAnArticle = () => {
                   }}
                 ></Login>
               </div>
-              <p className="text-center">
-                Don't have an account?{" "}
-                <Link
-                  onClick={() => {
-                    myModalRef.current.hide();
-                  }}
-                  to={"/sign-up"}
-                >
-                  Create one...
-                </Link>
-              </p>
             </div>
           </div>
         </div>

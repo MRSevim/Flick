@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
 import { useSignup } from "./Hooks/UserHooks/UseSignup";
 
@@ -31,7 +31,10 @@ export const SignUp = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <form onSubmit={handleSubmit}>
+      <form
+        className="bg-dark text-white p-5 border border-3 rounded"
+        onSubmit={handleSubmit}
+      >
         <div className="form-group">
           <label>
             Username:
@@ -94,6 +97,14 @@ export const SignUp = () => {
           type="submit"
           value="Sign-up"
         />
+        <p className="text-center mt-3">
+          Already have an account?
+          <Link to={"/login"}>
+            <button type="button" className="btn btn-outline-light ms-2">
+              Login
+            </button>
+          </Link>
+        </p>
         {error && (
           <div className="text-center mt-3 wide-input alert alert-danger">
             {error}

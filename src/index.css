@@ -44,6 +44,12 @@ body {
 .tox .tox-statusbar__branding svg {
   display: none;
 }
+/*Articles*/
+@media (max-width: 767px) {
+  .articles-column {
+    height: 200px;
+  }
+}
 /*loading animation*/
 .lds-ring {
   display: inline-block;
