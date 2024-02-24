@@ -17,22 +17,14 @@ export const Article = () => {
         headers.push(element);
       });
 
-    setTimeout(() => {
-      setSections(headers);
-    }, 250);
+    setSections(headers);
   }, [id, setSections]);
+
   return (
     <div className="container mt-3 ">
       <div className="row justify-content-center">
         <div className="col col-12 col-lg-2">
           <h3 className="">Sections</h3>
-          {!sections && (
-            <div className="d-flex justify-content-center">
-              <div className="lds-ring">
-                <div></div>
-              </div>
-            </div>
-          )}
           {sections && <ArticleSections sections={sections} />}
         </div>
         <div className="article col">
@@ -123,7 +115,7 @@ export const Article = () => {
           </article>
         </div>
         <div className="col col-12 col-lg-2 border border-dark">
-          <h3 className="">Extra</h3>
+          <h3 className="">Extra Space</h3>
         </div>
       </div>
     </div>

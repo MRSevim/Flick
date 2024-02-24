@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDeleteUser } from "./Hooks/UserHooks/UseDeleteUser";
 
-export const DeleteModal = () => {
+export const DeleteModal = ({ children }) => {
   const [password, setPassword] = useState("");
-  const { deleteUser, isLoading, successMessage } = useDeleteUser();
+  const { deleteUser, isLoading, error, successMessage } = useDeleteUser();
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
@@ -12,8 +12,12 @@ export const DeleteModal = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
-      <form className="" onSubmit={handleDeleteAccount}>
+    <div className="container d-flex justify-content-center text-white">
+      <form
+        className="bg-dark text-white p-4 border border-3 rounded"
+        onSubmit={handleDeleteAccount}
+      >
+        {children}
         <div className="form-group">
           <label>
             Password:
@@ -37,6 +41,11 @@ export const DeleteModal = () => {
         {successMessage && (
           <div className="text-center mt-3 wide-input alert alert-success">
             {successMessage}
+          </div>
+        )}
+        {error && (
+          <div className="text-center mt-3 wide-input alert alert-danger">
+            {error}
           </div>
         )}
       </form>

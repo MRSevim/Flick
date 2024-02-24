@@ -7,8 +7,10 @@ export const useUpdateUser = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [, setUser] = useUserContext();
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const update = async (username, email, password) => {
+    setSuccessMessage(null);
     setIsLoading(true);
     setError(null);
 
@@ -35,11 +37,12 @@ export const useUpdateUser = () => {
       // update the user context
       setUser({ username: json.username });
 
-      // update loading state
+      // update state
+      setSuccessMessage("Profile updated");
       setIsLoading(false);
     }
     return response;
   };
 
-  return { update, isLoading, error, setError };
+  return { update, isLoading, successMessage, error, setError };
 };

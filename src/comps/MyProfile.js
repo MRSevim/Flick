@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
-import userApi from "./Utils/UserApiFunctions";
 import { useUpdateUser } from "./Hooks/UserHooks/UseUpdateUser";
-import { useGlobalErrorContext } from "./Contexts/GlobalErrorContext";
-
+import { useGetUser } from "./Hooks/UserHooks/UseGetUser";
 import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
 
@@ -16,11 +14,10 @@ export const MyProfile = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [memberSince, setMemberSince] = useState("");
-  const [formVisible, setFormVisible] = useState(false);
   const [user] = useUserContext();
-  const [, setGlobalError] = useGlobalErrorContext();
-  const [successMessage, setSuccessMessage] = useState(null);
-  const { update, isLoading, error, setError } = useUpdateUser();
+  const { _getUser, isLoading: getLoading } = useGetUser();
+  const { update, isLoading, successMessage, error, setError } =
+    useUpdateUser();
   const myModalRef = useRef(null);
 
   const navigate = useNavigate();
@@ -31,30 +28,24 @@ export const MyProfile = () => {
       navigate("/");
       return;
     }
-    const getUser = async () => {
-      const res = await userApi.getProfile();
-      const json = await res.json();
 
-      if (res.ok) {
-        setGlobalError(null);
-        setInitialUsername(json.username);
-        setInitialEmail(json.email);
-        setUsername(json.username);
-        setEmail(json.email);
-        const date = new Date(json.createdAt);
-        const formattedDate = date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        setMemberSince(formattedDate);
-        setFormVisible(true);
-      } else {
-        setGlobalError(json.message);
-      }
+    const getUser = async () => {
+      const userData = await _getUser();
+      setInitialUsername(userData.username);
+      setInitialEmail(userData.email);
+      setUsername(userData.username);
+      setEmail(userData.email);
+      const date = new Date(userData.createdAt);
+      const formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      setMemberSince(formattedDate);
     };
     getUser();
-  }, [navigate, user, setGlobalError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, user]);
 
   useEffect(() => {
     myModalRef.current = new Modal(document.getElementById("deleteModal"), {
@@ -65,7 +56,6 @@ export const MyProfile = () => {
   }, []);
 
   const handleSubmit = async (e) => {
-    setSuccessMessage(null);
     e.preventDefault();
 
     let apiUsername, apiEmail, apiPassword;
@@ -81,10 +71,7 @@ export const MyProfile = () => {
     if (email !== initialEmail) {
       apiEmail = email;
     }
-    const res = await update(apiUsername, apiEmail, apiPassword);
-    if (res.ok) {
-      setSuccessMessage("Profile updated");
-    }
+    await update(apiUsername, apiEmail, apiPassword);
   };
 
   const handleDeleteAccount = async () => {
@@ -93,7 +80,13 @@ export const MyProfile = () => {
 
   return (
     <>
-      {formVisible ? (
+      {getLoading ? (
+        <div className="container mt-5 d-flex justify-content-center">
+          <div className="lds-ring">
+            <div></div>
+          </div>
+        </div>
+      ) : (
         <div className="container mt-5 d-flex flex-column align-items-center">
           <form className="update-form" onSubmit={handleSubmit}>
             <h2>Update Profile</h2>
@@ -175,27 +168,18 @@ export const MyProfile = () => {
             Delete account
           </button>
         </div>
-      ) : (
-        <div className="container mt-5 d-flex justify-content-center">
-          <div className="lds-ring">
-            <div></div>
-          </div>
-        </div>
       )}
       <div className="modal fade" tabIndex="-1" id="deleteModal">
-        <div className="modal-dialog">
-          <div className="modal-content mt-5">
-            <div className="modal-body">
+        <div className="modal-dialog d-flex justify-content-center">
+          <div className="modal-content mt-5" style={{ width: "354px" }}>
+            <DeleteModal>
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close bg-light position-absolute top-0 start-0 m-1"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
-              <div className="mt-4 mb-5">
-                <DeleteModal></DeleteModal>
-              </div>
-            </div>
+            </DeleteModal>
           </div>
         </div>
       </div>

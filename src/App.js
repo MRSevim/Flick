@@ -9,43 +9,64 @@ import { Home } from "./comps/Home.js";
 import { NotFound } from "./comps/NotFound.js";
 import { UserProvider } from "./comps/Contexts/UserContext.js";
 import { GlobalErrorProvider } from "./comps/Contexts/GlobalErrorContext.js";
-import { Articles } from "./comps/Articles.js";
+import { Articles } from "./comps/Articles/Articles.js";
 import { GlobalError } from "./comps/GlobalError.js";
+import { useUserContext } from "./comps/Contexts/UserContext.js";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Article } from "./comps/Article.js";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { Article } from "./comps/Articles/Article.js";
 import { MyProfile } from "./comps/MyProfile.js";
 
 function App() {
   return (
     <UserProvider>
       <GlobalErrorProvider>
-        <Router basename="/Flick">
-          <GlobalError></GlobalError>
-          <Header></Header>
-          <Routes>
-            <Route path="/most-liked" element={<MostLiked />} />
-            <Route
-              path="/login"
-              element={
-                <div className="mt-5">
-                  <Login />
-                </div>
-              }
-            />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/create-an-article" element={<CreateAnArticle />} />
-            <Route path="/articles/user/:id" element={<Articles />} />
-            <Route path="/my-profile" element={<MyProfile />} />
-            <Route path="/articles/:id" element={<Article />}></Route>
-            <Route exact path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-          <Footer></Footer>
-        </Router>
+        <AppContent />
       </GlobalErrorProvider>
     </UserProvider>
   );
 }
 
+function AppContent() {
+  const [user] = useUserContext();
+
+  return (
+    <Router basename="/Flick">
+      <GlobalError></GlobalError>
+      <Header></Header>
+      <Routes>
+        {" "}
+        <Route path="/most-liked" element={<MostLiked />} />
+        <Route
+          path="/login"
+          element={
+            user ? (
+              <Navigate to="/" />
+            ) : (
+              <div className="mt-5">
+                <Login />
+              </div>
+            )
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={user ? <Navigate to="/" /> : <SignUp />}
+        />
+        <Route path="/create-an-article" element={<CreateAnArticle />} />
+        <Route path="/articles/user/:id" element={<Articles />} />
+        <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/articles/:id" element={<Article />}></Route>
+        <Route exact path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />}></Route>
+      </Routes>
+      <Footer></Footer>
+    </Router>
+  );
+}
 export default App;

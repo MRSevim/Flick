@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
 import { useLogin } from "./Hooks/UserHooks/UseLogin";
 
-export const Login = ({ onHideModal }) => {
+export const Login = ({ onHideModal, children }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user] = useUserContext();
@@ -35,9 +35,10 @@ export const Login = ({ onHideModal }) => {
     <>
       <div className="container d-flex justify-content-center">
         <form
-          className="bg-dark text-white p-5 border border-3 rounded"
+          className="bg-dark text-white p-4 border border-3 rounded"
           onSubmit={handleSubmit}
         >
+          {children}
           <div className="form-group">
             <label>
               Username:

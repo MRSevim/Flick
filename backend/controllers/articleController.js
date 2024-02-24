@@ -32,6 +32,12 @@ const getArticle = async (req, res, next) => {
 //get articles of specific user
 const getArticles = async (req, res, next) => {
   try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
     const articles = await Article.find({
       user: req.params.id,
       isDraft: false,
@@ -85,7 +91,6 @@ const getDraft = async (req, res, next) => {
       "user",
       "id username"
     );
-    console.log(req.params.id, article);
 
     if (!article) {
       res.status(404);

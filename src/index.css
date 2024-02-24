@@ -50,6 +50,17 @@ body {
     height: 200px;
   }
 }
+.article-card {
+  transition: background-color 0.3s ease-in;
+}
+.article-card:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.article-card-body,
+.article-card-body * {
+  font-family: "Lora", serif;
+  font-size: 16px !important;
+}
 /*loading animation*/
 .lds-ring {
   display: inline-block;

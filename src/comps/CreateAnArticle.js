@@ -149,23 +149,20 @@ export const CreateAnArticle = () => {
         </div>
       </div>
       <div className="modal fade" tabIndex="-1" id="loginModal">
-        <div className="modal-dialog">
-          <div className="modal-content mt-5">
-            <div className="modal-body bg-light">
+        <div className="modal-dialog d-flex justify-content-center">
+          <div className="modal-content mt-5" style={{ width: "354px" }}>
+            <Login
+              onHideModal={() => {
+                myModalRef.current.hide();
+              }}
+            >
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close bg-light position-absolute top-0 start-0 m-1"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
-              <div className="mt-4 mb-5">
-                <Login
-                  onHideModal={() => {
-                    myModalRef.current.hide();
-                  }}
-                ></Login>
-              </div>
-            </div>
+            </Login>
           </div>
         </div>
       </div>

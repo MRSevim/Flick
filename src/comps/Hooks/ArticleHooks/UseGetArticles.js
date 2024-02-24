@@ -11,10 +11,19 @@ export const useGetArticles = () => {
     setGlobalError(null);
 
     const response = await articleApi.getArticles(id);
+    const json = await response.json();
+
+    if (!response.ok) {
+      setGlobalError(json.message);
+      setIsLoading(false);
+    }
+    if (response.ok) {
+      setIsLoading(false);
+    }
 
     setIsLoading(false);
 
-    return response;
+    return json;
   };
 
   return { getArticles, isLoading };
