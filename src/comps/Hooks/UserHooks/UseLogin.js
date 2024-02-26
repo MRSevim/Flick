@@ -16,7 +16,6 @@ export const useLogin = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      setIsLoading(false);
       setError(json.message);
     }
     if (response.ok) {
@@ -31,10 +30,9 @@ export const useLogin = () => {
 
       // update the user context
       setUser({ username: json.username });
-
-      // update loading state
-      setIsLoading(false);
     }
+    // update loading state
+    setIsLoading(false);
     return response;
   };
 

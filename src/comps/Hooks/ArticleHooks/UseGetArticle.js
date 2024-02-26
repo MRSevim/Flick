@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import articleApi from "../../Utils/ArticleApiFunctions";
 
-export const useGetArticles = () => {
+export const useGetArticle = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const getArticles = async (id) => {
+  const getArticle = async (id) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await articleApi.getArticles(id);
+    const response = await articleApi.getArticle(id);
     const json = await response.json();
 
     if (!response.ok) {
@@ -22,5 +22,5 @@ export const useGetArticles = () => {
     return json;
   };
 
-  return { getArticles, isLoading };
+  return { getArticle, isLoading };
 };

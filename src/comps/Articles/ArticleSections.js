@@ -46,7 +46,6 @@ export const ArticleSections = ({ sections }) => {
           if (headerClassBelow > initialHeaderClassNumber) {
             appendables.push(headers[index + 1]);
           }
-          console.log(headerClass, headerClassBelow, index);
           if (headerClass > headerClassBelow) {
             headers[index].classList.add("invisible-icon");
           }
@@ -75,51 +74,57 @@ export const ArticleSections = ({ sections }) => {
     });
 
     const invisibleIcons = document.querySelectorAll(".invisible-icon");
+
     invisibleIcons.forEach((item) => {
       item.querySelector("i").classList.add("invis");
     });
 
-    document.querySelector("div.invis")?.classList?.remove("invis");
-    setTimeout(() => {
-      setLoading(false);
-    }, 200);
-  }, [loading]);
+    setLoading(false);
 
-  if (sections.length === 0) {
-    return <p>No sections in the article</p>;
-  }
-  return loading ? (
-    <div className="d-flex justify-content-center">
-      <div className="lds-ring">
-        <div></div>
-      </div>
-    </div>
-  ) : (
-    <div className="invis">
-      {sections.map((section) => (
-        <div
-          key={section.id}
-          className={
-            "header border-start border-end border-bottom border-dark " +
-            section.nodeName +
-            " id" +
-            section.id
-          }
-        >
-          <i
-            onClick={toggleHeadersBelow}
-            className="fa-solid fa-chevron-down ps-1 pe-1 section-toggler pointer"
-          ></i>
-          <a
-            className="link-dark ps-1"
-            title={section.innerText}
-            href={"#" + section.id}
-          >
-            {section.nodeName.substring(1)}.{section.innerText.substring(0, 15)}
-            ...
-          </a>
+    document.querySelector("div.invis")?.classList?.remove("invis");
+  }, [setLoading, sections]);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center">
+        <div className="lds-ring">
+          <div></div>
         </div>
-      ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="">
+      {sections && sections.length > 0 ? (
+        sections.map((section) => (
+          <div
+            key={section.id}
+            className={
+              "header border-start border-end border-bottom border-dark " +
+              section.nodeName +
+              " id" +
+              section.id
+            }
+          >
+            <i
+              onClick={toggleHeadersBelow}
+              className="fa-solid fa-chevron-down ps-1 pe-1 section-toggler pointer"
+            ></i>
+            <a
+              className="link-dark ps-1"
+              title={section.innerText}
+              href={"#" + section.id}
+            >
+              {section.nodeName.substring(1)}.
+              {section.innerText.substring(0, 15)}
+              ...
+            </a>
+          </div>
+        ))
+      ) : (
+        <p>No sections in the article.</p>
+      )}
     </div>
   );
 };

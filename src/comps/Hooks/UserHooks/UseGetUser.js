@@ -14,15 +14,12 @@ export const useGetUser = () => {
 
     if (response.ok) {
       setGlobalError(null);
-
-      // update loading state
-      setIsLoading(false);
     } else {
       setGlobalError(json.message);
-
-      // update loading state
-      setIsLoading(false);
     }
+
+    // update loading state
+    setIsLoading(false);
 
     return json;
   };

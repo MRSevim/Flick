@@ -1,11 +1,33 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ArticleSections } from "./ArticleSections";
+import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
 
 export const Article = () => {
   const { id } = useParams();
   const ref = useRef(null);
   const [sections, setSections] = useState(null);
+  const { getArticle, isLoading } = useGetArticle();
+  const [createdAt, setCreatedAt] = useState(null);
+  const [updatedAt, setUpdatedAt] = useState(null);
+  const [article, setArticle] = useState({
+    title: "",
+    content: "",
+    user: { username: "" },
+  });
+
+  useEffect(() => {
+    const get = async () => {
+      const json = await getArticle(id);
+      setArticle(json);
+      const created = new Date(json.createdAt);
+      setCreatedAt(created.toLocaleString());
+      const updated = new Date(json.updatedAt);
+      setUpdatedAt(updated.toLocaleString());
+    };
+    get();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   useEffect(() => {
     let headers = [];
@@ -16,104 +38,41 @@ export const Article = () => {
         element.id = initialId++;
         headers.push(element);
       });
-
     setSections(headers);
-  }, [id, setSections]);
+    console.log(article);
+  }, [id, article, setSections]);
 
   return (
-    <div className="container mt-3 ">
+    <div className="container mt-3">
       <div className="row justify-content-center">
         <div className="col col-12 col-lg-2">
           <h3 className="">Sections</h3>
-          {sections && <ArticleSections sections={sections} />}
+          <ArticleSections sections={sections} />
         </div>
-        <div className="article col">
-          <h1 className="display-4">Article {id}</h1>
-          <article ref={ref} className="article-body">
-            <h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
-              sapiente!
-            </h3>
-
-            <h4>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
-              sapiente!
-            </h4>
-            <h2>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
-              sapiente!
-            </h2>
-            <h5>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Perspiciatis distinctio, voluptatem reprehenderit iure sit quis .
-            </h5>
-            <h4>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Perspiciatis distinctio, voluptatem reprehenderit iure sit quis .
-            </h4>
-            <h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem, culpa?
-            </h3>
-            <h4>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem, culpa?
-            </h4>
-            <h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem, culpa?
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Voluptate corrupti, suscipit quidem amet sapiente beatae, optio
-              cumque illum aliquid, incidunt nobis praesentium facilis doloribus
-              sint cupiditate ea. Cumque, ad dolores.
-            </p>
-            <h1>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
-              in?
-            </h1>
-            <h2>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis,
-              labore.
-            </h2>
-            <h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptatem, culpa?
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-              totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
-              Vero reiciendis incidunt veritatis officia quod minus, porro nemo
-              sed voluptas aut beatae ipsam dolorum, necessitatibus ipsa
-              tempora, consectetur voluptatum ex? Neque libero laborum possimus
-              ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
-              alias.
-            </p>
-            <h6>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
-              in?
-            </h6>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-              totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
-              Vero reiciendis incidunt veritatis officia quod minus, porro nemo
-              sed voluptas aut beatae ipsam dolorum, necessitatibus ipsa
-              tempora, consectetur voluptatum ex? Neque libero laborum possimus
-              ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
-              alias.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-              totam eligendi magni voluptatem quisquam magnam. Quos, commodi!
-              Vero reiciendis incidunt veritatis officia quod minus, porro nemo
-              sed voluptas aut beatae ipsam dolorum, necessitatibus ipsa
-              tempora, consectetur voluptatum ex? Neque libero laborum possimus
-              ipsum. Laudantium veniam corporis voluptatum. Ut, reprehenderit
-              alias.
-            </p>
-          </article>
-        </div>
+        {isLoading ? (
+          <div className="article col">
+            <div className="container mt-5 d-flex justify-content-center">
+              <div className="lds-ring">
+                <div></div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="article col">
+            <h1 className="display-4">{article.title}</h1>
+            <article
+              ref={ref}
+              className="article-body"
+              dangerouslySetInnerHTML={{
+                __html: article.content,
+              }}
+            ></article>
+            <i className="fw-bold">
+              Written by {article.user.username} on {createdAt} - Last updated
+              on {updatedAt}
+            </i>
+          </div>
+        )}
         <div className="col col-12 col-lg-2 border border-dark">
           <h3 className="">Extra Space</h3>
         </div>

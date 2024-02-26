@@ -18,7 +18,6 @@ export const useUpdateUser = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      setIsLoading(false);
       setError(json.message);
     }
     if (response.ok) {
@@ -39,8 +38,8 @@ export const useUpdateUser = () => {
 
       // update state
       setSuccessMessage("Profile updated");
-      setIsLoading(false);
     }
+    setIsLoading(false);
     return response;
   };
 

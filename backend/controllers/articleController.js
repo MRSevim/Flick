@@ -171,9 +171,9 @@ const updateArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const { title, content } = req.body;
+    const { title, content, isDraft } = req.body;
 
-    if (!title && !content) {
+    if (!title && !content && !isDraft) {
       res.status(400);
       throw new Error("Please send some input to update");
     }
@@ -198,13 +198,17 @@ const updateArticle = async (req, res, next) => {
 
     article.title = sanitizedTitle || article.title;
     article.content = sanitizedContent || article.content;
+    if (isDraft !== undefined) {
+      article.isDraft = isDraft;
+    }
 
     const updatedArticle = await article.save();
-
+    console.log(updatedArticle);
     res.status(200).json({
       _id: updatedArticle._id,
       title: updatedArticle.title,
       content: updatedArticle.content,
+      isDraft: updatedArticle.isDraft,
     });
   } catch (error) {
     next(error);

@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
 
 export const Articles = () => {
-  const [articles, setArticles] = useState(null);
+  const [articles, setArticles] = useState([]);
   const [user, setUser] = useState(null);
   let { id } = useParams();
   const { getArticles, isLoading } = useGetArticles();
@@ -29,7 +29,7 @@ export const Articles = () => {
     <div className="container mt-5">
       <h1 className="text-center">{user?.username}'s Articles</h1>
       <div className="row g-3">
-        {articles?.map((article) => (
+        {articles.map((article) => (
           <div
             key={article._id}
             className="col col-12 col-md-6 col-lg-4 articles-column"

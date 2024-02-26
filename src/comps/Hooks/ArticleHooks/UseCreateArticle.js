@@ -14,13 +14,10 @@ export const useCreateArticle = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      setIsLoading(false);
       setGlobalError(json.message);
     }
-    if (response.ok) {
-      // update loading state
-      setIsLoading(false);
-    }
+
+    setIsLoading(false);
     return response;
   };
 
