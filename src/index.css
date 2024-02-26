@@ -13,6 +13,9 @@
 .hidden {
   display: none;
 }
+.invis {
+  visibility: hidden;
+}
 .pointer {
   cursor: pointer;
 }
