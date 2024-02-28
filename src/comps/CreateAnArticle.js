@@ -2,16 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
-import { Editor } from "@tinymce/tinymce-react";
+import { EditorComponent } from "./EditorComponent";
 import { useUserContext } from "./Contexts/UserContext";
 import { Login } from "./Login";
 import { Modal } from "bootstrap";
 import { useCreateArticle } from "./Hooks/ArticleHooks/UseCreateArticle";
-import ls from "localstorage-slim";
 
 export const CreateAnArticle = () => {
-  const editorRef = useRef(null);
   const [title, setTitle] = useState("");
+  const [content, setContent] = useState(null);
   const [initialContent, setInitialContent] = useState(
     "<p>Start by replacing this.</p>"
   );
@@ -19,13 +18,8 @@ export const CreateAnArticle = () => {
   const [user] = useUserContext();
   const { createArticle, isLoading: isLoadingArticle } = useCreateArticle();
   const myModalRef = useRef(null);
-  const [myId, setMyId] = useState("");
 
   useEffect(() => {
-    const user = JSON.parse(ls.get("user"));
-    if (user) {
-      setMyId(user._id);
-    }
     const localStorageContent = JSON.parse(
       localStorage.getItem("editor-content")
     );
@@ -46,14 +40,14 @@ export const CreateAnArticle = () => {
   }, []);
 
   const submit = async () => {
-    if (editorRef.current && user) {
+    if (content && user) {
       const res = await createArticle(
         DOMPurify.sanitize(title),
-        DOMPurify.sanitize(editorRef.current.getContent()),
+        DOMPurify.sanitize(content),
         false
       );
       if (res.ok) {
-        navigate("/article/user/" + myId);
+        navigate("/article/user/" + user._id);
       }
     }
     if (!user) {
@@ -62,10 +56,10 @@ export const CreateAnArticle = () => {
   };
 
   const saveDraft = async () => {
-    if (editorRef.current && user) {
+    if (content && user) {
       const res = await createArticle(
         DOMPurify.sanitize(title),
-        DOMPurify.sanitize(editorRef.current.getContent()),
+        DOMPurify.sanitize(content),
         true
       );
       if (res.ok) {
@@ -76,10 +70,14 @@ export const CreateAnArticle = () => {
       myModalRef.current.show();
     }
   };
+  const handleEditorChange = (content) => {
+    setContent(content);
+    localStorage.setItem("editor-content", JSON.stringify(content));
+  };
 
   return (
     <>
-      <div className="create-an-article container mt-3">
+      <div className="container mt-3">
         <div className="form-group row mb-3 align-items-center">
           <label htmlFor="title" className="col-sm-1 text-center text-sm-end">
             Title:
@@ -100,41 +98,13 @@ export const CreateAnArticle = () => {
             />
           </div>
         </div>
-        <Editor
-          tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"}
-          onInit={(evt, editor) => (editorRef.current = editor)}
-          initialValue={initialContent}
-          init={{
-            height: 600,
-            content_style: "body { font-family:Lora,serif; color:black}",
-            plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "image",
-              "charmap",
-              "preview",
-              "anchor",
-              "searchreplace",
-              "visualblocks",
-              "codesample",
-              "fullscreen",
-              "insertdatetime",
-              "media",
-              "table",
-              "code",
-              "help",
-              "wordcount",
-              "image",
-              "code",
-            ],
+        <EditorComponent
+          initialContent={initialContent}
+          handleEditorChange={handleEditorChange}
+          onInit={(editor) => {
+            setContent(editor.getContent());
           }}
-          onEditorChange={(newValue, editor) => {
-            let content = editor.getContent();
-            localStorage.setItem("editor-content", JSON.stringify(content));
-          }}
-        ></Editor>
+        ></EditorComponent>
         <div className="mt-3 d-flex justify-content-center">
           <button className="btn btn-lg me-3 btn-warning" onClick={saveDraft}>
             Save Draft

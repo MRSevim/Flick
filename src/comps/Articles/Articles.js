@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
 import ls from "localstorage-slim";
 import { useUserContext } from "../Contexts/UserContext";
@@ -11,6 +11,7 @@ export const Articles = () => {
   const [myArticles, setMyArticles] = useState(null);
   const [user] = useUserContext();
   let { id } = useParams();
+  const navigate = useNavigate();
   const { getArticles, isLoading } = useGetArticles();
   const { deleteArticle: deleteArticleCall } = useDeleteArticle();
 
@@ -25,14 +26,17 @@ export const Articles = () => {
     }
   };
 
-  const editArticle = (id) => {};
+  const editArticle = (id) => {
+    navigate("/article/edit/" + id);
+  };
 
   useEffect(() => {
     const get = async () => {
-      const json = await getArticles(id);
-
-      setArticles(json);
-      setLocalUser(json[0]?.user);
+      const { response, json } = await getArticles(id);
+      if (response.ok) {
+        setArticles(json.articles);
+        setLocalUser(json.user);
+      }
     };
     get();
 
@@ -45,6 +49,8 @@ export const Articles = () => {
     if (userStorage && localUser) {
       if (userStorage._id === localUser._id) {
         setMyArticles(true);
+      } else {
+        setMyArticles(false);
       }
     }
     if (!user) {
@@ -62,6 +68,7 @@ export const Articles = () => {
     <div className="container mt-5">
       <h1 className="text-center">{localUser.username}'s Articles</h1>
       <div className="row g-3">
+        {articles.length === 0 && <div>No articles to show.</div>}
         {articles.map((article) => (
           <div
             key={article._id}
@@ -85,7 +92,8 @@ export const Articles = () => {
                         <i className="bi bi-trash-fill"></i>
                       </button>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
                           editArticle(article._id);
                         }}
                         className="btn btn-warning position-absolute bottom-0 end-0 p-1 m-1"

@@ -8,11 +8,11 @@ const articleApi = {
 
     return response;
   },
-  update: async (title, content, id) => {
+  update: async (title, content, isDraft, id) => {
     const response = await fetch("/article/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title, content, isDraft }),
     });
 
     return response;

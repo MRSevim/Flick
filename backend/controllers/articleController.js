@@ -47,7 +47,14 @@ const getArticles = async (req, res, next) => {
       })
       .populate("user", "id username");
 
-    res.status(200).json(articles);
+    res.status(200).json({
+      articles,
+      user: {
+        _id: user._id,
+        username: user.username,
+        createdAt: user.createdAt,
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -72,7 +79,14 @@ const getDrafts = async (req, res, next) => {
       })
       .populate("user", "id username");
 
-    res.status(200).json(articles);
+    res.status(200).json({
+      drafts: articles,
+      user: {
+        _id: user._id,
+        username: user.username,
+        createdAt: user.createdAt,
+      },
+    });
   } catch (error) {
     next(error);
   }

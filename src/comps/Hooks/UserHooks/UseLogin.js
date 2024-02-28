@@ -27,9 +27,9 @@ export const useLogin = () => {
           ttl: 30 * 24 * 60 * 60, // 30 days,
         }
       );
-
+      console.log(json);
       // update the user context
-      setUser({ username: json.username });
+      setUser({ username: json.username, _id: json._id });
     }
     // update loading state
     setIsLoading(false);

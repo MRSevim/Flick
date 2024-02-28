@@ -10,6 +10,7 @@ import { NotFound } from "./comps/NotFound.js";
 import { UserProvider } from "./comps/Contexts/UserContext.js";
 import { GlobalErrorProvider } from "./comps/Contexts/GlobalErrorContext.js";
 import { Articles } from "./comps/Articles/Articles.js";
+import { Edit } from "./comps/Articles/Edit.js";
 import { GlobalError } from "./comps/GlobalError.js";
 import { useUserContext } from "./comps/Contexts/UserContext.js";
 
@@ -61,6 +62,7 @@ function AppContent() {
         <Route path="/create-an-article" element={<CreateAnArticle />} />
         <Route path="/article/user/:id" element={<Articles />} />
         <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/article/edit/:id" element={<Edit />} />
         <Route path="/article/:id" element={<Article />} />
         <Route exact path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />

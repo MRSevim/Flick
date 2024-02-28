@@ -14,12 +14,14 @@ export const Article = () => {
 
   useEffect(() => {
     const get = async () => {
-      const json = await getArticle(id);
-      setArticle(json);
-      const created = new Date(json?.createdAt);
-      setCreatedAt(created.toLocaleString());
-      const updated = new Date(json?.updatedAt);
-      setUpdatedAt(updated.toLocaleString());
+      const { response, json } = await getArticle(id);
+      if (response.ok) {
+        setArticle(json);
+        const created = new Date(json?.createdAt);
+        setCreatedAt(created.toLocaleString());
+        const updated = new Date(json?.updatedAt);
+        setUpdatedAt(updated.toLocaleString());
+      }
     };
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,10 +68,24 @@ export const Article = () => {
                 __html: article.content,
               }}
             ></article>
-            <i className="fw-bold">
-              Written by {article.user.username} on {createdAt} - Last updated
-              on {updatedAt}
-            </i>
+            <div className="text-end">
+              <p>
+                <i>
+                  Written by{" "}
+                  <span className="fw-bold">{article.user.username}</span>
+                </i>
+              </p>
+              <p>
+                <i>
+                  Publish <span className="fw-bold">{createdAt}</span>
+                </i>
+              </p>
+              <p>
+                <i>
+                  Last update <span className="fw-bold">{updatedAt}</span>
+                </i>
+              </p>
+            </div>
           </div>
         ) : (
           <div className="article col"></div>

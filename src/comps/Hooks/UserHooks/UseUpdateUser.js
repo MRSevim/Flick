@@ -34,7 +34,7 @@ export const useUpdateUser = () => {
       });
 
       // update the user context
-      setUser({ username: json.username });
+      setUser({ username: json.username, _id: json._id });
 
       // update state
       setSuccessMessage("Profile updated");

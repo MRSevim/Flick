@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "./Contexts/UserContext";
-import ls from "localstorage-slim";
 import { useLogout } from "./Hooks/UserHooks/UseLogout";
 
 export const Header = () => {
@@ -13,7 +12,6 @@ export const Header = () => {
   const wrapperRef = useRef(null);
 
   useEffect(() => {
-    const user = JSON.parse(ls.get("user"));
     if (user) {
       setMyId(user._id);
     }
@@ -28,7 +26,7 @@ export const Header = () => {
       // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [wrapperRef]);
+  }, [wrapperRef, user]);
 
   const logOut = async () => {
     await logout();

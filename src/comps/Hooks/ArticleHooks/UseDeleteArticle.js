@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import articleApi from "../../Utils/ArticleApiFunctions";
 
-export const useDeleteArticle = (id) => {
+export const useDeleteArticle = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 

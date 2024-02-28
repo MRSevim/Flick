@@ -19,7 +19,7 @@ export const useGetArticles = () => {
 
     setIsLoading(false);
 
-    return json;
+    return { response, json };
   };
 
   return { getArticles, isLoading };
