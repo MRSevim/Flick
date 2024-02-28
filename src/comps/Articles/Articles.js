@@ -1,23 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
+import ls from "localstorage-slim";
+import { useUserContext } from "../Contexts/UserContext";
+import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
 
 export const Articles = () => {
   const [articles, setArticles] = useState([]);
-  const [user, setUser] = useState(null);
+  const [localUser, setLocalUser] = useState(null);
+  const [myArticles, setMyArticles] = useState(null);
+  const [user] = useUserContext();
   let { id } = useParams();
   const { getArticles, isLoading } = useGetArticles();
+  const { deleteArticle: deleteArticleCall } = useDeleteArticle();
+
+  const deleteArticle = async (id) => {
+    const response = await deleteArticleCall(id);
+    if (response.ok) {
+      setArticles(
+        articles.filter((article) => {
+          return article._id !== id;
+        })
+      );
+    }
+  };
+
+  const editArticle = (id) => {};
 
   useEffect(() => {
     const get = async () => {
       const json = await getArticles(id);
 
       setArticles(json);
-      setUser(json[0]?.user);
+      setLocalUser(json[0]?.user);
     };
     get();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id, setArticles, setLocalUser]);
+
+  useEffect(() => {
+    const userStorage = JSON.parse(ls.get("user"));
+
+    if (userStorage && localUser) {
+      if (userStorage._id === localUser._id) {
+        setMyArticles(true);
+      }
+    }
+    if (!user) {
+      setMyArticles(false);
+    }
+  }, [user, localUser, setMyArticles]);
 
   return isLoading ? (
     <div className="container mt-5 d-flex justify-content-center">
@@ -25,9 +58,9 @@ export const Articles = () => {
         <div></div>
       </div>
     </div>
-  ) : user ? (
+  ) : localUser && articles ? (
     <div className="container mt-5">
-      <h1 className="text-center">{user?.username}'s Articles</h1>
+      <h1 className="text-center">{localUser.username}'s Articles</h1>
       <div className="row g-3">
         {articles.map((article) => (
           <div
@@ -35,11 +68,32 @@ export const Articles = () => {
             className="col col-12 col-md-6 col-lg-4 articles-column"
           >
             <Link
-              to={"/articles/" + article._id}
+              to={"/article/" + article._id}
               className="text-black text-decoration-none"
             >
               <div className="card h-100 article-card">
                 <div className="card-body">
+                  {myArticles && (
+                    <div>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          deleteArticle(article._id);
+                        }}
+                        className="btn btn-danger position-absolute top-0 end-0 p-1 m-1"
+                      >
+                        <i className="bi bi-trash-fill"></i>
+                      </button>
+                      <button
+                        onClick={() => {
+                          editArticle(article._id);
+                        }}
+                        className="btn btn-warning position-absolute bottom-0 end-0 p-1 m-1"
+                      >
+                        <i className="bi bi-pencil-fill"></i>
+                      </button>
+                    </div>
+                  )}
                   <h5 className="card-title">{article.title}</h5>
                   <p
                     className="card-text article-card-body"

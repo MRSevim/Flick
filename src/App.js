@@ -59,11 +59,11 @@ function AppContent() {
           element={user ? <Navigate to="/" /> : <SignUp />}
         />
         <Route path="/create-an-article" element={<CreateAnArticle />} />
-        <Route path="/articles/user/:id" element={<Articles />} />
+        <Route path="/article/user/:id" element={<Articles />} />
         <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/articles/:id" element={<Article />}></Route>
+        <Route path="/article/:id" element={<Article />} />
         <Route exact path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />}></Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer></Footer>
     </Router>

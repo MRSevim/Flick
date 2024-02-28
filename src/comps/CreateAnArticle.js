@@ -53,7 +53,7 @@ export const CreateAnArticle = () => {
         false
       );
       if (res.ok) {
-        navigate("/articles/user/" + myId);
+        navigate("/article/user/" + myId);
       }
     }
     if (!user) {

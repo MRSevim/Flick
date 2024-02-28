@@ -10,19 +10,15 @@ export const Article = () => {
   const { getArticle, isLoading } = useGetArticle();
   const [createdAt, setCreatedAt] = useState(null);
   const [updatedAt, setUpdatedAt] = useState(null);
-  const [article, setArticle] = useState({
-    title: "",
-    content: "",
-    user: { username: "" },
-  });
+  const [article, setArticle] = useState(null);
 
   useEffect(() => {
     const get = async () => {
       const json = await getArticle(id);
       setArticle(json);
-      const created = new Date(json.createdAt);
+      const created = new Date(json?.createdAt);
       setCreatedAt(created.toLocaleString());
-      const updated = new Date(json.updatedAt);
+      const updated = new Date(json?.updatedAt);
       setUpdatedAt(updated.toLocaleString());
     };
     get();
@@ -32,14 +28,17 @@ export const Article = () => {
   useEffect(() => {
     let headers = [];
     let initialId = 0;
-    ref.current
-      .querySelectorAll("h1, h2, h3, h4, h5, h6")
-      .forEach((element) => {
-        element.id = initialId++;
-        headers.push(element);
-      });
-    setSections(headers);
-    console.log(article);
+    if (article) {
+      ref.current
+        .querySelectorAll("h1, h2, h3, h4, h5, h6")
+        .forEach((element) => {
+          element.id = initialId++;
+          headers.push(element);
+        });
+      if (ref.current.innerHTML) {
+        setSections(headers);
+      }
+    }
   }, [id, article, setSections]);
 
   return (
@@ -57,7 +56,7 @@ export const Article = () => {
               </div>
             </div>
           </div>
-        ) : (
+        ) : article ? (
           <div className="article col">
             <h1 className="display-4">{article.title}</h1>
             <article
@@ -72,6 +71,8 @@ export const Article = () => {
               on {updatedAt}
             </i>
           </div>
+        ) : (
+          <div className="article col"></div>
         )}
         <div className="col col-12 col-lg-2 border border-dark">
           <h3 className="">Extra Space</h3>

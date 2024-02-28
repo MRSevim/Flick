@@ -2,26 +2,24 @@ import { useState } from "react";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import articleApi from "../../Utils/ArticleApiFunctions";
 
-export const useGetArticle = () => {
+export const useDeleteArticle = (id) => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const getArticle = async (id) => {
+  const deleteArticle = async (id) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await articleApi.getArticle(id);
+    const response = await articleApi.delete(id);
     const json = await response.json();
 
     if (!response.ok) {
       setGlobalError(json.message);
-      return;
     }
 
     setIsLoading(false);
-
-    return json;
+    return response;
   };
 
-  return { getArticle, isLoading };
+  return { deleteArticle, isLoading };
 };

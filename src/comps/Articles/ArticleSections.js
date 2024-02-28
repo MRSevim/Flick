@@ -71,12 +71,18 @@ export const ArticleSections = ({ sections }) => {
     const togglers = document.querySelectorAll(".section-toggler");
     togglers.forEach((toggler) => {
       toggler.click();
+      toggler.classList.remove("open");
     });
 
     const invisibleIcons = document.querySelectorAll(".invisible-icon");
 
     invisibleIcons.forEach((item) => {
       item.querySelector("i").classList.add("invis");
+    });
+
+    const containers = document.querySelectorAll(".container-div");
+    containers.forEach((container) => {
+      container.classList.add("hidden");
     });
 
     setLoading(false);
@@ -122,8 +128,10 @@ export const ArticleSections = ({ sections }) => {
             </a>
           </div>
         ))
-      ) : (
+      ) : sections && sections.length === 0 ? (
         <p>No sections in the article.</p>
+      ) : (
+        <div></div>
       )}
     </div>
   );
