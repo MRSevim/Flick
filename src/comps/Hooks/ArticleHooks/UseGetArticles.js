@@ -6,11 +6,17 @@ export const useGetArticles = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const getArticles = async (id, page) => {
+  const getArticles = async (id, page, isDraft) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await articleApi.getArticles(id, page);
+    const get = (id, page) => {
+      if (!isDraft) {
+        return articleApi.getArticles(id, page);
+      } else return articleApi.getDrafts(page);
+    };
+
+    const response = await get(id, page);
     const json = await response.json();
 
     if (!response.ok) {
@@ -22,5 +28,5 @@ export const useGetArticles = () => {
     return { response, json };
   };
 
-  return { getArticles, isLoading };
+  return { getArticles, isLoading, setIsLoading };
 };

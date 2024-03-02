@@ -9,10 +9,16 @@ import { Modal } from "bootstrap";
 import { useCreateArticle } from "../Hooks/ArticleHooks/UseCreateArticle";
 
 export const CreateAnArticle = () => {
+  const localStorageContent = JSON.parse(
+    localStorage.getItem("editor-content")
+  );
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState(null);
-  const [initialContent, setInitialContent] = useState(
-    "<p>Start by replacing this.</p>"
+  const [initialContent] = useState(
+    localStorageContent
+      ? localStorageContent
+      : "<p>Start by replacing this.</p>"
   );
   const navigate = useNavigate();
   const [user] = useUserContext();
@@ -20,13 +26,6 @@ export const CreateAnArticle = () => {
   const myModalRef = useRef(null);
 
   useEffect(() => {
-    const localStorageContent = JSON.parse(
-      localStorage.getItem("editor-content")
-    );
-    if (localStorageContent) {
-      setInitialContent(localStorageContent);
-    }
-
     const localStorageTitle = JSON.parse(localStorage.getItem("article-title"));
     if (localStorageTitle) {
       setTitle(localStorageTitle);
@@ -47,7 +46,7 @@ export const CreateAnArticle = () => {
         false
       );
       if (res.ok) {
-        navigate("/article/user/" + user._id);
+        navigate("/article/user/" + user._id + "/articles");
       }
     }
     if (!user) {

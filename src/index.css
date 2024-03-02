@@ -38,6 +38,9 @@ body {
   top: 20%;
   z-index: 2000;
 }
+.active {
+  font-weight: 700;
+}
 /*Create an Article */
 .article,
 .article * {

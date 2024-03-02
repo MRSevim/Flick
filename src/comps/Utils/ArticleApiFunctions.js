@@ -46,8 +46,8 @@ const articleApi = {
 
     return response;
   },
-  getDrafts: async () => {
-    const response = await fetch("/article/draft", {
+  getDrafts: async (page) => {
+    const response = await fetch("/article/draft?page=" + page, {
       headers: { "Content-Type": "application/json" },
     });
 

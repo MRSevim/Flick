@@ -60,7 +60,14 @@ function AppContent() {
           element={user ? <Navigate to="/" /> : <SignUp />}
         />
         <Route path="/create-an-article" element={<CreateAnArticle />} />
-        <Route path="/article/user/:id" element={<Articles />} />
+        <Route
+          path="/article/user/:id/articles"
+          element={<Articles isDraft={false} />}
+        />
+        <Route
+          path="/article/user/:id/drafts"
+          element={<Articles isDraft={true} />}
+        />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/article/edit/:id" element={<Edit />} />
         <Route path="/article/:id" element={<Article />} />

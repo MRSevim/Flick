@@ -20,7 +20,7 @@ const getArticle = async (req, res, next) => {
     }
     if (article.isDraft) {
       res.status(401);
-      throw new Error("You are not authorized");
+      throw new Error("Use /draft/:id for draft articles");
     }
 
     res.status(200).json(article);
@@ -32,7 +32,7 @@ const getArticle = async (req, res, next) => {
 //get articles of specific user
 const getArticles = async (req, res, next) => {
   const { page } = req.query;
-  console.log(page);
+
   try {
     if (!page) {
       res.status(400);

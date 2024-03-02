@@ -104,7 +104,7 @@ export const Header = () => {
                     </p>
                     <p className="m-0">
                       <Link
-                        to={"/article/user/" + myId + "?page=1"}
+                        to={"/article/user/" + myId + "/articles?page=1"}
                         className="text-white link-underline link-underline-opacity-0"
                         onClick={() => {
                           setUserMenu(false);
