@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
 import ls from "localstorage-slim";
 import { useUserContext } from "../Contexts/UserContext";
 import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
+import { Pagination } from "@mui/material";
 
 export const Articles = () => {
   const [articles, setArticles] = useState([]);
@@ -14,6 +15,9 @@ export const Articles = () => {
   const navigate = useNavigate();
   const { getArticles, isLoading } = useGetArticles();
   const { deleteArticle: deleteArticleCall } = useDeleteArticle();
+  const [totalPages, setTotalPages] = useState(null);
+  const params = new URLSearchParams(useLocation().search);
+  const page = params.get("page");
 
   const deleteArticle = async (id) => {
     const response = await deleteArticleCall(id);
@@ -30,10 +34,19 @@ export const Articles = () => {
     navigate("/article/edit/" + id);
   };
 
+  const handlePaginationChange = (event, value) => {
+    navigate({ search: "?page=" + value });
+  };
+
   useEffect(() => {
     const get = async () => {
-      const { response, json } = await getArticles(id);
+      if (!page) {
+        navigate({ search: "?page=1" });
+        return;
+      }
+      const { response, json } = await getArticles(id, page);
       if (response.ok) {
+        setTotalPages(json.totalPages);
         setArticles(json.articles);
         setLocalUser(json.user);
       }
@@ -41,7 +54,7 @@ export const Articles = () => {
     get();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, setArticles, setLocalUser]);
+  }, [id, setArticles, setLocalUser, page]);
 
   useEffect(() => {
     const userStorage = JSON.parse(ls.get("user"));
@@ -68,7 +81,20 @@ export const Articles = () => {
     <div className="container mt-5">
       <h1 className="text-center">{localUser.username}'s Articles</h1>
       <div className="row g-3">
-        {articles.length === 0 && <div>No articles to show.</div>}
+        {articles.length === 0 ? (
+          <div>No articles to show.</div>
+        ) : (
+          <div className="d-flex justify-content-center">
+            <Pagination
+              page={Number(page)}
+              showFirstButton
+              showLastButton
+              count={totalPages}
+              shape="rounded"
+              onChange={handlePaginationChange}
+            />
+          </div>
+        )}
         {articles.map((article) => (
           <div
             key={article._id}

@@ -32,8 +32,8 @@ const articleApi = {
 
     return response;
   },
-  getArticles: async (id) => {
-    const response = await fetch("/article/user/" + id, {
+  getArticles: async (id, page) => {
+    const response = await fetch("/article/user/" + id + "?page=" + page, {
       headers: { "Content-Type": "application/json" },
     });
 

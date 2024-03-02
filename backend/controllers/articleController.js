@@ -31,24 +31,44 @@ const getArticle = async (req, res, next) => {
 
 //get articles of specific user
 const getArticles = async (req, res, next) => {
+  const { page } = req.query;
+  console.log(page);
   try {
+    if (!page) {
+      res.status(400);
+      throw new Error("Please send a page number");
+    }
     const user = await User.findById(req.params.id);
     if (!user) {
       res.status(404);
       throw new Error("User is not found");
     }
 
+    const LIMIT = 9;
+    const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+
+    const totalArticles = await Article.find({
+      user: user._id,
+      isDraft: false,
+    }).sort({
+      createdAt: -1,
+    });
+    const total = totalArticles.length;
+
     const articles = await Article.find({
-      user: req.params.id,
+      user: user._id,
       isDraft: false,
     })
       .sort({
         createdAt: -1,
       })
-      .populate("user", "id username");
+      .limit(LIMIT)
+      .skip(startIndex);
 
     res.status(200).json({
       articles,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / LIMIT),
       user: {
         _id: user._id,
         username: user.username,
@@ -62,13 +82,31 @@ const getArticles = async (req, res, next) => {
 
 //authenticated user get drafts
 const getDrafts = async (req, res, next) => {
+  const { page } = req.query;
+
   try {
+    if (!page) {
+      res.status(400);
+      throw new Error("Please send a page number");
+    }
+
     const user = await User.findById(req.user._id);
 
     if (!user) {
       res.status(404);
       throw new Error("User is not found");
     }
+
+    const LIMIT = 9;
+    const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+
+    const totalArticles = await Article.find({
+      user: user._id,
+      isDraft: true,
+    }).sort({
+      createdAt: -1,
+    });
+    const total = totalArticles.length;
 
     const articles = await Article.find({
       user: user._id,
@@ -77,10 +115,13 @@ const getDrafts = async (req, res, next) => {
       .sort({
         createdAt: -1,
       })
-      .populate("user", "id username");
+      .limit(LIMIT)
+      .skip(startIndex);
 
     res.status(200).json({
-      drafts: articles,
+      articles,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / LIMIT),
       user: {
         _id: user._id,
         username: user.username,
