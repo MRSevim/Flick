@@ -50,9 +50,8 @@ const getArticles = async (req, res, next) => {
     const totalArticles = await Article.find({
       user: user._id,
       isDraft: false,
-    }).sort({
-      createdAt: -1,
     });
+
     const total = totalArticles.length;
 
     const articles = await Article.find({
@@ -60,7 +59,7 @@ const getArticles = async (req, res, next) => {
       isDraft: false,
     })
       .sort({
-        createdAt: -1,
+        updatedAt: -1,
       })
       .limit(LIMIT)
       .skip(startIndex);
@@ -103,9 +102,8 @@ const getDrafts = async (req, res, next) => {
     const totalArticles = await Article.find({
       user: user._id,
       isDraft: true,
-    }).sort({
-      createdAt: -1,
     });
+
     const total = totalArticles.length;
 
     const articles = await Article.find({
@@ -113,7 +111,7 @@ const getDrafts = async (req, res, next) => {
       isDraft: true,
     })
       .sort({
-        createdAt: -1,
+        updatedAt: -1,
       })
       .limit(LIMIT)
       .skip(startIndex);

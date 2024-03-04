@@ -69,8 +69,10 @@ function AppContent() {
           element={<Articles isDraft={true} />}
         />
         <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/article/edit/:id" element={<Edit />} />
-        <Route path="/article/:id" element={<Article />} />
+        <Route path="/article/edit/:id" element={<Edit isDraft={false} />} />
+        <Route path="/draft/edit/:id" element={<Edit isDraft={true} />} />
+        <Route path="/article/:id" element={<Article isDraft={false} />} />
+        <Route path="/draft/:id" element={<Article isDraft={true} />} />
         <Route exact path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

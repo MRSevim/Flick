@@ -22,7 +22,7 @@ export const CreateAnArticle = () => {
   );
   const navigate = useNavigate();
   const [user] = useUserContext();
-  const { createArticle, isLoading: isLoadingArticle } = useCreateArticle();
+  const { createArticle, isLoading } = useCreateArticle();
   const myModalRef = useRef(null);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const CreateAnArticle = () => {
         true
       );
       if (res.ok) {
-        navigate("/my-articles");
+        navigate("/article/user/" + user._id + "/drafts");
       }
     }
     if (!user) {
@@ -105,15 +105,19 @@ export const CreateAnArticle = () => {
           }}
         ></EditorComponent>
         <div className="mt-3 d-flex justify-content-center">
-          <button className="btn btn-lg me-3 btn-warning" onClick={saveDraft}>
+          <button
+            className="btn btn-lg me-3 btn-warning"
+            disabled={isLoading}
+            onClick={saveDraft}
+          >
             Save Draft
           </button>
           <button
             className="btn btn-lg btn-warning"
-            disabled={isLoadingArticle}
+            disabled={isLoading}
             onClick={submit}
           >
-            Submit
+            Publish
           </button>
         </div>
       </div>

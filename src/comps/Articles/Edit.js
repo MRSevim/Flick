@@ -5,7 +5,7 @@ import { useEditArticle } from "../Hooks/ArticleHooks/UseEditArticle";
 import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
 import { useUserContext } from "../Contexts/UserContext";
 
-export const Edit = () => {
+export const Edit = ({ isDraft }) => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [user] = useUserContext();
@@ -21,8 +21,9 @@ export const Edit = () => {
       navigate("/");
       return;
     }
+
     const get = async () => {
-      const { response, json } = await getArticle(id);
+      const { response, json } = await getArticle(id, isDraft);
 
       if (response.ok) {
         setTitle(json.title);
@@ -35,16 +36,27 @@ export const Edit = () => {
         }
       }
     };
+
     get();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, navigate, user]);
 
-  const save = () => {
+  const save = (draft) => {
     const edit = async () => {
       setSuccessMessage(null);
-      const response = await editArticle(title, content, undefined, id);
+      const response = await editArticle(title, content, draft, id);
       if (response.ok) {
-        setSuccessMessage("Saved...");
+        if (draft) {
+          setSuccessMessage("Saved...");
+        } else {
+          setSuccessMessage(
+            "Article published. Redirecting to puslished article..."
+          );
+          setTimeout(() => {
+            navigate("/article/" + id);
+          }, 3000);
+        }
       }
     };
     edit();
@@ -87,12 +99,25 @@ export const Edit = () => {
       "
       >
         <button
-          className="btn btn-lg btn-warning"
+          className="btn btn-lg btn-warning me-2"
           disabled={editLoading}
-          onClick={save}
+          onClick={() => {
+            save(true);
+          }}
         >
           Save
         </button>
+        {isDraft && (
+          <button
+            className="btn btn-lg btn-warning"
+            disabled={editLoading}
+            onClick={() => {
+              save(false);
+            }}
+          >
+            Publish Article
+          </button>
+        )}
       </div>
       {successMessage && (
         <div className="text-center mt-3 d-flex justify-content-center">

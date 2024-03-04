@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
-import ls from "localstorage-slim";
+
 import { useUserContext } from "../Contexts/UserContext";
 import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
 import { Pagination } from "@mui/material";
@@ -10,12 +10,13 @@ export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
   const [localUser, setLocalUser] = useState(null);
   const [myArticles, setMyArticles] = useState(null);
-  const userStorage = JSON.parse(ls.get("user"));
+
   const [user] = useUserContext();
   let { id } = useParams();
   const navigate = useNavigate();
   const { getArticles, isLoading, setIsLoading } = useGetArticles();
-  const { deleteArticle: deleteArticleCall } = useDeleteArticle();
+  const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
+    useDeleteArticle();
   const [totalPages, setTotalPages] = useState(null);
   const params = new URLSearchParams(useLocation().search);
   const page = params.get("page");
@@ -33,7 +34,14 @@ export const Articles = ({ isDraft }) => {
   };
 
   const editArticle = (id) => {
-    navigate("/article/edit/" + id);
+    if (isDraft) {
+      navigate("/draft/edit/" + id);
+    } else {
+      navigate("/article/edit/" + id);
+    }
+  };
+  const likeArticle = (id) => {
+    console.log(id);
   };
 
   const handlePaginationChange = (event, value) => {
@@ -63,17 +71,12 @@ export const Articles = ({ isDraft }) => {
   }, [id, setArticles, setLocalUser, page, isDraft]);
 
   useEffect(() => {
-    if (userStorage) {
-      if (userStorage._id === id) {
-        setMyArticles(true);
-      } else {
-        setMyArticles(false);
-      }
-    }
-    if (user === undefined) {
+    if (user?._id === id) {
+      setMyArticles(true);
+    } else {
       setMyArticles(false);
     }
-  }, [user, id, setMyArticles, userStorage]);
+  }, [user, id, setMyArticles]);
 
   useEffect(() => {
     if (myArticles === false && isDraft) {
@@ -133,7 +136,7 @@ export const Articles = ({ isDraft }) => {
       )}
       <div className="row g-3">
         {articles.length === 0 ? (
-          <div>No articles to show.</div>
+          <div>No {!isDraft ? "articles" : "drafts"} to show.</div>
         ) : (
           <div className="d-flex justify-content-center">
             <Pagination
@@ -152,7 +155,7 @@ export const Articles = ({ isDraft }) => {
             className="col col-12 col-md-6 col-lg-4 articles-column"
           >
             <Link
-              to={"/article/" + article._id}
+              to={(!isDraft ? "/article/" : "/draft/") + article._id}
               className="text-black text-decoration-none"
             >
               <div className="card h-100 article-card">
@@ -160,6 +163,7 @@ export const Articles = ({ isDraft }) => {
                   {myArticles && (
                     <div>
                       <button
+                        disabled={deleteLoading}
                         onClick={(e) => {
                           e.preventDefault();
                           deleteArticle(article._id);
@@ -179,16 +183,28 @@ export const Articles = ({ isDraft }) => {
                       </button>
                     </div>
                   )}
-                  <h5 className="card-title">{article.title}</h5>
-                  <p
-                    className="card-text article-card-body"
-                    dangerouslySetInnerHTML={{
-                      __html: article.content.substring(0, 200),
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      likeArticle(article._id);
                     }}
-                  ></p>
-                  {article.content.trim().length >= 200 ? (
-                    <p>Read more...</p>
-                  ) : null}
+                    className="btn btn-info position-absolute bottom-0 start-0 p-1 m-1"
+                  >
+                    <i className="bi bi-hand-thumbs-up"></i>{" "}
+                    <span>{article.likes.length}</span>
+                  </button>
+                  <h5 className="card-title">{article.title}</h5>
+                  <div className="mb-4">
+                    <p
+                      className="card-text article-card-body"
+                      dangerouslySetInnerHTML={{
+                        __html: article.content.substring(0, 200),
+                      }}
+                    ></p>
+                    {article.content.trim().length >= 200 ? (
+                      <p>Read more...</p>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </Link>

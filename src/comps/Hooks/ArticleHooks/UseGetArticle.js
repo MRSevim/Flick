@@ -6,11 +6,19 @@ export const useGetArticle = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const getArticle = async (id) => {
+  const getArticle = async (id, isDraft) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await articleApi.getArticle(id);
+    const get = (id, isDraft) => {
+      if (!isDraft) {
+        return articleApi.getArticle(id);
+      } else {
+        return articleApi.getDraft(id);
+      }
+    };
+
+    const response = await get(id, isDraft);
 
     const json = await response.json();
 

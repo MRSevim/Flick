@@ -1,20 +1,47 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ArticleSections } from "./ArticleSections";
 import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
+import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
+import { useUserContext } from "../Contexts/UserContext";
 
-export const Article = () => {
+export const Article = ({ isDraft }) => {
+  const [user] = useUserContext();
   const { id } = useParams();
   const ref = useRef(null);
+  const navigate = useNavigate();
   const [sections, setSections] = useState(null);
   const { getArticle, isLoading } = useGetArticle();
   const [createdAt, setCreatedAt] = useState(null);
   const [updatedAt, setUpdatedAt] = useState(null);
   const [article, setArticle] = useState(null);
+  const [myArticle, setMyArticle] = useState(null);
+  const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
+    useDeleteArticle();
+
+  const deleteArticle = async (_id) => {
+    const response = await deleteArticleCall(_id);
+    if (response.ok) {
+      navigate(
+        "/article/user/" + user._id + (isDraft ? "/drafts" : "/articles")
+      );
+    }
+  };
+
+  const editArticle = (id) => {
+    if (isDraft) {
+      navigate("/draft/edit/" + id);
+    } else {
+      navigate("/article/edit/" + id);
+    }
+  };
+  const likeArticle = (id) => {
+    console.log(id);
+  };
 
   useEffect(() => {
     const get = async () => {
-      const { response, json } = await getArticle(id);
+      const { response, json } = await getArticle(id, isDraft);
       if (response.ok) {
         setArticle(json);
         const created = new Date(json?.createdAt);
@@ -26,6 +53,22 @@ export const Article = () => {
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    if (isDraft && myArticle === false) {
+      navigate("/");
+    }
+  }, [isDraft, myArticle, navigate]);
+
+  useEffect(() => {
+    if (article) {
+      if (article.user._id === user?._id) {
+        setMyArticle(true);
+      } else {
+        setMyArticle(false);
+      }
+    }
+  }, [article, user, setMyArticle]);
 
   useEffect(() => {
     let headers = [];
@@ -61,6 +104,40 @@ export const Article = () => {
         ) : article ? (
           <div className="article col">
             <h1 className="display-4">{article.title}</h1>
+            <div>
+              {!isDraft && (
+                <button
+                  onClick={() => {
+                    likeArticle(article._id);
+                  }}
+                  className="btn btn-info me-1"
+                >
+                  <i className="bi bi-hand-thumbs-up"></i>{" "}
+                  <span className="text-light">{article.likes.length}</span>
+                </button>
+              )}
+              {myArticle && (
+                <>
+                  <button
+                    disabled={deleteLoading}
+                    onClick={() => {
+                      deleteArticle(article._id);
+                    }}
+                    className="btn btn-danger me-1"
+                  >
+                    <i className="bi bi-trash-fill"></i>
+                  </button>
+                  <button
+                    onClick={() => {
+                      editArticle(article._id);
+                    }}
+                    className="btn btn-warning "
+                  >
+                    <i className="bi bi-pencil-fill"></i>
+                  </button>
+                </>
+              )}
+            </div>
             <article
               ref={ref}
               className="article-body"
