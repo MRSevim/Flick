@@ -154,12 +154,12 @@ export const Article = ({ isDraft }) => {
               </p>
               <p>
                 <i>
-                  Publish <span className="fw-bold">{createdAt}</span>
+                  Published <span className="fw-bold">{createdAt}</span>
                 </i>
               </p>
               <p>
                 <i>
-                  Last update <span className="fw-bold">{updatedAt}</span>
+                  Last updated <span className="fw-bold">{updatedAt}</span>
                 </i>
               </p>
             </div>

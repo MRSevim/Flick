@@ -9,10 +9,9 @@ const allowedTags = {
 //get an article
 const getArticle = async (req, res, next) => {
   try {
-    const article = await Article.findById(req.params.id).populate(
-      "user",
-      "id username"
-    );
+    const article = await Article.findById(req.params.id)
+      .populate("user", "id username")
+      .populate("likes", "user");
 
     if (!article) {
       res.status(404);
@@ -61,6 +60,7 @@ const getArticles = async (req, res, next) => {
       .sort({
         updatedAt: -1,
       })
+      .populate("likes", "user")
       .limit(LIMIT)
       .skip(startIndex);
 
@@ -256,7 +256,7 @@ const updateArticle = async (req, res, next) => {
     }
 
     const updatedArticle = await article.save();
-    console.log(updatedArticle);
+
     res.status(200).json({
       _id: updatedArticle._id,
       title: updatedArticle.title,
@@ -288,7 +288,7 @@ const deleteArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const deleted = await article.deleteOne();
+    await article.deleteOne();
 
     res.status(200).json({ id: article._id });
   } catch (error) {

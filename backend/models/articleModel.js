@@ -24,7 +24,9 @@ const likeSchema = new mongoose.Schema(
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // If you have user authentication
   },
-  { createdAt: true, updatedAt: false }
+  {
+    timestamps: { createdAt: true, updatedAt: false },
+  }
 );
 
 const Article = mongoose.model("Article", articleSchema);

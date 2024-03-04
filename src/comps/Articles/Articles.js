@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
-
 import { useUserContext } from "../Contexts/UserContext";
 import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
 import { Pagination } from "@mui/material";
+import classNames from "classnames";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
   const [localUser, setLocalUser] = useState(null);
   const [myArticles, setMyArticles] = useState(null);
-
   const [user] = useUserContext();
   let { id } = useParams();
   const navigate = useNavigate();
@@ -100,22 +99,20 @@ export const Articles = ({ isDraft }) => {
               <Link
                 onClick={setLoadingToTrue}
                 to={`/article/user/${id}/articles`}
-                className={
-                  !isDraft
-                    ? "active text-light link-underline link-underline-opacity-0 me-2 text-light"
-                    : "text-light link-underline link-underline-opacity-0 me-2 text-light"
-                }
+                className={classNames({
+                  "text-light link-underline link-underline-opacity-0 me-2": true,
+                  active: !isDraft,
+                })}
               >
                 Articles
               </Link>
               <Link
                 onClick={setLoadingToTrue}
                 to={`/article/user/${id}/drafts`}
-                className={
-                  isDraft
-                    ? "active text-light link-underline link-underline-opacity-0"
-                    : "text-light link-underline link-underline-opacity-0"
-                }
+                className={classNames({
+                  "text-light link-underline link-underline-opacity-0": true,
+                  active: isDraft,
+                })}
               >
                 Drafts
               </Link>

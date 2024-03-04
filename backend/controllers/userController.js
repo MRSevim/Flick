@@ -186,7 +186,7 @@ const deleteUser = async (req, res, next) => {
       throw new Error("Incorrect password");
     }
 
-    const deleted = await user.deleteOne();
+    await user.deleteOne();
 
     res.status(200).json({ id: user._id });
   } catch (error) {
