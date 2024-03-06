@@ -13,6 +13,7 @@ import { Articles } from "./comps/Articles/Articles.js";
 import { Edit } from "./comps/Articles/Edit.js";
 import { GlobalError } from "./comps/GlobalError.js";
 import { useUserContext } from "./comps/Contexts/UserContext.js";
+import { Search } from "./comps/Search.js";
 
 import {
   BrowserRouter as Router,
@@ -22,6 +23,7 @@ import {
 } from "react-router-dom";
 import { Article } from "./comps/Articles/Article.js";
 import { MyProfile } from "./comps/MyProfile.js";
+import { User } from "./comps/User.js";
 
 function App() {
   return (
@@ -68,6 +70,8 @@ function AppContent() {
           path="/article/user/:id/drafts"
           element={<Articles isDraft={true} />}
         />
+        <Route path="/search" element={<Search />} />
+        <Route path="/user/:username" element={<User />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/article/edit/:id" element={<Edit isDraft={false} />} />
         <Route path="/draft/edit/:id" element={<Edit isDraft={true} />} />

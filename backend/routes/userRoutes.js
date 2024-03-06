@@ -23,14 +23,14 @@ router.post("/register", signupUser);
 // logout route
 router.post("/logout", logoutUser);
 
-//get public user profile
-router.get("/:username", getPublicUser);
-
 //get, update and delete profile routes
 router
   .route("/profile")
   .get(requireAuth, getUserProfile)
   .put(requireAuth, updateUserProfile)
   .delete(requireAuth, deleteUser);
+
+//get public user profile
+router.get("/profile/:username", getPublicUser);
 
 module.exports = router;

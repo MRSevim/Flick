@@ -1,25 +1,24 @@
 import { useState } from "react";
-import userApi from "../../Utils/UserApiFunctions";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
+import searchApi from "../../Utils/SearchApiFunctions";
 
-export const useGetUser = () => {
-  const [isLoading, setIsLoading] = useState(true);
+export const useSearchAll = () => {
   const [, setGlobalError] = useGlobalErrorContext();
+  const [isLoading, setIsLoading] = useState(null);
 
-  const _getUser = async () => {
+  const searchAll = async (query) => {
+    setIsLoading(true);
     setGlobalError(null);
 
-    const response = await userApi.getProfile();
+    const response = await searchApi.searchAll(query);
     const json = await response.json();
 
     if (!response.ok) {
       setGlobalError(json.message);
     }
-    // update loading state
     setIsLoading(false);
-
     return json;
   };
 
-  return { _getUser, isLoading };
+  return { searchAll, isLoading };
 };

@@ -64,7 +64,6 @@ const logoutUser = (req, res) => {
 const getPublicUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.params.username });
-
     if (!user) {
       res.status(404);
       throw new Error("User is not found");

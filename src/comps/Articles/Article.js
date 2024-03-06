@@ -102,8 +102,8 @@ export const Article = ({ isDraft }) => {
             </div>
           </div>
         ) : article ? (
-          <div className="article col">
-            <h1 className="display-4">{article.title}</h1>
+          <div className="article col mt-2">
+            <h1 className="h1 article-title">{article.title}</h1>
             <div>
               {!isDraft && (
                 <button

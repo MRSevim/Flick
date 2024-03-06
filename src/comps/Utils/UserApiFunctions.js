@@ -32,6 +32,13 @@ const userApi = {
 
     return response;
   },
+  getPublicUser: async (param) => {
+    const response = await fetch("/user/profile/" + param, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    return response;
+  },
   update: async (username, email, password) => {
     const response = await fetch("/user/profile", {
       method: "PUT",

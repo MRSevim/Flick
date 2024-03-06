@@ -2,24 +2,25 @@ import { useState } from "react";
 import userApi from "../../Utils/UserApiFunctions";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 
-export const useGetUser = () => {
+export const useGetPublicUser = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [, setGlobalError] = useGlobalErrorContext();
 
-  const _getUser = async () => {
+  const getPublicUser = async (param) => {
     setGlobalError(null);
 
-    const response = await userApi.getProfile();
+    const response = await userApi.getPublicUser(param);
     const json = await response.json();
 
     if (!response.ok) {
       setGlobalError(json.message);
     }
+
     // update loading state
     setIsLoading(false);
 
     return json;
   };
 
-  return { _getUser, isLoading };
+  return { getPublicUser, isLoading };
 };

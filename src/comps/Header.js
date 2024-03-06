@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "./Contexts/UserContext";
 import { useLogout } from "./Hooks/UserHooks/UseLogout";
+import { SearchBar } from "./SearchBar";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -62,14 +63,7 @@ export const Header = () => {
                 </Link>
               </li>
             </ul>
-            <form className="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3">
-              <input
-                type="search"
-                className="form-control form-control-dark "
-                placeholder="Search..."
-                aria-label="Search"
-              ></input>
-            </form>
+            <SearchBar />
             {user ? (
               <div ref={wrapperRef} className="position-relative">
                 <div
