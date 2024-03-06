@@ -24,7 +24,7 @@ router.post("/register", signupUser);
 router.post("/logout", logoutUser);
 
 //get public user profile
-router.get("/profile/:username", getPublicUser);
+router.get("/:username", getPublicUser);
 
 //get, update and delete profile routes
 router

@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const articleRoutes = require("./routes/articleRoutes");
 const likeRoutes = require("./routes/likeRoutes");
+const searchRoutes = require("./routes/searchRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 
 const app = express();
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 app.use("/api/like", likeRoutes);
 app.use("/api/article", articleRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/search", searchRoutes);
 
 app.get("/", (req, res) => {
   res.send("APP IS RUNNING!");

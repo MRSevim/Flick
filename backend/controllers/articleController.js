@@ -58,7 +58,7 @@ const getArticles = async (req, res, next) => {
       isDraft: false,
     })
       .sort({
-        updatedAt: -1,
+        createdAt: -1,
       })
       .populate("likes", "user")
       .limit(LIMIT)
@@ -111,7 +111,7 @@ const getDrafts = async (req, res, next) => {
       isDraft: true,
     })
       .sort({
-        updatedAt: -1,
+        createdAt: -1,
       })
       .limit(LIMIT)
       .skip(startIndex);

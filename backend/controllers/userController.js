@@ -1,7 +1,9 @@
 const User = require("../models/userModel");
+const { Article } = require("../models/articleModel");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
 const generateToken = (res, userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -67,11 +69,31 @@ const getPublicUser = async (req, res, next) => {
       res.status(404);
       throw new Error("User is not found");
     }
+    const mostLikedArticles = await Article.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(user._id),
+          isDraft: false,
+        },
+      },
+      {
+        $addFields: {
+          likeCount: { $size: "$likes" },
+        },
+      },
+      {
+        $sort: { likeCount: -1, createdAt: -1 },
+      },
+      {
+        $limit: 10,
+      },
+    ]);
 
     res.status(200).json({
       _id: user._id,
       username: user.username,
       createdAt: user.createdAt,
+      mostLikedArticles,
     });
   } catch (error) {
     next(error);
