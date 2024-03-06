@@ -144,7 +144,7 @@ const updateUserProfile = async (req, res, next) => {
       if (username && !validator.matches(username, "^[a-zA-Z0-9_.-]*$")) {
         res.status(400);
         throw new Error(
-          "Username can only contain letters (both uppercase and lowercase), numbers, underscores (_), dots (.), and hyphens (-)"
+          "Username can only contain English letters (both uppercase and lowercase), numbers, underscores (_), dots (.), and hyphens (-)"
         );
       }
 
