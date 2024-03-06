@@ -48,6 +48,12 @@ userSchema.statics.signup = async function (res, username, email, password) {
     throw new Error("Username is already in use");
   }
 
+  if (!validator.matches(username, "^[a-zA-Z0-9_.-]*$")) {
+    res.status(400);
+    throw new Error(
+      "Username can only contain letters (both uppercase and lowercase), numbers, underscores (_), dots (.), and hyphens (-)"
+    );
+  }
   if (!validator.isStrongPassword(password)) {
     res.status(400);
     throw new Error("Password is not strong enough");
