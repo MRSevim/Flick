@@ -206,7 +206,10 @@ const like = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const article = await Article.findById(req.params.id);
+    const article = await Article.findById(req.params.id)
+      .populate("likes", "user")
+      .populate("user", "username");
+
     if (!article) {
       res.status(404);
       throw new Error("Article is not found");
@@ -239,7 +242,7 @@ const like = async (req, res, next) => {
         article: article._id,
         user: user._id,
       });
-      article.likes.push(like._id);
+      article.likes.push({ _id: like._id, user: user._id });
       message = "You liked the article";
     }
     const updatedArticle = await article.save();

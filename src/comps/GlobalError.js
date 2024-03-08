@@ -8,7 +8,7 @@ export const GlobalError = () => {
   return (
     globalError && (
       <Alert
-        className="position-absolute start-50 translate-middle global-error"
+        className="position-fixed start-50 translate-middle global-error"
         severity="error"
         onClose={() => {
           setGlobalError(null);

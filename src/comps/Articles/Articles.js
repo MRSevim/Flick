@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
 import { useUserContext } from "../Contexts/UserContext";
 import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
+import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
 import { Pagination } from "@mui/material";
 import classNames from "classnames";
 
@@ -16,6 +17,8 @@ export const Articles = ({ isDraft }) => {
   const { getArticles, isLoading, setIsLoading } = useGetArticles();
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
+  const { likeArticle: likeArticleCall, isLoading: likeLoading } =
+    useLikeArticle();
   const [totalPages, setTotalPages] = useState(null);
   const params = new URLSearchParams(useLocation().search);
   const page = params.get("page");
@@ -39,8 +42,19 @@ export const Articles = ({ isDraft }) => {
       navigate("/article/edit/" + id);
     }
   };
-  const likeArticle = (id) => {
-    console.log(id);
+  const likeArticle = async (id) => {
+    const { response, json } = await likeArticleCall(id);
+    if (response.ok) {
+      setArticles(
+        articles.map((article) => {
+          if (article._id === json.updatedArticle._id) {
+            return json.updatedArticle;
+          } else {
+            return article;
+          }
+        })
+      );
+    }
   };
 
   const handlePaginationChange = (event, value) => {
@@ -180,16 +194,31 @@ export const Articles = ({ isDraft }) => {
                       </button>
                     </div>
                   )}
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      likeArticle(article._id);
-                    }}
-                    className="btn btn-info position-absolute bottom-0 start-0 p-1 m-1"
-                  >
-                    <i className="bi bi-hand-thumbs-up"></i>{" "}
-                    <span>{article.likes.length}</span>
-                  </button>
+                  {!isDraft && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        likeArticle(article._id);
+                      }}
+                      disabled={likeLoading}
+                      className="btn btn-info position-absolute bottom-0 start-0 p-1 m-1"
+                    >
+                      <i
+                        className={classNames({
+                          bi: true,
+                          "bi-hand-thumbs-up": article.likes.every((like) => {
+                            return like.user !== user._id;
+                          }),
+                          "bi-hand-thumbs-up-fill": article.likes.some(
+                            (like) => {
+                              return like.user === user._id;
+                            }
+                          ),
+                        })}
+                      ></i>{" "}
+                      <span>{article.likes.length}</span>
+                    </button>
+                  )}
                   <h5 className="card-title">{article.title}</h5>
                   <div className="mb-4">
                     <p

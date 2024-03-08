@@ -4,6 +4,8 @@ import { ArticleSections } from "./ArticleSections";
 import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
 import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
 import { useUserContext } from "../Contexts/UserContext";
+import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
+import classNames from "classnames";
 
 export const Article = ({ isDraft }) => {
   const [user] = useUserContext();
@@ -18,6 +20,8 @@ export const Article = ({ isDraft }) => {
   const [myArticle, setMyArticle] = useState(null);
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
+  const { likeArticle: likeArticleCall, isLoading: likeLoading } =
+    useLikeArticle();
 
   const deleteArticle = async (_id) => {
     const response = await deleteArticleCall(_id);
@@ -35,8 +39,11 @@ export const Article = ({ isDraft }) => {
       navigate("/article/edit/" + id);
     }
   };
-  const likeArticle = (id) => {
-    console.log(id);
+  const likeArticle = async (id) => {
+    const { response, json } = await likeArticleCall(id);
+    if (response.ok) {
+      setArticle(json.updatedArticle);
+    }
   };
 
   useEffect(() => {
@@ -107,12 +114,23 @@ export const Article = ({ isDraft }) => {
             <div>
               {!isDraft && (
                 <button
+                  disabled={likeLoading}
                   onClick={() => {
                     likeArticle(article._id);
                   }}
                   className="btn btn-info me-1"
                 >
-                  <i className="bi bi-hand-thumbs-up"></i>{" "}
+                  <i
+                    className={classNames({
+                      bi: true,
+                      "bi-hand-thumbs-up": article.likes.every((like) => {
+                        return like.user !== user._id;
+                      }),
+                      "bi-hand-thumbs-up-fill": article.likes.some((like) => {
+                        return like.user === user._id;
+                      }),
+                    })}
+                  ></i>{" "}
                   <span className="text-light">{article.likes.length}</span>
                 </button>
               )}

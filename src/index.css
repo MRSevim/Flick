@@ -41,6 +41,11 @@ body {
 .active {
   font-weight: 700;
 }
+.line-right {
+  border-right: 2px solid black;
+  margin-right: 10px;
+  padding-right: 10px;
+}
 /*Create an Article */
 .article,
 .article * {
@@ -135,4 +140,13 @@ body {
 
 .search-card-text:hover::before {
   width: 100%;
+}
+/*Profile*/
+.profile-img {
+  width: 300px;
+}
+@media (min-width: 992px) {
+  .profile-img {
+    width: 100%;
+  }
 }

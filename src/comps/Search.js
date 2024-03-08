@@ -32,7 +32,7 @@ export const Search = () => {
         <>
           <h2>Users</h2>
           {users?.length ? (
-            <div className="mb-2 row g-3">
+            <div className="mb-4 row g-3">
               {users.map((user) => (
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
@@ -51,15 +51,21 @@ export const Search = () => {
               ))}
             </div>
           ) : (
-            "No users to display"
+            <div className="mb-4">No users to display</div>
           )}
           <h2>Articles</h2>
           {articles?.length ? (
-            <div className="mb-2 row g-3">
+            <div className="mb-4 row g-3">
               {articles.map((article) => (
                 <div key={article._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
                     <div className="card-body">
+                      <span className="line-right">
+                        <i className="bi bi-hand-thumbs-up"></i>
+                        {" " +
+                          article.likes.length +
+                          (article.likes.length > 1 ? " likes" : " like")}
+                      </span>
                       <Link
                         className="text-dark link-underline link-underline-opacity-0"
                         to={"/article/" + article._id}
@@ -74,7 +80,7 @@ export const Search = () => {
               ))}
             </div>
           ) : (
-            "No articles to display"
+            <div className="mb-4">No articles to display</div>
           )}
         </>
       )}

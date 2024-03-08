@@ -86,9 +86,7 @@ export const ArticleSections = ({ sections }) => {
     });
 
     setLoading(false);
-
-    document.querySelector("div.invis")?.classList?.remove("invis");
-  }, [setLoading, sections]);
+  }, [loading, setLoading, sections]);
 
   if (loading) {
     return (
@@ -106,12 +104,7 @@ export const ArticleSections = ({ sections }) => {
         sections.map((section) => (
           <div
             key={section.id}
-            className={
-              "header border-start border-end border-bottom border-dark " +
-              section.nodeName +
-              " id" +
-              section.id
-            }
+            className={"header " + section.nodeName + " id" + section.id}
           >
             <i
               onClick={toggleHeadersBelow}
