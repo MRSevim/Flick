@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useGetMostLiked } from "./Hooks/LikeHooks/UserGetMostLiked";
 
 export const MostLiked = () => {
-  const [time, setTime] = useState("Week");
+  const [time, setTime] = useState("week");
   const { getMostLiked, isLoading } = useGetMostLiked();
   const [articles, setArticles] = useState(null);
   useEffect(() => {
@@ -24,7 +24,7 @@ export const MostLiked = () => {
             <div
               className="border-bottom pointer"
               onClick={() => {
-                setTime("Week");
+                setTime("week");
               }}
             >
               Most Liked This Week
@@ -32,7 +32,7 @@ export const MostLiked = () => {
             <div
               className="border-bottom pointer"
               onClick={() => {
-                setTime("Month");
+                setTime("month");
               }}
             >
               Most Liked This Month
@@ -40,7 +40,7 @@ export const MostLiked = () => {
             <div
               className="border-bottom pointer"
               onClick={() => {
-                setTime("Year");
+                setTime("year");
               }}
             >
               Most Liked This Year

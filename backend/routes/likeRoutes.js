@@ -1,20 +1,11 @@
 const express = require("express");
 const requireAuth = require("../middlewares/authMiddleware");
-const {
-  like,
-  getWeekly,
-  getMonthly,
-  getYearly,
-} = require("../controllers/likeController");
+const { like, getMostLiked } = require("../controllers/likeController");
 
 const router = express.Router();
 
-//get most liked posts of the week route
-router.get("/getWeekly", getWeekly);
-//get most liked posts of the month route
-router.get("/getMonthly", getMonthly);
-//get most liked posts of the year route
-router.get("/getYearly", getYearly);
+//get most liked articles route
+router.get("/getMostLiked/:time", getMostLiked);
 
 router.use(requireAuth);
 

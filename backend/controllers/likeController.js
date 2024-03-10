@@ -2,148 +2,19 @@ const { Article, Like } = require("../models/articleModel");
 const User = require("../models/userModel");
 const { DateTime } = require("luxon");
 
-//get most liked posts of the week
-const getWeekly = async (req, res, next) => {
-  // Get the current date and time
+//get most liked posts
+const getMostLiked = async (req, res, next) => {
   const nowUtc = DateTime.utc();
-  const startOfWeekUtc = nowUtc.startOf("week");
+  const time = req.params.time;
+
+  const startOf = nowUtc.startOf(time);
 
   try {
     const articles = await Like.aggregate([
       {
         $match: {
           createdAt: {
-            $gte: startOfWeekUtc.toJSDate(),
-            $lte: nowUtc.toJSDate(),
-          },
-        },
-      },
-      {
-        $lookup: {
-          from: "articles",
-          localField: "article",
-          foreignField: "_id",
-          as: "article",
-        },
-      },
-      {
-        $unwind: "$article",
-      },
-      {
-        $sort: { createdAt: -1 }, // Sorting by like creation date
-      },
-      {
-        $group: {
-          _id: "$article._id",
-          title: { $first: "$article.title" },
-          content: { $first: "$article.content" },
-          isDraft: { $first: "$article.isDraft" },
-          user: { $first: "$article.user" },
-          likes: { $push: "$_id" },
-          createdAt: { $first: "$article.createdAt" },
-          updatedAt: { $first: "$article.updatedAt" },
-        },
-      },
-      {
-        $addFields: {
-          likeCount: { $size: "$likes" }, // Calculate the likeCount
-        },
-      },
-      {
-        $match: {
-          isDraft: false, // Exclude draft articles
-        },
-      },
-      {
-        $sort: { likeCount: -1, createdAt: -1 },
-      },
-      {
-        $limit: 10, // You can adjust the limit based on how many top articles you want
-      },
-    ]);
-    res.status(200).json(articles);
-  } catch (error) {
-    next(error);
-  }
-};
-
-//get most liked posts of the month
-const getMonthly = async (req, res, next) => {
-  // Get the current date and time
-  const nowUtc = DateTime.utc();
-  const startOfMonthUtc = nowUtc.startOf("month");
-
-  try {
-    const articles = await Like.aggregate([
-      {
-        $match: {
-          createdAt: {
-            $gte: startOfMonthUtc.toJSDate(),
-            $lte: nowUtc.toJSDate(),
-          },
-        },
-      },
-      {
-        $lookup: {
-          from: "articles",
-          localField: "article",
-          foreignField: "_id",
-          as: "article",
-        },
-      },
-      {
-        $unwind: "$article",
-      },
-      {
-        $sort: { createdAt: -1 }, // Sorting by like creation date
-      },
-      {
-        $group: {
-          _id: "$article._id",
-          title: { $first: "$article.title" },
-          content: { $first: "$article.content" },
-          isDraft: { $first: "$article.isDraft" },
-          user: { $first: "$article.user" },
-          likes: { $push: "$_id" },
-          createdAt: { $first: "$article.createdAt" },
-          updatedAt: { $first: "$article.updatedAt" },
-        },
-      },
-      {
-        $addFields: {
-          likeCount: { $size: "$likes" }, // Calculate the likeCount
-        },
-      },
-      {
-        $match: {
-          isDraft: false, // Exclude draft articles
-        },
-      },
-      {
-        $sort: { likeCount: -1, createdAt: -1 },
-      },
-      {
-        $limit: 10, // You can adjust the limit based on how many top articles you want
-      },
-    ]);
-    res.status(200).json(articles);
-  } catch (error) {
-    next(error);
-  }
-};
-
-//get most liked posts of the year
-const getYearly = async (req, res, next) => {
-  // Get the current date and time
-  const nowUtc = DateTime.utc();
-  const startOfYearUtc = nowUtc.startOf("year");
-
-  try {
-    const articles = await Like.aggregate([
-      {
-        $match: {
-          createdAt: {
-            $gte: startOfYearUtc.toJSDate(),
+            $gte: startOf.toJSDate(),
             $lte: nowUtc.toJSDate(),
           },
         },
@@ -255,7 +126,5 @@ const like = async (req, res, next) => {
 
 module.exports = {
   like,
-  getWeekly,
-  getMonthly,
-  getYearly,
+  getMostLiked,
 };
