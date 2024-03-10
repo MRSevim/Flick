@@ -99,28 +99,30 @@ export const ArticleSections = ({ sections }) => {
   }
 
   return (
-    <div className="">
+    <div>
       {sections && sections.length > 0 ? (
-        sections.map((section) => (
-          <div
-            key={section.id}
-            className={"header " + section.nodeName + " id" + section.id}
-          >
-            <i
-              onClick={toggleHeadersBelow}
-              className="fa-solid fa-chevron-down ps-1 pe-1 section-toggler pointer"
-            ></i>
-            <a
-              className="link-dark ps-1"
-              title={section.innerText}
-              href={"#" + section.id}
+        <div>
+          {sections.map((section) => (
+            <div
+              key={section.id}
+              className={"header " + section.nodeName + " id" + section.id}
             >
-              {section.nodeName.substring(1)}.
-              {section.innerText.substring(0, 15)}
-              ...
-            </a>
-          </div>
-        ))
+              <i
+                onClick={toggleHeadersBelow}
+                className="fa-solid fa-chevron-down ps-1 pe-1 section-toggler pointer"
+              ></i>
+              <a
+                className="link-dark ps-1"
+                title={section.innerText}
+                href={"#" + section.id}
+              >
+                {section.nodeName.substring(1)}.
+                {section.innerText.substring(0, 15)}
+                ...
+              </a>
+            </div>
+          ))}
+        </div>
       ) : sections && sections.length === 0 ? (
         <p>No sections in the article.</p>
       ) : (

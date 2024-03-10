@@ -207,11 +207,11 @@ export const Articles = ({ isDraft }) => {
                         className={classNames({
                           bi: true,
                           "bi-hand-thumbs-up": article.likes.every((like) => {
-                            return like.user !== user._id;
+                            return like.user !== user?._id;
                           }),
                           "bi-hand-thumbs-up-fill": article.likes.some(
                             (like) => {
-                              return like.user === user._id;
+                              return like.user === user?._id;
                             }
                           ),
                         })}

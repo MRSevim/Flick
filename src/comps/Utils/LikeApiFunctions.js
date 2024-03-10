@@ -7,5 +7,12 @@ const likeApi = {
 
     return response;
   },
+  getMostLiked: async (time) => {
+    const response = await fetch("/like/get" + time + "ly", {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    return response;
+  },
 };
 export default likeApi;

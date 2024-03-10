@@ -55,7 +55,7 @@ const getWeekly = async (req, res, next) => {
         },
       },
       {
-        $sort: { likeCount: -1 },
+        $sort: { likeCount: -1, createdAt: -1 },
       },
       {
         $limit: 10, // You can adjust the limit based on how many top articles you want
@@ -120,7 +120,7 @@ const getMonthly = async (req, res, next) => {
         },
       },
       {
-        $sort: { likeCount: -1 },
+        $sort: { likeCount: -1, createdAt: -1 },
       },
       {
         $limit: 10, // You can adjust the limit based on how many top articles you want
@@ -185,7 +185,7 @@ const getYearly = async (req, res, next) => {
         },
       },
       {
-        $sort: { likeCount: -1 },
+        $sort: { likeCount: -1, createdAt: -1 },
       },
       {
         $limit: 10, // You can adjust the limit based on how many top articles you want
@@ -220,7 +220,7 @@ const like = async (req, res, next) => {
       throw new Error("You cannot like drafts");
     }
 
-    if (user._id.equals(article.user)) {
+    if (user._id.equals(article.user._id)) {
       res.status(400);
       throw new Error("You cannot like your own articles");
     }

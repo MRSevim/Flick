@@ -46,6 +46,9 @@ body {
   margin-right: 10px;
   padding-right: 10px;
 }
+.line-right-white {
+  border-right: 2px solid white;
+}
 /*Create an Article */
 .article,
 .article * {
