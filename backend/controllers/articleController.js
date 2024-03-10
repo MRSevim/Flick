@@ -295,6 +295,43 @@ const deleteArticle = async (req, res, next) => {
     next(error);
   }
 };
+const deleteMany = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const { ids } = req.body;
+
+    const articles = await Article.find({ _id: { $in: ids } });
+    const allMatch = articles.every((article) => user._id.equals(article.user));
+    if (!ids) {
+      res.status(400);
+      throw new Error("Please send array of ids");
+    }
+    if (ids.length === 0) {
+      res.status(400);
+      throw new Error("Please select at least 1 article to delete");
+    }
+    if (articles.length === 0) {
+      res.status(404);
+      throw new Error("There is no matching article");
+    }
+    if (articles.length !== ids.length) {
+      res.status(404);
+      throw new Error("Some of the articles are already deleted");
+    }
+    if (!allMatch) {
+      res.status(404);
+      throw new Error("Some of those articles are not yours to delete");
+    }
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+    await Article.deleteMany({ _id: { $in: ids } });
+    res.status(200).json({ message: "Articles are successfully deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getArticle,
@@ -304,4 +341,5 @@ module.exports = {
   deleteArticle,
   getDraft,
   getDrafts,
+  deleteMany,
 };

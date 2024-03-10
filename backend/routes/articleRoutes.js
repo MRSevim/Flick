@@ -9,6 +9,7 @@ const {
   deleteArticle,
   getDraft,
   getDrafts,
+  deleteMany,
 } = require("../controllers/articleController");
 
 const requireAuth = require("../middlewares/authMiddleware");
@@ -20,6 +21,9 @@ router.get("/draft", requireAuth, getDrafts);
 
 //authenticated user get draft route
 router.get("/draft/:id", requireAuth, getDraft);
+
+//authenticated user delete many articles
+router.delete("/deleteMany", requireAuth, deleteMany);
 
 //get an article route
 router.get("/:id", getArticle);

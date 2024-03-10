@@ -49,6 +49,9 @@ body {
 .line-right-white {
   border-right: 2px solid white;
 }
+.hovered-link:hover {
+  text-decoration: underline;
+}
 /*Create an Article */
 .article,
 .article * {

@@ -25,6 +25,15 @@ const articleApi = {
 
     return response;
   },
+  deleteMany: async (ids) => {
+    const response = await fetch("/article/deleteMany", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+
+    return response;
+  },
   getArticle: async (id) => {
     const response = await fetch("/article/" + id, {
       headers: { "Content-Type": "application/json" },

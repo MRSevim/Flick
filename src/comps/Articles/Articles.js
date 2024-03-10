@@ -6,6 +6,8 @@ import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
 import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
 import { Pagination } from "@mui/material";
 import classNames from "classnames";
+import { ArticleItem } from "./ArticleItem";
+import { useDeleteMany } from "../Hooks/ArticleHooks/UseDeleteMany";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -19,12 +21,43 @@ export const Articles = ({ isDraft }) => {
     useDeleteArticle();
   const { likeArticle: likeArticleCall, isLoading: likeLoading } =
     useLikeArticle();
+  const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [totalPages, setTotalPages] = useState(null);
   const params = new URLSearchParams(useLocation().search);
   const page = params.get("page");
+  const [selected, setSelected] = useState([]);
+
+  function handleSelect(value, id) {
+    if (value) {
+      setSelected([...selected, id]);
+    } else {
+      setSelected(selected.filter((item) => item !== id));
+    }
+  }
+
+  function selectAll() {
+    if (selected.length !== articles.length) {
+      const ids = articles.map((article) => article._id);
+      setSelected(ids);
+    } else {
+      setSelected([]);
+    }
+  }
 
   const deleteArticle = async (_id) => {
     const response = await deleteArticleCall(_id);
+    if (response.ok) {
+      const { response, json } = await getArticles(id, page, isDraft);
+      if (response.ok) {
+        setTotalPages(json.totalPages);
+        setArticles(json.articles);
+        setLocalUser(json.user);
+      }
+    }
+  };
+
+  const deleteSelected = async (selected) => {
+    const response = await deleteMany(selected);
     if (response.ok) {
       const { response, json } = await getArticles(id, page, isDraft);
       if (response.ok) {
@@ -64,6 +97,16 @@ export const Articles = ({ isDraft }) => {
   const setLoadingToTrue = () => {
     setIsLoading(true);
   };
+
+  useEffect(() => {
+    if (totalPages && articles.length === 0) {
+      navigate({ search: "?page=" + totalPages });
+    }
+  }, [totalPages, articles, navigate]);
+
+  useEffect(() => {
+    setSelected([]);
+  }, [articles]);
 
   useEffect(() => {
     const get = async () => {
@@ -149,92 +192,56 @@ export const Articles = ({ isDraft }) => {
         {articles.length === 0 ? (
           <div>No {!isDraft ? "articles" : "drafts"} to show.</div>
         ) : (
-          <div className="d-flex justify-content-center">
-            <Pagination
-              page={Number(page)}
-              showFirstButton
-              showLastButton
-              count={totalPages}
-              shape="rounded"
-              onChange={handlePaginationChange}
-            />
+          <div>
+            <div className="d-flex justify-content-center">
+              <Pagination
+                page={Number(page)}
+                showFirstButton
+                showLastButton
+                count={totalPages}
+                shape="rounded"
+                onChange={handlePaginationChange}
+              />
+            </div>
+            {myArticles && (
+              <>
+                <input
+                  id="selectAll"
+                  type="checkbox"
+                  checked={selected.length === articles.length}
+                  onChange={() => {
+                    selectAll(selected.length === articles.length);
+                  }}
+                />{" "}
+                <label htmlFor="selectAll">Select all</label>
+                <button
+                  disabled={deleteManyLoading}
+                  onClick={(e) => {
+                    deleteSelected(selected);
+                  }}
+                  className="btn btn-danger ms-2"
+                >
+                  <i className="bi bi-trash-fill"></i> Delete Selected
+                </button>
+              </>
+            )}
           </div>
         )}
         {articles.map((article) => (
-          <div
+          <ArticleItem
+            updateValue={handleSelect}
+            value={selected.includes(article._id)}
+            likeLoading={likeLoading}
+            deleteLoading={deleteLoading}
+            user={user}
             key={article._id}
-            className="col col-12 col-md-6 col-lg-4 articles-column"
-          >
-            <Link
-              to={(!isDraft ? "/article/" : "/draft/") + article._id}
-              className="text-black text-decoration-none"
-            >
-              <div className="card h-100 article-card">
-                <div className="card-body">
-                  {myArticles && (
-                    <div>
-                      <button
-                        disabled={deleteLoading}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          deleteArticle(article._id);
-                        }}
-                        className="btn btn-danger position-absolute top-0 end-0 p-1 m-1"
-                      >
-                        <i className="bi bi-trash-fill"></i>
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          editArticle(article._id);
-                        }}
-                        className="btn btn-warning position-absolute bottom-0 end-0 p-1 m-1"
-                      >
-                        <i className="bi bi-pencil-fill"></i>
-                      </button>
-                    </div>
-                  )}
-                  {!isDraft && (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        likeArticle(article._id);
-                      }}
-                      disabled={likeLoading}
-                      className="btn btn-info position-absolute bottom-0 start-0 p-1 m-1"
-                    >
-                      <i
-                        className={classNames({
-                          bi: true,
-                          "bi-hand-thumbs-up": article.likes.every((like) => {
-                            return like.user !== user?._id;
-                          }),
-                          "bi-hand-thumbs-up-fill": article.likes.some(
-                            (like) => {
-                              return like.user === user?._id;
-                            }
-                          ),
-                        })}
-                      ></i>{" "}
-                      <span>{article.likes.length}</span>
-                    </button>
-                  )}
-                  <h5 className="card-title">{article.title}</h5>
-                  <div className="mb-4">
-                    <p
-                      className="card-text article-card-body"
-                      dangerouslySetInnerHTML={{
-                        __html: article.content.substring(0, 200),
-                      }}
-                    ></p>
-                    {article.content.trim().length >= 200 ? (
-                      <p>Read more...</p>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+            article={article}
+            isDraft={isDraft}
+            myArticles={myArticles}
+            editArticle={editArticle}
+            deleteArticle={deleteArticle}
+            likeArticle={likeArticle}
+          />
         ))}
       </div>
     </div>
