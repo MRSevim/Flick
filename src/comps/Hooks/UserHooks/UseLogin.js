@@ -8,11 +8,16 @@ export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [, setUser] = useUserContext();
 
-  const login = async (username, password) => {
+  const login = async (username, password, isGoogleLogin, googleCredential) => {
     setIsLoading(true);
     setError(null);
 
-    const response = await userApi.login(username, password);
+    const response = await userApi.login(
+      username,
+      password,
+      isGoogleLogin,
+      googleCredential
+    );
     const json = await response.json();
 
     if (!response.ok) {
@@ -20,21 +25,18 @@ export const useLogin = () => {
     }
     if (response.ok) {
       // save the user to local storage
-      ls.set(
-        "user",
-        JSON.stringify({ username: json.username, _id: json._id }),
-        {
-          ttl: 30 * 24 * 60 * 60, // 30 days,
-        }
-      );
+      console.log(json);
+      ls.set("user", JSON.stringify({ ...json }), {
+        ttl: 30 * 24 * 60 * 60, // 30 days,
+      });
 
       // update the user context
-      setUser({ username: json.username, _id: json._id });
+      setUser({ ...json });
     }
     // update loading state
     setIsLoading(false);
     return response;
   };
 
-  return { login, isLoading, error };
+  return { login, isLoading, error, setError };
 };

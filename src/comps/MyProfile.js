@@ -19,12 +19,11 @@ export const MyProfile = () => {
   const { update, isLoading, successMessage, error, setError } =
     useUpdateUser();
   const myModalRef = useRef(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user === undefined) {
-      myModalRef.current.hide();
+      myModalRef?.current?.hide();
       navigate("/");
       return;
     }
@@ -145,10 +144,14 @@ export const MyProfile = () => {
               </label>
             </div>
             <input
-              disabled={isLoading}
+              disabled={isLoading || user?.isGoogleLogin}
               className="btn btn-warning mt-3"
               type="submit"
-              value="Submit"
+              value={
+                user?.isGoogleLogin
+                  ? "You cannot update with google login"
+                  : "Submit"
+              }
             />
             {error && (
               <div className="text-center mt-3 wide-input alert alert-danger">

@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
+    isGoogleLogin: { type: Boolean, default: false, required: true },
   },
   { timestamps: true }
 );
@@ -84,6 +84,26 @@ userSchema.statics.login = async function (res, username, password) {
   }
 
   return user;
+};
+
+userSchema.statics.googleLogin = async function (res, name, email) {
+  const user = await this.findOne({ email });
+
+  if (user && !user.isGoogleLogin) {
+    res.status(400);
+    throw new Error(
+      "You already have an account with that email. Please log in with your username and password"
+    );
+  }
+
+  await this.findOneAndUpdate(
+    { email },
+    { username: name, isGoogleLogin: true },
+    { upsert: true }
+  );
+  const newUser = await this.findOne({ email });
+
+  return newUser;
 };
 
 // Encrypt password using bcrypt

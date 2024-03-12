@@ -1,6 +1,7 @@
 import { useUserContext } from "../../Contexts/UserContext";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import userApi from "../../Utils/UserApiFunctions";
+import { googleLogout } from "@react-oauth/google";
 
 export const useLogout = () => {
   const [, setGlobalError] = useGlobalErrorContext();
@@ -19,6 +20,8 @@ export const useLogout = () => {
     if (response.ok) {
       // remove from local storage
       localStorage.removeItem("user");
+
+      googleLogout();
 
       // update the user context
       setUser(undefined);

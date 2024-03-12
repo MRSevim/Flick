@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { useDeleteUser } from "./Hooks/UserHooks/UseDeleteUser";
+import { useUserContext } from "./Contexts/UserContext";
 
 export const DeleteModal = ({ children }) => {
   const [password, setPassword] = useState("");
+  const [user] = useUserContext();
   const { deleteUser, isLoading, error, successMessage } = useDeleteUser();
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
 
-    await deleteUser(password);
+    if (user.isGoogleLogin) {
+      await deleteUser(null);
+    } else {
+      await deleteUser(password);
+    }
   };
 
   return (
@@ -28,13 +34,16 @@ export const DeleteModal = ({ children }) => {
               }}
               className="form-control form-control-lg wide-input"
               type="password"
-              required
+              required={!user?.isGoogleLogin}
             />
           </label>
         </div>
+        <p className="my-2">
+          {user?.isGoogleLogin && "Leave the field empty and hit Delete"}
+        </p>
         <input
           disabled={isLoading}
-          className="btn btn-danger mt-3"
+          className="btn btn-danger"
           type="submit"
           value="Delete"
         />

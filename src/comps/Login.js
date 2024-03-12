@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useUserContext } from "./Contexts/UserContext";
 import { useLogin } from "./Hooks/UserHooks/UseLogin";
+import { GoogleLogin } from "@react-oauth/google";
 
 export const Login = ({ onHideModal, children }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user] = useUserContext();
-  const { login, error, isLoading } = useLogin();
+  const { login, error, setError, isLoading } = useLogin();
 
   const location = useLocation();
 
@@ -22,13 +23,16 @@ export const Login = ({ onHideModal, children }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await login(username, password);
+    const response = await login(username, password, false, null);
 
     if (response.ok) {
       if (onHideModal) {
         onHideModal();
       }
     }
+  };
+  const handleGoogleLogin = async (credential) => {
+    await login(null, null, true, credential);
   };
 
   return (
@@ -69,10 +73,20 @@ export const Login = ({ onHideModal, children }) => {
           </div>
           <input
             disabled={isLoading}
-            className="btn btn-warning mt-3"
+            className="btn btn-warning my-3"
             type="submit"
             value="Login"
           />
+          <div className="d-flex justify-content-center">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                handleGoogleLogin(credentialResponse.credential);
+              }}
+              onError={() => {
+                setError("Failed logging in with Google");
+              }}
+            />
+          </div>
           <p className="text-center mt-3">
             Don't have an account?
             <Link to={"/sign-up"}>

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const { OAuth2Client } = require("google-auth-library");
 
 const generateToken = (res, userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -19,17 +20,58 @@ const generateToken = (res, userId) => {
   return token;
 };
 
-// login a user
-const loginUser = async (req, res, next) => {
-  const { username, password } = req.body;
+/**
+ * @description Function to decode Google OAuth token
+ * @param token: string
+ * @returns ticket object
+ */
+const getDecodedOAuthJwtGoogle = async (token, next) => {
+  const CLIENT_ID_GOOGLE = process.env.GOOGLE_CLIENT_ID;
 
   try {
-    const user = await User.login(res, username, password);
+    const client = new OAuth2Client(CLIENT_ID_GOOGLE);
 
-    // create a token
-    const token = generateToken(res, user._id);
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID_GOOGLE,
+    });
 
-    res.status(201).json({ _id: user._id, username, token });
+    return ticket;
+  } catch (error) {
+    next(error);
+  }
+};
+
+// login a user
+const loginUser = async (req, res, next) => {
+  const { username, password, isGoogleLogin, googleCredential } = req.body;
+
+  try {
+    if (!isGoogleLogin) {
+      const user = await User.login(res, username, password);
+
+      // create a token
+      generateToken(res, user._id);
+
+      res.status(201).json({
+        _id: user._id,
+        username,
+        isGoogleLogin: user.isGoogleLogin,
+      });
+    } else {
+      const ticket = await getDecodedOAuthJwtGoogle(googleCredential, next);
+      const { name, email } = ticket.getPayload();
+      const user = await User.googleLogin(res, name, email);
+
+      // create a token
+      generateToken(res, user._id);
+
+      res.status(201).json({
+        _id: user._id,
+        username: name,
+        isGoogleLogin: user.isGoogleLogin,
+      });
+    }
   } catch (error) {
     next(error);
   }
@@ -45,7 +87,11 @@ const signupUser = async (req, res, next) => {
     // create a token
     const token = generateToken(res, user._id);
 
-    res.status(201).json({ _id: user._id, username, token });
+    res.status(201).json({
+      _id: user._id,
+      username,
+      isGoogleLogin: user.isGoogleLogin,
+    });
   } catch (error) {
     next(error);
   }
@@ -128,6 +174,13 @@ const updateUserProfile = async (req, res, next) => {
     const { username, email, password } = req.body;
 
     if (user) {
+      if (user.isGoogleLogin) {
+        res.status(400);
+        throw new Error(
+          "You cannot update values since you are logged in through Google"
+        );
+      }
+
       if (!username && !email && !password) {
         res.status(400);
         throw new Error("Please send something to update");
@@ -182,6 +235,7 @@ const updateUserProfile = async (req, res, next) => {
         _id: updatedUser._id,
         username: updatedUser.username,
         email: updatedUser.email,
+        isGoogleLogin: updatedUser.isGoogleLogin,
       });
     } else {
       res.status(404);
@@ -202,15 +256,18 @@ const deleteUser = async (req, res, next) => {
       res.status(404);
       throw new Error("User is not found");
     }
-    if (!password) {
-      res.status(400);
-      throw new Error("Please send a password");
-    }
-    const match = await bcrypt.compare(password, user.password);
 
-    if (!match) {
-      res.status(400);
-      throw new Error("Incorrect password");
+    if (!user.isGoogleLogin) {
+      if (!password) {
+        res.status(400);
+        throw new Error("Please send a password");
+      }
+      const match = await bcrypt.compare(password, user.password);
+
+      if (!match) {
+        res.status(400);
+        throw new Error("Incorrect password");
+      }
     }
 
     await user.deleteOne();

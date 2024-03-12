@@ -9,6 +9,7 @@ import { Home } from "./comps/Home.js";
 import { NotFound } from "./comps/NotFound.js";
 import { UserProvider } from "./comps/Contexts/UserContext.js";
 import { GlobalErrorProvider } from "./comps/Contexts/GlobalErrorContext.js";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Articles } from "./comps/Articles/Articles.js";
 import { Edit } from "./comps/Articles/Edit.js";
 import { GlobalError } from "./comps/GlobalError.js";
@@ -27,11 +28,13 @@ import { User } from "./comps/User.js";
 
 function App() {
   return (
-    <UserProvider>
-      <GlobalErrorProvider>
-        <AppContent />
-      </GlobalErrorProvider>
-    </UserProvider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+      <UserProvider>
+        <GlobalErrorProvider>
+          <AppContent />
+        </GlobalErrorProvider>
+      </UserProvider>
+    </GoogleOAuthProvider>
   );
 }
 
