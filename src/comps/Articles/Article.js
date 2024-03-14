@@ -5,7 +5,10 @@ import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
 import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
 import { useUserContext } from "../Contexts/UserContext";
 import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
-import classNames from "classnames";
+import { DeleteButton } from "./DeleteButton";
+import { EditButton } from "./EditButton";
+import { LikeButton } from "./LikeButton";
+import { CommentSection } from "./CommentSection";
 
 export const Article = ({ isDraft }) => {
   const [user] = useUserContext();
@@ -113,46 +116,30 @@ export const Article = ({ isDraft }) => {
             <h1 className="h1 article-title">{article.title}</h1>
             <div>
               {!isDraft && (
-                <button
-                  disabled={likeLoading}
+                <LikeButton
+                  classes="me-1"
+                  article={article}
                   onClick={() => {
                     likeArticle(article._id);
                   }}
-                  className="btn btn-info me-1"
-                >
-                  <i
-                    className={classNames({
-                      bi: true,
-                      "bi-hand-thumbs-up": article.likes.every((like) => {
-                        return like.user !== user?._id;
-                      }),
-                      "bi-hand-thumbs-up-fill": article.likes.some((like) => {
-                        return like.user === user?._id;
-                      }),
-                    })}
-                  ></i>{" "}
-                  <span className="text-light">{article.likes.length}</span>
-                </button>
+                  likeLoading={likeLoading}
+                />
               )}
               {myArticle && (
                 <>
-                  <button
-                    disabled={deleteLoading}
+                  <DeleteButton
+                    classes="me-1"
                     onClick={() => {
                       deleteArticle(article._id);
                     }}
-                    className="btn btn-danger me-1"
-                  >
-                    <i className="bi bi-trash-fill"></i>
-                  </button>
-                  <button
+                    deleteLoading={deleteLoading}
+                  />
+                  <EditButton
+                    classes="me-1"
                     onClick={() => {
                       editArticle(article._id);
                     }}
-                    className="btn btn-warning "
-                  >
-                    <i className="bi bi-pencil-fill"></i>
-                  </button>
+                  />
                 </>
               )}
             </div>
@@ -181,6 +168,7 @@ export const Article = ({ isDraft }) => {
                 </i>
               </p>
             </div>
+            <CommentSection article={article} />
           </div>
         ) : (
           <div className="article col"></div>

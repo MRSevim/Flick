@@ -296,6 +296,7 @@ const deleteArticle = async (req, res, next) => {
     next(error);
   }
 };
+
 const deleteMany = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -336,6 +337,50 @@ const deleteMany = async (req, res, next) => {
   }
 };
 
+const comment = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const article = await Article.findById(req.params.id);
+    const { content } = req.body;
+
+    if (!article) {
+      res.status(404);
+      throw new Error("Article is not found");
+    }
+
+    if (article.isDraft) {
+      res.status(400);
+      throw new Error("You cannot comment on draft articles");
+    }
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    if (!content) {
+      res.status(400);
+      throw new Error("Content can't be empty");
+    }
+
+    const sanitizedContent = sanitizeHtml(content);
+
+    if (!sanitizedContent) {
+      res.status(400);
+      throw new Error("Sanitized input can't be empty");
+    }
+    const comment = { user: user.username, content: sanitizedContent };
+
+    article.comments.push(comment);
+
+    const updatedArticle = await article.save();
+
+    res.status(200).json(updatedArticle);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getArticle,
   getArticles,
@@ -345,4 +390,5 @@ module.exports = {
   getDraft,
   getDrafts,
   deleteMany,
+  comment,
 };

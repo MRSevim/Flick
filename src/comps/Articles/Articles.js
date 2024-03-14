@@ -233,7 +233,6 @@ export const Articles = ({ isDraft }) => {
             value={selected.includes(article._id)}
             likeLoading={likeLoading}
             deleteLoading={deleteLoading}
-            user={user}
             key={article._id}
             article={article}
             isDraft={isDraft}

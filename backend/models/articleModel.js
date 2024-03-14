@@ -11,6 +11,13 @@ const articleSchema = new mongoose.Schema(
       required: true,
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
+    comments: [
+      {
+        user: { type: String },
+        content: { type: String, required: true },
+        created: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

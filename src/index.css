@@ -56,6 +56,12 @@ body {
 .article,
 .article * {
   font-family: "Lora", serif !important;
+}
+.article img {
+  max-width: 100%;
+  height: auto;
+}
+.article-body {
   color: black !important;
 }
 .tox .tox-statusbar__branding svg {

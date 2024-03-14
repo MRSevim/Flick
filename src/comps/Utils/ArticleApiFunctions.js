@@ -25,6 +25,15 @@ const articleApi = {
 
     return response;
   },
+  comment: async (content, id) => {
+    const response = await fetch("/article/comment/" + id, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content }),
+    });
+
+    return response;
+  },
   deleteMany: async (ids) => {
     const response = await fetch("/article/deleteMany", {
       method: "DELETE",

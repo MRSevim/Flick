@@ -59,6 +59,11 @@ export const User = () => {
           <div className="col col-12 col-lg-9 d-flex flex-column mt-4 align-items-center">
             <h2>These are their most liked articles...</h2>
             <div className="my-2">
+              {user.mostLikedArticles.length === 0 && (
+                <h3>
+                  <b>No articles to display :(</b>
+                </h3>
+              )}
               {user.mostLikedArticles.map((article) => (
                 <li key={article._id}>
                   <span className="line-right">

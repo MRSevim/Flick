@@ -1,11 +1,12 @@
 import React from "react";
-import classNames from "classnames";
 import { Link } from "react-router-dom";
+import { LikeButton } from "./LikeButton";
+import { EditButton } from "./EditButton";
+import { DeleteButton } from "./DeleteButton";
 
 export const ArticleItem = ({
   deleteLoading,
   likeLoading,
-  user,
   article,
   isDraft,
   myArticles,
@@ -24,7 +25,7 @@ export const ArticleItem = ({
       key={article._id}
       className="col col-12 col-md-6 col-lg-4 articles-column"
     >
-      <div className="card h-100 article-card">
+      <div className="card h-100 article-card shadow">
         <div className="card-body">
           {myArticles && (
             <div>
@@ -34,46 +35,30 @@ export const ArticleItem = ({
                 checked={value}
                 onChange={handleCheckboxChange}
               />
-              <button
-                disabled={deleteLoading}
+              <DeleteButton
+                classes="p-1 m-1 position-absolute top-0 end-0"
                 onClick={() => {
                   deleteArticle(article._id);
                 }}
-                className="btn btn-danger position-absolute top-0 end-0 p-1 m-1"
-              >
-                <i className="bi bi-trash-fill"></i>
-              </button>
-              <button
+                deleteLoading={deleteLoading}
+              />
+              <EditButton
+                classes="p-1 m-1 position-absolute bottom-0 end-0"
                 onClick={() => {
                   editArticle(article._id);
                 }}
-                className="btn btn-warning position-absolute bottom-0 end-0 p-1 m-1"
-              >
-                <i className="bi bi-pencil-fill"></i>
-              </button>
+              />
             </div>
           )}
           {!isDraft && (
-            <button
+            <LikeButton
+              classes="p-1 m-1 position-absolute bottom-0 start-0"
+              article={article}
               onClick={() => {
                 likeArticle(article._id);
               }}
-              disabled={likeLoading}
-              className="btn btn-info position-absolute bottom-0 start-0 p-1 m-1"
-            >
-              <i
-                className={classNames({
-                  bi: true,
-                  "bi-hand-thumbs-up": article.likes.every((like) => {
-                    return like.user !== user?._id;
-                  }),
-                  "bi-hand-thumbs-up-fill": article.likes.some((like) => {
-                    return like.user === user?._id;
-                  }),
-                })}
-              ></i>{" "}
-              <span>{article.likes.length}</span>
-            </button>
+              likeLoading={likeLoading}
+            />
           )}
           <h5 className="card-title" title={article.title}>
             {" "}
