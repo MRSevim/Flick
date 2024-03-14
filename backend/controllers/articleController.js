@@ -1,4 +1,4 @@
-const { Article } = require("../models/articleModel");
+const { Article, Like } = require("../models/articleModel");
 const User = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
 
@@ -289,6 +289,7 @@ const deleteArticle = async (req, res, next) => {
     }
 
     await article.deleteOne();
+    await Like.deleteMany({ article: article._id });
 
     res.status(200).json({ id: article._id });
   } catch (error) {
@@ -327,6 +328,8 @@ const deleteMany = async (req, res, next) => {
       throw new Error("User is not found");
     }
     await Article.deleteMany({ _id: { $in: ids } });
+    await Like.deleteMany({ article: { $in: ids } });
+
     res.status(200).json({ message: "Articles are successfully deleted" });
   } catch (error) {
     next(error);
