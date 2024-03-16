@@ -9,10 +9,12 @@ import { DeleteModal } from "./DeleteModal";
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
   const [initialEmail, setInitialEmail] = useState("");
+  const [initialImage, setInitialImage] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [image, setImage] = useState("");
   const [memberSince, setMemberSince] = useState("");
   const [user] = useUserContext();
   const { _getUser, isLoading: getLoading } = useGetUser();
@@ -32,8 +34,10 @@ export const MyProfile = () => {
       const userData = await _getUser();
       setInitialUsername(userData.username);
       setInitialEmail(userData.email);
+      setInitialImage(userData.image);
       setUsername(userData.username);
       setEmail(userData.email);
+      setImage(userData.image);
       const date = new Date(userData.createdAt);
       const formattedDate = date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -57,7 +61,7 @@ export const MyProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let apiUsername, apiEmail, apiPassword;
+    let apiUsername, apiEmail, apiPassword, apiImage;
     if (password && password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -70,7 +74,10 @@ export const MyProfile = () => {
     if (email !== initialEmail) {
       apiEmail = email;
     }
-    await update(apiUsername, apiEmail, apiPassword);
+    if (image !== initialImage) {
+      apiImage = image;
+    }
+    await update(apiUsername, apiEmail, apiPassword, apiImage);
   };
 
   const handleDeleteAccount = async () => {
@@ -86,90 +93,119 @@ export const MyProfile = () => {
           </div>
         </div>
       ) : (
-        <div className="container mt-5 d-flex flex-column align-items-center">
-          <form className="update-form" onSubmit={handleSubmit}>
-            <h2>Update Profile</h2>
-            <div className="form-group">
-              <label>
-                Username:
-                <input
-                  value={username}
-                  onChange={(e) => {
-                    setUsername(e.target.value);
-                  }}
-                  className="form-control form-control-lg wide-input"
-                  type="text"
-                  required
-                />
-              </label>
+        <div className="container mt-5">
+          <div className="row d-flex justify-content-center align-items-start">
+            <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
+              <img
+                src={image}
+                alt="profile-img-large"
+                className="profile-img"
+              />
+              <p className="mt-5 text-center">
+                You've been a member since {memberSince}
+              </p>
             </div>
-            <div className="form-group">
-              <label>
-                E-mail:
-                <input
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  className="form-control form-control-lg wide-input"
-                  type="email"
-                  required
-                />
-              </label>
-            </div>
-            <div className="form-group">
-              <label>
-                Password:
-                <input
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  className="form-control form-control-lg wide-input"
-                  type="password"
-                />
-              </label>
-            </div>
-            <div className="form-group">
-              <label>
-                Confirm Password:
-                <input
-                  value={confirmPassword}
-                  onChange={(e) => {
-                    setConfirmPassword(e.target.value);
-                  }}
-                  className="form-control form-control-lg wide-input"
-                  type="password"
-                />
-              </label>
-            </div>
-            <input
-              disabled={isLoading || user?.isGoogleLogin}
-              className="btn btn-warning mt-3"
-              type="submit"
-              value={
-                user?.isGoogleLogin
-                  ? "You cannot update with google login"
-                  : "Submit"
-              }
-            />
-            {error && (
-              <div className="text-center mt-3 wide-input alert alert-danger">
-                {error}
+            <form
+              className="update-form col col-12 col-lg-9 p-0 d-flex flex-column"
+              onSubmit={handleSubmit}
+            >
+              <h2>Update Profile</h2>
+              <div className="form-group">
+                <label>
+                  Username:
+                  <input
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                    className="form-control form-control-lg wide-input"
+                    type="text"
+                    required
+                  />
+                </label>
               </div>
-            )}
-            {successMessage && (
-              <div className="text-center mt-3 wide-input alert alert-success">
-                {successMessage}
+              <div className="form-group">
+                <label>
+                  E-mail:
+                  <input
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                    className="form-control form-control-lg wide-input"
+                    type="email"
+                    required
+                  />
+                </label>
               </div>
-            )}
-          </form>
-          <p className="wide-input mt-5 text-center">
-            You've been a member since {memberSince}
-          </p>
-          <button onClick={handleDeleteAccount} className="btn btn-danger">
-            Delete account
-          </button>
+              <div className="form-group">
+                {" "}
+                <label>
+                  Image URL:
+                  <input
+                    value={image}
+                    onChange={(e) => {
+                      setImage(e.target.value);
+                    }}
+                    className="form-control form-control-lg wide-input"
+                    type="url"
+                  />
+                </label>
+              </div>
+              <div className="form-group">
+                <label>
+                  Password:
+                  <input
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                    className="form-control form-control-lg wide-input"
+                    type="password"
+                  />
+                </label>
+              </div>
+              <div className="form-group">
+                <label>
+                  Confirm Password:
+                  <input
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                    }}
+                    className="form-control form-control-lg wide-input"
+                    type="password"
+                  />
+                </label>
+              </div>
+              <input
+                disabled={isLoading || user?.isGoogleLogin}
+                className="btn btn-warning mt-3"
+                type="submit"
+                value={
+                  user?.isGoogleLogin ? "Google Users can't update" : "Submit"
+                }
+              />
+              {error && (
+                <div className="text-center mt-3 wide-input alert alert-danger">
+                  {error}
+                </div>
+              )}
+              {successMessage && (
+                <div className="text-center mt-3 wide-input alert alert-success">
+                  {successMessage}
+                </div>
+              )}
+            </form>
+          </div>
+          <div className="d-flex justify-content-center">
+            <button
+              onClick={handleDeleteAccount}
+              className="btn btn-danger wide-input"
+            >
+              Delete account
+            </button>
+          </div>
         </div>
       )}
       <div className="modal fade" tabIndex="-1" id="deleteModal">

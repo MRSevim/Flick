@@ -60,8 +60,8 @@ const loginUser = async (req, res, next) => {
       });
     } else {
       const ticket = await getDecodedOAuthJwtGoogle(googleCredential, next);
-      const { name, email } = ticket.getPayload();
-      const user = await User.googleLogin(res, name, email);
+      const { picture, name, email } = ticket.getPayload();
+      const user = await User.googleLogin(res, name, email, picture);
 
       // create a token
       generateToken(res, user._id);
@@ -138,6 +138,7 @@ const getPublicUser = async (req, res, next) => {
       _id: user._id,
       username: user.username,
       createdAt: user.createdAt,
+      image: user.image,
       mostLikedArticles,
     });
   } catch (error) {
@@ -155,6 +156,7 @@ const getUserProfile = async (req, res, next) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        image: user.image,
         createdAt: user.createdAt,
       });
     } else {
@@ -171,7 +173,7 @@ const updateUserProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
 
-    const { username, email, password } = req.body;
+    const { username, email, password, image } = req.body;
 
     if (user) {
       if (user.isGoogleLogin) {
@@ -181,7 +183,7 @@ const updateUserProfile = async (req, res, next) => {
         );
       }
 
-      if (!username && !email && !password) {
+      if (!username && !email && !password && !image) {
         res.status(400);
         throw new Error("Please send something to update");
       }
@@ -221,9 +223,14 @@ const updateUserProfile = async (req, res, next) => {
           "Username can only contain English letters (both uppercase and lowercase), numbers, underscores (_), dots (.), and hyphens (-)"
         );
       }
+      if (image && !validator.isURL(image)) {
+        res.status(400);
+        throw new Error("Image Url is not valid");
+      }
 
       user.username = username || user.username;
       user.email = email || user.email;
+      user.image = image || user.image;
 
       if (password) {
         user.password = req.body.password;
@@ -235,6 +242,7 @@ const updateUserProfile = async (req, res, next) => {
         _id: updatedUser._id,
         username: updatedUser.username,
         email: updatedUser.email,
+        image: updatedUser.image,
         isGoogleLogin: updatedUser.isGoogleLogin,
       });
     } else {

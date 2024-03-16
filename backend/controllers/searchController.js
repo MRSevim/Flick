@@ -6,7 +6,9 @@ const getBySearch = async (req, res, next) => {
   const { search } = req.query;
   try {
     const param = new RegExp(search, "i");
-    const users = await User.find({ username: param }).select("-password");
+    const users = await User.find({ username: param }).select(
+      "-password -email"
+    );
 
     const articles = await Article.find({ title: param });
 

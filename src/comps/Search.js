@@ -37,6 +37,11 @@ export const Search = () => {
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
                     <div className="card-body">
+                      <img
+                        src={user.image}
+                        alt="profile-img-mini"
+                        className="profile-img-mini me-2"
+                      />
                       <Link
                         className="text-dark link-underline link-underline-opacity-0"
                         to={"/user/" + user.username}

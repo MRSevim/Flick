@@ -9,12 +9,12 @@ export const useUpdateUser = () => {
   const [, setUser] = useUserContext();
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const update = async (username, email, password) => {
+  const update = async (username, email, password, image) => {
     setSuccessMessage(null);
     setIsLoading(true);
     setError(null);
 
-    const response = await userApi.update(username, email, password);
+    const response = await userApi.update(username, email, password, image);
     const json = await response.json();
 
     if (!response.ok) {

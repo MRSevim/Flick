@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    image: {
+      type: String,
+      default:
+        "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+    },
     isGoogleLogin: { type: Boolean, default: false, required: true },
   },
   { timestamps: true }
@@ -86,25 +91,25 @@ userSchema.statics.login = async function (res, username, password) {
   return user;
 };
 
-userSchema.statics.googleLogin = async function (res, name, email) {
+userSchema.statics.googleLogin = async function (res, name, email, picture) {
   const user = await this.findOne({ email });
-  const username = await this.findOne({ username: name });
+  const user2 = await this.findOne({ username: name });
 
   if (user && !user.isGoogleLogin) {
     res.status(400);
     throw new Error("There is already an account with that email");
   }
 
-  if (username && !username.isGoogleLogin) {
+  if (user2 && !user2.isGoogleLogin) {
     res.status(400);
     throw new Error(
-      `There is already an account with username "${username.username}"`
+      `There is already an account with username "${user2.username}"`
     );
   }
 
   await this.findOneAndUpdate(
     { email },
-    { username: name, isGoogleLogin: true },
+    { username: name, isGoogleLogin: true, image: picture },
     { upsert: true }
   );
   const newUser = await this.findOne({ email });

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetPublicUser } from "./Hooks/UserHooks/UseGetPublicUser";
-import defaultUserImage from "./user-image.jpg";
 
 export const User = () => {
   const { username } = useParams();
@@ -26,7 +25,7 @@ export const User = () => {
   }, [username, setUser]);
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 h-100">
       {isLoading ? (
         <div className=" d-flex justify-content-center">
           <div className="lds-ring">
@@ -34,10 +33,14 @@ export const User = () => {
           </div>
         </div>
       ) : (
-        <div className="container mt-3 row">
+        <div className="row">
           <div className="col col-12 col-lg-3">
             <div className="d-flex justify-content-center">
-              <img src={defaultUserImage} alt="user" className="profile-img" />
+              <img
+                src={user?.image}
+                alt="profile-img-large"
+                className="profile-img"
+              />
             </div>
             <div className="text-center">
               <h1 className="fw-bold"> {user.username}</h1>
@@ -59,12 +62,12 @@ export const User = () => {
           <div className="col col-12 col-lg-9 d-flex flex-column mt-4 align-items-center">
             <h2>These are their most liked articles...</h2>
             <div className="my-2">
-              {user.mostLikedArticles.length === 0 && (
+              {user?.mostLikedArticles?.length === 0 && (
                 <h3>
                   <b>No articles to display :(</b>
                 </h3>
               )}
-              {user.mostLikedArticles.map((article) => (
+              {user?.mostLikedArticles?.map((article) => (
                 <li key={article._id}>
                   <span className="line-right">
                     <i className="bi bi-hand-thumbs-up"></i>
