@@ -10,6 +10,7 @@ const {
   updateUserProfile,
   deleteUser,
   getPublicUser,
+  followUser,
 } = require("../controllers/userController");
 
 const router = express.Router();

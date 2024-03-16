@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetPublicUser } from "./Hooks/UserHooks/UseGetPublicUser";
+import { useFollowUser } from "./Hooks/FollowHooks/UseFollowUser";
+import { useUserContext } from "./Contexts/UserContext";
 
 export const User = () => {
   const { username } = useParams();
   const { getPublicUser, isLoading } = useGetPublicUser();
+  const [globalUser] = useUserContext();
   const [user, setUser] = useState(null);
+  const [following, setFollowing] = useState(null);
   const [memberSince, setMemberSince] = useState(null);
+  const [followerNumber, setFollowerNumber] = useState(null);
+  const [followingNumber, setFollowingNumber] = useState(null);
+  const { followUser, isLoading: followLoading } = useFollowUser();
+
+  const handleFollow = async (id) => {
+    const { response, json } = await followUser(id);
+    if (response.ok) {
+      setFollowerNumber(json.followerNumber);
+      setFollowingNumber(json.followingNumber);
+      setFollowing(!following);
+    }
+  };
 
   useEffect(() => {
     const get = async () => {
       const json = await getPublicUser(username);
+      setFollowerNumber(json.followerNumber);
+      setFollowingNumber(json.followingNumber);
       setUser(json);
+      setFollowing(json?.followers?.includes(globalUser._id));
       const date = new Date(json.createdAt);
       const formattedDate = date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -53,9 +72,29 @@ export const User = () => {
                   className="text-dark link-underline link-underline-opacity-0"
                   to={"/article/user/" + user._id + "/articles?page=1"}
                 >
-                  {" "}
                   See all of their articles...
                 </Link>
+              </button>
+            </div>
+            {user._id !== globalUser._id && (
+              <div className="text-center">
+                <button
+                  disabled={followLoading}
+                  className="btn btn-warning mt-3"
+                  onClick={() => {
+                    handleFollow(user._id);
+                  }}
+                >
+                  {following ? "Unfollow" : "Follow"}
+                </button>
+              </div>
+            )}
+            <div className="mt-4 d-flex justify-content-center">
+              <button className="btn btn-dark me-3">
+                Followers({followerNumber})
+              </button>
+              <button className="btn btn-info">
+                Following({followingNumber})
               </button>
             </div>
           </div>

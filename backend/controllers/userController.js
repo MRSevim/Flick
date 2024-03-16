@@ -140,6 +140,9 @@ const getPublicUser = async (req, res, next) => {
       createdAt: user.createdAt,
       image: user.image,
       mostLikedArticles,
+      followerNumber: user.followers.length,
+      followingNumber: user.following.length,
+      followers: user.followers,
     });
   } catch (error) {
     next(error);
@@ -158,6 +161,8 @@ const getUserProfile = async (req, res, next) => {
         email: user.email,
         image: user.image,
         createdAt: user.createdAt,
+        followerNumber: user.followers.length,
+        followingNumber: user.following.length,
       });
     } else {
       res.status(404);

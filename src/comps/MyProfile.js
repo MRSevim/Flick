@@ -16,6 +16,8 @@ export const MyProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState("");
   const [memberSince, setMemberSince] = useState("");
+  const [followerNumber, setFollowerNumber] = useState(null);
+  const [followingNumber, setFollowingNumber] = useState(null);
   const [user] = useUserContext();
   const { _getUser, isLoading: getLoading } = useGetUser();
   const { update, isLoading, successMessage, error, setError } =
@@ -38,6 +40,8 @@ export const MyProfile = () => {
       setUsername(userData.username);
       setEmail(userData.email);
       setImage(userData.image);
+      setFollowerNumber(userData.followerNumber);
+      setFollowingNumber(userData.followingNumber);
       const date = new Date(userData.createdAt);
       const formattedDate = date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -104,6 +108,14 @@ export const MyProfile = () => {
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>
+              <div className="mt-4 d-flex justify-content-center">
+                <button className="btn btn-dark me-3">
+                  Followers({followerNumber})
+                </button>
+                <button className="btn btn-info">
+                  Following({followingNumber})
+                </button>
+              </div>
             </div>
             <form
               className="update-form col col-12 col-lg-9 p-0 d-flex flex-column"

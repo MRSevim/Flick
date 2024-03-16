@@ -22,6 +22,8 @@ const userSchema = new mongoose.Schema(
       default:
         "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
     },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     isGoogleLogin: { type: Boolean, default: false, required: true },
   },
   { timestamps: true }
