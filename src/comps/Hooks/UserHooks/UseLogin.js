@@ -25,7 +25,6 @@ export const useLogin = () => {
     }
     if (response.ok) {
       // save the user to local storage
-      console.log(json);
       ls.set("user", JSON.stringify({ ...json }), {
         ttl: 30 * 24 * 60 * 60, // 30 days,
       });

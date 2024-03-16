@@ -88,11 +88,17 @@ userSchema.statics.login = async function (res, username, password) {
 
 userSchema.statics.googleLogin = async function (res, name, email) {
   const user = await this.findOne({ email });
+  const username = await this.findOne({ username: name });
 
   if (user && !user.isGoogleLogin) {
     res.status(400);
+    throw new Error("There is already an account with that email");
+  }
+
+  if (username && !username.isGoogleLogin) {
+    res.status(400);
     throw new Error(
-      "You already have an account with that email. Please log in with your username and password"
+      `There is already an account with username "${username.username}"`
     );
   }
 
