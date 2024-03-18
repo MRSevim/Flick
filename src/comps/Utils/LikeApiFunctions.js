@@ -7,7 +7,7 @@ const likeApi = {
     return response;
   },
   getMostLiked: async (time) => {
-    const response = await fetch("/like/getMostLiked/" + time, {});
+    const response = await fetch("/like/getMostLiked/" + time);
 
     return response;
   },

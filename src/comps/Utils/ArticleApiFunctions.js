@@ -43,22 +43,22 @@ const articleApi = {
     return response;
   },
   getArticle: async (id) => {
-    const response = await fetch("/article/" + id, {});
+    const response = await fetch("/article/" + id);
 
     return response;
   },
   getArticles: async (id, page) => {
-    const response = await fetch("/article/user/" + id + "?page=" + page, {});
+    const response = await fetch("/article/user/" + id + "?page=" + page);
 
     return response;
   },
   getDraft: async (id) => {
-    const response = await fetch("/article/draft/" + id, {});
+    const response = await fetch("/article/draft/" + id);
 
     return response;
   },
   getDrafts: async (page) => {
-    const response = await fetch("/article/draft?page=" + page, {});
+    const response = await fetch("/article/draft?page=" + page);
 
     return response;
   },

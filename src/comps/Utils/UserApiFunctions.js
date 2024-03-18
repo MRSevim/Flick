@@ -30,12 +30,12 @@ const userApi = {
     return response;
   },
   getProfile: async () => {
-    const response = await fetch("/user/profile", {});
+    const response = await fetch("/user/profile");
 
     return response;
   },
   getPublicUser: async (param) => {
-    const response = await fetch("/user/profile/" + param, {});
+    const response = await fetch("/user/profile/" + param);
 
     return response;
   },
