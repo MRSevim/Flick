@@ -151,7 +151,6 @@ export const MyProfile = () => {
                 </label>
               </div>
               <div className="form-group">
-                {" "}
                 <label>
                   Image URL:
                   <input

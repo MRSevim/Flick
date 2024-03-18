@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useCommentArticle } from "../Hooks/ArticleHooks/UseCommentArticle";
-TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
 export const CommentSection = ({ article }) => {

@@ -2,15 +2,12 @@ const likeApi = {
   like: async (id) => {
     const response = await fetch("/like/" + id, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
     });
 
     return response;
   },
   getMostLiked: async (time) => {
-    const response = await fetch("/like/getMostLiked/" + time, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch("/like/getMostLiked/" + time, {});
 
     return response;
   },

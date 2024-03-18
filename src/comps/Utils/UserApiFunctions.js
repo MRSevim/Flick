@@ -25,22 +25,17 @@ const userApi = {
   logout: async () => {
     const response = await fetch("/user/logout", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
     });
 
     return response;
   },
   getProfile: async () => {
-    const response = await fetch("/user/profile", {
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch("/user/profile", {});
 
     return response;
   },
   getPublicUser: async (param) => {
-    const response = await fetch("/user/profile/" + param, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch("/user/profile/" + param, {});
 
     return response;
   },
