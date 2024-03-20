@@ -62,7 +62,7 @@ export const Article = ({ isDraft }) => {
     };
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, isDraft]);
 
   useEffect(() => {
     if (isDraft && myArticle === false) {

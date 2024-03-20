@@ -6,7 +6,7 @@ export const useGetUser = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [, setGlobalError] = useGlobalErrorContext();
 
-  const _getUser = async () => {
+  const getUser = async () => {
     setGlobalError(null);
 
     const response = await userApi.getProfile();
@@ -18,8 +18,8 @@ export const useGetUser = () => {
     // update loading state
     setIsLoading(false);
 
-    return json;
+    return { response, json };
   };
 
-  return { _getUser, isLoading };
+  return { getUser, isLoading };
 };

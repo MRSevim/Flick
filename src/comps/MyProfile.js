@@ -19,7 +19,7 @@ export const MyProfile = () => {
   const [followerNumber, setFollowerNumber] = useState(null);
   const [followingNumber, setFollowingNumber] = useState(null);
   const [user] = useUserContext();
-  const { _getUser, isLoading: getLoading } = useGetUser();
+  const { getUser, isLoading: getLoading } = useGetUser();
   const { update, isLoading, successMessage, error, setError } =
     useUpdateUser();
   const myModalRef = useRef(null);
@@ -32,25 +32,27 @@ export const MyProfile = () => {
       return;
     }
 
-    const getUser = async () => {
-      const userData = await _getUser();
-      setInitialUsername(userData.username);
-      setInitialEmail(userData.email);
-      setInitialImage(userData.image);
-      setUsername(userData.username);
-      setEmail(userData.email);
-      setImage(userData.image);
-      setFollowerNumber(userData.followerNumber);
-      setFollowingNumber(userData.followingNumber);
-      const date = new Date(userData.createdAt);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      setMemberSince(formattedDate);
+    const get = async () => {
+      const { response, json } = await getUser();
+      if (response.ok) {
+        setInitialUsername(json.username);
+        setInitialEmail(json.email);
+        setInitialImage(json.image);
+        setUsername(json.username);
+        setEmail(json.email);
+        setImage(json.image);
+        setFollowerNumber(json.followerNumber);
+        setFollowingNumber(json.followingNumber);
+        const date = new Date(json.createdAt);
+        const formattedDate = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        setMemberSince(formattedDate);
+      }
     };
-    getUser();
+    get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, user]);
 
@@ -100,11 +102,7 @@ export const MyProfile = () => {
         <div className="container mt-5">
           <div className="row d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-              <img
-                src={image}
-                alt="profile-img-large"
-                className="profile-img"
-              />
+              <img src={image} alt="profile large" className="profile-img" />
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>
