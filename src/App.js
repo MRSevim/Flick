@@ -15,6 +15,7 @@ import { Edit } from "./comps/Articles/Edit.js";
 import { GlobalError } from "./comps/GlobalError.js";
 import { useUserContext } from "./comps/Contexts/UserContext.js";
 import { Search } from "./comps/Search.js";
+import { Follows } from "./comps/Follows.js";
 
 import {
   BrowserRouter as Router,
@@ -74,6 +75,8 @@ function AppContent() {
           element={<Articles isDraft={true} />}
         />
         <Route path="/search" element={<Search />} />
+        <Route path="/followers/:id" element={<Follows type="followers" />} />
+        <Route path="/followings/:id" element={<Follows type="followings" />} />
         <Route path="/user/:username" element={<User />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/article/edit/:id" element={<Edit isDraft={false} />} />

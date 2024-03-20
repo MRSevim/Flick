@@ -4,7 +4,7 @@ const getFollowers = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate(
       "followers",
-      "username"
+      "username image"
     );
     if (!user) {
       res.status(404);
@@ -24,7 +24,7 @@ const getFollowing = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate(
       "following",
-      "username"
+      "username image"
     );
     if (!user) {
       res.status(404);
@@ -34,7 +34,7 @@ const getFollowing = async (req, res, next) => {
     res.status(200).json({
       username: user.username,
       _id: user._id,
-      following: user.following,
+      followings: user.following,
     });
   } catch (error) {
     next(error);

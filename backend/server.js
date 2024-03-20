@@ -6,6 +6,7 @@ const articleRoutes = require("./routes/articleRoutes");
 const likeRoutes = require("./routes/likeRoutes");
 const searchRoutes = require("./routes/searchRoutes");
 const followRoutes = require("./routes/followRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api/article", articleRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/follow", followRoutes);
+app.use("/api/comment", commentRoutes);
 
 app.get("/", (req, res) => {
   res.send("APP IS RUNNING!");

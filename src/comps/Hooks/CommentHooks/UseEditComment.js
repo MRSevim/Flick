@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
-import articleApi from "../../Utils/ArticleApiFunctions";
+import commentApi from "../../Utils/CommentApiFunctions";
 
-export const useCommentArticle = () => {
+export const useEditComment = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const commentArticle = async (content, id) => {
+  const editComment = async (content, articleId, commentId) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await articleApi.comment(content, id);
+    const response = await commentApi.edit(content, articleId, commentId);
     const json = await response.json();
 
     if (!response.ok) {
@@ -21,5 +21,5 @@ export const useCommentArticle = () => {
     return { response, json };
   };
 
-  return { commentArticle, isLoading };
+  return { editComment, isLoading };
 };

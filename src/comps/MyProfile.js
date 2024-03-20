@@ -5,6 +5,7 @@ import { useUpdateUser } from "./Hooks/UserHooks/UseUpdateUser";
 import { useGetUser } from "./Hooks/UserHooks/UseGetUser";
 import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
+import { FollowButtons } from "./FollowButtons";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -107,12 +108,11 @@ export const MyProfile = () => {
                 You've been a member since {memberSince}
               </p>
               <div className="mt-4 d-flex justify-content-center">
-                <button className="btn btn-dark me-3">
-                  Followers({followerNumber})
-                </button>
-                <button className="btn btn-info">
-                  Following({followingNumber})
-                </button>
+                <FollowButtons
+                  id={user._id}
+                  followerNumber={followerNumber}
+                  followingNumber={followingNumber}
+                />
               </div>
             </div>
             <form

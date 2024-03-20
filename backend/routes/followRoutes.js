@@ -11,7 +11,7 @@ const router = express.Router();
 //get all followers route
 router.get("/followers/:id", getFollowers);
 //get all following route
-router.get("/following/:id", getFollowing);
+router.get("/followings/:id", getFollowing);
 
 //follow route
 router.post("/:id", requireAuth, followUser);

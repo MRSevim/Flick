@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useGetPublicUser } from "./Hooks/UserHooks/UseGetPublicUser";
 import { useFollowUser } from "./Hooks/FollowHooks/UseFollowUser";
 import { useUserContext } from "./Contexts/UserContext";
+import { FollowButtons } from "./FollowButtons";
 
 export const User = () => {
   const { username } = useParams();
@@ -44,7 +45,7 @@ export const User = () => {
   }, [username, setUser]);
 
   return (
-    <div className="container mt-3 h-100">
+    <div className="container mt-3">
       {isLoading ? (
         <div className=" d-flex justify-content-center">
           <div className="lds-ring">
@@ -90,12 +91,11 @@ export const User = () => {
               </div>
             )}
             <div className="mt-4 d-flex justify-content-center">
-              <button className="btn btn-dark me-3">
-                Followers({followerNumber})
-              </button>
-              <button className="btn btn-info">
-                Following({followingNumber})
-              </button>
+              <FollowButtons
+                id={user._id}
+                followerNumber={followerNumber}
+                followingNumber={followingNumber}
+              />
             </div>
           </div>
           <div className="col col-12 col-lg-9 d-flex flex-column mt-4 align-items-center">
