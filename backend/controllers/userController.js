@@ -282,6 +282,10 @@ const deleteUser = async (req, res, next) => {
         throw new Error("Incorrect password");
       }
     }
+    await User.updateMany(
+      {},
+      { $pull: { followers: user._id, following: user._id } }
+    );
 
     await user.deleteOne();
 

@@ -103,13 +103,18 @@ export const MyProfile = () => {
         <div className="container mt-5">
           <div className="row d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-              <img src={image} alt="profile large" className="profile-img" />
+              <img
+                src={image}
+                alt="profile large"
+                className="profile-img"
+                referrerPolicy="no-referrer"
+              />
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>
               <div className="mt-4 d-flex justify-content-center">
                 <FollowButtons
-                  id={user._id}
+                  id={user?._id}
                   followerNumber={followerNumber}
                   followingNumber={followingNumber}
                 />

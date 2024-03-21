@@ -19,7 +19,7 @@ export const useGetPublicUser = () => {
     // update loading state
     setIsLoading(false);
 
-    return json;
+    return { response, json };
   };
 
   return { getPublicUser, isLoading };

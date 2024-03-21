@@ -91,7 +91,7 @@ const like = async (req, res, next) => {
       throw new Error("You cannot like drafts");
     }
 
-    if (user._id.equals(article.user._id)) {
+    if (user._id.equals(article?.user?._id)) {
       res.status(400);
       throw new Error("You cannot like your own articles");
     }

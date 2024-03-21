@@ -27,23 +27,29 @@ export const User = () => {
 
   useEffect(() => {
     const get = async () => {
-      const json = await getPublicUser(username);
-      setFollowerNumber(json.followerNumber);
-      setFollowingNumber(json.followingNumber);
-      setUser(json);
-      setFollowing(json?.followers?.includes(globalUser._id));
-      const date = new Date(json.createdAt);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      setMemberSince(formattedDate);
+      const { response, json } = await getPublicUser(username);
+      if (response.ok) {
+        setFollowerNumber(json.followerNumber);
+        setFollowingNumber(json.followingNumber);
+        setUser(json);
+        setFollowing(json?.followers?.includes(globalUser?._id));
+        const date = new Date(json.createdAt);
+        const formattedDate = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        setMemberSince(formattedDate);
+      }
     };
     get();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username, setUser]);
 
+  if (!user) {
+    return;
+  }
   return (
     <div className="container mt-3">
       {isLoading ? (
@@ -77,7 +83,7 @@ export const User = () => {
                 </Link>
               </button>
             </div>
-            {user._id !== globalUser._id && (
+            {globalUser && user._id !== globalUser?._id && (
               <div className="text-center">
                 <button
                   disabled={followLoading}

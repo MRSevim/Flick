@@ -62,6 +62,7 @@ body {
 .article,
 .article * {
   font-family: "Lora", serif !important;
+  word-wrap: break-word;
 }
 .article img {
   max-width: 100%;
@@ -131,7 +132,7 @@ body {
   background-image: linear-gradient(to right, #000, #000 50%, #000 50%);
   background-size: 200% 100%;
   background-position: -100%;
-  display: inline-block;
+  /* display: inline-block; */
   padding: 5px 0;
   position: relative;
   -webkit-background-clip: text;

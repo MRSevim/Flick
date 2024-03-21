@@ -72,7 +72,7 @@ export const Article = ({ isDraft }) => {
 
   useEffect(() => {
     if (article) {
-      if (article.user._id === user?._id) {
+      if (article.user?._id === user?._id) {
         setMyArticle(true);
       } else {
         setMyArticle(false);
@@ -112,8 +112,8 @@ export const Article = ({ isDraft }) => {
             </div>
           </div>
         ) : article ? (
-          <div className="article col mt-2">
-            <h1 className="h1 article-title">{article.title}</h1>
+          <div className="article col col-12 col-lg-8 mt-2">
+            <h1 className="article-title">{article.title}</h1>
             <div>
               {!isDraft && (
                 <LikeButton
@@ -154,7 +154,7 @@ export const Article = ({ isDraft }) => {
               <p>
                 <i>
                   Written by{" "}
-                  <span className="fw-bold">{article.user.username}</span>
+                  <span className="fw-bold">{article.user?.username}</span>
                 </i>
               </p>
               <p>

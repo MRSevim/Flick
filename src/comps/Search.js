@@ -36,7 +36,7 @@ export const Search = () => {
               {users.map((user) => (
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
-                    <div className="card-body">
+                    <div className="card-body d-flex align-items-center">
                       <img
                         src={user.image}
                         alt="profile-img-mini"

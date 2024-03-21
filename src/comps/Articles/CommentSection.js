@@ -72,7 +72,7 @@ export const CommentSection = ({ article }) => {
       <h2 className="mb-2">Comments</h2>
       <form onSubmit={submit}>
         <Editor
-          containerProps={{ style: { height: "175px", maxWidth: "100%" } }}
+          containerProps={{ style: { height: "175px" } }}
           value={comment}
           onChange={(e) => {
             setComment(e.target.value);
