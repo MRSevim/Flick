@@ -206,6 +206,19 @@ const createArticle = async (req, res, next) => {
       user: user._id,
     });
 
+    const notification = {
+      user: user._id,
+      action: "release",
+      target: article._id,
+    };
+
+    // Notify all followers
+    for (const followerId of user.followers) {
+      await User.findByIdAndUpdate(followerId, {
+        $push: { notifications: notification },
+      });
+    }
+
     res.status(201).json(article);
   } catch (error) {
     next(error);

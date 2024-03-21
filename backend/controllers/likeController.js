@@ -115,6 +115,16 @@ const like = async (req, res, next) => {
       });
       article.likes.push({ _id: like._id, user: user._id });
       message = "You liked the article";
+
+      const notification = {
+        user: user._id,
+        action: "like",
+        target: article._id,
+      };
+
+      const notifiedUser = await User.findById(article?.user?._id);
+      notifiedUser.notifications.push(notification);
+      await notifiedUser.save();
     }
     const updatedArticle = await article.save();
 

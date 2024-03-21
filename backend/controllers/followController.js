@@ -66,6 +66,12 @@ const followUser = async (req, res, next) => {
     if (!followedUser.followers.includes(user._id)) {
       message = "You followed " + followedUser.username;
       followedUser.followers.push(user._id);
+      const notification = {
+        user: user._id,
+        action: "follow",
+        target: null,
+      };
+      followedUser.notifications.push(notification);
       await followedUser.save();
 
       user.following.push(followedUser._id);

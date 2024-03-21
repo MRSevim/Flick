@@ -25,6 +25,18 @@ const userSchema = new mongoose.Schema(
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     isGoogleLogin: { type: Boolean, default: false, required: true },
+    notifications: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        action: { type: String, required: true },
+        target: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
+        created: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

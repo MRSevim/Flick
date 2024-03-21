@@ -42,6 +42,16 @@ const comment = async (req, res, next) => {
 
     article.comments.push(comment);
 
+    const notification = {
+      user: user._id,
+      action: "comment",
+      target: article._id,
+    };
+
+    const notifiedUser = await User.findById(article?.user?._id);
+    notifiedUser.notifications.push(notification);
+    await notifiedUser.save();
+
     await article.save();
 
     const updatedArticle = await Article.findById(req.params.id).populate({
