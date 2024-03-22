@@ -4,6 +4,7 @@ import "./Header.css";
 import { useUserContext } from "./Contexts/UserContext";
 import { useLogout } from "./Hooks/UserHooks/UseLogout";
 import { SearchBar } from "./SearchBar";
+import { Notifications } from "./Notifications";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -64,6 +65,7 @@ export const Header = () => {
               </li>
             </ul>
             <SearchBar />
+            <Notifications />
             {user ? (
               <div ref={wrapperRef} className="position-relative">
                 <div
