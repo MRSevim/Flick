@@ -23,7 +23,12 @@ const getNotifications = async (req, res, next) => {
       res.status(404);
       throw new Error("User is not found");
     }
-    res.status(200).json(user.notifications);
+
+    const sortedNotifications = user.notifications.sort(
+      (a, b) => new Date(b.created) - new Date(a.created)
+    );
+
+    res.status(200).json(sortedNotifications);
   } catch (error) {
     next(error);
   }
@@ -47,7 +52,28 @@ const clearNotifications = async (req, res, next) => {
   }
 };
 
+//mark as read
+const markAsRead = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+    user.notifications.forEach((notification) => {
+      notification.read = true;
+    });
+    await user.save();
+
+    res.status(200).json(user.notifications);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getNotifications,
   clearNotifications,
+  markAsRead,
 };
