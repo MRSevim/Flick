@@ -240,5 +240,6 @@ body {
 /*Notification*/
 .notifications-container {
   width: 350px;
+  max-height: 300px;
   left: calc(50% - 175px);
 }

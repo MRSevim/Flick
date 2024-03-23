@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-const { Article } = require("../models/articleModel");
+const { Article, Like } = require("../models/articleModel");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
@@ -285,6 +285,27 @@ const deleteUser = async (req, res, next) => {
     await User.updateMany(
       {},
       { $pull: { followers: user._id, following: user._id } }
+    );
+
+    await User.updateMany(
+      { "notifications.user": user._id }, // Find users with notifications by the user
+      { $pull: { notifications: { user: user._id } } } // Remove notifications made by the user
+    );
+
+    const userLikeIds = await Like.find({ user: user._id });
+
+    await Like.deleteMany({ user: user._id });
+
+    await Article.updateMany(
+      { likes: { $in: userLikeIds } }, // Find articles with likes by the user
+      { $pull: { likes: { $in: userLikeIds } } } // Remove the like IDs from the likes array
+    );
+
+    await Article.deleteMany({ user: user._id });
+
+    await Article.updateMany(
+      { "comments.user": user._id }, // Find articles with comments by the user
+      { $pull: { comments: { user: user._id } } } // Remove comments made by the user
     );
 
     await user.deleteOne();

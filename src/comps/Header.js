@@ -65,7 +65,7 @@ export const Header = () => {
               </li>
             </ul>
             <SearchBar />
-            <Notifications />
+            {user && <Notifications />}
             {user ? (
               <div ref={wrapperRef} className="position-relative">
                 <div

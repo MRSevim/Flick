@@ -10,7 +10,7 @@ const allowedTags = {
 const getArticle = async (req, res, next) => {
   try {
     const article = await Article.findById(req.params.id)
-      .populate("user", "id username")
+      .populate("user", "username")
       .populate("likes", "user")
       .populate({
         path: "comments",

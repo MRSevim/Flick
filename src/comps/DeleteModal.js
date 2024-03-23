@@ -41,6 +41,10 @@ export const DeleteModal = ({ children }) => {
         <p className="my-2">
           {user?.isGoogleLogin && "Leave the field empty and hit Delete"}
         </p>
+        <div className="text-center alert alert-danger">
+          Please note that all of your articles and comments are also going to
+          be deleted...
+        </div>
         <input
           disabled={isLoading}
           className="btn btn-danger"

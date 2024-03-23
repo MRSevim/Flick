@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGetNotifications } from "./Hooks/NotificationHooks/UseGetNotifications";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import { useClearNotifications } from "./Hooks/NotificationHooks/UseClearNotifications";
+import notificationApi from "./Utils/NotificationApiFunctions";
+
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
@@ -11,6 +14,16 @@ export const Notifications = () => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState(null);
   const { getNotifications, isLoading } = useGetNotifications();
+  const wrapperRef = useRef(null);
+  const { clearNotifications, isLoading: clearLoading } =
+    useClearNotifications();
+
+  const clear = async () => {
+    const response = await clearNotifications();
+    if (response.ok) {
+      setNotifications([]);
+    }
+  };
 
   useEffect(() => {
     const get = async () => {
@@ -23,12 +36,27 @@ export const Notifications = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="me-3 position-relative">
+    <div ref={wrapperRef} className="me-3 position-relative">
       <i
         className="bi bi-bell-fill h4 position-relative pointer"
         onClick={() => {
           setOpen((prev) => !prev);
+          notificationApi.markAsRead();
         }}
       >
         {isLoading && (
@@ -41,8 +69,8 @@ export const Notifications = () => {
         )}
         {notifications?.filter((notification) => {
           return !notification.read;
-        }).length && (
-          <div className="fs-6 bg-danger rounded-circle position-absolute top-0 start-100 translate-middle px-1">
+        }).length > 0 && (
+          <div className="fs-6 bg-danger rounded-circle position-absolute top-0 start-100 translate-middle px-1 fst-normal">
             {
               notifications.filter((notification) => {
                 return !notification.read;
@@ -52,21 +80,26 @@ export const Notifications = () => {
         )}
       </i>
       {open && (
-        <div className="position-absolute border border-dark bg-white text-dark notifications-container p-1">
-          {notifications.length &&
+        <div className="position-absolute border border-dark bg-white text-dark notifications-container overflow-auto p-1">
+          {notifications.length === 0 && (
+            <div className="d-flex justify-content-center fw-bold">
+              No notifications
+            </div>
+          )}
+          {notifications.length > 0 &&
             notifications?.map((notification) => {
               return (
                 <li
                   key={notification._id}
                   className={classNames({
                     "my-1 rounded": true,
-                    "bg-info": !notification.read,
+                    "bg-warning": !notification.read,
                   })}
                 >
                   User{" "}
                   {notification.user && (
                     <Link
-                      className="d-inline text-dark link-underline link-underline-opacity-0"
+                      className="d-inline text-dark link-underline link-underline-opacity-0 fw-bold"
                       to={"/user/" + notification.user.username}
                     >
                       {notification.user.username}
@@ -83,10 +116,10 @@ export const Notifications = () => {
                       <br />
                       <Link
                         title={notification.target.title}
-                        className="text-dark link-underline link-underline-opacity-0 ms-1"
+                        className="text-dark link-underline link-underline-opacity-0 ms-1 fw-bold"
                         to={"/article/" + notification.target._id}
                       >
-                        {notification.target.title.substring(0, 40)}
+                        {notification.target.title.substring(0, 30)}
                         {notification.target.title.length > 40 && "..."}
                       </Link>
                     </>
@@ -98,6 +131,18 @@ export const Notifications = () => {
                 </li>
               );
             })}
+          {notifications.length > 0 && (
+            <div className="d-flex justify-content-center">
+              <button
+                onClick={clear}
+                disabled={clearLoading}
+                className="btn btn-info"
+              >
+                {" "}
+                Clear Notifications
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
