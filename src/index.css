@@ -91,7 +91,7 @@ body {
   font-family: "Lora", serif;
   font-size: 16px !important;
 }
-/*loading animation*/
+/*loading animations*/
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -153,7 +153,7 @@ body {
 }
 
 .lds-ellipsis div:nth-child(1) {
-  left: 1px; /* Adjusted left position */
+  left: 4px; /* Adjusted left position */
   animation: lds-ellipsis1 0.6s infinite;
 }
 
@@ -168,7 +168,7 @@ body {
 }
 
 .lds-ellipsis div:nth-child(4) {
-  left: 11px; /* Adjusted left position */
+  left: 12px; /* Adjusted left position */
   animation: lds-ellipsis3 0.6s infinite;
 }
 

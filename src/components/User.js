@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useGetPublicUser } from "./Hooks/UserHooks/UseGetPublicUser";
-import { useFollowUser } from "./Hooks/FollowHooks/UseFollowUser";
-import { useUserContext } from "./Contexts/UserContext";
+import { useGetPublicUser } from "../Hooks/UserHooks/UseGetPublicUser";
+import { useFollowUser } from "../Hooks/FollowHooks/UseFollowUser";
+import { useUserContext } from "../Contexts/UserContext";
 import { FollowButtons } from "./FollowButtons";
 
 export const User = () => {

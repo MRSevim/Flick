@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useGetNotifications } from "./Hooks/NotificationHooks/UseGetNotifications";
+import { useGetNotifications } from "../Hooks/NotificationHooks/UseGetNotifications";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
-import { useClearNotifications } from "./Hooks/NotificationHooks/UseClearNotifications";
-import notificationApi from "./Utils/NotificationApiFunctions";
+import { useClearNotifications } from "../Hooks/NotificationHooks/UseClearNotifications";
+import notificationApi from "../Utils/NotificationApiFunctions";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -17,6 +17,12 @@ export const Notifications = () => {
   const wrapperRef = useRef(null);
   const { clearNotifications, isLoading: clearLoading } =
     useClearNotifications();
+
+  const getUnreadLength = (notifications) => {
+    return notifications?.filter((notification) => {
+      return !notification.read;
+    })?.length;
+  };
 
   const clear = async () => {
     const response = await clearNotifications();
@@ -67,26 +73,20 @@ export const Notifications = () => {
             <div></div>
           </div>
         )}
-        {notifications?.filter((notification) => {
-          return !notification.read;
-        }).length > 0 && (
+        {getUnreadLength(notifications) > 0 && (
           <div className="fs-6 bg-danger rounded-circle position-absolute top-0 start-100 translate-middle px-1 fst-normal">
-            {
-              notifications.filter((notification) => {
-                return !notification.read;
-              }).length
-            }
+            {getUnreadLength(notifications)}
           </div>
         )}
       </i>
       {open && (
         <div className="position-absolute border border-dark bg-white text-dark notifications-container overflow-auto p-1">
-          {notifications.length === 0 && (
+          {notifications?.length === 0 && (
             <div className="d-flex justify-content-center fw-bold">
               No notifications
             </div>
           )}
-          {notifications.length > 0 &&
+          {notifications?.length > 0 &&
             notifications?.map((notification) => {
               return (
                 <li
@@ -131,7 +131,7 @@ export const Notifications = () => {
                 </li>
               );
             })}
-          {notifications.length > 0 && (
+          {notifications?.length > 0 && (
             <div className="d-flex justify-content-center">
               <button
                 onClick={clear}

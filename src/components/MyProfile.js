@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "./Contexts/UserContext";
-import { useUpdateUser } from "./Hooks/UserHooks/UseUpdateUser";
-import { useGetUser } from "./Hooks/UserHooks/UseGetUser";
+import { useUserContext } from "../Contexts/UserContext";
+import { useUpdateUser } from "../Hooks/UserHooks/UseUpdateUser";
+import { useGetUser } from "../Hooks/UserHooks/UseGetUser";
 import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
 import { FollowButtons } from "./FollowButtons";

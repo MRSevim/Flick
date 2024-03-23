@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useGetFollows } from "./Hooks/FollowHooks/UseGetFollows";
+import { useGetFollows } from "../Hooks/FollowHooks/UseGetFollows";
 
 export const Follows = ({ type }) => {
   const [users, setUsers] = useState(null);

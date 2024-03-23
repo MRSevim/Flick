@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
 import { EditorComponent } from "../EditorComponent";
-import { useUserContext } from "../Contexts/UserContext";
+import { useUserContext } from "../../Contexts/UserContext";
 import { Login } from "../Login";
 import { Modal } from "bootstrap";
-import { useCreateArticle } from "../Hooks/ArticleHooks/UseCreateArticle";
+import { useCreateArticle } from "../../Hooks/ArticleHooks/UseCreateArticle";
 
 export const CreateAnArticle = () => {
   const localStorageContent = JSON.parse(

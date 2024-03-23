@@ -1,21 +1,20 @@
-import "./App.css";
-import { Footer } from "./comps/Footer.js";
-import { Header } from "./comps/Header.js";
-import { MostLiked } from "./comps/MostLiked.js";
-import { CreateAnArticle } from "./comps/Articles/CreateAnArticle.js";
-import { Login } from "./comps/Login.js";
-import { SignUp } from "./comps/SignUp.js";
-import { Home } from "./comps/Home.js";
-import { NotFound } from "./comps/NotFound.js";
-import { UserProvider } from "./comps/Contexts/UserContext.js";
-import { GlobalErrorProvider } from "./comps/Contexts/GlobalErrorContext.js";
+import { Footer } from "./components/Footer.js";
+import { Header } from "./components/Header.js";
+import { MostLiked } from "./components/MostLiked.js";
+import { CreateAnArticle } from "./components/Articles/CreateAnArticle.js";
+import { Login } from "./components/Login.js";
+import { SignUp } from "./components/SignUp.js";
+import { Home } from "./components/Home.js";
+import { NotFound } from "./components/NotFound.js";
+import { UserProvider } from "./Contexts/UserContext.js";
+import { GlobalErrorProvider } from "./Contexts/GlobalErrorContext.js";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Articles } from "./comps/Articles/Articles.js";
-import { Edit } from "./comps/Articles/Edit.js";
-import { GlobalError } from "./comps/GlobalError.js";
-import { useUserContext } from "./comps/Contexts/UserContext.js";
-import { Search } from "./comps/Search.js";
-import { Follows } from "./comps/Follows.js";
+import { Articles } from "./components/Articles/Articles.js";
+import { Edit } from "./components/Articles/Edit.js";
+import { GlobalError } from "./components/GlobalError.js";
+import { useUserContext } from "./Contexts/UserContext.js";
+import { Search } from "./components/Search.js";
+import { Follows } from "./components/Follows.js";
 
 import {
   BrowserRouter as Router,
@@ -23,9 +22,9 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { Article } from "./comps/Articles/Article.js";
-import { MyProfile } from "./comps/MyProfile.js";
-import { User } from "./comps/User.js";
+import { Article } from "./components/Articles/Article.js";
+import { MyProfile } from "./components/MyProfile.js";
+import { User } from "./components/User.js";
 
 function App() {
   return (

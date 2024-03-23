@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { useUserContext } from "./Contexts/UserContext";
-import { useLogin } from "./Hooks/UserHooks/UseLogin";
+import { useUserContext } from "../Contexts/UserContext";
+import { useLogin } from "../Hooks/UserHooks/UseLogin";
 import { GoogleLogin } from "@react-oauth/google";
 
 export const Login = ({ onHideModal, children }) => {

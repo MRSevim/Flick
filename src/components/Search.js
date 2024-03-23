@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSearchAll } from "./Hooks/SearchHooks/UseSearchAll";
+import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
 
 export const Search = () => {
   const params = new URLSearchParams(useLocation().search);

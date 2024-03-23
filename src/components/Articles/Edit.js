@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { EditorComponent } from "../EditorComponent";
-import { useEditArticle } from "../Hooks/ArticleHooks/UseEditArticle";
-import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
-import { useUserContext } from "../Contexts/UserContext";
+import { useEditArticle } from "../../Hooks/ArticleHooks/UseEditArticle";
+import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
+import { useUserContext } from "../../Contexts/UserContext";
 
 export const Edit = ({ isDraft }) => {
   const { id } = useParams();

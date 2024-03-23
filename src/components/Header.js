@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
-import { useUserContext } from "./Contexts/UserContext";
-import { useLogout } from "./Hooks/UserHooks/UseLogout";
+import { useUserContext } from "../Contexts/UserContext";
+import { useLogout } from "../Hooks/UserHooks/UseLogout";
 import { SearchBar } from "./SearchBar";
 import { Notifications } from "./Notifications";
 

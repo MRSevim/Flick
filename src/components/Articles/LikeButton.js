@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { useUserContext } from "../Contexts/UserContext";
+import { useUserContext } from "../../Contexts/UserContext";
 
 export const LikeButton = ({ article, onClick, likeLoading, classes }) => {
   const [user] = useUserContext();

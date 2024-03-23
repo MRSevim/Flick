@@ -3,13 +3,13 @@ import Editor from "react-simple-wysiwyg";
 import DOMPurify from "dompurify";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
-import { useCommentArticle } from "../Hooks/CommentHooks/UseCommentArticle";
+import { useCommentArticle } from "../../Hooks/CommentHooks/UseCommentArticle";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../Contexts/UserContext";
+import { useUserContext } from "../../Contexts/UserContext";
 import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
-import { useEditComment } from "../Hooks/CommentHooks/UseEditComment";
-import { useDeleteComment } from "../Hooks/CommentHooks/UseDeleteComment";
+import { useEditComment } from "../../Hooks/CommentHooks/UseEditComment";
+import { useDeleteComment } from "../../Hooks/CommentHooks/UseDeleteComment";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -94,6 +94,7 @@ export const CommentSection = ({ article }) => {
             src={comment.user.image}
             alt="profile-img-mini"
             className="profile-img-mini me-2"
+            referrerPolicy="no-referrer"
           />
           <Link
             className="text-dark link-underline link-underline-opacity-0"

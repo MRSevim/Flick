@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
-import { useGetArticles } from "../Hooks/ArticleHooks/UseGetArticles";
-import { useUserContext } from "../Contexts/UserContext";
-import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
-import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
+import { useGetArticles } from "../../Hooks/ArticleHooks/UseGetArticles";
+import { useUserContext } from "../../Contexts/UserContext";
+import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
+import { useLikeArticle } from "../../Hooks/LikeHooks/UseLikeArticle";
 import { Pagination } from "@mui/material";
 import classNames from "classnames";
 import { ArticleItem } from "./ArticleItem";
-import { useDeleteMany } from "../Hooks/ArticleHooks/UseDeleteMany";
+import { useDeleteMany } from "../../Hooks/ArticleHooks/UseDeleteMany";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);

@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArticleSections } from "./ArticleSections";
-import { useGetArticle } from "../Hooks/ArticleHooks/UseGetArticle";
-import { useDeleteArticle } from "../Hooks/ArticleHooks/UseDeleteArticle";
-import { useUserContext } from "../Contexts/UserContext";
-import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
+import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
+import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
+import { useUserContext } from "../../Contexts/UserContext";
+import { useLikeArticle } from "../../Hooks/LikeHooks/UseLikeArticle";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { LikeButton } from "./LikeButton";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetMostLiked } from "./Hooks/LikeHooks/UserGetMostLiked";
+import { useGetMostLiked } from "../Hooks/LikeHooks/UserGetMostLiked";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");

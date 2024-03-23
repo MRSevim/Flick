@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDeleteUser } from "./Hooks/UserHooks/UseDeleteUser";
-import { useUserContext } from "./Contexts/UserContext";
+import { useDeleteUser } from "../Hooks/UserHooks/UseDeleteUser";
+import { useUserContext } from "../Contexts/UserContext";
 
 export const DeleteModal = ({ children }) => {
   const [password, setPassword] = useState("");
