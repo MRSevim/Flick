@@ -19,10 +19,10 @@ export const MostLiked = () => {
   return (
     <div className="container my-4 ">
       <section className="row g-3">
-        <div className="col col-12 col-md-4 text-center">
-          <div className="bg-warning">
+        <div className="col col-12 text-center">
+          <div className=" d-flex justify-content-center">
             <div
-              className="border-bottom pointer"
+              className="bg-warning p-2 me-3 pointer"
               onClick={() => {
                 setTime("week");
               }}
@@ -30,7 +30,7 @@ export const MostLiked = () => {
               Most Liked This Week
             </div>
             <div
-              className="border-bottom pointer"
+              className="bg-warning p-2 me-3 pointer"
               onClick={() => {
                 setTime("month");
               }}
@@ -38,7 +38,7 @@ export const MostLiked = () => {
               Most Liked This Month
             </div>
             <div
-              className="border-bottom pointer"
+              className="bg-warning p-2 pointer"
               onClick={() => {
                 setTime("year");
               }}
@@ -47,7 +47,7 @@ export const MostLiked = () => {
             </div>
           </div>
         </div>
-        <div className="col col-12 col-md-8">
+        <div className="col col-12">
           {isLoading && (
             <div className="container mt-5 d-flex justify-content-center">
               <div className="lds-ring">
@@ -78,7 +78,11 @@ export const MostLiked = () => {
               ))}
             </div>
           )}
-          {!isLoading && articles?.length === 0 && "No articles to display"}
+          {!isLoading && articles?.length === 0 && (
+            <h2 className="d-flex justify-content-center">
+              <b>No articles to display</b>
+            </h2>
+          )}
         </div>
       </section>
     </div>

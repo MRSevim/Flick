@@ -109,7 +109,7 @@ export const User = () => {
             <div className="my-2">
               {user?.mostLikedArticles?.length === 0 && (
                 <h3>
-                  <b>No articles to display :(</b>
+                  <b>No articles to display </b>
                 </h3>
               )}
               {user?.mostLikedArticles?.map((article) => (
