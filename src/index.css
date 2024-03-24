@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
-/*
- font-family: "Lora", serif;
- font-family: "Raleway", sans-serif;
-*/
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+:root {
+  --font-primary: "Nunito", sans-serif;
+  --font-article: "Jost", sans-serif;
+}
 *,
 *::after,
 *::before {
@@ -23,7 +23,7 @@ html {
   position: relative;
 }
 body {
-  font-family: "Raleway", sans-serif;
+  font-family: var(--font-primary);
   font-optical-sizing: auto;
   min-height: 100vh;
   padding-bottom: 80px;
@@ -58,10 +58,21 @@ body {
   height: 50px;
   border-radius: 50%;
 }
+.btn-xl {
+  font-size: 35px;
+}
+/*Homepage*/
+.hero-image {
+  background-image: url("./Utils/images/textbook.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+  height: 400px;
+}
 /*Create an Article */
 .article,
 .article * {
-  font-family: "Lora", serif !important;
+  font-family: var(--font-article) !important;
   word-wrap: break-word;
 }
 .article img {
@@ -88,7 +99,7 @@ body {
 }
 .article-card-body,
 .article-card-body * {
-  font-family: "Lora", serif;
+  font-family: var(--font-article);
   font-size: 16px !important;
 }
 /*loading animations*/

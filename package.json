@@ -26,6 +26,7 @@
     "react-router-dom": "^6.21.2",
     "react-scripts": "5.0.1",
     "react-simple-wysiwyg": "^3.0.2",
+    "sass": "^1.72.0",
     "tinymce": "^6.8.3"
   },
   "scripts": {

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArticleSections } from "./ArticleSections";
 import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
 import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
@@ -156,7 +156,12 @@ export const Article = ({ isDraft }) => {
               <p>
                 <i>
                   Written by{" "}
-                  <span className="fw-bold">{article.user?.username}</span>
+                  <Link
+                    className="text-black link-underline link-underline-opacity-0"
+                    to={"/user/" + article.user?.username}
+                  >
+                    <span className="fw-bold">{article.user?.username}</span>
+                  </Link>
                 </i>
               </p>
               <p>
@@ -164,11 +169,13 @@ export const Article = ({ isDraft }) => {
                   Published <span className="fw-bold">{createdAt}</span>
                 </i>
               </p>
-              <p>
-                <i>
-                  Last updated <span className="fw-bold">{updatedAt}</span>
-                </i>
-              </p>
+              {createdAt !== updatedAt && (
+                <p>
+                  <i>
+                    Last updated <span className="fw-bold">{updatedAt}</span>
+                  </i>
+                </p>
+              )}
             </div>
             <CommentSection article={article} />
           </div>

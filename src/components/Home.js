@@ -1,27 +1,32 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   return (
-    <>
-      <div className="bg-dark">
-        <div className="container text-white mt-3 py-3">
-          <h2>
-            These are some of the things you will be able to do with the
-            website.
-          </h2>
-          <ul>
-            <li>Login and sign-up to an account</li>
-            <li>Create, edit, delete articles</li>
-            <li>Like each other's articles</li>
-            <li>
-              Follow each other and get notified when someone posts and likes
-              your articles
-            </li>
-            <li>See most liked articles</li>
-            <li>Search users and articles</li>
-          </ul>
+    <div className="bg-dark">
+      <div className="container mt-5 py-4">
+        <div className="row text-white align-items-center">
+          <div className="col col-12 col-lg-6 hero-image">
+            <div className="d-flex justify-content-center align-items-center h-100">
+              <Link to={"/create-an-article"}>
+                <button className="btn btn-primary btn-xl ms-5">
+                  Start Your Journey
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="col col-12 col-lg-6 d-flex justify-content-center h5">
+            <ul className="lh-base list-unstyled">
+              <li>Create, edit and delete articles</li>
+              <li>Like articles</li>
+              <li>Follow each other</li>
+              <li>Comment on articles</li>
+              <li>Get notified on actions</li>
+              <li>See most liked articles</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

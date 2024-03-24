@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
+import classNames from "classnames";
 import { useUserContext } from "../Contexts/UserContext";
 import { useLogout } from "../Hooks/UserHooks/UseLogout";
 import { SearchBar } from "./SearchBar";
@@ -8,6 +9,7 @@ import { Notifications } from "./Notifications";
 
 export const Header = () => {
   const [user] = useUserContext();
+  const location = useLocation();
   const [userMenu, setUserMenu] = useState(false);
   const [myId, setMyId] = useState("");
   const { logout } = useLogout();
@@ -36,6 +38,13 @@ export const Header = () => {
     setUserMenu(false);
   };
 
+  const setActiveClassNames = (type) => {
+    return classNames({
+      "nav-link px-2 text-white": true,
+      active: location.pathname === type,
+    });
+  };
+
   return (
     <>
       <header className="text-bg-dark p-3">
@@ -46,19 +55,22 @@ export const Header = () => {
             </h1>
             <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li className="nav-item">
-                <Link to="/" className="nav-link px-2 text-white">
+                <Link to="/" className={setActiveClassNames("/")}>
                   Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/most-liked" className="nav-link px-2 text-white">
+                <Link
+                  to="/most-liked"
+                  className={setActiveClassNames("/most-liked")}
+                >
                   Most liked
                 </Link>
               </li>
               <li className="nav-item">
                 <Link
                   to="/create-an-article"
-                  className="nav-link px-2 text-white"
+                  className={setActiveClassNames("/create-an-article")}
                 >
                   Create an Article
                 </Link>
