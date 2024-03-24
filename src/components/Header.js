@@ -80,8 +80,8 @@ export const Header = () => {
                   <i
                     className={
                       userMenu
-                        ? "fa-solid fa-chevron-down user-menu-toggler open"
-                        : "fa-solid fa-chevron-down user-menu-toggler"
+                        ? "bi bi-chevron-down user-menu-toggler open"
+                        : "bi bi-chevron-down user-menu-toggler"
                     }
                   ></i>
                 </div>

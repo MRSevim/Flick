@@ -100,16 +100,18 @@ export const ArticleSections = ({ sections }) => {
 
   return (
     <div>
-      {sections && sections.length > 0 ? (
+      {sections?.length > 0 ? (
         <div>
           {sections.map((section) => (
             <div
               key={section.id}
-              className={"header " + section.nodeName + " id" + section.id}
+              className={
+                "header d-flex " + section.nodeName + " id" + section.id
+              }
             >
               <i
                 onClick={toggleHeadersBelow}
-                className="fa-solid fa-chevron-down ps-1 pe-1 section-toggler pointer"
+                className="bi bi-chevron-down ps-1 pe-1 section-toggler pointer"
               ></i>
               <a
                 className="link-dark ps-1"
@@ -123,7 +125,7 @@ export const ArticleSections = ({ sections }) => {
             </div>
           ))}
         </div>
-      ) : sections && sections.length === 0 ? (
+      ) : sections?.length === 0 ? (
         <p>No sections in the article.</p>
       ) : (
         <div></div>

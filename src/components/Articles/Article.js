@@ -99,10 +99,12 @@ export const Article = ({ isDraft }) => {
   return (
     <div className="container mt-3">
       <div className="row justify-content-center">
-        <div className="col col-12 col-lg-2">
-          <h3 className="">Sections</h3>
-          <ArticleSections sections={sections} />
-        </div>
+        {article && (
+          <div className="col col-12 col-lg-2">
+            <h3 className="">Sections</h3>
+            <ArticleSections sections={sections} />
+          </div>
+        )}
         {isLoading ? (
           <div className="article col">
             <div className="container mt-5 d-flex justify-content-center">
@@ -173,9 +175,11 @@ export const Article = ({ isDraft }) => {
         ) : (
           <div className="article col"></div>
         )}
-        <div className="col col-12 col-lg-2 border border-dark">
-          <h3 className="">Extra Space</h3>
-        </div>
+        {article && (
+          <div className="col col-12 col-lg-2 border border-dark">
+            <h3 className="">Extra Space</h3>
+          </div>
+        )}
       </div>
     </div>
   );
