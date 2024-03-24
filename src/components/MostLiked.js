@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetMostLiked } from "../Hooks/LikeHooks/UserGetMostLiked";
+import classNames from "classnames";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");
@@ -22,7 +23,10 @@ export const MostLiked = () => {
         <div className="col col-12 text-center">
           <div className=" d-flex justify-content-center">
             <div
-              className="bg-warning p-2 me-3 pointer"
+              className={classNames({
+                "bg-warning p-2 me-3 pointer": true,
+                active: time === "week",
+              })}
               onClick={() => {
                 setTime("week");
               }}
@@ -30,7 +34,10 @@ export const MostLiked = () => {
               Most Liked This Week
             </div>
             <div
-              className="bg-warning p-2 me-3 pointer"
+              className={classNames({
+                "bg-warning p-2 me-3 pointer": true,
+                active: time === "month",
+              })}
               onClick={() => {
                 setTime("month");
               }}
@@ -38,7 +45,10 @@ export const MostLiked = () => {
               Most Liked This Month
             </div>
             <div
-              className="bg-warning p-2 pointer"
+              className={classNames({
+                "bg-warning p-2 pointer": true,
+                active: time === "year",
+              })}
               onClick={() => {
                 setTime("year");
               }}
