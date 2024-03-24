@@ -108,9 +108,15 @@ export const User = () => {
             <h2>These are their most liked articles...</h2>
             <div className="my-2">
               {user?.mostLikedArticles?.length === 0 && (
-                <h3>
-                  <b>No articles to display </b>
-                </h3>
+                <div className="text-center">
+                  <h3>
+                    <i className="bi bi-emoji-frown h1 me-2"></i>
+                    <b>No articles to display.</b>
+                  </h3>
+                  <h4>
+                    Follow them so you get notified when they post articles.
+                  </h4>
+                </div>
               )}
               {user?.mostLikedArticles?.map((article) => (
                 <li key={article._id}>

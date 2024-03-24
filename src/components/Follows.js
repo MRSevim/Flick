@@ -62,7 +62,10 @@ export const Follows = ({ type }) => {
               ))}
             </div>
           ) : (
-            <div className="mb-4">No users to display</div>
+            <h2 className="mb-4">
+              {" "}
+              <i className="bi bi-emoji-frown h1 me-2"></i>No users to display
+            </h2>
           )}
         </div>
       )}

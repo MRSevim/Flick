@@ -190,7 +190,12 @@ export const Articles = ({ isDraft }) => {
       )}
       <div className="row g-3">
         {articles.length === 0 ? (
-          <div>No {!isDraft ? "articles" : "drafts"} to show.</div>
+          <h2 className="text-center">
+            No {!isDraft ? "articles" : "drafts"} to display. Create one{" "}
+            <Link to={"/create-an-article"}>
+              <button className="btn btn-warning btn-lg">here</button>
+            </Link>
+          </h2>
         ) : (
           <div>
             <div className="d-flex justify-content-center">

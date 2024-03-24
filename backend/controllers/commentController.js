@@ -48,9 +48,12 @@ const comment = async (req, res, next) => {
       target: article._id,
     };
 
-    const notifiedUser = await User.findById(article?.user?._id);
-    notifiedUser.notifications.push(notification);
-    await notifiedUser.save();
+    //do no notify if you commented on your own article
+    if (!user._id.equals(article.user._id)) {
+      const notifiedUser = await User.findById(article?.user?._id);
+      notifiedUser.notifications.push(notification);
+      await notifiedUser.save();
+    }
 
     await article.save();
 
