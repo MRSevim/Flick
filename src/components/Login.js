@@ -3,15 +3,14 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useLogin } from "../Hooks/UserHooks/UseLogin";
 import { GoogleLogin } from "@react-oauth/google";
+import classNames from "classnames";
 
-export const Login = ({ onHideModal, children }) => {
+export const Login = ({ onHideModal, children, type }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user] = useUserContext();
   const { login, error, setError, isLoading } = useLogin();
-
   const location = useLocation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,9 +36,12 @@ export const Login = ({ onHideModal, children }) => {
 
   return (
     <>
-      <div className="container d-flex justify-content-center">
+      <div className="d-flex justify-content-center">
         <form
-          className="bg-dark text-white p-4 border border-3 rounded"
+          className={classNames({
+            "bg-dark text-white p-5": true,
+            "border border-3 rounded": type !== "modal",
+          })}
           onSubmit={handleSubmit}
         >
           {children}

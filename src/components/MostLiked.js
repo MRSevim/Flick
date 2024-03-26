@@ -24,7 +24,7 @@ export const MostLiked = () => {
           <div className=" d-flex justify-content-center">
             <div
               className={classNames({
-                "bg-warning p-2 me-3 pointer": true,
+                "bg-secondary text-white p-2 me-3 pointer": true,
                 active: time === "week",
               })}
               onClick={() => {
@@ -35,7 +35,7 @@ export const MostLiked = () => {
             </div>
             <div
               className={classNames({
-                "bg-warning p-2 me-3 pointer": true,
+                "bg-secondary text-white p-2 me-3 pointer": true,
                 active: time === "month",
               })}
               onClick={() => {
@@ -46,7 +46,7 @@ export const MostLiked = () => {
             </div>
             <div
               className={classNames({
-                "bg-warning p-2 pointer": true,
+                "bg-secondary text-white p-2 pointer": true,
                 active: time === "year",
               })}
               onClick={() => {

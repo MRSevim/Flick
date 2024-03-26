@@ -224,7 +224,7 @@ export const MyProfile = () => {
       )}
       <div className="modal fade" tabIndex="-1" id="deleteModal">
         <div className="modal-dialog d-flex justify-content-center">
-          <div className="modal-content mt-5" style={{ width: "354px" }}>
+          <div className="modal-content mt-5 bg-dark border border-3 rounded">
             <DeleteModal>
               <button
                 type="button"

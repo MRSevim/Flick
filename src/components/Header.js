@@ -40,18 +40,18 @@ export const Header = () => {
 
   const setActiveClassNames = (type) => {
     return classNames({
-      "nav-link px-2 text-white": true,
+      "nav-link px-2 text-info": true,
       active: location.pathname === type,
     });
   };
 
   return (
     <>
-      <header className="text-bg-dark p-3">
+      <header className="bg-primary text-info p-3">
         <div className="container">
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <h1 className="d-flex align-items-center pe-lg-3 mb-2 mb-lg-0 ">
-              Flick
+            <h1 className="d-flex align-items-center pe-lg-3 mb-2 mb-lg-0">
+              <b>Flick</b>
             </h1>
             <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li className="nav-item">
@@ -137,7 +137,7 @@ export const Header = () => {
                   </button>
                 </Link>
                 <Link to="/sign-up">
-                  <button type="button" className="btn btn-warning">
+                  <button type="button" className="btn btn-secondary">
                     Sign-up
                   </button>
                 </Link>

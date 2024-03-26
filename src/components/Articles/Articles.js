@@ -191,10 +191,7 @@ export const Articles = ({ isDraft }) => {
       <div className="row g-3">
         {articles.length === 0 ? (
           <h2 className="text-center">
-            No {!isDraft ? "articles" : "drafts"} to display. Create one{" "}
-            <Link to={"/create-an-article"}>
-              <button className="btn btn-warning btn-lg">here</button>
-            </Link>
+            No {!isDraft ? "articles" : "drafts"} to display.
           </h2>
         ) : (
           <div>

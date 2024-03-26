@@ -3,6 +3,10 @@
   --font-primary: "Nunito", sans-serif;
   --font-article: "Jost", sans-serif;
 }
+$primary: #00a9a5;
+$secondary: #0b5351;
+$info: #092327;
+@import "../node_modules/bootstrap/scss/bootstrap";
 *,
 *::after,
 *::before {
@@ -26,7 +30,7 @@ body {
   font-family: var(--font-primary);
   font-optical-sizing: auto;
   min-height: 100vh;
-  padding-bottom: 80px;
+  padding-bottom: 130px;
 }
 .wide-input {
   width: 300px;

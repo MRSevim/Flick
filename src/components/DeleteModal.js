@@ -18,9 +18,9 @@ export const DeleteModal = ({ children }) => {
   };
 
   return (
-    <div className="container d-flex justify-content-center text-white">
+    <div className=" d-flex justify-content-center">
       <form
-        className="bg-dark text-white p-4 border border-3 rounded"
+        className="bg-dark text-white m-5 wide-input"
         onSubmit={handleDeleteAccount}
       >
         {children}
