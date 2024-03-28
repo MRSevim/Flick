@@ -49,7 +49,7 @@ export const Follows = ({ type }) => {
                         className="profile-img-mini me-2"
                       />
                       <Link
-                        className="text-dark link-underline link-underline-opacity-0"
+                        className="unstyled-link"
                         to={"/user/" + user.username}
                       >
                         <h5 className="card-title m-0 search-card-text">

@@ -6,6 +6,7 @@
 $primary: #00a9a5;
 $secondary: #0b5351;
 $info: #092327;
+$white: #fff;
 @import "../node_modules/bootstrap/scss/bootstrap";
 *,
 *::after,
@@ -20,6 +21,10 @@ $info: #092327;
 .invis {
   visibility: hidden;
 }
+.unstyled-link {
+  text-decoration: none;
+  color: $info;
+}
 .pointer {
   cursor: pointer;
 }
@@ -28,9 +33,11 @@ html {
 }
 body {
   font-family: var(--font-primary);
+  color: $info;
   font-optical-sizing: auto;
-  min-height: 100vh;
-  padding-bottom: 130px;
+  background-color: $white;
+  margin-bottom: 93px;
+  min-height: calc(100vh - 93px);
 }
 .wide-input {
   width: 300px;
@@ -47,12 +54,9 @@ body {
   font-weight: 700;
 }
 .line-right {
-  border-right: 2px solid black;
+  border-right: 2px solid $info;
   margin-right: 10px;
   padding-right: 10px;
-}
-.line-right-white {
-  border-right: 2px solid white;
 }
 .hovered-link:hover {
   text-decoration: underline;
@@ -84,7 +88,7 @@ body {
   height: auto;
 }
 .article-body {
-  color: black !important;
+  color: $info !important;
 }
 .tox .tox-statusbar__branding svg {
   display: none;
@@ -105,6 +109,7 @@ body {
 .article-card-body * {
   font-family: var(--font-article);
   font-size: 16px !important;
+  color: $info;
 }
 /*loading animations*/
 .lds-ring {
@@ -120,10 +125,10 @@ body {
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 8px solid black;
+  border: 8px solid $info;
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: black transparent transparent transparent;
+  border-color: $info transparent transparent transparent;
 }
 .lds-ring.notification {
   width: 15px;
@@ -166,27 +171,22 @@ body {
   background: #fff;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
-
 .lds-ellipsis div:nth-child(1) {
   left: 4px; /* Adjusted left position */
   animation: lds-ellipsis1 0.6s infinite;
 }
-
 .lds-ellipsis div:nth-child(2) {
   left: 1px; /* Adjusted left position */
   animation: lds-ellipsis2 0.6s infinite;
 }
-
 .lds-ellipsis div:nth-child(3) {
   left: 6px; /* Adjusted left position */
   animation: lds-ellipsis2 0.6s infinite;
 }
-
 .lds-ellipsis div:nth-child(4) {
   left: 12px; /* Adjusted left position */
   animation: lds-ellipsis3 0.6s infinite;
 }
-
 @keyframes lds-ellipsis1 {
   0% {
     transform: scale(0);
@@ -195,7 +195,6 @@ body {
     transform: scale(1);
   }
 }
-
 @keyframes lds-ellipsis3 {
   0% {
     transform: scale(1);
@@ -204,7 +203,6 @@ body {
     transform: scale(0);
   }
 }
-
 @keyframes lds-ellipsis2 {
   0% {
     transform: translate(0, 0);
@@ -215,7 +213,7 @@ body {
 }
 /*Search*/
 .search-card-text {
-  background-image: linear-gradient(to right, #000, #000 50%, #000 50%);
+  background-image: linear-gradient(to right, $info, $info 50%, $info 50%);
   background-size: 200% 100%;
   background-position: -100%;
   /* display: inline-block; */
@@ -226,10 +224,9 @@ body {
   -webkit-text-fill-color: transparent;
   transition: all 0.3s ease-in-out;
 }
-
 .search-card-text:before {
   content: "";
-  background: #000;
+  background: $info;
   display: block;
   position: absolute;
   bottom: -3px;
@@ -238,11 +235,9 @@ body {
   height: 3px;
   transition: all 0.3s ease-in-out;
 }
-
 .search-card-text:hover {
   background-position: 0;
 }
-
 .search-card-text:hover::before {
   width: 100%;
 }

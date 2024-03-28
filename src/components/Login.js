@@ -39,7 +39,7 @@ export const Login = ({ onHideModal, children, type }) => {
       <div className="d-flex justify-content-center">
         <form
           className={classNames({
-            "bg-dark text-white p-5": true,
+            "bg-primary text-info p-5": true,
             "border border-3 rounded": type !== "modal",
           })}
           onSubmit={handleSubmit}
@@ -75,7 +75,7 @@ export const Login = ({ onHideModal, children, type }) => {
           </div>
           <input
             disabled={isLoading}
-            className="btn btn-warning my-3"
+            className="btn btn-secondary my-3"
             type="submit"
             value="Login"
           />

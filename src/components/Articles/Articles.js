@@ -147,17 +147,17 @@ export const Articles = ({ isDraft }) => {
       </div>
     </div>
   ) : localUser && articles ? (
-    <div className="container mt-5">
-      <h1 className="text-center">{localUser.username}'s Articles</h1>
+    <div className="container mt-5 text-info">
+      <h1 className="text-center"> All of {localUser.username}'s Articles</h1>
       {myArticles && (
         <>
           <div className="d-flex justify-content-center align-items-center">
-            <div className="d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-secondary">
+            <div className="d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-primary">
               <Link
                 onClick={setLoadingToTrue}
                 to={`/article/user/${id}/articles`}
                 className={classNames({
-                  "text-light link-underline link-underline-opacity-0 me-2": true,
+                  "unstyled-link me-2": true,
                   active: !isDraft,
                 })}
               >
@@ -167,7 +167,7 @@ export const Articles = ({ isDraft }) => {
                 onClick={setLoadingToTrue}
                 to={`/article/user/${id}/drafts`}
                 className={classNames({
-                  "text-light link-underline link-underline-opacity-0": true,
+                  "unstyled-link": true,
                   active: isDraft,
                 })}
               >
@@ -190,8 +190,8 @@ export const Articles = ({ isDraft }) => {
       )}
       <div className="row g-3">
         {articles.length === 0 ? (
-          <h2 className="text-center">
-            No {!isDraft ? "articles" : "drafts"} to display.
+          <h2 className="text-center mt-3">
+            User has not shared any {!isDraft ? "articles" : "drafts"} yet.
           </h2>
         ) : (
           <div>

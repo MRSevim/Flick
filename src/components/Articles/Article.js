@@ -97,7 +97,7 @@ export const Article = ({ isDraft }) => {
   }, [id, article, setSections]);
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 pb-4">
       <div className="row justify-content-center">
         {article && (
           <div className="col col-12 col-lg-2">
@@ -157,7 +157,7 @@ export const Article = ({ isDraft }) => {
                 <i>
                   Written by{" "}
                   <Link
-                    className="text-black link-underline link-underline-opacity-0"
+                    className="unstyled-link"
                     to={"/user/" + article.user?.username}
                   >
                     <span className="fw-bold">{article.user?.username}</span>

@@ -74,20 +74,20 @@ export const User = () => {
                 They have been a member of the website since{" "}
                 <span className="fw-bold">{memberSince}</span>
               </p>
-              <button type="button" className="btn btn-info">
-                <Link
-                  className="text-dark link-underline link-underline-opacity-0"
-                  to={"/article/user/" + user._id + "/articles?page=1"}
-                >
+              <Link
+                className="unstyled-link"
+                to={"/article/user/" + user._id + "/articles?page=1"}
+              >
+                <button type="button" className="btn btn-primary">
                   See all of their articles...
-                </Link>
-              </button>
+                </button>
+              </Link>
             </div>
             {globalUser && user._id !== globalUser?._id && (
               <div className="text-center">
                 <button
                   disabled={followLoading}
-                  className="btn btn-warning mt-3"
+                  className="btn btn-primary mt-3"
                   onClick={() => {
                     handleFollow(user._id);
                   }}
@@ -105,16 +105,22 @@ export const User = () => {
             </div>
           </div>
           <div className="col col-12 col-lg-9 d-flex flex-column mt-4 align-items-center">
-            <h2>These are their most liked articles...</h2>
-            <div className="my-2">
+            <h2>Top 10 Articles Of The User</h2>
+            <div className="my-4">
               {user?.mostLikedArticles?.length === 0 && (
                 <div className="text-center">
                   <h3>
                     <i className="bi bi-emoji-frown h1 me-2"></i>
-                    <b>No articles to display.</b>
+                    <b>They do not have any liked articles yet.</b>
                   </h3>
                   <h4>
-                    Follow them so you get notified when they post articles.
+                    <Link
+                      className="unstyled-link me-2 text-decoration-underline"
+                      to={"/article/user/" + user._id + "/articles?page=1"}
+                    >
+                      Check out all of their articles!
+                    </Link>
+                    Who knows, You might end up liking some of them.
                   </h4>
                 </div>
               )}
@@ -128,7 +134,7 @@ export const User = () => {
                   </span>
                   <span>
                     <Link
-                      className="text-dark link-underline link-underline-opacity-0"
+                      className="unstyled-link"
                       to={"/article/" + article._id}
                     >
                       {article.title}

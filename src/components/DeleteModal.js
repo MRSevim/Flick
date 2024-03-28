@@ -20,7 +20,7 @@ export const DeleteModal = ({ children }) => {
   return (
     <div className=" d-flex justify-content-center">
       <form
-        className="bg-dark text-white m-5 wide-input"
+        className="bg-primary text-info m-5 wide-input"
         onSubmit={handleDeleteAccount}
       >
         {children}
@@ -42,8 +42,8 @@ export const DeleteModal = ({ children }) => {
           {user?.isGoogleLogin && "Leave the field empty and hit Delete"}
         </p>
         <div className="text-center alert alert-danger">
-          Please note that all of your articles and comments are also going to
-          be deleted...
+          Please note that all of your articles, comments and likes are also
+          going to be deleted...
         </div>
         <input
           disabled={isLoading}

@@ -106,7 +106,10 @@ export const ArticleSections = ({ sections }) => {
             <div
               key={section.id}
               className={
-                "header d-flex " + section.nodeName + " id" + section.id
+                "header border-info d-flex " +
+                section.nodeName +
+                " id" +
+                section.id
               }
             >
               <i
@@ -114,7 +117,7 @@ export const ArticleSections = ({ sections }) => {
                 className="bi bi-chevron-down ps-1 pe-1 section-toggler pointer"
               ></i>
               <a
-                className="link-dark ps-1"
+                className="text-info ps-1"
                 title={section.innerText}
                 href={"#" + section.id}
               >

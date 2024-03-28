@@ -18,7 +18,7 @@ export const MostLiked = () => {
   }, [time, setArticles]);
 
   return (
-    <div className="container my-4 ">
+    <div className="container mt-5">
       <section className="row g-3">
         <div className="col col-12 text-center">
           <div className=" d-flex justify-content-center">
@@ -66,20 +66,20 @@ export const MostLiked = () => {
             </div>
           )}
           {!isLoading && articles?.length > 0 && (
-            <div className="bg-dark p-3">
+            <div className="bg-primary p-3">
               {articles.map((article) => (
                 <div
                   key={article._id}
-                  className="border border-white text-white rounded m-2 p-2"
+                  className="border border-white rounded m-2 p-2"
                 >
-                  <span className="line-right line-right-white">
+                  <span className="line-right">
                     <i className="bi bi-hand-thumbs-up"></i>
                     {" " +
                       article.likes.length +
                       (article.likes.length > 1 ? " likes" : " like")}
                   </span>
                   <Link
-                    className="text-white link-underline link-underline-opacity-0"
+                    className="unstyled-link"
                     to={"/article/" + article._id}
                   >
                     <h5>{article.title}</h5>
@@ -89,7 +89,7 @@ export const MostLiked = () => {
             </div>
           )}
           {!isLoading && articles?.length === 0 && (
-            <h2 className="text-center">
+            <h2 className="text-center mt-3 text-info">
               <i className="bi bi-emoji-frown h1 me-2"></i>
               <b>
                 No articles to display at the moment. Consider sharing your own
@@ -97,7 +97,7 @@ export const MostLiked = () => {
               </b>
               <br />
               <Link to={"/create-an-article"}>
-                <button className="btn btn-warning btn-lg mt-2">
+                <button className="btn btn-primary btn-lg mt-4">
                   Create one here
                 </button>
               </Link>

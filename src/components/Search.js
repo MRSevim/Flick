@@ -43,7 +43,7 @@ export const Search = () => {
                         className="profile-img-mini me-2"
                       />
                       <Link
-                        className="text-dark link-underline link-underline-opacity-0"
+                        className="unstyled-link"
                         to={"/user/" + user.username}
                       >
                         <h5 className="card-title m-0 search-card-text">
@@ -72,7 +72,7 @@ export const Search = () => {
                           (article.likes.length > 1 ? " likes" : " like")}
                       </span>
                       <Link
-                        className="text-dark link-underline link-underline-opacity-0"
+                        className="unstyled-link"
                         to={"/article/" + article._id}
                       >
                         <h5 className="card-title m-0 search-card-text">

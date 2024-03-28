@@ -98,11 +98,11 @@ export const Header = () => {
                   ></i>
                 </div>
                 {userMenu && (
-                  <div className="user-options border border-light rounded-2 position-absolute bg-dark w-100 p-2">
+                  <div className="user-options border border-light text-info rounded-2 position-absolute bg-primary w-100 p-2">
                     <p className="m-0">
                       <Link
                         to="/my-profile"
-                        className="text-white link-underline link-underline-opacity-0"
+                        className="unstyled-link"
                         onClick={() => {
                           setUserMenu(false);
                         }}
@@ -113,7 +113,7 @@ export const Header = () => {
                     <p className="m-0">
                       <Link
                         to={"/article/user/" + myId + "/articles?page=1"}
-                        className="text-white link-underline link-underline-opacity-0"
+                        className="unstyled-link"
                         onClick={() => {
                           setUserMenu(false);
                         }}

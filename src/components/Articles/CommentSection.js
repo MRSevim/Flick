@@ -80,7 +80,7 @@ export const CommentSection = ({ article }) => {
         />
         <input
           disabled={isLoading}
-          className="btn btn-dark mt-3 w-100 py-2"
+          className="btn btn-info mt-3 w-100 py-2"
           type="submit"
           value="Comment"
         />
@@ -89,20 +89,21 @@ export const CommentSection = ({ article }) => {
         <h3 className="mt-3 ">There are no comments to display</h3>
       )}
       {comments.map((comment) => (
-        <div className="border border-4 my-2 p-2" key={comment._id}>
+        <div
+          className="border border-4 my-2 p-2 position-relative"
+          key={comment._id}
+        >
           <img
             src={comment.user.image}
             alt="profile-img-mini"
             className="profile-img-mini me-2"
             referrerPolicy="no-referrer"
           />
-          <Link
-            className="text-dark link-underline link-underline-opacity-0"
-            to={"/user/" + comment.user.username}
-          >
+          <Link className="unstyled-link" to={"/user/" + comment.user.username}>
             <b>{comment.user.username}</b>
           </Link>
-          <span className="position-absolute top-0 end-0 m-1 me-3">
+          <span className="position-absolute top-0 end-0 m-2">
+            {console.log(comment.created)}
             {timeAgo.format(new Date(comment.created))}
           </span>
 
@@ -133,7 +134,7 @@ export const CommentSection = ({ article }) => {
               />
               <input
                 disabled={editLoading}
-                className="btn btn-warning mt-3 w-100 py-2"
+                className="btn btn-info mt-3 w-100 py-2"
                 type="submit"
                 value="Save"
               />

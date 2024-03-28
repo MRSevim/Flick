@@ -99,7 +99,7 @@ export const Notifications = () => {
                   User{" "}
                   {notification.user && (
                     <Link
-                      className="d-inline text-dark link-underline link-underline-opacity-0 fw-bold"
+                      className="d-inline unstyled-link fw-bold"
                       to={"/user/" + notification.user.username}
                     >
                       {notification.user.username}
@@ -116,7 +116,7 @@ export const Notifications = () => {
                       <br />
                       <Link
                         title={notification.target.title}
-                        className="text-dark link-underline link-underline-opacity-0 ms-1 fw-bold"
+                        className="unstyled-link ms-1 fw-bold"
                         to={"/article/" + notification.target._id}
                       >
                         {notification.target.title.substring(0, 30)}

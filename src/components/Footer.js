@@ -12,17 +12,17 @@ export const Footer = () => {
           <div className="d-flex mt-2">
             <Link
               to={"https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/"}
-              className="text-info footer-link link-underline link-underline-opacity-0 me-2"
+              className="footer-link unstyled-link me-2"
               target="_blank"
             >
               <i className="bi bi-linkedin h4"></i>
             </Link>
             <Link
               to={"mailto: lionrasit@gmail.com"}
-              className="text-info footer-link link-underline link-underline-opacity-0 me-2"
+              className="footer-link unstyled-link me-2"
               target="_blank"
             >
-              <i class="bi bi-at h4"></i>
+              <i className="bi bi-at h4"></i>
             </Link>
           </div>
         </div>

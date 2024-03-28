@@ -64,7 +64,7 @@ export const ArticleItem = ({
             {" "}
             <Link
               to={(!isDraft ? "/article/" : "/draft/") + article._id}
-              className="text-black text-decoration-none"
+              className="unstyled-link"
             >
               <span className=" hovered-link">
                 {article.title.substring(0, 50)}
@@ -83,7 +83,7 @@ export const ArticleItem = ({
               <p>
                 <Link
                   to={(!isDraft ? "/article/" : "/draft/") + article._id}
-                  className="text-black text-decoration-none"
+                  className="unstyled-link"
                 >
                   <span className="hovered-link">Read more...</span>
                 </Link>

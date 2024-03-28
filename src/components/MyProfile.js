@@ -194,7 +194,7 @@ export const MyProfile = () => {
               </div>
               <input
                 disabled={isLoading || user?.isGoogleLogin}
-                className="btn btn-warning mt-3"
+                className="btn btn-primary mt-3"
                 type="submit"
                 value={
                   user?.isGoogleLogin ? "Google Users can't update" : "Submit"
@@ -224,7 +224,7 @@ export const MyProfile = () => {
       )}
       <div className="modal fade" tabIndex="-1" id="deleteModal">
         <div className="modal-dialog d-flex justify-content-center">
-          <div className="modal-content mt-5 bg-dark border border-3 rounded">
+          <div className="modal-content mt-5 bg-primary border border-3 rounded">
             <DeleteModal>
               <button
                 type="button"

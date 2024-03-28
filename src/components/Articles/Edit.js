@@ -68,7 +68,7 @@ export const Edit = ({ isDraft }) => {
       </div>
     </div>
   ) : (
-    <div className="container mt-3">
+    <div className="container mt-3 pb-4">
       <div className="form-group row mb-3 align-items-center">
         <label htmlFor="title" className="col-sm-1 text-center text-sm-end">
           Title:
@@ -99,7 +99,7 @@ export const Edit = ({ isDraft }) => {
       "
       >
         <button
-          className="btn btn-lg btn-warning me-2"
+          className="btn btn-lg btn-secondary me-2"
           disabled={editLoading}
           onClick={() => {
             save(true);
@@ -109,7 +109,7 @@ export const Edit = ({ isDraft }) => {
         </button>
         {isDraft && (
           <button
-            className="btn btn-lg btn-warning"
+            className="btn btn-lg btn-secondary"
             disabled={editLoading}
             onClick={() => {
               save(false);
