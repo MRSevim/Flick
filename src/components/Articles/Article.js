@@ -147,7 +147,7 @@ export const Article = ({ isDraft }) => {
             </div>
             <article
               ref={ref}
-              className="article-body"
+              className="article-body mb-2"
               dangerouslySetInnerHTML={{
                 __html: article.content,
               }}

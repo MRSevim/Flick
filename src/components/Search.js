@@ -66,7 +66,7 @@ export const Search = () => {
                   <div className="card">
                     <div className="card-body">
                       <span className="line-right">
-                        <i className="bi bi-hand-thumbs-up"></i>
+                        <i className="bi bi-hand-thumbs-up h5"></i>
                         {" " +
                           article.likes.length +
                           (article.likes.length > 1 ? " likes" : " like")}

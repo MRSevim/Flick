@@ -68,12 +68,9 @@ export const MostLiked = () => {
           {!isLoading && articles?.length > 0 && (
             <div className="bg-primary p-3">
               {articles.map((article) => (
-                <div
-                  key={article._id}
-                  className="border border-white rounded m-2 p-2"
-                >
+                <div key={article._id}>
                   <span className="line-right">
-                    <i className="bi bi-hand-thumbs-up"></i>
+                    <i className="bi bi-hand-thumbs-up h5"></i>
                     {" " +
                       article.likes.length +
                       (article.likes.length > 1 ? " likes" : " like")}

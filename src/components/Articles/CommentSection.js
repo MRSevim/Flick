@@ -68,25 +68,31 @@ export const CommentSection = ({ article }) => {
   };
 
   return (
-    <>
-      <h2 className="mb-2">Comments</h2>
-      <form onSubmit={submit}>
-        <Editor
-          containerProps={{ style: { height: "175px" } }}
-          value={comment}
-          onChange={(e) => {
-            setComment(e.target.value);
-          }}
-        />
-        <input
-          disabled={isLoading}
-          className="btn btn-info mt-3 w-100 py-2"
-          type="submit"
-          value="Comment"
-        />
-      </form>
-      {comments.length === 0 && (
-        <h3 className="mt-3 ">There are no comments to display</h3>
+    <div className="my-3">
+      {user && (
+        <div>
+          <h2 className="mb-2">Comments</h2>
+          <form onSubmit={submit}>
+            <Editor
+              containerProps={{ style: { height: "175px" } }}
+              value={comment}
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+            />
+            <input
+              disabled={isLoading}
+              className="btn btn-info mt-3 w-100 py-2"
+              type="submit"
+              value="Comment"
+            />
+          </form>
+        </div>
+      )}
+      {comments.length === 0 && user && (
+        <h3 className="mt-3 ">
+          There are no comments. Be the first to comment in this article!
+        </h3>
       )}
       {comments.map((comment) => (
         <div
@@ -103,7 +109,6 @@ export const CommentSection = ({ article }) => {
             <b>{comment.user.username}</b>
           </Link>
           <span className="position-absolute top-0 end-0 m-2">
-            {console.log(comment.created)}
             {timeAgo.format(new Date(comment.created))}
           </span>
 
@@ -165,6 +170,6 @@ export const CommentSection = ({ article }) => {
           )}
         </div>
       ))}
-    </>
+    </div>
   );
 };

@@ -147,7 +147,7 @@ export const Articles = ({ isDraft }) => {
       </div>
     </div>
   ) : localUser && articles ? (
-    <div className="container mt-5 text-info">
+    <div className="container mt-5 pb-4 text-info">
       <h1 className="text-center"> All of {localUser.username}'s Articles</h1>
       {myArticles && (
         <>
@@ -206,7 +206,7 @@ export const Articles = ({ isDraft }) => {
               />
             </div>
             {myArticles && (
-              <>
+              <div className="mt-3">
                 <input
                   id="selectAll"
                   type="checkbox"
@@ -225,7 +225,7 @@ export const Articles = ({ isDraft }) => {
                 >
                   <i className="bi bi-trash-fill"></i> Delete Selected
                 </button>
-              </>
+              </div>
             )}
           </div>
         )}

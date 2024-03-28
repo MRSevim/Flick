@@ -74,13 +74,13 @@ export const Notifications = () => {
           </div>
         )}
         {getUnreadLength(notifications) > 0 && (
-          <div className="fs-6 bg-danger rounded-circle position-absolute top-0 start-100 translate-middle px-1 fst-normal">
+          <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1 fst-normal">
             {getUnreadLength(notifications)}
           </div>
         )}
       </i>
       {open && (
-        <div className="position-absolute border border-dark bg-white text-dark notifications-container overflow-auto p-1">
+        <div className="position-absolute border border-info bg-primary notifications-container overflow-auto p-1">
           {notifications?.length === 0 && (
             <div className="d-flex justify-content-center fw-bold">
               No notifications
@@ -92,14 +92,17 @@ export const Notifications = () => {
                 <li
                   key={notification._id}
                   className={classNames({
-                    "my-1 rounded": true,
-                    "bg-warning": !notification.read,
+                    "my-1 p-2 rounded": true,
+                    "bg-secondary text-white": !notification.read,
                   })}
                 >
                   User{" "}
                   {notification.user && (
                     <Link
-                      className="d-inline unstyled-link fw-bold"
+                      className={classNames({
+                        "d-inline unstyled-link fw-bold": true,
+                        "text-white": !notification.read,
+                      })}
                       to={"/user/" + notification.user.username}
                     >
                       {notification.user.username}
@@ -116,7 +119,10 @@ export const Notifications = () => {
                       <br />
                       <Link
                         title={notification.target.title}
-                        className="unstyled-link ms-1 fw-bold"
+                        className={classNames({
+                          "unstyled-link ms-1 fw-bold": true,
+                          "text-white": !notification.read,
+                        })}
                         to={"/article/" + notification.target._id}
                       >
                         {notification.target.title.substring(0, 30)}

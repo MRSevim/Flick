@@ -76,10 +76,10 @@ export const ArticleItem = ({
             <p
               className="card-text article-card-body"
               dangerouslySetInnerHTML={{
-                __html: article.content.substring(0, 200),
+                __html: article.content.trim().substring(0, 400),
               }}
             ></p>
-            {article.content.trim().length >= 200 ? (
+            {article.content.trim().length >= 400 ? (
               <p>
                 <Link
                   to={(!isDraft ? "/article/" : "/draft/") + article._id}

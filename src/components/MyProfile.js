@@ -100,7 +100,7 @@ export const MyProfile = () => {
           </div>
         </div>
       ) : (
-        <div className="container mt-5">
+        <div className="container mt-5 pb-4">
           <div className="row d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
               <img
@@ -121,7 +121,7 @@ export const MyProfile = () => {
               </div>
             </div>
             <form
-              className="update-form col col-12 col-lg-9 p-0 d-flex flex-column"
+              className="update-form col col-12 col-lg-9 p-0 d-flex flex-column mt-3"
               onSubmit={handleSubmit}
             >
               <h2>Update Profile</h2>
