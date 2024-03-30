@@ -21,7 +21,8 @@ export const useUpdateUser = () => {
       setError(json.message);
     }
     if (response.ok) {
-      const { username, _id, isGoogleLogin } = json;
+      const { username, _id, isGoogleLogin, image } = json;
+      const userObject = { username, _id, isGoogleLogin, image };
       // update the user in local storage
       let user = JSON.parse(localStorage.getItem("user"));
 
@@ -30,24 +31,12 @@ export const useUpdateUser = () => {
       const milliseconds = ttl - now;
       const seconds = milliseconds / 1000;
 
-      ls.set(
-        "user",
-        JSON.stringify({
-          username,
-          _id,
-          isGoogleLogin,
-        }),
-        {
-          ttl: seconds,
-        }
-      );
+      ls.set("user", JSON.stringify(userObject), {
+        ttl: seconds,
+      });
 
       // update the user context
-      setUser({
-        username,
-        _id,
-        isGoogleLogin,
-      });
+      setUser(userObject);
 
       // update state
       setSuccessMessage("Profile updated");

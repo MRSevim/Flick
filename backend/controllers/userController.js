@@ -57,6 +57,7 @@ const loginUser = async (req, res, next) => {
         _id: user._id,
         username,
         isGoogleLogin: user.isGoogleLogin,
+        image: user.image,
       });
     } else {
       const ticket = await getDecodedOAuthJwtGoogle(googleCredential, next);
@@ -70,6 +71,7 @@ const loginUser = async (req, res, next) => {
         _id: user._id,
         username: name,
         isGoogleLogin: user.isGoogleLogin,
+        image: user.image,
       });
     }
   } catch (error) {
@@ -91,6 +93,7 @@ const signupUser = async (req, res, next) => {
       _id: user._id,
       username,
       isGoogleLogin: user.isGoogleLogin,
+      image: user.image,
     });
   } catch (error) {
     next(error);

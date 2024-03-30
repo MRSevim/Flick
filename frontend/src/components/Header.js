@@ -6,6 +6,7 @@ import { useUserContext } from "../Contexts/UserContext";
 import { useLogout } from "../Hooks/UserHooks/UseLogout";
 import { SearchBar } from "./SearchBar";
 import { Notifications } from "./Notifications";
+import { UserMenu } from "./UserMenu";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -84,49 +85,22 @@ export const Header = () => {
                   onClick={() => {
                     setUserMenu((prev) => !prev);
                   }}
-                  className="border border-light p-2 rounded-3 pointer user-container d-flex align-items-center justify-content-between "
+                  className="text-end pointer"
                 >
-                  <p className="m-0 me-3 overflow-hidden">
-                    Hello {user.username}
-                  </p>
-                  <i
-                    className={
-                      userMenu
-                        ? "bi bi-chevron-down user-menu-toggler open"
-                        : "bi bi-chevron-down user-menu-toggler"
-                    }
-                  ></i>
+                  <img
+                    src={user.image}
+                    alt="profile small"
+                    className="profile-img-mini"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 {userMenu && (
-                  <div className="user-options border border-light text-info rounded-2 position-absolute bg-primary w-100 p-2">
-                    <p className="m-0">
-                      <Link
-                        to="/my-profile"
-                        className="unstyled-link"
-                        onClick={() => {
-                          setUserMenu(false);
-                        }}
-                      >
-                        My Profile
-                      </Link>
-                    </p>
-                    <p className="m-0">
-                      <Link
-                        to={"/article/user/" + myId + "/articles?page=1"}
-                        className="unstyled-link"
-                        onClick={() => {
-                          setUserMenu(false);
-                        }}
-                      >
-                        My Articles
-                      </Link>
-                    </p>
-                    <p className="m-0">
-                      <span className="pointer" onClick={logOut}>
-                        Logout
-                      </span>
-                    </p>
-                  </div>
+                  <UserMenu
+                    setUserMenu={setUserMenu}
+                    logOut={logOut}
+                    myId={myId}
+                    user={user}
+                  />
                 )}
               </div>
             ) : user === undefined ? (

@@ -1,12 +1,22 @@
-.user-container {
+.user-menu-container {
   width: 220px;
-}
-.user-menu-toggler {
-  transition: transform 0.3s;
-}
-.user-menu-toggler.open {
-  transform: rotate(180deg);
-}
-.user-options {
   z-index: 100;
+  right: 0;
+}
+@media (max-width: 400px) {
+  .user-menu-container {
+    right: calc(-110px + 50%);
+  }
+}
+/*Notification*/
+.notifications-container {
+  width: 325px;
+  z-index: 200;
+  max-height: 300px;
+  right: 0;
+}
+@media (max-width: 750px) {
+  .notifications-container {
+    right: calc(-162.5px - 100%);
+  }
 }

@@ -20,12 +20,12 @@ export const useSignup = () => {
     }
     if (response.ok) {
       // save the user to local storage
-      ls.set("user", JSON.stringify({ ...json }), {
+      ls.set("user", JSON.stringify(json), {
         ttl: 30 * 24 * 60 * 60 * 1000, // 30 days,
       });
 
       // update the user context
-      setUser({ ...json });
+      setUser(json);
     }
     // update loading state
     setIsLoading(false);
