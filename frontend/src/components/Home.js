@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 export const Home = () => {
   return (
-    <div className="pb-4">
-      <div className="bg-primary">
+    <div className="pb-5">
+      <div className="bg-primary bg-opacity-75">
         <div className="container mt-5 py-5">
           <div className="row text-info align-items-center">
             <div className="col col-12 col-lg-6 hero-image">
@@ -69,7 +69,7 @@ export const Home = () => {
               className="accordion-collapse collapse"
               data-bs-parent="#accordionFlick"
             >
-              <div class="accordion-body">
+              <div className="accordion-body">
                 Why question can be thought provoking question. Why should one
                 do anything? It seems like answer to that can change from person
                 to person. But If you are interested in written communication
@@ -96,7 +96,7 @@ export const Home = () => {
               className="accordion-collapse collapse"
               data-bs-parent="#accordionFlick"
             >
-              <div class="accordion-body">
+              <div className="accordion-body">
                 I chose to include most liked articles in my website structure
                 because I thought it can give some form of rating that people
                 can use in their decision making when choosing articles to read.

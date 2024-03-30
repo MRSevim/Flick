@@ -15,6 +15,7 @@ import { GlobalError } from "./components/GlobalError.js";
 import { useUserContext } from "./Contexts/UserContext.js";
 import { Search } from "./components/Search.js";
 import { Follows } from "./components/Follows.js";
+import { About } from "./components/About.js";
 
 import {
   BrowserRouter as Router,
@@ -82,6 +83,7 @@ function AppContent() {
         <Route path="/draft/edit/:id" element={<Edit isDraft={true} />} />
         <Route path="/article/:id" element={<Article isDraft={false} />} />
         <Route path="/draft/:id" element={<Article isDraft={true} />} />
+        <Route path="/about" element={<About />} />
         <Route exact path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

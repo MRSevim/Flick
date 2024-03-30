@@ -76,6 +76,11 @@ export const Header = () => {
                   Create an Article
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/about" className={setActiveClassNames("/about")}>
+                  About
+                </Link>
+              </li>
             </ul>
             <SearchBar />
             {user && <Notifications />}
