@@ -3,7 +3,7 @@
   "name": "flick",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mrsevim.github.io/Flick",
+  "homepage": ".",
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -27,11 +27,12 @@
     "react-scripts": "5.0.1",
     "react-simple-wysiwyg": "^3.0.2",
     "sass": "^1.72.0",
+    "serve": "^14.2.1",
     "tinymce": "^6.8.3"
   },
   "scripts": {
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start ",
+    "start": "react-scripts start",
+    "serve": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

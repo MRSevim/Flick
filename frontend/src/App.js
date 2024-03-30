@@ -42,7 +42,7 @@ function AppContent() {
   const [user] = useUserContext();
 
   return (
-    <Router basename="/Flick">
+    <Router basename="/">
       <GlobalError></GlobalError>
       <Header></Header>
       <Routes>
