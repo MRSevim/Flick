@@ -19,19 +19,23 @@ export const Login = ({ onHideModal, children, type }) => {
     }
   });
 
+  const hideModalIfExists = (response) => {
+    if (response.ok && onHideModal) {
+      onHideModal();
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const response = await login(username, password, false, null);
 
-    if (response.ok) {
-      if (onHideModal) {
-        onHideModal();
-      }
-    }
+    hideModalIfExists(response);
   };
   const handleGoogleLogin = async (credential) => {
-    await login(null, null, true, credential);
+    const response = await login(null, null, true, credential);
+
+    hideModalIfExists(response);
   };
 
   return (

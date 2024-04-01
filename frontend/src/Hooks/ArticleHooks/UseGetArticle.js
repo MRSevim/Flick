@@ -10,15 +10,7 @@ export const useGetArticle = () => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const get = (id, isDraft) => {
-      if (!isDraft) {
-        return articleApi.getArticle(id);
-      } else {
-        return articleApi.getDraft(id);
-      }
-    };
-
-    const response = await get(id, isDraft);
+    const response = await articleApi.getArticle(id, isDraft);
 
     const json = await response.json();
 

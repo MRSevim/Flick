@@ -191,7 +191,9 @@ export const Articles = ({ isDraft }) => {
       <div className="row g-3">
         {articles.length === 0 ? (
           <h2 className="text-center mt-3">
-            User has not shared any {!isDraft ? "articles" : "drafts"} yet.
+            {!isDraft && !myArticles && "User has not shared any articles yet."}
+            {!isDraft && myArticles && "You have no articles."}
+            {isDraft && "You have no drafts."}
           </h2>
         ) : (
           <div>

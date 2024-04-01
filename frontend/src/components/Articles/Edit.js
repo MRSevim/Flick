@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { EditorComponent } from "../EditorComponent";
 import { useEditArticle } from "../../Hooks/ArticleHooks/UseEditArticle";
 import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
 import { useUserContext } from "../../Contexts/UserContext";
+import { TagsForm } from "../TagsForm";
 
 export const Edit = ({ isDraft }) => {
   const { id } = useParams();
@@ -15,6 +16,21 @@ export const Edit = ({ isDraft }) => {
   const { editArticle, isLoading: editLoading } = useEditArticle();
   const { getArticle, isLoading } = useGetArticle();
   const navigate = useNavigate();
+  const [tags, setTags] = useState([]);
+  const successMessageRef = useRef(null);
+
+  useEffect(() => {
+    if (successMessageRef.current) {
+      successMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [successMessage]);
+
+  const onTagsChange = (newTags) => {
+    setTags(newTags);
+  };
 
   useEffect(() => {
     if (user === undefined) {
@@ -28,6 +44,7 @@ export const Edit = ({ isDraft }) => {
       if (response.ok) {
         setTitle(json.title);
         setInitialContent(json.content);
+        setTags(json.tags);
         if (user && json) {
           if (user._id !== json.user._id) {
             navigate("/");
@@ -45,17 +62,17 @@ export const Edit = ({ isDraft }) => {
   const save = (draft) => {
     const edit = async () => {
       setSuccessMessage(null);
-      const response = await editArticle(title, content, draft, id);
+      const response = await editArticle(title, content, draft, id, tags);
       if (response.ok) {
-        if (draft) {
-          setSuccessMessage("Saved...");
-        } else {
+        if (isDraft && !draft) {
           setSuccessMessage(
             "Article published. Redirecting to puslished article..."
           );
           setTimeout(() => {
             navigate("/article/" + id);
           }, 3000);
+        } else {
+          setSuccessMessage("Saved...");
         }
       }
     };
@@ -85,6 +102,7 @@ export const Edit = ({ isDraft }) => {
           />
         </div>
       </div>
+      <TagsForm classes={"mx-5 my-3"} onTagsChange={onTagsChange} tags={tags} />
       <EditorComponent
         initialContent={initialContent}
         handleEditorChange={(content) => {
@@ -102,7 +120,7 @@ export const Edit = ({ isDraft }) => {
           className="btn btn-lg btn-secondary me-2"
           disabled={editLoading}
           onClick={() => {
-            save(true);
+            save(isDraft);
           }}
         >
           Save
@@ -120,7 +138,10 @@ export const Edit = ({ isDraft }) => {
         )}
       </div>
       {successMessage && (
-        <div className="text-center mt-3 d-flex justify-content-center">
+        <div
+          ref={successMessageRef}
+          className="text-center mt-3 d-flex justify-content-center"
+        >
           <p className="m-0 alert alert-success wide-input">{successMessage}</p>
         </div>
       )}

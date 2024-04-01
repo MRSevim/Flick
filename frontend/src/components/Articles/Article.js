@@ -9,6 +9,7 @@ import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { LikeButton } from "./LikeButton";
 import { CommentSection } from "./CommentSection";
+import { useEditArticle } from "../../Hooks/ArticleHooks/UseEditArticle";
 
 export const Article = ({ isDraft }) => {
   const [user] = useUserContext();
@@ -20,11 +21,23 @@ export const Article = ({ isDraft }) => {
   const [createdAt, setCreatedAt] = useState(null);
   const [updatedAt, setUpdatedAt] = useState(null);
   const [article, setArticle] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [myArticle, setMyArticle] = useState(null);
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
   const { likeArticle: likeArticleCall, isLoading: likeLoading } =
     useLikeArticle();
+  const { editArticle: publish, isLoading: editLoading } = useEditArticle();
+  const successMessageRef = useRef(null);
+
+  useEffect(() => {
+    if (successMessageRef.current) {
+      successMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [successMessage]);
 
   const deleteArticle = async (_id) => {
     const response = await deleteArticleCall(_id);
@@ -33,6 +46,23 @@ export const Article = ({ isDraft }) => {
         "/article/user/" + user._id + (isDraft ? "/drafts" : "/articles")
       );
     }
+  };
+
+  const publishArticle = () => {
+    const edit = async () => {
+      setSuccessMessage(null);
+      const response = await publish(
+        article.title,
+        article.content,
+        false,
+        id,
+        undefined
+      );
+      if (response.ok) {
+        setSuccessMessage("Article is published");
+      }
+    };
+    edit();
   };
 
   const editArticle = (id) => {
@@ -116,7 +146,7 @@ export const Article = ({ isDraft }) => {
         ) : article ? (
           <div className="article col col-12 col-lg-8 mt-2">
             <h1 className="article-title">{article.title}</h1>
-            <div>
+            <div className="mb-2">
               {!isDraft && (
                 <LikeButton
                   classes="me-1"
@@ -177,7 +207,37 @@ export const Article = ({ isDraft }) => {
                 </p>
               )}
             </div>
-            <CommentSection article={article} />
+            {article.tags?.map((tag, i) => {
+              return (
+                <Link key={i} className="me-1">
+                  #{tag}
+                </Link>
+              );
+            })}
+            {!article.isDraft && <CommentSection article={article} />}
+            {article.isDraft && (
+              <div className="d-flex justify-content-center">
+                <button
+                  className="btn btn-lg btn-secondary"
+                  disabled={editLoading}
+                  onClick={() => {
+                    publishArticle();
+                  }}
+                >
+                  Publish Article
+                </button>
+              </div>
+            )}
+            {successMessage && (
+              <div
+                ref={successMessageRef}
+                className="text-center mt-3 d-flex justify-content-center"
+              >
+                <p className="m-0 alert alert-success wide-input">
+                  {successMessage}
+                </p>
+              </div>
+            )}
           </div>
         ) : (
           <div className="article col"></div>

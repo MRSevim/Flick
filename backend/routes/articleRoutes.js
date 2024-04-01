@@ -7,8 +7,6 @@ const {
   createArticle,
   updateArticle,
   deleteArticle,
-  getDraft,
-  getDrafts,
   deleteMany,
 } = require("../controllers/articleController");
 
@@ -17,19 +15,19 @@ const requireAuth = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 //authenticated user get drafts route
-router.get("/draft", requireAuth, getDrafts);
+router.get("/draft", requireAuth, getArticles(true));
 
 //authenticated user get draft route
-router.get("/draft/:id", requireAuth, getDraft);
+router.get("/draft/:id", requireAuth, getArticle(true));
 
 //authenticated user delete many articles route
 router.delete("/deleteMany", requireAuth, deleteMany);
 
 //get an article route
-router.get("/:id", getArticle);
+router.get("/:id", getArticle(false));
 
 //get all articles of specific user route
-router.get("/user/:id", getArticles);
+router.get("/user/:id", getArticles(false));
 
 router.use(requireAuth);
 

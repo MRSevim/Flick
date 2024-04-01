@@ -7,172 +7,130 @@ const allowedTags = {
 };
 
 //get an article
-const getArticle = async (req, res, next) => {
-  try {
-    const article = await Article.findById(req.params.id)
-      .populate("user", "username")
-      .populate("likes", "user")
-      .populate({
-        path: "comments",
-        populate: {
-          path: "user",
-          model: "User",
-          select: "username image",
-        },
-      });
+const getArticle = (isDraft) => {
+  return async (req, res, next) => {
+    try {
+      if (isDraft === undefined) {
+        res.status(400);
+        throw new Error("Pass isDraft boolean into getArticle function");
+      }
 
-    if (!article) {
-      res.status(404);
-      throw new Error("Article is not found");
-    }
-    if (article.isDraft) {
-      res.status(401);
-      throw new Error("Use /draft/:id for draft articles");
-    }
+      const article = await Article.findById(req.params.id)
+        .populate("user", "username")
+        .populate("likes", "user")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user",
+            model: "User",
+            select: "username image",
+          },
+        });
 
-    res.status(200).json(article);
-  } catch (error) {
-    next(error);
-  }
+      if (!article) {
+        res.status(404);
+        throw new Error("Article is not found");
+      }
+
+      if (isDraft) {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+          res.status(404);
+          throw new Error("User is not found");
+        }
+
+        if (!user._id.equals(article.user._id)) {
+          res.status(401);
+          throw new Error("You are not authorized");
+        }
+
+        if (!article.isDraft) {
+          res.status(400);
+          throw new Error(
+            "Article is not draft. Please use article/:id for non-draft articles"
+          );
+        }
+      }
+
+      if (isDraft === false && article.isDraft) {
+        res.status(401);
+        throw new Error(
+          "Article is draft. Please use article/draft/:id for draft articles"
+        );
+      }
+
+      res.status(200).json(article);
+    } catch (error) {
+      next(error);
+    }
+  };
 };
 
 //get articles of specific user
-const getArticles = async (req, res, next) => {
-  const { page } = req.query;
+const getArticles = (isDraft) => {
+  return async (req, res, next) => {
+    const { page } = req.query;
 
-  try {
-    if (!page) {
-      res.status(400);
-      throw new Error("Please send a page number");
-    }
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      res.status(404);
-      throw new Error("User is not found");
-    }
+    try {
+      if (isDraft === undefined) {
+        res.status(400);
+        throw new Error("Pass isDraft boolean into getArticle function");
+      }
 
-    const LIMIT = 9;
-    const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+      if (!page) {
+        res.status(400);
+        throw new Error("Please send a page number");
+      }
 
-    const totalArticles = await Article.find({
-      user: user._id,
-      isDraft: false,
-    });
+      const user = await User.findById(req.params.id);
+      const authUser = await User.findById(req.user?._id);
 
-    const total = totalArticles.length;
+      if (!isDraft && !user) {
+        res.status(404);
+        throw new Error("User is not found");
+      }
 
-    const articles = await Article.find({
-      user: user._id,
-      isDraft: false,
-    })
-      .sort({
-        createdAt: -1,
+      const LIMIT = 9;
+      const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+
+      if (isDraft && !authUser) {
+        res.status(404);
+        throw new Error("User is not found");
+      }
+
+      const totalArticles = await Article.find({
+        user: isDraft ? authUser._id : user._id,
+        isDraft,
+      });
+
+      const total = totalArticles.length;
+
+      const articles = await Article.find({
+        user: isDraft ? authUser._id : user._id,
+        isDraft,
       })
-      .populate("likes", "user")
-      .limit(LIMIT)
-      .skip(startIndex);
+        .sort({
+          createdAt: -1,
+        })
+        .populate("likes", "user")
+        .limit(LIMIT)
+        .skip(startIndex);
 
-    res.status(200).json({
-      articles,
-      currentPage: Number(page),
-      totalPages: Math.ceil(total / LIMIT),
-      user: {
-        _id: user._id,
-        username: user.username,
-        createdAt: user.createdAt,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-//authenticated user get drafts
-const getDrafts = async (req, res, next) => {
-  const { page } = req.query;
-
-  try {
-    if (!page) {
-      res.status(400);
-      throw new Error("Please send a page number");
+      res.status(200).json({
+        articles,
+        currentPage: Number(page),
+        totalPages: Math.ceil(total / LIMIT),
+        user: {
+          _id: isDraft ? authUser._id : user._id,
+          username: isDraft ? authUser.username : user.username,
+          createdAt: isDraft ? authUser.createdAt : user.createdAt,
+        },
+      });
+    } catch (error) {
+      next(error);
     }
-
-    const user = await User.findById(req.user._id);
-
-    if (!user) {
-      res.status(404);
-      throw new Error("User is not found");
-    }
-
-    const LIMIT = 9;
-    const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
-
-    const totalArticles = await Article.find({
-      user: user._id,
-      isDraft: true,
-    });
-
-    const total = totalArticles.length;
-
-    const articles = await Article.find({
-      user: user._id,
-      isDraft: true,
-    })
-      .sort({
-        createdAt: -1,
-      })
-      .limit(LIMIT)
-      .skip(startIndex);
-
-    res.status(200).json({
-      articles,
-      currentPage: Number(page),
-      totalPages: Math.ceil(total / LIMIT),
-      user: {
-        _id: user._id,
-        username: user.username,
-        createdAt: user.createdAt,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-//authenticated user get drafts
-const getDraft = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      res.status(404);
-      throw new Error("User is not found");
-    }
-
-    const article = await Article.findById(req.params.id).populate(
-      "user",
-      "id username"
-    );
-
-    if (!article) {
-      res.status(404);
-      throw new Error("Article is not found");
-    }
-
-    if (!article.isDraft) {
-      res.status(400);
-      throw new Error(
-        "Article is not draft. Please use article/:id for non-draft articles"
-      );
-    }
-    if (!user._id.equals(article.user._id)) {
-      res.status(401);
-      throw new Error("You are not authorized");
-    }
-
-    res.status(200).json(article);
-  } catch (error) {
-    next(error);
-  }
+  };
 };
 
 //authenticated user create article
@@ -184,7 +142,7 @@ const createArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const { title, content, isDraft } = req.body;
+    const { title, content, isDraft, tags } = req.body;
 
     if (!title || !content) {
       res.status(400);
@@ -204,6 +162,7 @@ const createArticle = async (req, res, next) => {
       content: sanitizedContent,
       isDraft,
       user: user._id,
+      tags,
     });
 
     const notification = {
@@ -245,11 +204,16 @@ const updateArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const { title, content, isDraft } = req.body;
+    const { title, content, isDraft, tags } = req.body;
 
-    if (!title && !content && !isDraft) {
+    if (!title && !content && isDraft === undefined && !tags) {
       res.status(400);
       throw new Error("Please send some input to update");
+    }
+
+    if (!title || !content) {
+      res.status(400);
+      throw new Error("Title and content can't be empty");
     }
 
     let sanitizedTitle;
@@ -272,6 +236,7 @@ const updateArticle = async (req, res, next) => {
 
     article.title = sanitizedTitle || article.title;
     article.content = sanitizedContent || article.content;
+    article.tags = tags || article.tags;
     if (isDraft !== undefined) {
       article.isDraft = isDraft;
     }
@@ -283,6 +248,7 @@ const updateArticle = async (req, res, next) => {
       title: updatedArticle.title,
       content: updatedArticle.content,
       isDraft: updatedArticle.isDraft,
+      tags: updatedArticle.tags,
     });
   } catch (error) {
     next(error);
@@ -364,7 +330,5 @@ module.exports = {
   createArticle,
   updateArticle,
   deleteArticle,
-  getDraft,
-  getDrafts,
   deleteMany,
 };

@@ -72,6 +72,13 @@ export const ArticleItem = ({
               </span>
             </Link>
           </h5>
+          {article.tags?.map((tag, i) => {
+            return (
+              <Link key={i} className="me-1">
+                #{tag}
+              </Link>
+            );
+          })}
           <div className="mb-4">
             <p
               className="card-text article-card-body"

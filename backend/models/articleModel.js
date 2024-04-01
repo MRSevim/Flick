@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Tags = require("../Tags");
 
 const articleSchema = new mongoose.Schema(
   {
@@ -20,6 +21,18 @@ const articleSchema = new mongoose.Schema(
         },
         content: { type: String, required: true },
         created: { type: Date, default: Date.now },
+      },
+    ],
+    tags: [
+      {
+        type: String,
+        validate: {
+          validator: function (tag) {
+            // Check if the tag is present in the Tags array
+            return Tags.includes(tag);
+          },
+          message: (props) => `${props.value} is not a valid tag!`,
+        },
       },
     ],
   },

@@ -1,18 +1,18 @@
 const articleApi = {
-  create: async (title, content, isDraft) => {
+  create: async (title, content, isDraft, tags) => {
     const response = await fetch("/article/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, isDraft }),
+      body: JSON.stringify({ title, content, isDraft, tags }),
     });
 
     return response;
   },
-  update: async (title, content, isDraft, id) => {
+  update: async (title, content, isDraft, id, tags) => {
     const response = await fetch("/article/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, isDraft }),
+      body: JSON.stringify({ title, content, isDraft, tags }),
     });
 
     return response;
@@ -42,23 +42,18 @@ const articleApi = {
 
     return response;
   },
-  getArticle: async (id) => {
-    const response = await fetch("/article/" + id);
+  getArticle: async (id, isDraft) => {
+    const url = !isDraft ? "/article/" : "/article/draft/";
+    const response = await fetch(url + id);
 
     return response;
   },
-  getArticles: async (id, page) => {
-    const response = await fetch("/article/user/" + id + "?page=" + page);
+  getArticles: async (id, page, isDraft) => {
+    const url = !isDraft
+      ? "/article/user/" + id + "?page="
+      : "/article/draft?page=";
 
-    return response;
-  },
-  getDraft: async (id) => {
-    const response = await fetch("/article/draft/" + id);
-
-    return response;
-  },
-  getDrafts: async (page) => {
-    const response = await fetch("/article/draft?page=" + page);
+    const response = await fetch(url + page);
 
     return response;
   },

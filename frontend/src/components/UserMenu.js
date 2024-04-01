@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
   return (
     <div className="user-menu-container border border-light text-info rounded-2 position-absolute bg-primary p-2">
-      <p className="m-0">
-        <p className="border-bottom text-center text-break">{user.username}</p>
+      <div>
+        <p className="pb-2 border-bottom text-center text-break">
+          {user.username}
+        </p>
         <Link
           to="/my-profile"
           className="unstyled-link"
@@ -15,7 +17,7 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
         >
           My Profile
         </Link>
-      </p>
+      </div>
       <p className="m-0">
         <Link
           to={"/article/user/" + myId + "/articles?page=1"}

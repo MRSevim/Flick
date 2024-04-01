@@ -7,12 +7,14 @@ import { useUserContext } from "../../Contexts/UserContext";
 import { Login } from "../Login";
 import { Modal } from "bootstrap";
 import { useCreateArticle } from "../../Hooks/ArticleHooks/UseCreateArticle";
+import { TagsForm } from "../TagsForm";
 
 export const CreateAnArticle = () => {
   const localStorageContent = JSON.parse(
     localStorage.getItem("editor-content")
   );
-
+  const [modalTriggered, setModalTriggered] = useState(false);
+  const [actionToRerun, setActionToRerun] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState(null);
   const [initialContent] = useState(
@@ -24,6 +26,11 @@ export const CreateAnArticle = () => {
   const [user] = useUserContext();
   const { createArticle, isLoading } = useCreateArticle();
   const myModalRef = useRef(null);
+  const [tags, setTags] = useState([]);
+
+  const onTagsChange = (newTags) => {
+    setTags(newTags);
+  };
 
   useEffect(() => {
     const localStorageTitle = JSON.parse(localStorage.getItem("article-title"));
@@ -38,12 +45,24 @@ export const CreateAnArticle = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (modalTriggered && user) {
+      if (actionToRerun === "saveDraft") {
+        saveDraft();
+      } else if (actionToRerun === "submit") {
+        submit();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, modalTriggered, actionToRerun]);
+
   const submit = async () => {
     if (content && user) {
       const res = await createArticle(
         DOMPurify.sanitize(title),
         DOMPurify.sanitize(content),
-        false
+        false,
+        tags
       );
       if (res.ok) {
         navigate("/article/user/" + user._id + "/articles");
@@ -51,6 +70,8 @@ export const CreateAnArticle = () => {
     }
     if (!user) {
       myModalRef.current.show();
+      setModalTriggered(true);
+      setActionToRerun("submit");
     }
   };
 
@@ -59,7 +80,8 @@ export const CreateAnArticle = () => {
       const res = await createArticle(
         DOMPurify.sanitize(title),
         DOMPurify.sanitize(content),
-        true
+        true,
+        tags
       );
       if (res.ok) {
         navigate("/article/user/" + user._id + "/drafts");
@@ -67,8 +89,11 @@ export const CreateAnArticle = () => {
     }
     if (!user) {
       myModalRef.current.show();
+      setModalTriggered(true);
+      setActionToRerun("saveDraft");
     }
   };
+
   const handleEditorChange = (content) => {
     setContent(content);
     localStorage.setItem("editor-content", JSON.stringify(content));
@@ -97,6 +122,7 @@ export const CreateAnArticle = () => {
             />
           </div>
         </div>
+        <TagsForm classes={"mx-5 my-3"} onTagsChange={onTagsChange} />
         <EditorComponent
           initialContent={initialContent}
           handleEditorChange={handleEditorChange}
@@ -123,7 +149,7 @@ export const CreateAnArticle = () => {
       </div>
       <div className="modal fade" tabIndex="-1" id="loginModal">
         <div className="modal-dialog d-flex justify-content-center">
-          <div className="modal-content mt-5 bg-dark border border-3 rounded">
+          <div className="modal-content mt-5 bg-primary border border-3 rounded">
             <Login
               type={"modal"}
               onHideModal={() => {
