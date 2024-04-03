@@ -63,7 +63,7 @@ export const ArticleItem = ({
           <h5 className="card-title" title={article.title}>
             {" "}
             <Link
-              to={(!isDraft ? "/article/" : "/draft/") + article._id}
+              to={(!isDraft ? "/article/" : "/draft/edit/") + article._id}
               className="unstyled-link"
             >
               <span className=" hovered-link">
@@ -89,7 +89,7 @@ export const ArticleItem = ({
             {article.content.trim().length >= 400 ? (
               <p>
                 <Link
-                  to={(!isDraft ? "/article/" : "/draft/") + article._id}
+                  to={(!isDraft ? "/article/" : "/draft/edit/") + article._id}
                   className="unstyled-link"
                 >
                   <span className="hovered-link">Read more...</span>

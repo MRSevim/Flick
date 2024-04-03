@@ -6,6 +6,7 @@ import { useGetUser } from "../Hooks/UserHooks/UseGetUser";
 import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
 import { FollowButtons } from "./FollowButtons";
+import { LoadingRing } from "./LoadingRing";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -94,10 +95,8 @@ export const MyProfile = () => {
   return (
     <>
       {getLoading ? (
-        <div className="container mt-5 d-flex justify-content-center">
-          <div className="lds-ring">
-            <div></div>
-          </div>
+        <div className="container mt-5 ">
+          <LoadingRing />
         </div>
       ) : (
         <div className="container mt-5 pb-4">

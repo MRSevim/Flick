@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetMostLiked } from "../Hooks/LikeHooks/UserGetMostLiked";
 import classNames from "classnames";
+import { LoadingRing } from "./LoadingRing";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");
@@ -59,10 +60,8 @@ export const MostLiked = () => {
         </div>
         <div className="col col-12">
           {isLoading && (
-            <div className="container mt-5 d-flex justify-content-center">
-              <div className="lds-ring">
-                <div></div>
-              </div>
+            <div className="container mt-5">
+              <LoadingRing />
             </div>
           )}
           {!isLoading && articles?.length > 0 && (

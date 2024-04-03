@@ -5,6 +5,7 @@ import { useEditArticle } from "../../Hooks/ArticleHooks/UseEditArticle";
 import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
 import { useUserContext } from "../../Contexts/UserContext";
 import { TagsForm } from "../TagsForm";
+import { LoadingRing } from "../LoadingRing";
 
 export const Edit = ({ isDraft }) => {
   const { id } = useParams();
@@ -79,10 +80,8 @@ export const Edit = ({ isDraft }) => {
     edit();
   };
   return isLoading ? (
-    <div className="container mt-5 d-flex justify-content-center">
-      <div className="lds-ring">
-        <div></div>
-      </div>
+    <div className="container mt-5">
+      <LoadingRing />
     </div>
   ) : (
     <div className="container mt-3 pb-4">

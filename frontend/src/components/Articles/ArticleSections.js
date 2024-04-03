@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ArticleSections.css";
+import { LoadingRing } from "../LoadingRing";
 
 function insertAfter(referenceNode, newNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -89,13 +90,7 @@ export const ArticleSections = ({ sections }) => {
   }, [loading, setLoading, sections]);
 
   if (loading) {
-    return (
-      <div className="d-flex justify-content-center">
-        <div className="lds-ring">
-          <div></div>
-        </div>
-      </div>
-    );
+    return <LoadingRing />;
   }
 
   return (

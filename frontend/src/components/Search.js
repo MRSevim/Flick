@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
+import { LoadingRing } from "./LoadingRing";
 
 export const Search = () => {
   const params = new URLSearchParams(useLocation().search);
@@ -23,11 +24,7 @@ export const Search = () => {
   return (
     <div className="container mt-3">
       {isLoading ? (
-        <div className=" d-flex justify-content-center">
-          <div className="lds-ring">
-            <div></div>
-          </div>
-        </div>
+        <LoadingRing />
       ) : (
         <>
           <h2>Users</h2>
@@ -41,6 +38,7 @@ export const Search = () => {
                         src={user.image}
                         alt="profile-img-mini"
                         className="profile-img-mini me-2"
+                        referrerPolicy="no-referrer"
                       />
                       <Link
                         className="unstyled-link"

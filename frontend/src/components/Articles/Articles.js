@@ -8,6 +8,7 @@ import { Pagination } from "@mui/material";
 import classNames from "classnames";
 import { ArticleItem } from "./ArticleItem";
 import { useDeleteMany } from "../../Hooks/ArticleHooks/UseDeleteMany";
+import { LoadingRing } from "../LoadingRing";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -141,10 +142,8 @@ export const Articles = ({ isDraft }) => {
   }, [myArticles, isDraft, navigate, id]);
 
   return isLoading ? (
-    <div className="container mt-5 d-flex justify-content-center">
-      <div className="lds-ring">
-        <div></div>
-      </div>
+    <div className="container mt-5 ">
+      <LoadingRing />
     </div>
   ) : localUser && articles ? (
     <div className="container mt-5 pb-4 text-info">

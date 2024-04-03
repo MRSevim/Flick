@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useGetFollows } from "../Hooks/FollowHooks/UseGetFollows";
+import { LoadingRing } from "./LoadingRing";
 
 export const Follows = ({ type }) => {
   const [users, setUsers] = useState(null);
@@ -29,11 +30,7 @@ export const Follows = ({ type }) => {
   return (
     <div className="container mt-3">
       {isLoading ? (
-        <div className=" d-flex justify-content-center">
-          <div className="lds-ring">
-            <div></div>
-          </div>
-        </div>
+        <LoadingRing />
       ) : (
         <div className="d-flex flex-column align-items-center">
           <h2>{capitalizeFirstLetter(type)}</h2>
@@ -47,6 +44,7 @@ export const Follows = ({ type }) => {
                         src={user.image}
                         alt="profile-img-mini"
                         className="profile-img-mini me-2"
+                        referrerPolicy="no-referrer"
                       />
                       <Link
                         className="unstyled-link"

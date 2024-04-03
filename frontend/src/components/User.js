@@ -4,6 +4,7 @@ import { useGetPublicUser } from "../Hooks/UserHooks/UseGetPublicUser";
 import { useFollowUser } from "../Hooks/FollowHooks/UseFollowUser";
 import { useUserContext } from "../Contexts/UserContext";
 import { FollowButtons } from "./FollowButtons";
+import { LoadingRing } from "./LoadingRing";
 
 export const User = () => {
   const { username } = useParams();
@@ -53,11 +54,7 @@ export const User = () => {
   return (
     <div className="container mt-3">
       {isLoading ? (
-        <div className=" d-flex justify-content-center">
-          <div className="lds-ring">
-            <div></div>
-          </div>
-        </div>
+        <LoadingRing />
       ) : (
         <div className="row">
           <div className="col col-12 col-lg-3">
@@ -66,6 +63,7 @@ export const User = () => {
                 src={user?.image}
                 alt="profile-img-large"
                 className="profile-img"
+                referrerPolicy="no-referrer"
               />
             </div>
             <div className="text-center">
