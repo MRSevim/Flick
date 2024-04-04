@@ -1,13 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { EditorComponent } from "../EditorComponent";
 import { useEditArticle } from "../../Hooks/ArticleHooks/UseEditArticle";
 import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
 import { useUserContext } from "../../Contexts/UserContext";
 import { TagsForm } from "../TagsForm";
 import { LoadingRing } from "../LoadingRing";
+import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
+import { DeleteButton } from "./DeleteButton";
+import links from "../../Utils/Links";
 
-export const Edit = ({ isDraft }) => {
+export const Edit = () => {
+  const [searchParams] = useSearchParams();
+  const isDraftstring = searchParams.get("isDraft");
+  const isDraft = isDraftstring === "true";
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [user] = useUserContext();
@@ -19,6 +25,17 @@ export const Edit = ({ isDraft }) => {
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
   const successMessageRef = useRef(null);
+  const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
+    useDeleteArticle();
+
+  const deleteArticle = async () => {
+    const response = await deleteArticleCall(id);
+    if (response.ok) {
+      navigate(
+        isDraft ? links.allDrafts(user._id) : links.allArticles(user._id)
+      );
+    }
+  };
 
   useEffect(() => {
     if (successMessageRef.current) {
@@ -35,7 +52,7 @@ export const Edit = ({ isDraft }) => {
 
   useEffect(() => {
     if (user === undefined) {
-      navigate("/");
+      navigate(links.homepage);
       return;
     }
 
@@ -48,7 +65,7 @@ export const Edit = ({ isDraft }) => {
         setTags(json.tags);
         if (user && json) {
           if (user._id !== json.user._id) {
-            navigate("/");
+            navigate(links.homepage);
             return;
           }
         }
@@ -70,7 +87,7 @@ export const Edit = ({ isDraft }) => {
             "Article published. Redirecting to puslished article..."
           );
           setTimeout(() => {
-            navigate("/article/" + id);
+            navigate(links.article(id));
           }, 3000);
         } else {
           setSuccessMessage("Saved...");
@@ -115,6 +132,11 @@ export const Edit = ({ isDraft }) => {
         className="mt-3 d-flex justify-content-center
       "
       >
+        <DeleteButton
+          onClick={deleteArticle}
+          deleteLoading={deleteLoading}
+          classes={"me-2"}
+        />
         <button
           className="btn btn-lg btn-secondary me-2"
           disabled={editLoading}

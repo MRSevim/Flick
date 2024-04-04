@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useSignup } from "../Hooks/UserHooks/UseSignup";
+import links from "../Utils/Links";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ export const SignUp = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate(links.homepage);
     }
   });
 
@@ -99,7 +100,7 @@ export const SignUp = () => {
         />
         <p className="text-center mt-3">
           Already have an account?
-          <Link to={"/login"}>
+          <Link to={links.login}>
             <button type="button" className="btn btn-outline-light ms-2">
               Login
             </button>

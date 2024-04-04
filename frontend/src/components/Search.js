@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
 import { LoadingRing } from "./LoadingRing";
+import links from "../Utils/Links";
+import { ImageComponent } from "./ImageComponent";
 
 export const Search = () => {
-  const params = new URLSearchParams(useLocation().search);
-  const query = params.get("q");
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q");
   const [users, setUsers] = useState(null);
   const [articles, setArticles] = useState(null);
-
   const { searchAll, isLoading } = useSearchAll();
 
   useEffect(() => {
@@ -34,15 +35,14 @@ export const Search = () => {
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
                     <div className="card-body d-flex align-items-center">
-                      <img
+                      <ImageComponent
                         src={user.image}
-                        alt="profile-img-mini"
-                        className="profile-img-mini me-2"
-                        referrerPolicy="no-referrer"
+                        type={"mini"}
+                        classes={"me-2"}
                       />
                       <Link
                         className="unstyled-link"
-                        to={"/user/" + user.username}
+                        to={links.publicUser(user.username)}
                       >
                         <h5 className="card-title m-0 search-card-text">
                           {user.username}
@@ -71,7 +71,7 @@ export const Search = () => {
                       </span>
                       <Link
                         className="unstyled-link"
-                        to={"/article/" + article._id}
+                        to={links.article(article._id)}
                       >
                         <h5 className="card-title m-0 search-card-text">
                           {article.title}

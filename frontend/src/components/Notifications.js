@@ -6,6 +6,7 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useClearNotifications } from "../Hooks/NotificationHooks/UseClearNotifications";
 import notificationApi from "../Utils/NotificationApiFunctions";
+import links from "../Utils/Links";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -103,7 +104,7 @@ export const Notifications = () => {
                         "d-inline unstyled-link fw-bold": true,
                         "text-white": !notification.read,
                       })}
-                      to={"/user/" + notification.user.username}
+                      to={links.publicUser(notification.user.username)}
                     >
                       {notification.user.username}
                     </Link>
@@ -123,7 +124,7 @@ export const Notifications = () => {
                           "unstyled-link ms-1 fw-bold": true,
                           "text-white": !notification.read,
                         })}
-                        to={"/article/" + notification.target._id}
+                        to={links.article(notification.target._id)}
                       >
                         {notification.target.title.substring(0, 30)}
                         {notification.target.title.length > 40 && "..."}

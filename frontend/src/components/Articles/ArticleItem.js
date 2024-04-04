@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
+import links from "../../Utils/Links";
 
 export const ArticleItem = ({
   deleteLoading,
@@ -63,7 +64,11 @@ export const ArticleItem = ({
           <h5 className="card-title" title={article.title}>
             {" "}
             <Link
-              to={(!isDraft ? "/article/" : "/draft/edit/") + article._id}
+              to={
+                !isDraft
+                  ? links.article(article._id)
+                  : links.edit(article._id, true)
+              }
               className="unstyled-link"
             >
               <span className=" hovered-link">
@@ -89,7 +94,11 @@ export const ArticleItem = ({
             {article.content.trim().length >= 400 ? (
               <p>
                 <Link
-                  to={(!isDraft ? "/article/" : "/draft/edit/") + article._id}
+                  to={
+                    !isDraft
+                      ? links.article(article._id)
+                      : links.edit(article._id, true)
+                  }
                   className="unstyled-link"
                 >
                   <span className="hovered-link">Read more...</span>

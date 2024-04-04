@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useGetArticles } from "../../Hooks/ArticleHooks/UseGetArticles";
 import { useUserContext } from "../../Contexts/UserContext";
 import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
@@ -9,6 +14,7 @@ import classNames from "classnames";
 import { ArticleItem } from "./ArticleItem";
 import { useDeleteMany } from "../../Hooks/ArticleHooks/UseDeleteMany";
 import { LoadingRing } from "../LoadingRing";
+import links from "../../Utils/Links";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -24,8 +30,8 @@ export const Articles = ({ isDraft }) => {
     useLikeArticle();
   const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [totalPages, setTotalPages] = useState(null);
-  const params = new URLSearchParams(useLocation().search);
-  const page = params.get("page");
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page");
   const [selected, setSelected] = useState([]);
 
   function handleSelect(value, id) {
@@ -71,9 +77,9 @@ export const Articles = ({ isDraft }) => {
 
   const editArticle = (id) => {
     if (isDraft) {
-      navigate("/draft/edit/" + id);
+      navigate(links.edit(id, true));
     } else {
-      navigate("/article/edit/" + id);
+      navigate(links.edit(id, false));
     }
   };
   const likeArticle = async (id) => {
@@ -137,7 +143,7 @@ export const Articles = ({ isDraft }) => {
 
   useEffect(() => {
     if (myArticles === false && isDraft) {
-      navigate(`/article/user/${id}/articles`);
+      navigate(links.allArticles(id));
     }
   }, [myArticles, isDraft, navigate, id]);
 
@@ -154,7 +160,7 @@ export const Articles = ({ isDraft }) => {
             <div className="d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-primary">
               <Link
                 onClick={setLoadingToTrue}
-                to={`/article/user/${id}/articles`}
+                to={links.allArticles(id)}
                 className={classNames({
                   "unstyled-link me-2": true,
                   active: !isDraft,
@@ -164,7 +170,7 @@ export const Articles = ({ isDraft }) => {
               </Link>
               <Link
                 onClick={setLoadingToTrue}
-                to={`/article/user/${id}/drafts`}
+                to={links.allDrafts(id)}
                 className={classNames({
                   "unstyled-link": true,
                   active: isDraft,

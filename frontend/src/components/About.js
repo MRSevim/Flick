@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import links from "../Utils/Links";
 
 export const About = () => {
   return (
@@ -44,7 +45,7 @@ export const About = () => {
         adding to my web development skills. For more information about me, you
         can check my{" "}
         <Link
-          to={"https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/"}
+          to={links.linkedIn}
           className="unstyled-link about-link"
           target="_blank"
         >
@@ -52,7 +53,7 @@ export const About = () => {
         </Link>{" "}
         page and my{" "}
         <Link
-          to={"https://mrsevim.github.io/Portfolio/"}
+          to={links.portfolio}
           className="unstyled-link about-link"
           target="_blank"
         >

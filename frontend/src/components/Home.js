@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import links from "../Utils/Links";
 
 export const Home = () => {
   return (
@@ -9,7 +10,7 @@ export const Home = () => {
           <div className="row text-info align-items-center">
             <div className="col col-12 col-lg-6 hero-image">
               <div className="d-flex justify-content-center align-items-center h-100">
-                <Link to={"/create-an-article"}>
+                <Link to={links.createAnArticle}>
                   <button className="btn btn-secondary btn-xl ms-3">
                     Start Your Journey
                   </button>

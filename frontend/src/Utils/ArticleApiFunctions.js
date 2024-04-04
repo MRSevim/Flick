@@ -43,7 +43,8 @@ const articleApi = {
     return response;
   },
   getArticle: async (id, isDraft) => {
-    const url = !isDraft ? "/article/" : "/article/draft/";
+    const url = isDraft ? "/article/draft/" : "/article/";
+
     const response = await fetch(url + id);
 
     return response;

@@ -7,6 +7,8 @@ import { useLogout } from "../Hooks/UserHooks/UseLogout";
 import { SearchBar } from "./SearchBar";
 import { Notifications } from "./Notifications";
 import { UserMenu } from "./UserMenu";
+import links from "../Utils/Links";
+import { ImageComponent } from "./ImageComponent";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -56,13 +58,13 @@ export const Header = () => {
             </h1>
             <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li className="nav-item">
-                <Link to="/" className={setActiveClassNames("/")}>
+                <Link to={links.homepage} className={setActiveClassNames("/")}>
                   Home
                 </Link>
               </li>
               <li className="nav-item">
                 <Link
-                  to="/most-liked"
+                  to={links.mostLiked}
                   className={setActiveClassNames("/most-liked")}
                 >
                   Most liked
@@ -70,14 +72,17 @@ export const Header = () => {
               </li>
               <li className="nav-item">
                 <Link
-                  to="/create-an-article"
+                  to={links.createAnArticle}
                   className={setActiveClassNames("/create-an-article")}
                 >
                   Create an Article
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/about" className={setActiveClassNames("/about")}>
+                <Link
+                  to={links.about}
+                  className={setActiveClassNames("/about")}
+                >
                   About
                 </Link>
               </li>
@@ -92,12 +97,7 @@ export const Header = () => {
                   }}
                   className="text-end pointer"
                 >
-                  <img
-                    src={user.image}
-                    alt="profile small"
-                    className="profile-img-mini"
-                    referrerPolicy="no-referrer"
-                  />
+                  <ImageComponent src={user.image} type={"mini"} />
                 </div>
                 {userMenu && (
                   <UserMenu
@@ -110,12 +110,12 @@ export const Header = () => {
               </div>
             ) : user === undefined ? (
               <div className="text-end user-container">
-                <Link to="/login">
+                <Link to={links.login}>
                   <button type="button" className="btn btn-outline-light me-2">
                     Login
                   </button>
                 </Link>
-                <Link to="/sign-up">
+                <Link to={links.signup}>
                   <button type="button" className="btn btn-secondary">
                     Sign-up
                   </button>

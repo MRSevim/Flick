@@ -7,6 +7,8 @@ import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
 import { FollowButtons } from "./FollowButtons";
 import { LoadingRing } from "./LoadingRing";
+import links from "../Utils/Links";
+import { ImageComponent } from "./ImageComponent";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -30,7 +32,7 @@ export const MyProfile = () => {
   useEffect(() => {
     if (user === undefined) {
       myModalRef?.current?.hide();
-      navigate("/");
+      navigate(links.homepage);
       return;
     }
 
@@ -102,12 +104,7 @@ export const MyProfile = () => {
         <div className="container mt-5 pb-4">
           <div className="row d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-              <img
-                src={image}
-                alt="profile large"
-                className="profile-img"
-                referrerPolicy="no-referrer"
-              />
+              <ImageComponent src={user.image} type={"large"} />
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>

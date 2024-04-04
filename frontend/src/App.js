@@ -26,6 +26,7 @@ import {
 import { Article } from "./components/Articles/Article.js";
 import { MyProfile } from "./components/MyProfile.js";
 import { User } from "./components/User.js";
+import links from "./Utils/Links.js";
 
 function App() {
   return (
@@ -53,7 +54,7 @@ function AppContent() {
           path="/login"
           element={
             user ? (
-              <Navigate to="/" />
+              <Navigate to={links.homepage} />
             ) : (
               <div className="mt-5">
                 <Login />
@@ -63,7 +64,7 @@ function AppContent() {
         />
         <Route
           path="/sign-up"
-          element={user ? <Navigate to="/" /> : <SignUp />}
+          element={user ? <Navigate to={links.homepage} /> : <SignUp />}
         />
         <Route path="/create-an-article" element={<CreateAnArticle />} />
         <Route
@@ -79,10 +80,8 @@ function AppContent() {
         <Route path="/followings/:id" element={<Follows type="followings" />} />
         <Route path="/user/:username" element={<User />} />
         <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/article/edit/:id" element={<Edit isDraft={false} />} />
-        <Route path="/draft/edit/:id" element={<Edit isDraft={true} />} />
-        <Route path="/article/:id" element={<Article isDraft={false} />} />
-        <Route path="/draft/:id" element={<Article isDraft={true} />} />
+        <Route path="/edit/:id" element={<Edit />} />
+        <Route path="/article/:id" element={<Article />} />
         <Route path="/about" element={<About />} />
         <Route exact path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />

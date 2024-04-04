@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useGetMostLiked } from "../Hooks/LikeHooks/UserGetMostLiked";
 import classNames from "classnames";
 import { LoadingRing } from "./LoadingRing";
+import links from "../Utils/Links";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");
@@ -92,7 +93,7 @@ export const MostLiked = () => {
                 – who knows, they might become among the most liked!
               </b>
               <br />
-              <Link to={"/create-an-article"}>
+              <Link to={links.createAnArticle}>
                 <button className="btn btn-primary btn-lg mt-4">
                   Create one here
                 </button>

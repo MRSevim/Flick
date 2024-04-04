@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import links from "../Utils/Links";
 
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
   return (
@@ -9,7 +10,7 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
           {user.username}
         </p>
         <Link
-          to="/my-profile"
+          to={links.myProfile}
           className="unstyled-link"
           onClick={() => {
             setUserMenu(false);
@@ -20,7 +21,7 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
       </div>
       <p className="m-0">
         <Link
-          to={"/article/user/" + myId + "/articles?page=1"}
+          to={links.allArticles(myId)}
           className="unstyled-link"
           onClick={() => {
             setUserMenu(false);

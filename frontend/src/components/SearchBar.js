@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
 import Autocomplete from "@mui/material/Autocomplete";
+import links from "../Utils/Links";
+import { ImageComponent } from "./ImageComponent";
 
 export const SearchBar = () => {
   const navigate = useNavigate();
@@ -12,7 +14,7 @@ export const SearchBar = () => {
   const search = (e) => {
     e.preventDefault();
     if (searchParam.trim()) {
-      navigate("/search?q=" + searchParam.trim());
+      navigate(links.search(searchParam.trim()));
     }
   };
 
@@ -44,17 +46,18 @@ export const SearchBar = () => {
         renderOption={(props, option, state, ownerState) => (
           <Link
             to={
-              option.username ? "/user/" + option._id : "/article/" + option._id
+              option.username
+                ? links.publicUser(option.username)
+                : links.article(option._id)
             }
             {...props}
             key={option._id}
           >
             {option.username && (
-              <img
+              <ImageComponent
                 src={option.image}
-                alt="profile-img-mini"
-                className="profile-img-mini me-2"
-                referrerPolicy="no-referrer"
+                type={"mini"}
+                classes={"me-2"}
               />
             )}
             <p className="mb-1">{ownerState.getOptionLabel(option)}</p>
@@ -62,7 +65,7 @@ export const SearchBar = () => {
         )}
         onInputChange={handleInputChange}
         renderInput={(params) => (
-          <div ref={params.InputProps.ref}>
+          <div ref={params.InputProps.ref} className="d-flex">
             <input
               {...params.inputProps}
               type="search"
@@ -70,6 +73,10 @@ export const SearchBar = () => {
               placeholder="Search..."
               aria-label="Search"
             ></input>
+            <i
+              className="bi bi-search h4 m-0 ms-2 d-flex align-items-center pointer"
+              onClick={search}
+            ></i>
           </div>
         )}
       />

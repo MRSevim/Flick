@@ -5,6 +5,8 @@ import { useFollowUser } from "../Hooks/FollowHooks/UseFollowUser";
 import { useUserContext } from "../Contexts/UserContext";
 import { FollowButtons } from "./FollowButtons";
 import { LoadingRing } from "./LoadingRing";
+import links from "../Utils/Links";
+import { ImageComponent } from "./ImageComponent";
 
 export const User = () => {
   const { username } = useParams();
@@ -59,12 +61,7 @@ export const User = () => {
         <div className="row">
           <div className="col col-12 col-lg-3">
             <div className="d-flex justify-content-center">
-              <img
-                src={user?.image}
-                alt="profile-img-large"
-                className="profile-img"
-                referrerPolicy="no-referrer"
-              />
+              <ImageComponent src={user?.image} type={"large"} />
             </div>
             <div className="text-center">
               <h1 className="fw-bold"> {user.username}</h1>
@@ -72,10 +69,7 @@ export const User = () => {
                 They have been a member of the website since{" "}
                 <span className="fw-bold">{memberSince}</span>
               </p>
-              <Link
-                className="unstyled-link"
-                to={"/article/user/" + user._id + "/articles?page=1"}
-              >
+              <Link className="unstyled-link" to={links.allArticles(user._id)}>
                 <button type="button" className="btn btn-primary">
                   See all of their articles...
                 </button>
@@ -114,7 +108,7 @@ export const User = () => {
                   <h4>
                     <Link
                       className="unstyled-link me-2 text-decoration-underline"
-                      to={"/article/user/" + user._id + "/articles?page=1"}
+                      to={links.allArticles(user._id)}
                     >
                       Check out all of their articles!
                     </Link>
@@ -133,7 +127,7 @@ export const User = () => {
                   <span>
                     <Link
                       className="unstyled-link"
-                      to={"/article/" + article._id}
+                      to={links.article(article._id)}
                     >
                       {article.title}
                     </Link>

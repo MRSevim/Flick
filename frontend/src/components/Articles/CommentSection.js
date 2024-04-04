@@ -10,6 +10,8 @@ import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
 import { useEditComment } from "../../Hooks/CommentHooks/UseEditComment";
 import { useDeleteComment } from "../../Hooks/CommentHooks/UseDeleteComment";
+import links from "../../Utils/Links";
+import { ImageComponent } from "../ImageComponent";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -99,13 +101,15 @@ export const CommentSection = ({ article }) => {
           className="border border-4 my-2 p-2 position-relative"
           key={comment._id}
         >
-          <img
+          <ImageComponent
             src={comment.user.image}
-            alt="profile-img-mini"
-            className="profile-img-mini me-2"
-            referrerPolicy="no-referrer"
+            type={"mini"}
+            classes={"me-2"}
           />
-          <Link className="unstyled-link" to={"/user/" + comment.user.username}>
+          <Link
+            className="unstyled-link"
+            to={links.publicUser(comment.user.username)}
+          >
             <b>{comment.user.username}</b>
           </Link>
           <span className="position-absolute top-0 end-0 m-2">
@@ -114,7 +118,7 @@ export const CommentSection = ({ article }) => {
 
           {editedCommentId !== comment._id && (
             <div
-              className="my-2"
+              className="m-2"
               dangerouslySetInnerHTML={{
                 __html: comment.content,
               }}

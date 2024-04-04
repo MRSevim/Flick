@@ -4,6 +4,7 @@ import { useUserContext } from "../Contexts/UserContext";
 import { useLogin } from "../Hooks/UserHooks/UseLogin";
 import { GoogleLogin } from "@react-oauth/google";
 import classNames from "classnames";
+import links from "../Utils/Links";
 
 export const Login = ({ onHideModal, children, type }) => {
   const [username, setUsername] = useState("");
@@ -15,7 +16,7 @@ export const Login = ({ onHideModal, children, type }) => {
 
   useEffect(() => {
     if (user && location.pathname === "/login") {
-      navigate("/");
+      navigate(links.homepage);
     }
   });
 
@@ -95,7 +96,7 @@ export const Login = ({ onHideModal, children, type }) => {
           </div>
           <p className="text-center mt-3">
             Don't have an account?
-            <Link to={"/sign-up"}>
+            <Link to={links.signup}>
               <button
                 onClick={onHideModal}
                 type="button"

@@ -8,6 +8,7 @@ import { Login } from "../Login";
 import { Modal } from "bootstrap";
 import { useCreateArticle } from "../../Hooks/ArticleHooks/UseCreateArticle";
 import { TagsForm } from "../TagsForm";
+import links from "../../Utils/Links";
 
 export const CreateAnArticle = () => {
   const localStorageContent = JSON.parse(
@@ -65,7 +66,7 @@ export const CreateAnArticle = () => {
         tags
       );
       if (res.ok) {
-        navigate("/article/user/" + user._id + "/articles");
+        navigate(links.allArticles(user._id));
       }
     }
     if (!user) {
@@ -84,7 +85,7 @@ export const CreateAnArticle = () => {
         tags
       );
       if (res.ok) {
-        navigate("/article/user/" + user._id + "/drafts");
+        navigate(links.allDrafts(user._id));
       }
     }
     if (!user) {

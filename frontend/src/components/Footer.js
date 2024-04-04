@@ -1,6 +1,7 @@
 import React from "react";
 import "./Footer.css";
 import { Link } from "react-router-dom";
+import links from "../Utils/Links";
 
 export const Footer = () => {
   return (
@@ -11,14 +12,14 @@ export const Footer = () => {
           <b>Contact</b>
           <div className="d-flex mt-2">
             <Link
-              to={"https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/"}
+              to={links.linkedIn}
               className="footer-link unstyled-link me-2"
               target="_blank"
             >
               <i className="bi bi-linkedin h4"></i>
             </Link>
             <Link
-              to={"mailto: lionrasit@gmail.com"}
+              to={links.mail}
               className="footer-link unstyled-link me-2"
               target="_blank"
             >

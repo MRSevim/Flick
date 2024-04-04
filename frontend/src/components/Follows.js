@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useGetFollows } from "../Hooks/FollowHooks/UseGetFollows";
 import { LoadingRing } from "./LoadingRing";
+import links from "../Utils/Links";
+import { ImageComponent } from "./ImageComponent";
 
 export const Follows = ({ type }) => {
   const [users, setUsers] = useState(null);
@@ -39,20 +41,19 @@ export const Follows = ({ type }) => {
               {users.map((user) => (
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
-                    <div className="card-body">
-                      <img
+                    <div className="card-body d-flex align-items-center">
+                      <ImageComponent
                         src={user.image}
-                        alt="profile-img-mini"
-                        className="profile-img-mini me-2"
-                        referrerPolicy="no-referrer"
+                        type={"mini"}
+                        classes={"me-2"}
                       />
                       <Link
                         className="unstyled-link"
-                        to={"/user/" + user.username}
+                        to={links.publicUser(user.username)}
                       >
-                        <h5 className="card-title m-0 search-card-text">
+                        <span className="card-title m-0 search-card-text h5">
                           {user.username}
-                        </h5>
+                        </span>
                       </Link>
                     </div>
                   </div>

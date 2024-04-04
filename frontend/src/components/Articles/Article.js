@@ -10,8 +10,9 @@ import { EditButton } from "./EditButton";
 import { LikeButton } from "./LikeButton";
 import { CommentSection } from "./CommentSection";
 import { LoadingRing } from "../LoadingRing";
+import links from "../../Utils/Links";
 
-export const Article = ({ isDraft }) => {
+export const Article = () => {
   const [user] = useUserContext();
   const { id } = useParams();
   const ref = useRef(null);
@@ -21,7 +22,6 @@ export const Article = ({ isDraft }) => {
   const [createdAt, setCreatedAt] = useState(null);
   const [updatedAt, setUpdatedAt] = useState(null);
   const [article, setArticle] = useState(null);
-
   const [myArticle, setMyArticle] = useState(null);
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
@@ -31,18 +31,12 @@ export const Article = ({ isDraft }) => {
   const deleteArticle = async (_id) => {
     const response = await deleteArticleCall(_id);
     if (response.ok) {
-      navigate(
-        "/article/user/" + user._id + (isDraft ? "/drafts" : "/articles")
-      );
+      navigate(links.allArticles(user._id));
     }
   };
 
   const editArticle = (id) => {
-    if (isDraft) {
-      navigate("/draft/edit/" + id);
-    } else {
-      navigate("/article/edit/" + id);
-    }
+    navigate(links.edit(id, false));
   };
   const likeArticle = async (id) => {
     const { response, json } = await likeArticleCall(id);
@@ -53,7 +47,7 @@ export const Article = ({ isDraft }) => {
 
   useEffect(() => {
     const get = async () => {
-      const { response, json } = await getArticle(id, isDraft);
+      const { response, json } = await getArticle(id, false);
       if (response.ok) {
         setArticle(json);
         const created = new Date(json?.createdAt);
@@ -64,13 +58,7 @@ export const Article = ({ isDraft }) => {
     };
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, isDraft]);
-
-  useEffect(() => {
-    if (isDraft && myArticle === false) {
-      navigate("/");
-    }
-  }, [isDraft, myArticle, navigate]);
+  }, [id]);
 
   useEffect(() => {
     if (article) {
@@ -117,7 +105,7 @@ export const Article = ({ isDraft }) => {
           <div className="article col col-12 col-lg-8 mt-2">
             <h1 className="article-title">{article.title}</h1>
             <div className="mb-2">
-              {!isDraft && (
+              {!myArticle && (
                 <LikeButton
                   classes="me-1"
                   article={article}
@@ -158,7 +146,7 @@ export const Article = ({ isDraft }) => {
                   Written by{" "}
                   <Link
                     className="unstyled-link"
-                    to={"/user/" + article.user?.username}
+                    to={links.publicUser(article.user?.username)}
                   >
                     <span className="fw-bold">{article.user?.username}</span>
                   </Link>
