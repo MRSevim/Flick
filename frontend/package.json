@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:5000/api",
+  "proxy": "http://localhost:5000/api/",
   "name": "flick",
   "version": "0.1.0",
   "private": true,

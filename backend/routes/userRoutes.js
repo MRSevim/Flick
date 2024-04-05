@@ -32,6 +32,6 @@ router
   .delete(requireAuth, deleteUser);
 
 //get public user profile
-router.get("/profile/:username", getPublicUser);
+router.get("/:id", getPublicUser);
 
 module.exports = router;

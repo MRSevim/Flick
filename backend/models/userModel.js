@@ -7,12 +7,14 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
+      index: {
+        unique: true,
+        partialFilterExpression: { isGoogleLogin: { $eq: false } },
+      },
     },
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -42,6 +44,13 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.index(
+  { email: 1, isGoogleLogin: 1 },
+  {
+    unique: true,
+  }
+);
+
 // static signup method
 userSchema.statics.signup = async function (res, username, email, password) {
   // validation
@@ -54,8 +63,8 @@ userSchema.statics.signup = async function (res, username, email, password) {
     throw new Error("Email is not valid");
   }
 
-  const emailExists = await this.findOne({ email });
-  const usernameExists = await this.findOne({ username });
+  const emailExists = await this.findOne({ email, isGoogleLogin: false });
+  const usernameExists = await this.findOne({ username, isGoogleLogin: false });
 
   if (emailExists && usernameExists) {
     res.status(400);
@@ -91,7 +100,7 @@ userSchema.statics.login = async function (res, username, password) {
     throw new Error("All fields must be filled");
   }
 
-  const user = await this.findOne({ username });
+  const user = await this.findOne({ username, isGoogleLogin: false });
   if (!user) {
     res.status(400);
     throw new Error("Incorrect username or password");
@@ -107,29 +116,14 @@ userSchema.statics.login = async function (res, username, password) {
 };
 
 userSchema.statics.googleLogin = async function (res, name, email, picture) {
-  const user = await this.findOne({ email });
-  const user2 = await this.findOne({ username: name });
-
-  if (user && !user.isGoogleLogin) {
-    res.status(400);
-    throw new Error("There is already an account with that email");
-  }
-
-  if (user2 && !user2.isGoogleLogin) {
-    res.status(400);
-    throw new Error(
-      `There is already an account with username "${user2.username}"`
-    );
-  }
-
   await this.findOneAndUpdate(
-    { email },
-    { username: name, isGoogleLogin: true, image: picture },
+    { email, isGoogleLogin: true },
+    { username: name, image: picture },
     { upsert: true }
   );
-  const newUser = await this.findOne({ email });
+  const user = await this.findOne({ email, isGoogleLogin: true });
 
-  return newUser;
+  return user;
 };
 
 // Encrypt password using bcrypt

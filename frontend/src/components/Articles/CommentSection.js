@@ -108,7 +108,7 @@ export const CommentSection = ({ article }) => {
           />
           <Link
             className="unstyled-link"
-            to={links.publicUser(comment.user.username)}
+            to={links.publicUser(comment.user._id)}
           >
             <b>{comment.user.username}</b>
           </Link>

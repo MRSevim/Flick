@@ -9,7 +9,7 @@ import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 
 export const User = () => {
-  const { username } = useParams();
+  const { id } = useParams();
   const { getPublicUser, isLoading } = useGetPublicUser();
   const [globalUser] = useUserContext();
   const [user, setUser] = useState(null);
@@ -30,7 +30,7 @@ export const User = () => {
 
   useEffect(() => {
     const get = async () => {
-      const { response, json } = await getPublicUser(username);
+      const { response, json } = await getPublicUser(id);
       if (response.ok) {
         setFollowerNumber(json.followerNumber);
         setFollowingNumber(json.followingNumber);
@@ -48,7 +48,7 @@ export const User = () => {
     get();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username, setUser]);
+  }, [id, setUser]);
 
   if (!user) {
     return;

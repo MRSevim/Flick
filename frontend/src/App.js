@@ -78,7 +78,7 @@ function AppContent() {
         <Route path="/search" element={<Search />} />
         <Route path="/followers/:id" element={<Follows type="followers" />} />
         <Route path="/followings/:id" element={<Follows type="followings" />} />
-        <Route path="/user/:username" element={<User />} />
+        <Route path="/user/:id" element={<User />} />
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/article/:id" element={<Article />} />

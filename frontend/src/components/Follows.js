@@ -49,7 +49,7 @@ export const Follows = ({ type }) => {
                       />
                       <Link
                         className="unstyled-link"
-                        to={links.publicUser(user.username)}
+                        to={links.publicUser(user._id)}
                       >
                         <span className="card-title m-0 search-card-text h5">
                           {user.username}

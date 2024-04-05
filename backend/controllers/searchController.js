@@ -17,7 +17,7 @@ const getBySearch = async (req, res, next) => {
       articles = await Article.find({
         title: param,
         isDraft: false,
-      }).select("_id title likes");
+      }).select("_id title likes tags");
     }
 
     res.status(200).json({ users, articles });

@@ -104,7 +104,7 @@ export const Notifications = () => {
                         "d-inline unstyled-link fw-bold": true,
                         "text-white": !notification.read,
                       })}
-                      to={links.publicUser(notification.user.username)}
+                      to={links.publicUser(notification.user._id)}
                     >
                       {notification.user.username}
                     </Link>

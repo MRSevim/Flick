@@ -15,8 +15,8 @@ const links = {
   followings: (id) => {
     return "/followings/" + id;
   },
-  publicUser: (username) => {
-    return "/user/" + username;
+  publicUser: (id) => {
+    return "/user/" + id;
   },
   article: (id) => {
     return "/article/" + id;

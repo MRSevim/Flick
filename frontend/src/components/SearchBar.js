@@ -32,7 +32,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <form className="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3" onSubmit={search}>
+    <form className="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-5" onSubmit={search}>
       <Autocomplete
         freeSolo
         options={isLoading ? [] : [...options.users, ...options.articles]}
@@ -47,7 +47,7 @@ export const SearchBar = () => {
           <Link
             to={
               option.username
-                ? links.publicUser(option.username)
+                ? links.publicUser(option._id)
                 : links.article(option._id)
             }
             {...props}
@@ -67,6 +67,11 @@ export const SearchBar = () => {
         renderInput={(params) => (
           <div ref={params.InputProps.ref} className="d-flex">
             <input
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  search(e);
+                }
+              }}
               {...params.inputProps}
               type="search"
               className="form-control form-control-dark"

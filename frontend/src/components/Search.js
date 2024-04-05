@@ -4,9 +4,10 @@ import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
 import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
+import { AdvancedSearch } from "./AdvancedSearch";
 
 export const Search = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("q");
   const [users, setUsers] = useState(null);
   const [articles, setArticles] = useState(null);
@@ -23,7 +24,12 @@ export const Search = () => {
   }, [query]);
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-5">
+      <AdvancedSearch
+        setSearchParams={setSearchParams}
+        setArticles={setArticles}
+        setUsers={setUsers}
+      />
       {isLoading ? (
         <LoadingRing />
       ) : (
@@ -42,7 +48,7 @@ export const Search = () => {
                       />
                       <Link
                         className="unstyled-link"
-                        to={links.publicUser(user.username)}
+                        to={links.publicUser(user._id)}
                       >
                         <h5 className="card-title m-0 search-card-text">
                           {user.username}
@@ -69,6 +75,11 @@ export const Search = () => {
                           article.likes.length +
                           (article.likes.length > 1 ? " likes" : " like")}
                       </span>
+                      {article.tags.map((tag, i) => (
+                        <Link key={i} className="me-1">
+                          #{tag}
+                        </Link>
+                      ))}
                       <Link
                         className="unstyled-link"
                         to={links.article(article._id)}

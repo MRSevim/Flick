@@ -35,7 +35,7 @@ const userApi = {
     return response;
   },
   getPublicUser: async (param) => {
-    const response = await fetch("/user/profile/" + param);
+    const response = await fetch("/user/" + param);
 
     return response;
   },
