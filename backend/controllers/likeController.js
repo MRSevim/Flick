@@ -43,6 +43,7 @@ const getMostLiked = async (req, res, next) => {
           likes: { $push: "$_id" },
           createdAt: { $first: "$article.createdAt" },
           updatedAt: { $first: "$article.updatedAt" },
+          tags: { $first: "$article.tags" },
         },
       },
       {
@@ -117,13 +118,29 @@ const like = async (req, res, next) => {
       message = "You liked the article";
 
       const notification = {
-        user: user._id,
+        users: [user._id],
         action: "like",
         target: article._id,
       };
 
       const notifiedUser = await User.findById(article?.user?._id);
-      notifiedUser.notifications.push(notification);
+      const existingNotification = notifiedUser.notifications.find(
+        (notification) => {
+          return (
+            notification.target?.toString() === article._id.toString() &&
+            notification.action === "like"
+          );
+        }
+      );
+
+      if (existingNotification) {
+        //add user to users array if user is not in it
+        if (!existingNotification.users.includes(user._id))
+          existingNotification.users.push(user._id);
+      } else {
+        notifiedUser.notifications.push(notification);
+      }
+
       await notifiedUser.save();
     }
     const updatedArticle = await article.save();

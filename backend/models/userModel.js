@@ -29,11 +29,12 @@ const userSchema = new mongoose.Schema(
     isGoogleLogin: { type: Boolean, default: false, required: true },
     notifications: [
       {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
+        users: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+        ],
         action: { type: String, required: true },
         target: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
         read: { type: Boolean, default: false, required: true },

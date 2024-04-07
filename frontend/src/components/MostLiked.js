@@ -66,20 +66,31 @@ export const MostLiked = () => {
             </div>
           )}
           {!isLoading && articles?.length > 0 && (
-            <div className="bg-primary p-3">
+            <div>
               {articles.map((article) => (
-                <div key={article._id}>
+                <div className="bg-primary rounded m-2 p-3" key={article._id}>
                   <span className="line-right">
                     <i className="bi bi-hand-thumbs-up h5"></i>
                     {" " +
                       article.likes.length +
                       (article.likes.length > 1 ? " likes" : " like")}
                   </span>
+                  {article.tags.map((tag, i) => {
+                    return (
+                      <Link
+                        to={links.tag(tag)}
+                        key={i}
+                        className="me-1 unstyled-link"
+                      >
+                        #{tag}
+                      </Link>
+                    );
+                  })}
                   <Link
                     className="unstyled-link"
                     to={"/article/" + article._id}
                   >
-                    <h5>{article.title}</h5>
+                    <h5 className="my-2">{article.title}</h5>
                   </Link>
                 </div>
               ))}

@@ -79,7 +79,7 @@ export const ArticleItem = ({
           </h5>
           {article.tags?.map((tag, i) => {
             return (
-              <Link key={i} className="me-1">
+              <Link to={links.tag(tag)} key={i} className="me-1">
                 #{tag}
               </Link>
             );

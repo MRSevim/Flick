@@ -7,7 +7,7 @@ const getNotifications = async (req, res, next) => {
       path: "notifications",
       populate: [
         {
-          path: "user",
+          path: "users",
           model: "User",
           select: "username",
         },

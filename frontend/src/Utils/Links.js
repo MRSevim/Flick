@@ -33,6 +33,9 @@ const links = {
   search: (param) => {
     return "/search?q=" + param;
   },
+  tag: (tag) => {
+    return "/search?advancedSearch=true&username=&title=&tags=" + tag;
+  },
 };
 
 export default links;

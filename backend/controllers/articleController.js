@@ -173,7 +173,7 @@ const createArticle = async (req, res, next) => {
     });
 
     const notification = {
-      user: user._id,
+      users: [user._id],
       action: "release",
       target: article._id,
     };

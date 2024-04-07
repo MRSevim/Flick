@@ -67,11 +67,23 @@ const followUser = async (req, res, next) => {
       message = "You followed " + followedUser.username;
       followedUser.followers.push(user._id);
       const notification = {
-        user: user._id,
+        users: [user._id],
         action: "follow",
         target: null,
       };
-      followedUser.notifications.push(notification);
+      const existingNotification = followedUser.notifications.find(
+        (notification) => {
+          return notification.action === "follow";
+        }
+      );
+      if (existingNotification) {
+        //add user to users array if user is not in it
+        if (!existingNotification.users.includes(user._id))
+          existingNotification.users.push(user._id);
+      } else {
+        followedUser.notifications.push(notification);
+      }
+
       await followedUser.save();
 
       user.following.push(followedUser._id);
@@ -91,7 +103,12 @@ const followUser = async (req, res, next) => {
 
     res.status(200).json({
       message,
-      followedUser,
+      followedUser: {
+        _id: followedUser._id,
+        username: followedUser.username,
+        followers: followedUser.followers,
+        following: followedUser.following,
+      },
       followerNumber: followedUser.followers.length,
       followingNumber: followedUser.following.length,
     });

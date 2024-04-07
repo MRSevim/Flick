@@ -97,17 +97,23 @@ export const Notifications = () => {
                     "bg-secondary text-white": !notification.read,
                   })}
                 >
-                  User{" "}
-                  {notification.user && (
+                  {notification.users[0].username && (
                     <Link
                       className={classNames({
                         "d-inline unstyled-link fw-bold": true,
                         "text-white": !notification.read,
                       })}
-                      to={links.publicUser(notification.user._id)}
+                      to={links.publicUser(notification.users[0]._id)}
                     >
-                      {notification.user.username}
+                      {notification.users[0].username}
                     </Link>
+                  )}
+                  {notification.users.length > 1 && (
+                    <span>
+                      {" "}
+                      and {notification.users.length - 1}{" "}
+                      {notification.users.length - 1 > 1 ? "others" : "other"}
+                    </span>
                   )}
                   {notification.action === "follow" && " started following you"}
                   {notification.action === "like" && " liked your article: "}
