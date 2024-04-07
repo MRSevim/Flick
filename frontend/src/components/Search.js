@@ -12,6 +12,9 @@ export const Search = () => {
   const [users, setUsers] = useState(null);
   const [articles, setArticles] = useState(null);
   const { searchAll, isLoading } = useSearchAll();
+  const advancedSearchString = searchParams.get("advancedSearch");
+  const advancedSearch = advancedSearchString === "true";
+  const [advancedLoading, setAdvancedLoading] = useState(true);
 
   useEffect(() => {
     const get = async () => {
@@ -19,18 +22,24 @@ export const Search = () => {
       setArticles(json.articles);
       setUsers(json.users);
     };
-    get();
+    if (!advancedSearch) {
+      get();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (
     <div className="container mt-5">
       <AdvancedSearch
+        passLoading={(state) => {
+          setAdvancedLoading(state);
+        }}
+        searchParams={searchParams}
         setSearchParams={setSearchParams}
         setArticles={setArticles}
         setUsers={setUsers}
       />
-      {isLoading ? (
+      {isLoading || advancedLoading ? (
         <LoadingRing />
       ) : (
         <>
@@ -64,7 +73,7 @@ export const Search = () => {
           )}
           <h2>Articles</h2>
           {articles?.length ? (
-            <div className="mb-4 row g-3">
+            <div className="pb-4 row g-3">
               {articles.map((article) => (
                 <div key={article._id} className="col col-12 col-md-6 col-lg-4">
                   <div className="card">
@@ -80,14 +89,25 @@ export const Search = () => {
                           #{tag}
                         </Link>
                       ))}
-                      <Link
-                        className="unstyled-link"
-                        to={links.article(article._id)}
-                      >
-                        <h5 className="card-title m-0 search-card-text">
-                          {article.title}
-                        </h5>
-                      </Link>
+                      <p className="my-2">
+                        <Link
+                          className="unstyled-link"
+                          to={links.article(article._id)}
+                        >
+                          <span className="card-title m-0 search-card-text">
+                            {article.title}
+                          </span>
+                        </Link>
+                      </p>
+                      <div>
+                        written by
+                        <Link
+                          className="unstyled-link fw-bold ms-1"
+                          to={links.publicUser(article.user._id)}
+                        >
+                          {article.user.username}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>

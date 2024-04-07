@@ -4,6 +4,18 @@ const searchApi = {
 
     return response;
   },
+  searchAdvanced: async (username, title, tags) => {
+    const response = await fetch(
+      "/search/advanced?username=" +
+        username +
+        "&title=" +
+        title +
+        "&tags=" +
+        tags
+    );
+
+    return response;
+  },
 };
 
 export default searchApi;

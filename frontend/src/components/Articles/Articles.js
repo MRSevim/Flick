@@ -15,6 +15,7 @@ import { ArticleItem } from "./ArticleItem";
 import { useDeleteMany } from "../../Hooks/ArticleHooks/UseDeleteMany";
 import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
+import { AdvancedSearch } from "../AdvancedSearch";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -30,8 +31,12 @@ export const Articles = ({ isDraft }) => {
     useLikeArticle();
   const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [totalPages, setTotalPages] = useState(null);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page");
+  const advancedSearchString = searchParams.get("advancedSearch");
+  const advancedSearch = advancedSearchString === "true";
+  const titleParam = searchParams.get("title");
+  const tagsParam = searchParams.get("tags");
   const [selected, setSelected] = useState([]);
 
   function handleSelect(value, id) {
@@ -104,12 +109,12 @@ export const Articles = ({ isDraft }) => {
   const setLoadingToTrue = () => {
     setIsLoading(true);
   };
-
   useEffect(() => {
     if (totalPages && articles.length === 0) {
-      navigate({ search: "?page=" + totalPages });
+      searchParams.set("page", totalPages);
+      setSearchParams(searchParams);
     }
-  }, [totalPages, articles, navigate]);
+  }, [totalPages, articles, navigate, searchParams, setSearchParams]);
 
   useEffect(() => {
     setSelected([]);
@@ -121,7 +126,14 @@ export const Articles = ({ isDraft }) => {
         navigate({ search: "?page=1" });
         return;
       }
-      const { response, json } = await getArticles(id, page, isDraft);
+      const { response, json } = await getArticles(
+        id,
+        page,
+        isDraft,
+        advancedSearch,
+        titleParam,
+        tagsParam
+      );
       if (response.ok) {
         setTotalPages(json.totalPages);
         setArticles(json.articles);
@@ -131,7 +143,7 @@ export const Articles = ({ isDraft }) => {
     get();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, setArticles, setLocalUser, page, isDraft]);
+  }, [id, setArticles, setLocalUser, isDraft, searchParams]);
 
   useEffect(() => {
     if (user?._id === id) {
@@ -196,9 +208,9 @@ export const Articles = ({ isDraft }) => {
       <div className="row g-3">
         {articles.length === 0 ? (
           <h2 className="text-center mt-3">
-            {!isDraft && !myArticles && "User has not shared any articles yet."}
-            {!isDraft && myArticles && "You have no articles."}
-            {isDraft && "You have no drafts."}
+            {!isDraft && !myArticles && "No articles."}
+            {!isDraft && myArticles && "No articles."}
+            {isDraft && "No Drafts."}
           </h2>
         ) : (
           <div>
@@ -252,6 +264,14 @@ export const Articles = ({ isDraft }) => {
           />
         ))}
       </div>
+
+      <AdvancedSearch
+        page={page}
+        className="mt-5"
+        _username={localUser.username}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+      />
     </div>
   ) : (
     <div></div>

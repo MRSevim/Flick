@@ -49,12 +49,17 @@ const articleApi = {
 
     return response;
   },
-  getArticles: async (id, page, isDraft) => {
-    const url = !isDraft
-      ? "/article/user/" + id + "?page="
-      : "/article/draft?page=";
+  getArticles: async (id, page, isDraft, advancedSearch, title, tags) => {
+    let url = !isDraft
+      ? "/article/user/" + id + "?page=" + page
+      : "/article/draft?page=" + page;
 
-    const response = await fetch(url + page);
+    if (advancedSearch) {
+      const addition = "&title=" + title + "&tags=" + tags;
+      url = url + addition;
+    }
+
+    const response = await fetch(url);
 
     return response;
   },

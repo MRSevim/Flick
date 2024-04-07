@@ -70,7 +70,7 @@ const getArticle = (isDraft) => {
 //get articles of specific user
 const getArticles = (isDraft) => {
   return async (req, res, next) => {
-    const { page } = req.query;
+    const { page, title, tags } = req.query;
 
     try {
       if (isDraft === undefined) {
@@ -99,17 +99,24 @@ const getArticles = (isDraft) => {
         throw new Error("User is not found");
       }
 
-      const totalArticles = await Article.find({
+      const query = {
         user: isDraft ? authUser._id : user._id,
         isDraft,
-      });
+      };
+
+      if (title) {
+        const param = new RegExp(title, "i");
+        query.title = param;
+      }
+      if (tags) {
+        query.tags = { $in: tags.split(",") };
+      }
+
+      const totalArticles = await Article.find(query);
 
       const total = totalArticles.length;
 
-      const articles = await Article.find({
-        user: isDraft ? authUser._id : user._id,
-        isDraft,
-      })
+      const articles = await Article.find(query)
         .sort({
           createdAt: -1,
         })
