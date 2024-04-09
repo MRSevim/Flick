@@ -16,8 +16,7 @@ export const Notifications = () => {
   const [notifications, setNotifications] = useState(null);
   const { getNotifications, isLoading } = useGetNotifications();
   const wrapperRef = useRef(null);
-  const { clearNotifications, isLoading: clearLoading } =
-    useClearNotifications();
+  const { clearNotifications } = useClearNotifications();
 
   const getUnreadLength = (notifications) => {
     return notifications?.filter((notification) => {
@@ -30,6 +29,14 @@ export const Notifications = () => {
     if (response.ok) {
       setNotifications([]);
     }
+  };
+  const markAsRead = () => {
+    notificationApi.markAsRead();
+    setNotifications(
+      notifications.map((notification) => {
+        return { ...notification, read: true };
+      })
+    );
   };
 
   useEffect(() => {
@@ -63,7 +70,6 @@ export const Notifications = () => {
         className="bi bi-bell-fill h4 position-relative pointer"
         onClick={() => {
           setOpen((prev) => !prev);
-          notificationApi.markAsRead();
         }}
       >
         {isLoading && (
@@ -75,33 +81,48 @@ export const Notifications = () => {
           </div>
         )}
         {getUnreadLength(notifications) > 0 && (
-          <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1 fst-normal">
+          <div className="fs-6 bg-secondary text-white rounded position-absolute top-0 start-100 translate-middle px-1 fst-normal">
             {getUnreadLength(notifications)}
           </div>
         )}
       </i>
       {open && (
-        <div className="position-absolute border border-info bg-primary notifications-container overflow-auto p-1">
+        <div className="position-absolute rounded border bg-light notifications-container overflow-auto">
+          <div className="d-flex justify-content-between">
+            <div
+              onClick={markAsRead}
+              className="pointer text-secondary notifications-clickable m-2"
+            >
+              Mark all as read
+            </div>
+            <div
+              onClick={clear}
+              className="pointer text-secondary notifications-clickable m-2"
+            >
+              {" "}
+              Clear All
+            </div>
+          </div>
           {notifications?.length === 0 && (
-            <div className="d-flex justify-content-center fw-bold">
+            <div className="d-flex justify-content-center border-top p-2">
               No notifications
             </div>
           )}
           {notifications?.length > 0 &&
             notifications?.map((notification) => {
               return (
-                <li
+                <div
                   key={notification._id}
                   className={classNames({
-                    "my-1 p-2 rounded": true,
-                    "bg-secondary text-white": !notification.read,
+                    "p-2 border-top": true,
+                    "unread-notification": !notification.read,
                   })}
                 >
                   {notification.users[0].username && (
                     <Link
                       className={classNames({
-                        "d-inline unstyled-link fw-bold": true,
-                        "text-white": !notification.read,
+                        "d-inline unstyled-link text-secondary notifications-clickable": true,
+                        "": !notification.read,
                       })}
                       to={links.publicUser(notification.users[0]._id)}
                     >
@@ -127,8 +148,8 @@ export const Notifications = () => {
                       <Link
                         title={notification.target.title}
                         className={classNames({
-                          "unstyled-link ms-1 fw-bold": true,
-                          "text-white": !notification.read,
+                          "unstyled-link text-secondary notifications-clickable": true,
+                          "": !notification.read,
                         })}
                         to={links.article(notification.target._id)}
                       >
@@ -138,24 +159,12 @@ export const Notifications = () => {
                     </>
                   )}
                   <br />
-                  <div className="text-end me-1">
+                  <div className="text-end fw-lighter">
                     {timeAgo.format(new Date(notification.created))}
                   </div>
-                </li>
+                </div>
               );
             })}
-          {notifications?.length > 0 && (
-            <div className="d-flex justify-content-center">
-              <button
-                onClick={clear}
-                disabled={clearLoading}
-                className="btn btn-info"
-              >
-                {" "}
-                Clear Notifications
-              </button>
-            </div>
-          )}
         </div>
       )}
     </div>

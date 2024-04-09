@@ -280,3 +280,13 @@ body {
 a:hover {
   background-size: 0 3px, 100% 3px;
 }
+/*Not found*/
+.not-found-img {
+  background-image: url("./Utils/images/not-found.jpg");
+  width: 250px;
+  height: 250px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border-radius: 50%;
+  background-position: bottom;
+}

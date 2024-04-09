@@ -4,9 +4,9 @@ import links from "../Utils/Links";
 
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
   return (
-    <div className="user-menu-container border border-light text-info rounded-2 position-absolute bg-primary p-2">
+    <div className="user-menu-container rounded border bg-light rounded-2 position-absolute bg-primary">
       <div>
-        <p className="pb-2 border-bottom text-center text-break">
+        <p className="p-2 m-0 border-bottom text-center text-break">
           {user.username}
         </p>
         <Link
@@ -16,24 +16,20 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
             setUserMenu(false);
           }}
         >
-          My Profile
+          <p className="m-0 p-2 text-center usermenu-link">My Profile</p>
         </Link>
       </div>
-      <p className="m-0">
-        <Link
-          to={links.allArticles(myId)}
-          className="unstyled-link"
-          onClick={() => {
-            setUserMenu(false);
-          }}
-        >
-          My Articles
-        </Link>
-      </p>
-      <p className="m-0">
-        <span className="pointer" onClick={logOut}>
-          Logout
-        </span>
+      <Link
+        to={links.allArticles(myId)}
+        className="unstyled-link"
+        onClick={() => {
+          setUserMenu(false);
+        }}
+      >
+        <p className="m-0 p-2 text-center usermenu-link">My Articles</p>
+      </Link>
+      <p className="m-0 p-2 text-center usermenu-link pointer" onClick={logOut}>
+        Logout
       </p>
     </div>
   );

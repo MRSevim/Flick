@@ -97,15 +97,14 @@ export const MostLiked = () => {
             </div>
           )}
           {!isLoading && articles?.length === 0 && (
-            <h2 className="text-center mt-3 text-info">
-              <i className="bi bi-emoji-frown h1 me-2"></i>
+            <h2 className="text-center mt-3 text-info d-flex flex-column justify-content-center">
               <b>
                 No articles to display at the moment. Consider sharing your own
                 – who knows, they might become among the most liked!
               </b>
-              <br />
+
               <Link to={links.createAnArticle}>
-                <button className="btn btn-primary btn-lg mt-4">
+                <button className="btn btn-primary btn-lg mt-3">
                   Create one here
                 </button>
               </Link>

@@ -12,7 +12,8 @@ export const Home = () => {
               <div className="d-flex justify-content-center align-items-center h-100">
                 <Link to={links.createAnArticle}>
                   <button className="btn btn-secondary btn-xl ms-3 call-to-action">
-                    Start Your Journey
+                    <i className="bi bi-pencil-fill mx-2"></i> Start Your
+                    Journey
                   </button>
                 </Link>
               </div>
@@ -38,7 +39,7 @@ export const Home = () => {
                 aria-expanded="true"
                 aria-controls="collapseOne"
               >
-                <h2>What can I do in this website?</h2>
+                <h2 className="m-0">What can I do in this website?</h2>
               </button>
             </h2>
             <div
@@ -47,10 +48,11 @@ export const Home = () => {
               data-bs-parent="#accordionFlick"
             >
               <div className="accordion-body">
-                You can create, edit and delete articles, like articles, follow
-                each other, comment on articles, get notified on actions, see
-                most liked articles. More features might be added depending on
-                the need.
+                You can read, create, edit and delete articles, like articles,
+                follow each other, comment on articles, get notified on actions,
+                see most liked articles. However, to perform actions other than
+                reading, you must have an account. You can create an account or
+                login via your Google account
               </div>
             </div>
           </div>
@@ -64,7 +66,7 @@ export const Home = () => {
                 aria-expanded="false"
                 aria-controls="collapseTwo"
               >
-                <h2>Why should I use this website?</h2>
+                <h2 className="m-0">Why should I use this website?</h2>
               </button>
             </h2>
             <div
@@ -74,10 +76,9 @@ export const Home = () => {
             >
               <div className="accordion-body">
                 Why question can be thought provoking question. Why should one
-                do anything? It seems like answer to that can change from person
-                to person. But If you are interested in written communication
-                and sharing ideas in that manner, you might find meaning using
-                this website.
+                do anything? Answer to this question changes from person to
+                person. But If you are interested in written communication and
+                sharing ideas in that manner, you should use this website.
               </div>
             </div>
           </div>
@@ -91,7 +92,7 @@ export const Home = () => {
                 aria-expanded="false"
                 aria-controls="collapseThree"
               >
-                <h2>Why do you display most liked articles?</h2>
+                <h2 className="m-0">Why do you display most liked articles?</h2>
               </button>
             </h2>
             <div
@@ -103,7 +104,7 @@ export const Home = () => {
                 I chose to include most liked articles in my website structure
                 because I thought it can give some form of rating that people
                 can use in their decision making when choosing articles to read.
-                Choosing which articles to read and engage with can be be
+                Choosing which articles to read and engage with can be
                 challenging and average opinion can be a metric in that matter.
                 It is like Imdb rating. It can help you choose a movie but It
                 might not necessarily guarantee that you will like the movie. It

@@ -8,15 +8,25 @@
     right: calc(-110px + 50%);
   }
 }
-/*Notification*/
+.nav-link:hover {
+  font-weight: bold;
+}
+/*Notifications*/
 .notifications-container {
   width: 325px;
   z-index: 200;
   max-height: 300px;
   right: 0;
 }
+.unread-notification,
+.usermenu-link:hover {
+  background-color: rgba(158, 158, 158, 0.2);
+}
 @media (max-width: 750px) {
   .notifications-container {
     right: calc(-162.5px - 100%);
   }
+}
+.notifications-clickable:hover {
+  font-weight: 600;
 }
