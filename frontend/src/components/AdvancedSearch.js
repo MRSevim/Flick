@@ -68,6 +68,7 @@ export const AdvancedSearch = ({
         setUsers(json.users);
       }
     };
+
     if (advancedSearch) {
       get();
     }

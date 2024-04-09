@@ -11,15 +11,17 @@ export const Home = () => {
             <div className="col col-12 col-lg-6 hero-image">
               <div className="d-flex justify-content-center align-items-center h-100">
                 <Link to={links.createAnArticle}>
-                  <button className="btn btn-secondary btn-xl ms-3">
+                  <button className="btn btn-secondary btn-xl ms-3 call-to-action">
                     Start Your Journey
                   </button>
                 </Link>
               </div>
             </div>
-            <div className="col col-12 col-lg-6 d-flex flex-column justify-content-center text-center ">
-              <h2 className="mb-4 fw-bold hero-3d">Find meaning in writing</h2>
-              <h3>A Website to consume and produce written content...</h3>
+            <div className="col col-12 col-lg-6 d-flex flex-column justify-content-center text-center">
+              <h1 className="mb-4 fw-bold hero-3d display-5">
+                Find meaning in writing
+              </h1>
+              <h4>A Website to consume and produce written content...</h4>
             </div>
           </div>
         </div>

@@ -77,6 +77,9 @@ body {
   background-position: center;
   height: 400px;
 }
+.call-to-action:hover {
+  border: solid 2px $info;
+}
 .hero-3d {
   text-shadow: 0.25px 0.25px 0 hsl(174, 5%, 80%),
     0.5px 0.5px 0 hsl(174, 5%, 75%), 0.75px 0.75px 0 hsl(174, 5%, 70%),
