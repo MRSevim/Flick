@@ -5,29 +5,30 @@ import links from "../Utils/Links";
 export const Home = () => {
   return (
     <div className="pb-5">
-      <div className="bg-primary bg-opacity-75">
-        <div className="container mt-5 py-5">
-          <div className="row text-info align-items-center">
-            <div className="col col-12 col-lg-6 hero-image">
-              <div className="d-flex justify-content-center align-items-center h-100">
+      <div className="hero-image">
+        <div className="container h-100">
+          <div className="pt-5 text-body-bg d-flex flex-column justify-content-center align-items-center h-100">
+            <div className="mb-5 text-center">
+              <h1 className="mb-3 fw-bold hero-3d display-5 font-secondary">
+                Find meaning in writing
+              </h1>
+              <h4>A Website to consume and produce written content...</h4>
+            </div>
+            <div>
+              <div>
                 <Link to={links.createAnArticle}>
-                  <button className="btn btn-secondary btn-xl ms-3 call-to-action">
+                  <button className="btn btn-secondary border border-2 border-secondary btn-xl call-to-action">
                     <i className="bi bi-pencil-fill mx-2"></i> Start Your
                     Journey
                   </button>
                 </Link>
               </div>
             </div>
-            <div className="col col-12 col-lg-6 d-flex flex-column justify-content-center text-center">
-              <h1 className="mb-4 fw-bold hero-3d display-5">
-                Find meaning in writing
-              </h1>
-              <h4>A Website to consume and produce written content...</h4>
-            </div>
           </div>
         </div>
       </div>
       <div className="container mt-5">
+        <h1 className="text-center"> Some Questions You Might Ask</h1>
         <div className="accordion" id="accordionFlick">
           <div className="accordion-item">
             <h2 className="accordion-header">

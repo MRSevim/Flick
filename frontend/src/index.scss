@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
 :root {
   --font-primary: "Nunito", sans-serif;
+  --font-secondary: "Libre Baskerville", serif;
   --font-article: "Jost", sans-serif;
 }
 $primary: #00a9a5;
@@ -24,6 +25,9 @@ $body-bg: #fff;
 .unstyled-link {
   text-decoration: none;
   color: $info;
+}
+.hovered-link:hover {
+  text-decoration: underline;
 }
 .pointer {
   cursor: pointer;
@@ -58,9 +62,6 @@ body {
   margin-right: 10px;
   padding-right: 10px;
 }
-.hovered-link:hover {
-  text-decoration: underline;
-}
 .profile-img-mini {
   width: 50px;
   height: 50px;
@@ -69,16 +70,23 @@ body {
 .btn-xl {
   font-size: 35px;
 }
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+.text-body-bg {
+  color: $body-bg;
+}
 /*Homepage*/
 .hero-image {
-  background-image: url("./Utils/images/textbook.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("./Utils/images/hero-background.jpg");
   background-repeat: no-repeat;
-  background-size: 100% auto;
+  background-size: cover;
   background-position: center;
-  height: 400px;
+  height: 700px;
 }
 .call-to-action:hover {
-  border: solid 2px $info;
+  border: solid 2px $body-bg !important;
 }
 .hero-3d {
   text-shadow: 0.25px 0.25px 0 hsl(174, 5%, 80%),

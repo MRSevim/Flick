@@ -8,9 +8,6 @@
     right: calc(-110px + 50%);
   }
 }
-.nav-link:hover {
-  font-weight: bold;
-}
 /*Notifications*/
 .notifications-container {
   width: 325px;

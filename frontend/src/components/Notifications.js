@@ -114,14 +114,14 @@ export const Notifications = () => {
                 <div
                   key={notification._id}
                   className={classNames({
-                    "p-2 border-top": true,
+                    "p-2 border-top ": true,
                     "unread-notification": !notification.read,
                   })}
                 >
                   {notification.users[0].username && (
                     <Link
                       className={classNames({
-                        "d-inline unstyled-link text-secondary notifications-clickable": true,
+                        "d-inline": true,
                         "": !notification.read,
                       })}
                       to={links.publicUser(notification.users[0]._id)}
@@ -148,7 +148,6 @@ export const Notifications = () => {
                       <Link
                         title={notification.target.title}
                         className={classNames({
-                          "unstyled-link text-secondary notifications-clickable": true,
                           "": !notification.read,
                         })}
                         to={links.article(notification.target._id)}
