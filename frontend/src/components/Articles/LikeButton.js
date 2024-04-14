@@ -8,7 +8,7 @@ export const LikeButton = ({ article, onClick, likeLoading, classes }) => {
     <button
       onClick={onClick}
       disabled={likeLoading}
-      className={"btn btn-primary rounded-3 " + classes}
+      className={"btn btn-secondary rounded-3 " + classes}
     >
       <i
         className={classNames({

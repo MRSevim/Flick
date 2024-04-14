@@ -7,6 +7,7 @@ import { FollowButtons } from "./FollowButtons";
 import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
+import sad from "../Utils/images/sad.jpg";
 
 export const User = () => {
   const { id } = useParams();
@@ -97,42 +98,55 @@ export const User = () => {
             </div>
           </div>
           <div className="col col-12 col-lg-9 d-flex flex-column mt-4 align-items-center">
-            <h2>Top 10 Articles Of The User</h2>
-            <div className="my-4">
+            <h2 className="m-0">Top 10 Articles Of The User</h2>
+            <div className="m-4 mt-2 w-100">
               {user?.mostLikedArticles?.length === 0 && (
-                <div className="text-center">
-                  <h3>
-                    <i className="bi bi-emoji-frown h1 me-2"></i>
-                    <b>They do not have any liked articles yet.</b>
+                <div className="text-center row mt-3">
+                  <h3 className="col col-12 col-lg-4">
+                    <img src={sad} alt="sad" className="w-100 rounded" />
                   </h3>
-                  <h4>
-                    <Link
-                      className="unstyled-link me-2 text-decoration-underline"
-                      to={links.allArticles(user._id)}
-                    >
-                      Check out all of their articles!
-                    </Link>
-                    Who knows, You might end up liking some of them.
-                  </h4>
+                  <div className="col col-12 col-lg-8 d-flex flex-column justify-content-center">
+                    <h3 className="m-0">
+                      They do not have any liked articles yet.
+                    </h3>
+                    <h5>
+                      <p className="my-3">
+                        <button className="btn btn-warning btn-l">
+                          <Link
+                            className="unstyled-link text-decoration-underline"
+                            to={links.allArticles(user._id)}
+                          >
+                            Check out all of their articles!
+                          </Link>
+                        </button>
+                      </p>
+                      Who knows, You might end up liking some of them.
+                    </h5>
+                  </div>
                 </div>
               )}
               {user?.mostLikedArticles?.map((article) => (
-                <li key={article._id}>
-                  <span className="line-right">
-                    <i className="bi bi-hand-thumbs-up"></i>
-                    {" " +
-                      article.likeCount +
-                      (article.likeCount > 1 ? " likes" : " like")}{" "}
-                  </span>
-                  <span>
-                    <Link
-                      className="unstyled-link"
-                      to={links.article(article._id)}
-                    >
-                      {article.title}
-                    </Link>
-                  </span>
-                </li>
+                <div
+                  className="bg-secondary rounded text-white m-2 p-2"
+                  key={article._id}
+                >
+                  <li>
+                    <span className="line-right">
+                      <i className="bi bi-hand-thumbs-up"></i>
+                      {" " +
+                        article.likeCount +
+                        (article.likeCount > 1 ? " likes" : " like")}{" "}
+                    </span>
+                    <span>
+                      <Link
+                        className="unstyled-link text-white hovered-link text-break"
+                        to={links.article(article._id)}
+                      >
+                        {article.title}
+                      </Link>
+                    </span>
+                  </li>
+                </div>
               ))}
             </div>
           </div>

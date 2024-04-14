@@ -4,6 +4,7 @@ import { LikeButton } from "./LikeButton";
 import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
 import links from "../../Utils/Links";
+import { getFirstDiv } from "../../Utils/HelperFuncs";
 
 export const ArticleItem = ({
   deleteLoading,
@@ -27,7 +28,7 @@ export const ArticleItem = ({
       className="col col-12 col-md-6 col-lg-4 articles-column"
     >
       <div className="card h-100 article-card shadow">
-        <div className="card-body">
+        <div className="card-body my-4">
           {myArticles && (
             <div>
               <input
@@ -61,6 +62,7 @@ export const ArticleItem = ({
               likeLoading={likeLoading}
             />
           )}
+          <div className="bg-secondary my-2" style={{ height: "200px" }}></div>
           <h5 className="card-title" title={article.title}>
             {" "}
             <Link
@@ -84,27 +86,24 @@ export const ArticleItem = ({
               </Link>
             );
           })}
-          <div className="mb-4">
+          <div>
             <p
-              className="card-text article-card-body"
+              className="card-text article-card-inner-html"
               dangerouslySetInnerHTML={{
-                __html: article.content.trim().substring(0, 400),
+                __html: getFirstDiv(article.content.trim()),
               }}
             ></p>
-            {article.content.trim().length >= 400 ? (
-              <p>
-                <Link
-                  to={
-                    !isDraft
-                      ? links.article(article._id)
-                      : links.edit(article._id, true)
-                  }
-                  className="unstyled-link"
-                >
-                  <span className="hovered-link">Read more...</span>
-                </Link>
-              </p>
-            ) : null}
+
+            <Link
+              to={
+                !isDraft
+                  ? links.article(article._id)
+                  : links.edit(article._id, true)
+              }
+              className="unstyled-link"
+            >
+              <span className="hovered-link">Read more...</span>
+            </Link>
           </div>
         </div>
       </div>

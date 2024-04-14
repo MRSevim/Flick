@@ -40,7 +40,7 @@ const getMostLiked = async (req, res, next) => {
           content: { $first: "$article.content" },
           isDraft: { $first: "$article.isDraft" },
           user: { $first: "$article.user" },
-          likes: { $push: "$_id" },
+          likes: { $push: { _id: "$_id", user: "$user" } },
           createdAt: { $first: "$article.createdAt" },
           updatedAt: { $first: "$article.updatedAt" },
           tags: { $first: "$article.tags" },

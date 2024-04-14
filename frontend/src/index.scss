@@ -70,6 +70,9 @@ body {
 .btn-xl {
   font-size: 35px;
 }
+.btn-l {
+  font-size: 25px;
+}
 .font-secondary {
   font-family: var(--font-secondary);
 }
@@ -115,19 +118,26 @@ body {
   display: none;
 }
 /*Articles*/
+.no-articles-background {
+  background-image: url("./Utils/images/empty-articles.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 400px;
+}
 .article-card {
   transition: background-color 0.3s ease-in;
 }
 .article-card:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.article-card-body,
-.article-card-body * {
+.article-card-inner-html,
+.article-card-inner-html * {
   font-family: var(--font-article);
   font-size: 16px !important;
   color: $info;
 }
-.article-card-body img {
+.article-card-inner-html img {
   display: none;
 }
 /*loading animations*/

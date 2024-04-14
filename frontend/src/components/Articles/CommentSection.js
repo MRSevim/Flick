@@ -150,7 +150,7 @@ export const CommentSection = ({ article }) => {
             </form>
           )}
 
-          {comment.user._id === user._id && (
+          {comment.user._id === user?._id && (
             <div className="text-end">
               <EditButton
                 classes={"me-1"}

@@ -4,11 +4,18 @@ import { useGetMostLiked } from "../Hooks/LikeHooks/UserGetMostLiked";
 import classNames from "classnames";
 import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
+import empty from "../Utils/images/empty-most-liked.jpg";
+import { LikeButton } from "./Articles/LikeButton";
+import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
+import { getFirstDiv } from "../Utils/HelperFuncs";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");
   const { getMostLiked, isLoading } = useGetMostLiked();
   const [articles, setArticles] = useState(null);
+  const { likeArticle: likeArticleCall, isLoading: likeLoading } =
+    useLikeArticle();
+
   useEffect(() => {
     const get = async (time) => {
       const { json } = await getMostLiked(time);
@@ -19,9 +26,23 @@ export const MostLiked = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time, setArticles]);
 
+  const likeArticle = async (id) => {
+    const { response, json } = await likeArticleCall(id);
+    if (response.ok) {
+      setArticles(
+        articles.map((article) => {
+          if (article._id === id) {
+            return { ...article, likes: json.updatedArticle.likes };
+          }
+          return article;
+        })
+      );
+    }
+  };
+
   return (
     <div className="container mt-5">
-      <section className="row g-3">
+      <section className="row g-3 pb-3">
         <div className="col col-12 text-center">
           <div className=" d-flex justify-content-center">
             <div
@@ -69,46 +90,79 @@ export const MostLiked = () => {
             <div>
               {articles.map((article) => (
                 <div className="bg-primary rounded m-2 p-3" key={article._id}>
-                  <span className="line-right">
-                    <i className="bi bi-hand-thumbs-up h5"></i>
-                    {" " +
-                      article.likes.length +
-                      (article.likes.length > 1 ? " likes" : " like")}
-                  </span>
-                  {article.tags.map((tag, i) => {
-                    return (
+                  <div className="d-flex justify-content-between">
+                    <LikeButton
+                      article={article}
+                      onClick={() => {
+                        likeArticle(article._id);
+                      }}
+                      likeLoading={likeLoading}
+                      classes={"me-3"}
+                    />
+                    <div>
+                      {article.tags.map((tag, i) => {
+                        return (
+                          <Link
+                            to={links.tag(tag)}
+                            key={i}
+                            className="me-2 unstyled-link text-white hovered-link"
+                          >
+                            #{tag}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col col-12 col-lg-4 bg-secondary"></div>
+                    <div className="col col-12 col-lg-8">
                       <Link
-                        to={links.tag(tag)}
-                        key={i}
-                        className="me-1 unstyled-link"
+                        className="unstyled-link hovered-link"
+                        to={"/article/" + article._id}
                       >
-                        #{tag}
+                        <h5 className="my-2">{article.title}</h5>
                       </Link>
-                    );
-                  })}
-                  <Link
-                    className="unstyled-link"
-                    to={"/article/" + article._id}
-                  >
-                    <h5 className="my-2">{article.title}</h5>
-                  </Link>
+                      <p
+                        className="article-card-inner-html"
+                        dangerouslySetInnerHTML={{
+                          __html: getFirstDiv(article.content.trim()),
+                        }}
+                      ></p>
+                      <Link
+                        className="unstyled-link hovered-link"
+                        to={"/article/" + article._id}
+                      >
+                        Read More...
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           )}
           {!isLoading && articles?.length === 0 && (
-            <h2 className="text-center mt-3 text-info d-flex flex-column justify-content-center">
-              <b>
-                No articles to display at the moment. Consider sharing your own
-                – who knows, they might become among the most liked!
-              </b>
-
-              <Link to={links.createAnArticle}>
-                <button className="btn btn-primary btn-lg mt-3">
-                  Create one here
-                </button>
-              </Link>
-            </h2>
+            <div className="text-center mt-3 text-info row pb-4">
+              <img
+                className="col col-12 col-lg-6 rounded-pill mb-4"
+                src={empty}
+                alt=""
+              />
+              <div className="col col-12 col-lg-6 d-flex flex-column justify-content-center">
+                <h2 className="fw-bold mb-2">
+                  {" "}
+                  No articles to display at the moment.
+                </h2>
+                <h5 className="">
+                  Consider sharing your own – who knows, they might become among
+                  the most liked!
+                </h5>
+                <Link to={links.createAnArticle}>
+                  <button className="btn btn-secondary font-secondary btn-lg mt-3">
+                    Create one here
+                  </button>
+                </Link>
+              </div>
+            </div>
           )}
         </div>
       </section>

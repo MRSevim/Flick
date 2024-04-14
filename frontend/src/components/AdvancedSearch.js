@@ -83,7 +83,7 @@ export const AdvancedSearch = ({
   ]);
 
   return (
-    <div className={"shadow rounded p-4 mb-3 " + className}>
+    <div className={"shadow border border-3 rounded p-4 mb-3 " + className}>
       <h2>Advanced Search {_username && "by User"}</h2>
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">

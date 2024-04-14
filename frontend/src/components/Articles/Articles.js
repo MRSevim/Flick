@@ -207,10 +207,11 @@ export const Articles = ({ isDraft }) => {
       )}
       <div className="row g-3">
         {articles.length === 0 ? (
-          <h2 className="text-center mt-3">
-            {!isDraft && !myArticles && "No articles."}
-            {!isDraft && myArticles && "No articles."}
-            {isDraft && "No Drafts."}
+          <h2 className="text-center mt-3 no-articles-background rounded-pill">
+            <div className="d-flex align-items-center justify-content-center text-white font-secondary h-100">
+              {!isDraft && "No articles."}
+              {isDraft && "No Drafts."}
+            </div>
           </h2>
         ) : (
           <div>
