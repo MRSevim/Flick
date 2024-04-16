@@ -57,35 +57,21 @@ export const Header = () => {
               <b>Flick</b>
             </h1>
             <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li className="nav-item">
-                <Link to={links.homepage} className={setActiveClassNames("/")}>
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to={links.mostLiked}
-                  className={setActiveClassNames("/most-liked")}
-                >
-                  Most liked
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to={links.createAnArticle}
-                  className={setActiveClassNames("/create-an-article")}
-                >
-                  Create an Article
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to={links.about}
-                  className={setActiveClassNames("/about")}
-                >
-                  About
-                </Link>
-              </li>
+              {[
+                { link: links.homepage, text: "Home" },
+                { link: links.mostLiked, text: "Most Liked" },
+                { link: links.createAnArticle, text: "Create An Article" },
+                { link: links.about, text: "About" },
+              ].map((item) => (
+                <li key={item.link} className="nav-item">
+                  <Link
+                    to={item.link}
+                    className={setActiveClassNames(item.link)}
+                  >
+                    {item.text}
+                  </Link>
+                </li>
+              ))}
             </ul>
             <SearchBar />
             {user && <Notifications />}
@@ -97,7 +83,10 @@ export const Header = () => {
                   }}
                   className="text-end pointer"
                 >
-                  <ImageComponent src={user.image} type={"mini"} />
+                  <ImageComponent
+                    src={user.image}
+                    classes={"profile-img-mini"}
+                  />
                 </div>
                 {userMenu && (
                   <UserMenu

@@ -2,13 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
-import { EditorComponent } from "../EditorComponent";
 import { useUserContext } from "../../Contexts/UserContext";
 import { Login } from "../Login";
 import { Modal } from "bootstrap";
 import { useCreateArticle } from "../../Hooks/ArticleHooks/UseCreateArticle";
-import { TagsForm } from "../TagsForm";
 import links from "../../Utils/Links";
+import { EditorForm } from "../EditorForm";
 
 export const CreateAnArticle = () => {
   const localStorageContent = JSON.parse(
@@ -28,6 +27,7 @@ export const CreateAnArticle = () => {
   const { createArticle, isLoading } = useCreateArticle();
   const myModalRef = useRef(null);
   const [tags, setTags] = useState([]);
+  const [image, setImage] = useState("");
 
   const onTagsChange = (newTags) => {
     setTags(newTags);
@@ -63,7 +63,8 @@ export const CreateAnArticle = () => {
         DOMPurify.sanitize(title),
         DOMPurify.sanitize(content),
         false,
-        tags
+        tags,
+        image
       );
       if (res.ok) {
         navigate(links.allArticles(user._id));
@@ -102,52 +103,20 @@ export const CreateAnArticle = () => {
 
   return (
     <>
-      <div className="container mt-3 pb-4">
-        <div className="form-group row mb-3 align-items-center">
-          <label htmlFor="title" className="col-sm-1 text-center text-sm-end">
-            Title:
-          </label>
-          <div className="col-sm-10">
-            <input
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-                localStorage.setItem(
-                  "article-title",
-                  JSON.stringify(e.target.value)
-                );
-              }}
-              id="title"
-              className=" form-control"
-              type="text"
-            />
-          </div>
-        </div>
-        <TagsForm classes={"mx-5 my-3"} onTagsChange={onTagsChange} />
-        <EditorComponent
-          initialContent={initialContent}
-          handleEditorChange={handleEditorChange}
-          onInit={(editor) => {
-            setContent(editor.getContent());
-          }}
-        ></EditorComponent>
-        <div className="mt-3 d-flex justify-content-center">
-          <button
-            className="btn btn-lg me-3 btn-secondary"
-            disabled={isLoading}
-            onClick={saveDraft}
-          >
-            Save Draft
-          </button>
-          <button
-            className="btn btn-lg btn-secondary"
-            disabled={isLoading}
-            onClick={submit}
-          >
-            Publish
-          </button>
-        </div>
-      </div>
+      <EditorForm
+        type={"create"}
+        title={title}
+        setTitle={setTitle}
+        image={image}
+        setImage={setImage}
+        onTagsChange={onTagsChange}
+        initialContent={initialContent}
+        handleEditorChange={handleEditorChange}
+        setContent={setContent}
+        isLoading={isLoading}
+        saveDraft={saveDraft}
+        submit={submit}
+      />
       <div className="modal fade" tabIndex="-1" id="loginModal">
         <div className="modal-dialog d-flex justify-content-center">
           <div className="modal-content mt-5 bg-primary border border-3 rounded">

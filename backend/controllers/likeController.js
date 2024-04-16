@@ -44,6 +44,7 @@ const getMostLiked = async (req, res, next) => {
           createdAt: { $first: "$article.createdAt" },
           updatedAt: { $first: "$article.updatedAt" },
           tags: { $first: "$article.tags" },
+          image: { $first: "$article.image" },
         },
       },
       {

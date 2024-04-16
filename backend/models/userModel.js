@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+require("dotenv").config();
 
 const userSchema = new mongoose.Schema(
   {
@@ -21,8 +22,11 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default:
-        "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+      default: `${
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:" + process.env.PORT
+          : process.env.BACKEND_URL
+      }/default-user.jpg`,
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

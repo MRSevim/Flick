@@ -1,19 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { EditorComponent } from "../EditorComponent";
 import { useEditArticle } from "../../Hooks/ArticleHooks/UseEditArticle";
 import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
 import { useUserContext } from "../../Contexts/UserContext";
-import { TagsForm } from "../TagsForm";
 import { LoadingRing } from "../LoadingRing";
 import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
-import { DeleteButton } from "./DeleteButton";
 import links from "../../Utils/Links";
+import { EditorForm } from "../EditorForm";
 
 export const Edit = () => {
   const [searchParams] = useSearchParams();
-  const isDraftstring = searchParams.get("isDraft");
-  const isDraft = isDraftstring === "true";
+  const isDraftString = searchParams.get("isDraft");
+  const isDraft = isDraftString === "true";
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [user] = useUserContext();
@@ -27,6 +25,7 @@ export const Edit = () => {
   const successMessageRef = useRef(null);
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
+  const [image, setImage] = useState("");
 
   const deleteArticle = async () => {
     const response = await deleteArticleCall(id);
@@ -63,6 +62,7 @@ export const Edit = () => {
         setTitle(json.title);
         setInitialContent(json.content);
         setTags(json.tags);
+        setImage(json.image);
         if (user && json) {
           if (user._id !== json.user._id) {
             navigate(links.homepage);
@@ -80,11 +80,18 @@ export const Edit = () => {
   const save = (draft) => {
     const edit = async () => {
       setSuccessMessage(null);
-      const response = await editArticle(title, content, draft, id, tags);
+      const response = await editArticle(
+        title,
+        content,
+        draft,
+        id,
+        tags,
+        image
+      );
       if (response.ok) {
         if (isDraft && !draft) {
           setSuccessMessage(
-            "Article published. Redirecting to puslished article..."
+            "Article published. Redirecting to published article..."
           );
           setTimeout(() => {
             navigate(links.article(id));
@@ -101,63 +108,24 @@ export const Edit = () => {
       <LoadingRing />
     </div>
   ) : (
-    <div className="container mt-3 pb-4">
-      <div className="form-group row mb-3 align-items-center">
-        <label htmlFor="title" className="col-sm-1 text-center text-sm-end">
-          Title:
-        </label>
-        <div className="col-sm-10">
-          <input
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-            id="title"
-            className="form-control"
-            type="text"
-          />
-        </div>
-      </div>
-      <TagsForm classes={"mx-5 my-3"} onTagsChange={onTagsChange} tags={tags} />
-      <EditorComponent
-        initialContent={initialContent}
-        handleEditorChange={(content) => {
-          setContent(content);
-        }}
-        onInit={(editor) => {
-          setContent(editor.getContent());
-        }}
-      ></EditorComponent>
-      <div
-        className="mt-3 d-flex justify-content-center
-      "
-      >
-        <DeleteButton
-          onClick={deleteArticle}
-          deleteLoading={deleteLoading}
-          classes={"me-2"}
-        />
-        <button
-          className="btn btn-lg btn-secondary me-2"
-          disabled={editLoading}
-          onClick={() => {
-            save(isDraft);
-          }}
-        >
-          Save
-        </button>
-        {isDraft && (
-          <button
-            className="btn btn-lg btn-secondary"
-            disabled={editLoading}
-            onClick={() => {
-              save(false);
-            }}
-          >
-            Publish Article
-          </button>
-        )}
-      </div>
+    <EditorForm
+      type={"edit"}
+      title={title}
+      setTitle={setTitle}
+      image={image}
+      setImage={setImage}
+      onTagsChange={onTagsChange}
+      initialContent={initialContent}
+      handleEditorChange={(content) => {
+        setContent(content);
+      }}
+      setContent={setContent}
+      deleteArticle={deleteArticle}
+      deleteLoading={deleteLoading}
+      editLoading={editLoading}
+      save={save}
+      isDraft={isDraft}
+    >
       {successMessage && (
         <div
           ref={successMessageRef}
@@ -166,6 +134,6 @@ export const Edit = () => {
           <p className="m-0 alert alert-success wide-input">{successMessage}</p>
         </div>
       )}
-    </div>
+    </EditorForm>
   );
 };

@@ -52,8 +52,7 @@ export const Search = () => {
                     <div className="card-body d-flex align-items-center">
                       <ImageComponent
                         src={user.image}
-                        type={"mini"}
-                        classes={"me-2"}
+                        classes={"profile-img-mini me-2"}
                       />
                       <Link
                         className="unstyled-link"
@@ -102,7 +101,7 @@ export const Search = () => {
                       <div>
                         written by
                         <Link
-                          className="unstyled-link fw-bold ms-1"
+                          className="fw-bold ms-1"
                           to={links.publicUser(article.user._id)}
                         >
                           {article.user.username}

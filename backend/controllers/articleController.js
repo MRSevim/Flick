@@ -1,6 +1,7 @@
 const { Article, Like } = require("../models/articleModel");
 const User = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
+const validator = require("validator");
 
 const allowedTags = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
@@ -149,7 +150,7 @@ const createArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const { title, content, isDraft, tags } = req.body;
+    const { title, content, isDraft, tags, image } = req.body;
 
     if (!title || !content) {
       res.status(400);
@@ -163,6 +164,10 @@ const createArticle = async (req, res, next) => {
       res.status(400);
       throw new Error("Sanitized inputs can't be empty");
     }
+    if (image && !validator.isURL(image)) {
+      res.status(400);
+      throw new Error("Featured Image Url is not valid");
+    }
 
     const article = await Article.create({
       title: sanitizedTitle,
@@ -170,6 +175,7 @@ const createArticle = async (req, res, next) => {
       isDraft,
       user: user._id,
       tags,
+      image: image || undefined,
     });
 
     const notification = {
@@ -211,9 +217,9 @@ const updateArticle = async (req, res, next) => {
       throw new Error("User is not found");
     }
 
-    const { title, content, isDraft, tags } = req.body;
+    const { title, content, isDraft, tags, image } = req.body;
 
-    if (!title && !content && isDraft === undefined && !tags) {
+    if (!title && !content && isDraft === undefined && !tags && !image) {
       res.status(400);
       throw new Error("Please send some input to update");
     }
@@ -240,10 +246,15 @@ const updateArticle = async (req, res, next) => {
         throw new Error("Sanitized inputs can't be empty");
       }
     }
+    if (image && !validator.isURL(image)) {
+      res.status(400);
+      throw new Error("Featured Image Url is not valid");
+    }
 
     article.title = sanitizedTitle || article.title;
     article.content = sanitizedContent || article.content;
     article.tags = tags || article.tags;
+    article.image = image || article.image;
     if (isDraft !== undefined) {
       article.isDraft = isDraft;
     }
@@ -256,6 +267,7 @@ const updateArticle = async (req, res, next) => {
       content: updatedArticle.content,
       isDraft: updatedArticle.isDraft,
       tags: updatedArticle.tags,
+      image: updatedArticle.image,
     });
   } catch (error) {
     next(error);

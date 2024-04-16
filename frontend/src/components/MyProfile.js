@@ -104,7 +104,7 @@ export const MyProfile = () => {
         <div className="container mt-5 pb-4">
           <div className="row d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-              <ImageComponent src={user.image} type={"large"} />
+              <ImageComponent src={user.image} classes={"profile-img"} />
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>

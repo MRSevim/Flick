@@ -22,6 +22,9 @@ app.use((req, res, next) => {
   next();
 });
 
+//Images
+app.use(express.static("images"));
+
 // routes
 app.use("/api/like", likeRoutes);
 app.use("/api/article", articleRoutes);

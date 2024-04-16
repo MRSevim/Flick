@@ -32,10 +32,10 @@ export const About = () => {
 
       <h1>About</h1>
       <p>
-        Hello everyone, first of all thank you for visiting the website. I have
+        Hello everyone, first of all, thank you for visiting the website. I have
         developed/am still developing the website with the purpose of helping
         users express their thought and emotions in written format. I have
-        referred this written media as "articles" throughout the website.
+        referred the written media as "articles" throughout the website.
       </p>
       <h3>About the developer</h3>
       <p>

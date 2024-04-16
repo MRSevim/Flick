@@ -11,6 +11,7 @@ import { LikeButton } from "./LikeButton";
 import { CommentSection } from "./CommentSection";
 import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
+import { ImageComponent } from "../ImageComponent";
 
 export const Article = () => {
   const [user] = useUserContext();
@@ -103,6 +104,7 @@ export const Article = () => {
           </div>
         ) : article ? (
           <div className="article col col-12 col-lg-8 mt-2">
+            <ImageComponent src={article.image} />
             <h1 className="article-title">{article.title}</h1>
             <div className="mb-2">
               {!myArticle && (

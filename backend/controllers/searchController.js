@@ -1,6 +1,7 @@
 const { Article } = require("../models/articleModel");
 const User = require("../models/userModel");
 
+const selectFields = "_id title likes tags user image";
 //get articles and users by search
 const getBySearch = async (req, res, next) => {
   const { search } = req.query;
@@ -18,7 +19,7 @@ const getBySearch = async (req, res, next) => {
         title: param,
         isDraft: false,
       })
-        .select("_id title likes tags user")
+        .select(selectFields)
         .populate("user", "username");
     }
 
@@ -55,7 +56,7 @@ const getByAdvancedSearch = async (req, res, next) => {
 
     if (title || tags) {
       articles = await Article.find(query)
-        .select("_id title likes tags user")
+        .select(selectFields)
         .populate("user", "username");
     }
 

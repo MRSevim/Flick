@@ -6,11 +6,18 @@ export const useEditArticle = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const editArticle = async (title, content, isDraft, id, tags) => {
+  const editArticle = async (title, content, isDraft, id, tags, image) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await articleApi.update(title, content, isDraft, id, tags);
+    const response = await articleApi.update(
+      title,
+      content,
+      isDraft,
+      id,
+      tags,
+      image
+    );
     const json = await response.json();
 
     if (!response.ok) {

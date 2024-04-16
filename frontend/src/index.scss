@@ -79,6 +79,11 @@ body {
 .text-body-bg {
   color: $body-bg;
 }
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 200px;
+}
 /*Homepage*/
 .hero-image {
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
@@ -101,7 +106,7 @@ body {
     1.25px 2.5px 6px rgba(0, 0, 0, 0.2), 2.5px 2.5px 6px rgba(0, 0, 0, 0.2),
     5px 5px 5px rgba(0, 0, 0, 0.3);
 }
-/*Create an Article */
+/*Create an Article+article */
 .article,
 .article * {
   font-family: var(--font-article) !important;
@@ -109,6 +114,9 @@ body {
 }
 .article img {
   max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   height: auto;
 }
 .article-body {

@@ -103,8 +103,7 @@ export const CommentSection = ({ article }) => {
         >
           <ImageComponent
             src={comment.user.image}
-            type={"mini"}
-            classes={"me-2"}
+            classes={"profile-img-mini me-2"}
           />
           <Link
             className="unstyled-link"

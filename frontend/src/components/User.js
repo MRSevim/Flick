@@ -62,7 +62,7 @@ export const User = () => {
         <div className="row">
           <div className="col col-12 col-lg-3">
             <div className="d-flex justify-content-center">
-              <ImageComponent src={user?.image} type={"large"} />
+              <ImageComponent src={user?.image} classes={"profile-img"} />
             </div>
             <div className="text-center">
               <h1 className="fw-bold"> {user.username}</h1>

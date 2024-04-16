@@ -114,8 +114,8 @@ export const Notifications = () => {
                 <div
                   key={notification._id}
                   className={classNames({
-                    "p-2 border-top ": true,
-                    "unread-notification": !notification.read,
+                    "p-2 border-top": true,
+                    "unread-notification border-3": !notification.read,
                   })}
                 >
                   {notification.users[0].username && (

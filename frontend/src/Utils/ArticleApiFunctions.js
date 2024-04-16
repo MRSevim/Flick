@@ -1,18 +1,18 @@
 const articleApi = {
-  create: async (title, content, isDraft, tags) => {
+  create: async (title, content, isDraft, tags, image) => {
     const response = await fetch("/article/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, isDraft, tags }),
+      body: JSON.stringify({ title, content, isDraft, tags, image }),
     });
 
     return response;
   },
-  update: async (title, content, isDraft, id, tags) => {
+  update: async (title, content, isDraft, id, tags, image) => {
     const response = await fetch("/article/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, isDraft, tags }),
+      body: JSON.stringify({ title, content, isDraft, tags, image }),
     });
 
     return response;

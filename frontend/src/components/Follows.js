@@ -44,8 +44,7 @@ export const Follows = ({ type }) => {
                     <div className="card-body d-flex align-items-center">
                       <ImageComponent
                         src={user.image}
-                        type={"mini"}
-                        classes={"me-2"}
+                        classes={"profile-img-mini me-2"}
                       />
                       <Link
                         className="unstyled-link"

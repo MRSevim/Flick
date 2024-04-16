@@ -56,8 +56,7 @@ export const SearchBar = () => {
             {option.username && (
               <ImageComponent
                 src={option.image}
-                type={"mini"}
-                classes={"me-2"}
+                classes={"profile-img-mini me-2"}
               />
             )}
             <p className="mb-1">{ownerState.getOptionLabel(option)}</p>

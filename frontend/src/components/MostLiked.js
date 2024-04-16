@@ -8,6 +8,7 @@ import empty from "../Utils/images/empty-most-liked.jpg";
 import { LikeButton } from "./Articles/LikeButton";
 import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
 import { getFirstDiv } from "../Utils/HelperFuncs";
+import { ImageComponent } from "./ImageComponent";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");
@@ -114,7 +115,12 @@ export const MostLiked = () => {
                     </div>
                   </div>
                   <div className="row mt-2">
-                    <div className="col col-12 col-lg-4 bg-secondary"></div>
+                    <div className="col col-12 col-lg-4 image-wrapper">
+                      <ImageComponent
+                        src={article.image}
+                        classes="mw-100 h-100"
+                      />
+                    </div>
                     <div className="col col-12 col-lg-8">
                       <Link
                         className="unstyled-link hovered-link"

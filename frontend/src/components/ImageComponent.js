@@ -1,13 +1,11 @@
 import React from "react";
 
-export const ImageComponent = ({ src, type, classes }) => {
+export const ImageComponent = ({ src, classes = "" }) => {
   return (
     <img
       src={src}
-      alt={type === "mini" ? "profile-img-mini" : "profile-img-large"}
-      className={
-        (type === "mini" ? "profile-img-mini " : "profile-img ") + classes
-      }
+      alt={classes.includes("profile-img") ? "profile" : "featured"}
+      className={classes}
       referrerPolicy="no-referrer"
     />
   );

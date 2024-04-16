@@ -5,6 +5,7 @@ import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
 import links from "../../Utils/Links";
 import { getFirstDiv } from "../../Utils/HelperFuncs";
+import { ImageComponent } from "../ImageComponent";
 
 export const ArticleItem = ({
   deleteLoading,
@@ -62,7 +63,9 @@ export const ArticleItem = ({
               likeLoading={likeLoading}
             />
           )}
-          <div className="bg-secondary my-2" style={{ height: "200px" }}></div>
+          <div className="my-2 image-wrapper">
+            <ImageComponent src={article.image} classes="mw-100 h-100" />
+          </div>
           <h5 className="card-title" title={article.title}>
             {" "}
             <Link
