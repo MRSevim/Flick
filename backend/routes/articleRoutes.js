@@ -8,6 +8,7 @@ const {
   updateArticle,
   deleteArticle,
   deleteMany,
+  getSimilar,
 } = require("../controllers/articleController");
 
 const requireAuth = require("../middlewares/authMiddleware");
@@ -23,11 +24,14 @@ router.get("/draft/:id", requireAuth, getArticle(true));
 //authenticated user delete many articles route
 router.delete("/deleteMany", requireAuth, deleteMany);
 
-//get an article route
-router.get("/:id", getArticle(false));
-
 //get all articles of specific user route
 router.get("/user/:id", getArticles(false));
+
+//get similar articles route
+router.get("/similar/:id", getSimilar);
+
+//get an article route
+router.get("/:id", getArticle(false));
 
 router.use(requireAuth);
 

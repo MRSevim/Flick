@@ -63,6 +63,13 @@ const articleApi = {
 
     return response;
   },
+  getSimilar: async (id) => {
+    const response = await fetch("/article/similar/" + id, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    return response;
+  },
 };
 
 export default articleApi;

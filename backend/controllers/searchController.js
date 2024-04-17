@@ -51,7 +51,7 @@ const getByAdvancedSearch = async (req, res, next) => {
       query.title = param;
     }
     if (tags) {
-      query.tags = { $in: tags.split(",") };
+      query.tags = { $all: tags.split(",") };
     }
 
     if (title || tags) {

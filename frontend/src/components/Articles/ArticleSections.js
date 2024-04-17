@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createElement, useEffect, useRef, useState } from "react";
 import "./ArticleSections.css";
 import { LoadingRing } from "../LoadingRing";
 
@@ -6,12 +6,14 @@ function insertAfter(referenceNode, newNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-export const ArticleSections = ({ sections }) => {
+export const ArticleSections = ({ refProp }) => {
   const [loading, setLoading] = useState(true);
+  const [sections, setSections] = useState([]);
+  const ref = useRef(null);
 
   const toggleHeadersBelow = (e) => {
     e.target.classList.toggle("open");
-    const headers = document.querySelectorAll(".header");
+    const headers = ref?.current?.querySelectorAll(".header");
     const initialIndex = Array.prototype.indexOf.call(
       headers,
       e.target.parentNode
@@ -29,9 +31,6 @@ export const ArticleSections = ({ sections }) => {
 
     if (headers[index].nextSibling) {
       if (!headers[index].nextSibling.classList.contains("container-div")) {
-        const div = document.createElement("div");
-        div.classList.add("container-div");
-
         while (headers[index + 1]) {
           const headerClassBelow = +Array.from(
             headers[index + 1].classList
@@ -56,10 +55,12 @@ export const ArticleSections = ({ sections }) => {
 
           index++;
         }
+        const div = createElement(
+          "div",
+          { className: "container-div" },
+          appendables
+        );
 
-        appendables.forEach((appendable) => {
-          div.appendChild(appendable);
-        });
         div.classList.toggle("hidden");
         insertAfter(headers[initialIndex], div);
       } else {
@@ -69,32 +70,48 @@ export const ArticleSections = ({ sections }) => {
   };
 
   useEffect(() => {
-    const togglers = document.querySelectorAll(".section-toggler");
-    togglers.forEach((toggler) => {
-      toggler.click();
-      toggler.classList.remove("open");
-    });
+    let headers = [];
+    let initialId = 0;
+    if (refProp.current) {
+      refProp.current
+        .querySelectorAll("h1, h2, h3, h4, h5, h6")
+        .forEach((element) => {
+          element.id = initialId++;
+          headers.push(element);
+        });
+      setSections(headers);
+      console.log(headers);
+    }
+  }, [refProp.current]);
 
-    const invisibleIcons = document.querySelectorAll(".invisible-icon");
+  useEffect(() => {
+    if (ref.current) {
+      const togglers = ref.current.querySelectorAll(".section-toggler");
+      togglers.forEach((toggler) => {
+        toggler.click();
+        toggler.classList.remove("open");
+      });
 
-    invisibleIcons.forEach((item) => {
-      item.querySelector("i").classList.add("invis");
-    });
+      const invisibleIcons = ref.current.querySelectorAll(".invisible-icon");
 
-    const containers = document.querySelectorAll(".container-div");
-    containers.forEach((container) => {
-      container.classList.add("hidden");
-    });
+      invisibleIcons.forEach((item) => {
+        item.querySelector("i").classList.add("invis");
+      });
 
+      const containers = ref.current.querySelectorAll(".container-div");
+      containers.forEach((container) => {
+        container.classList.add("hidden");
+      });
+    }
     setLoading(false);
-  }, [loading, setLoading, sections]);
+  }, [ref.current, setLoading, sections]);
 
   if (loading) {
     return <LoadingRing />;
   }
 
   return (
-    <div>
+    <div ref={ref}>
       {sections?.length > 0 ? (
         <div>
           {sections.map((section) => (

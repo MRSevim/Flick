@@ -6,7 +6,42 @@ const validator = require("validator");
 const allowedTags = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
 };
+//get similar articles
+const getSimilar = async (req, res, next) => {
+  try {
+    const article = await Article.findById(req.params.id);
 
+    if (!article) {
+      res.status(404);
+      throw new Error("Article is not found");
+    }
+    if (article.isDraft) {
+      res.status(400);
+      throw new Error("You cannot get similar articles of drafts");
+    }
+    const articles = await Article.aggregate([
+      { $match: { tags: { $in: article.tags }, isDraft: false } },
+      { $sample: { size: 10 } },
+      {
+        $project: {
+          comments: 0,
+        },
+      },
+      {
+        $match: { _id: { $ne: article._id } }, // Exclude the original article by its _id
+      },
+    ]);
+
+    await Article.populate(articles, {
+      path: "user",
+      select: "username",
+    });
+
+    res.status(200).json(articles);
+  } catch (error) {
+    next(error);
+  }
+};
 //get an article
 const getArticle = (isDraft) => {
   return async (req, res, next) => {
@@ -302,7 +337,7 @@ const deleteArticle = async (req, res, next) => {
     next(error);
   }
 };
-
+//authenticated user delete articles
 const deleteMany = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -350,4 +385,5 @@ module.exports = {
   updateArticle,
   deleteArticle,
   deleteMany,
+  getSimilar,
 };

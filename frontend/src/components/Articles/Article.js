@@ -12,13 +12,13 @@ import { CommentSection } from "./CommentSection";
 import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
+import { SimilarArticles } from "./SimilarArticles";
 
 export const Article = () => {
   const [user] = useUserContext();
   const { id } = useParams();
   const ref = useRef(null);
   const navigate = useNavigate();
-  const [sections, setSections] = useState(null);
   const { getArticle, isLoading } = useGetArticle();
   const [createdAt, setCreatedAt] = useState(null);
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -71,29 +71,13 @@ export const Article = () => {
     }
   }, [article, user, setMyArticle]);
 
-  useEffect(() => {
-    let headers = [];
-    let initialId = 0;
-    if (article) {
-      ref.current
-        .querySelectorAll("h1, h2, h3, h4, h5, h6")
-        .forEach((element) => {
-          element.id = initialId++;
-          headers.push(element);
-        });
-      if (ref.current.innerHTML) {
-        setSections(headers);
-      }
-    }
-  }, [id, article, setSections]);
-
   return (
     <div className="container mt-3 pb-4">
       <div className="row justify-content-center">
         {article && (
           <div className="col col-12 col-lg-2">
             <h3 className="">Sections</h3>
-            <ArticleSections sections={sections} />
+            <ArticleSections refProp={ref} />
           </div>
         )}
         {isLoading ? (
@@ -106,6 +90,15 @@ export const Article = () => {
           <div className="article col col-12 col-lg-8 mt-2">
             <ImageComponent src={article.image} />
             <h1 className="article-title">{article.title}</h1>
+            <div className="my-2">
+              {article.tags?.map((tag, i) => {
+                return (
+                  <Link to={links.tag(tag)} key={i} className="me-1">
+                    #{tag}
+                  </Link>
+                );
+              })}
+            </div>
             <div className="mb-2">
               {!myArticle && (
                 <LikeButton
@@ -167,13 +160,7 @@ export const Article = () => {
                 </p>
               )}
             </div>
-            {article.tags?.map((tag, i) => {
-              return (
-                <Link to={links.tag(tag)} key={i} className="me-1">
-                  #{tag}
-                </Link>
-              );
-            })}
+            <SimilarArticles id={id} />
             <CommentSection article={article} />
           </div>
         ) : (
