@@ -7,11 +7,7 @@ function insertAfter(referenceNode, newNode) {
 }
 
 export const ArticleSections = ({ refProp }) => {
-  const [loading, setLoading] = useState(true);
-  const [sections, setSections] = useState([]);
-  const ref = useRef(null);
-
-  const toggleHeadersBelow = (e) => {
+  /*   const toggleHeadersBelow = (e) => {
     e.target.classList.toggle("open");
     const headers = ref?.current?.querySelectorAll(".header");
     const initialIndex = Array.prototype.indexOf.call(
@@ -61,84 +57,120 @@ export const ArticleSections = ({ refProp }) => {
           appendables
         );
 
-        div.classList.toggle("hidden");
+         div.classList.toggle("hidden");
         insertAfter(headers[initialIndex], div);
       } else {
         headers[index].nextSibling.classList.toggle("hidden");
       }
     }
   };
+    useEffect(() => {
+      if (ref.current) {
+        const togglers = ref.current.querySelectorAll(".section-toggler");
+        togglers.forEach((toggler) => {
+          toggler.click();
+          toggler.classList.remove("open");
+        });
 
+        const invisibleIcons = ref.current.querySelectorAll(".invisible-icon");
+
+        invisibleIcons.forEach((item) => {
+          item.querySelector("i").classList.add("invis");
+        });
+
+        const containers = ref.current.querySelectorAll(".container-div");
+        containers.forEach((container) => {
+          container.classList.add("hidden");
+        });
+      }
+      setLoading(false);
+    }, [ref.current, setLoading, sections]); */
+
+  const [loading, setLoading] = useState(true);
+  const [sections, setSections] = useState([]);
+
+  const toggleHeadersBelow = (id, headerNumber) => {
+    const indexOfNextEqualHeaderNumber = sections.findIndex((section) => {
+      if (+section.nodeName[1] === headerNumber && section.id > id) return true;
+    });
+
+    const filteredSections = sections.map((section, i) => {
+      if (
+        section.id > id &&
+        (indexOfNextEqualHeaderNumber > -1
+          ? indexOfNextEqualHeaderNumber > i
+          : true)
+      ) {
+        section.visible = !section.visible;
+        return section;
+      } else {
+        return section;
+      }
+    });
+
+    setSections(filteredSections);
+  };
   useEffect(() => {
     let headers = [];
     let initialId = 0;
+    let LowestHeaderNumber = 6;
+
     if (refProp.current) {
       refProp.current
         .querySelectorAll("h1, h2, h3, h4, h5, h6")
         .forEach((element) => {
+          element.visible = false;
+          if (+element.nodeName[1] <= LowestHeaderNumber) {
+            element.visible = true;
+            LowestHeaderNumber = +element.nodeName[1];
+          }
           element.id = initialId++;
           headers.push(element);
         });
+
       setSections(headers);
-      console.log(headers);
-    }
-  }, [refProp.current]);
-
-  useEffect(() => {
-    if (ref.current) {
-      const togglers = ref.current.querySelectorAll(".section-toggler");
-      togglers.forEach((toggler) => {
-        toggler.click();
-        toggler.classList.remove("open");
-      });
-
-      const invisibleIcons = ref.current.querySelectorAll(".invisible-icon");
-
-      invisibleIcons.forEach((item) => {
-        item.querySelector("i").classList.add("invis");
-      });
-
-      const containers = ref.current.querySelectorAll(".container-div");
-      containers.forEach((container) => {
-        container.classList.add("hidden");
-      });
     }
     setLoading(false);
-  }, [ref.current, setLoading, sections]);
+  }, [refProp.current]);
 
   if (loading) {
     return <LoadingRing />;
   }
 
   return (
-    <div ref={ref}>
+    <div>
       {sections?.length > 0 ? (
         <div>
-          {sections.map((section) => (
-            <div
-              key={section.id}
-              className={
-                "header border-info d-flex " +
-                section.nodeName +
-                " id" +
-                section.id
-              }
-            >
-              <i
-                onClick={toggleHeadersBelow}
-                className="bi bi-chevron-down ps-1 pe-1 section-toggler pointer"
-              ></i>
-              <a
-                className="text-info ps-1"
-                title={section.innerText}
-                href={"#" + section.id}
+          {sections.map((section) => {
+            if (!section.visible) return;
+            return (
+              <div
+                key={section.id}
+                className={
+                  "header border-info d-flex " +
+                  section.nodeName +
+                  " id" +
+                  section.id
+                }
               >
-                {section.nodeName.substring(1)}.
-                {section.innerText.substring(0, 15)}
-                ...
-              </a>
-            </div>
-          ))}
+                <i
+                  onClick={() => {
+                    toggleHeadersBelow(section.id, +section.nodeName[1]);
+                  }}
+                  className="bi bi-chevron-down ps-1 pe-1 section-toggler pointer"
+                ></i>
+                <a
+                  className="text-info ps-1"
+                  title={section.innerText}
+                  href={"#" + section.id}
+                >
+                  {section.nodeName.substring(1)}.
+                  {section.innerText.substring(0, 15)}
+                  ...
+                </a>
+              </div>
+            );
+          })}
         </div>
       ) : sections?.length === 0 ? (
         <p>No sections in the article.</p>
