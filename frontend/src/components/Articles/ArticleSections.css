@@ -1,6 +1,3 @@
-.section-toggler.open {
-  transform: rotate(-180deg);
-}
 .header {
   border: 1px solid black;
   border-radius: 4px;
