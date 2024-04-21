@@ -66,26 +66,28 @@ export const Notifications = () => {
 
   return (
     <div ref={wrapperRef} className="me-3 position-relative">
-      <i
-        className="bi bi-bell-fill h4 position-relative pointer"
-        onClick={() => {
-          setOpen((prev) => !prev);
-        }}
-      >
-        {isLoading && (
-          <div className="lds-ellipsis position-absolute top-0 start-100 translate-middle">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        )}
+      <div className="position-relative">
+        <i
+          className="bi bi-bell-fill h4 pointer"
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
+        >
+          {isLoading && (
+            <div className="lds-ellipsis position-absolute top-0 start-100 translate-middle">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          )}
+        </i>
         {getUnreadLength(notifications) > 0 && (
-          <div className="fs-6 bg-secondary text-white rounded position-absolute top-0 start-100 translate-middle px-1 fst-normal">
+          <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1">
             {getUnreadLength(notifications)}
           </div>
         )}
-      </i>
+      </div>
       {open && (
         <div className="position-absolute rounded border bg-light notifications-container overflow-auto">
           <div className="d-flex justify-content-between">
