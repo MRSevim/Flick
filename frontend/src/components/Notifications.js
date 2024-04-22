@@ -74,7 +74,7 @@ export const Notifications = () => {
           }}
         >
           {isLoading && (
-            <div className="lds-ellipsis position-absolute top-0 start-100 translate-middle">
+            <div className="lds-ellipsis position-absolute top-0 start-100 translate-middle pe-4">
               <div></div>
               <div></div>
               <div></div>

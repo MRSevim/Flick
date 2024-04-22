@@ -8,7 +8,7 @@ export const ArticleSections = ({ refProp }) => {
   const [sections, setSections] = useState([]);
   const [sectionsWithId, setSectionsWithId] = useState([]);
   useEffect(() => {
-    /*  console.log(sections, sectionsWithId); */
+    console.log(sections, sectionsWithId);
   }, [sections, sectionsWithId]);
 
   const toggleHeadersBelow = (id, headerNumber) => {
@@ -24,7 +24,7 @@ export const ArticleSections = ({ refProp }) => {
     );
 
     let toggleBefore = sections.findIndex((section) => {
-      if (+section.nodeName[1] <= headerNumber && +section.id > +id) {
+      if (+section.node.nodeName[1] <= headerNumber && +section.id > +id) {
         return true;
       } else {
         return false;
@@ -36,26 +36,36 @@ export const ArticleSections = ({ refProp }) => {
 
     let lowestHeaderNumber = 6;
 
-    const openSections = sections.find((section, i) => {
+    const openSections = sections.some((section, i) => {
       if (+section.id > +id && i < toggleBefore && section.open === true) {
         return true;
       } else {
         return false;
       }
     });
-    console.log(openSections);
+
     //If any open before toggleBefore, close them all
-    if (openSections !== undefined) {
+    if (openSections) {
       const closedSections = sections.map((section, i) => {
         if (+section.id > +id && i < toggleBefore && section.open === true) {
-          section.open = false;
-          console.log(section.open);
-          return section;
+          return { ...section, open: false };
         } else {
           return section;
         }
       });
       console.log("closing");
+
+      setSectionsWithId(
+        sectionsWithId.map((item) => {
+          const updatedSections = item.sections.map((section) => {
+            if (+section.id > +id && section.node.nodeName[1] > headerNumber) {
+              return { ...section, open: false };
+            } else return section;
+          });
+
+          return { ...item, sections: updatedSections };
+        })
+      );
 
       setSections(closedSections);
     }
@@ -63,23 +73,26 @@ export const ArticleSections = ({ refProp }) => {
     else {
       console.log("opening");
 
-      const sectionsInState = sectionsWithId.find((section) => {
-        if (+section.id === +id) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+      const sectionsInState = sectionsWithId.find((item) => +item.id === +id);
 
       if (sectionsInState !== undefined) {
         console.log("opened with state");
-        setSections(sectionsInState.sections);
+
+        const newState = [];
+        sectionsInState.sections.forEach((section, i) => {
+          if (+section.id > +id && toggleBefore > i) {
+            newState.push(section);
+          } else {
+            newState.push(sections[i]);
+          }
+        });
+        setSections(newState);
       } else {
         console.log("opened without state");
         const filteredSections = sections.map((section, i) => {
           if (+section.id > +id && toggleBefore > i) {
-            if (+section.nodeName[1] <= lowestHeaderNumber) {
-              lowestHeaderNumber = +section.nodeName[1];
+            if (+section.node.nodeName[1] <= lowestHeaderNumber) {
+              lowestHeaderNumber = +section.node.nodeName[1];
               section.open = !section.open;
             }
 
@@ -95,7 +108,7 @@ export const ArticleSections = ({ refProp }) => {
           ...sectionsWithId,
           { id, sections: filteredSections },
         ]);
-        console.log(filteredSections);
+
         setSections(filteredSections);
       }
     }
@@ -126,11 +139,11 @@ export const ArticleSections = ({ refProp }) => {
         ) {
           obj.togglerVisible = false;
         }
+        element.id = initialId;
         obj.id = initialId++;
 
         headers.push(obj);
       });
-      console.log(headers);
       setSections(headers);
     }
     setLoading(false);
