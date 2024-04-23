@@ -7,21 +7,52 @@ export const ArticleSections = ({ refProp }) => {
   const [loading, setLoading] = useState(true);
   const [sections, setSections] = useState([]);
   const [sectionsWithId, setSectionsWithId] = useState([]);
+
   useEffect(() => {
-    console.log(sections, sectionsWithId);
+    /* console.log(sections, sectionsWithId); */
   }, [sections, sectionsWithId]);
 
+  const setTheNewSectionsWithId = (id, headerNumber, newSections) => {
+    let parents = [];
+    let smallestHeaderNumber = headerNumber;
+    const pushToParents = () => {
+      const parent = sections.findLast((section) => {
+        return (
+          +section.id < +id && +section.node.nodeName[1] < smallestHeaderNumber
+        );
+      });
+      if (parent) {
+        parents.push(parent);
+      }
+    };
+    while (smallestHeaderNumber > 1) {
+      pushToParents();
+      smallestHeaderNumber--;
+    }
+
+    parents.forEach((parent) => {
+      setSectionsWithId((prevState) => {
+        return prevState.map((item) => {
+          if (+item.id === +parent.id) {
+            return { ...item, sections: newSections };
+          } else {
+            return item;
+          }
+        });
+      });
+    });
+  };
+
   const toggleHeadersBelow = (id, headerNumber) => {
-    setSections(
-      sections.map((section) => {
-        if (+section.id === +id) {
-          section.toggled = !section.toggled;
-          return section;
-        } else {
-          return section;
-        }
-      })
-    );
+    const toggledState = sections.map((section) => {
+      if (+section.id === +id) {
+        section.toggled = !section.toggled;
+        return { ...section, toggled: section.toggled };
+      } else {
+        return section;
+      }
+    });
+    setSections(toggledState);
 
     let toggleBefore = sections.findIndex((section) => {
       if (+section.node.nodeName[1] <= headerNumber && +section.id > +id) {
@@ -55,17 +86,7 @@ export const ArticleSections = ({ refProp }) => {
       });
       console.log("closing");
 
-      setSectionsWithId(
-        sectionsWithId.map((item) => {
-          const updatedSections = item.sections.map((section) => {
-            if (+section.id > +id && section.node.nodeName[1] > headerNumber) {
-              return { ...section, open: false };
-            } else return section;
-          });
-
-          return { ...item, sections: updatedSections };
-        })
-      );
+      setTheNewSectionsWithId(id, headerNumber, closedSections);
 
       setSections(closedSections);
     }
@@ -79,6 +100,7 @@ export const ArticleSections = ({ refProp }) => {
         console.log("opened with state");
 
         const newState = [];
+
         sectionsInState.sections.forEach((section, i) => {
           if (+section.id > +id && toggleBefore > i) {
             newState.push(section);
@@ -86,6 +108,8 @@ export const ArticleSections = ({ refProp }) => {
             newState.push(sections[i]);
           }
         });
+
+        setTheNewSectionsWithId(id, headerNumber, newState);
         setSections(newState);
       } else {
         console.log("opened without state");
