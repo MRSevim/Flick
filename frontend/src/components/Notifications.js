@@ -68,13 +68,18 @@ export const Notifications = () => {
     <div ref={wrapperRef} className="me-3 position-relative">
       <div className="position-relative">
         <i
-          className="bi bi-bell-fill h4 pointer"
+          className={classNames({
+            "bi h4 m-0 pointer": true,
+            "bi-bell": notifications?.length === 0,
+            "bi-bell-fill": notifications?.length > 0,
+          })}
           onClick={() => {
             setOpen((prev) => !prev);
           }}
         >
+          {" "}
           {isLoading && (
-            <div className="lds-ellipsis position-absolute top-0 start-100 translate-middle pe-3">
+            <div className="lds-ellipsis me-2">
               <div></div>
               <div></div>
               <div></div>

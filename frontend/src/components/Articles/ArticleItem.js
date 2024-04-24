@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { LikeButton } from "./LikeButton";
 import { EditButton } from "./EditButton";
 import { DeleteButton } from "./DeleteButton";
 import links from "../../Utils/Links";
-import { getFirstDiv } from "../../Utils/HelperFuncs";
 import { ImageComponent } from "../ImageComponent";
+import { ArticleCardBody } from "./ArticleCardBody";
 
 export const ArticleItem = ({
   deleteLoading,
@@ -28,8 +27,16 @@ export const ArticleItem = ({
       key={article._id}
       className="col col-12 col-md-6 col-lg-4 articles-column"
     >
-      <div className="card h-100 article-card shadow">
-        <div className="card-body my-4">
+      <div className="card h-100 article-card">
+        <ArticleCardBody
+          classes={"my-4"}
+          article={article}
+          link={
+            !isDraft
+              ? links.article(article._id)
+              : links.edit(article._id, true)
+          }
+        >
           {myArticles && (
             <div>
               <input
@@ -66,49 +73,7 @@ export const ArticleItem = ({
           <div className="my-2 image-wrapper">
             <ImageComponent src={article.image} classes="mw-100 h-100" />
           </div>
-          <h5 className="card-title" title={article.title}>
-            {" "}
-            <Link
-              to={
-                !isDraft
-                  ? links.article(article._id)
-                  : links.edit(article._id, true)
-              }
-              className="unstyled-link"
-            >
-              <span className=" hovered-link">
-                {article.title.substring(0, 50)}
-                {article.title.length > 50 && "..."}
-              </span>
-            </Link>
-          </h5>
-          {article.tags?.map((tag, i) => {
-            return (
-              <Link to={links.tag(tag)} key={i} className="me-1">
-                #{tag}
-              </Link>
-            );
-          })}
-          <div>
-            <p
-              className="card-text article-card-inner-html"
-              dangerouslySetInnerHTML={{
-                __html: getFirstDiv(article.content.trim()),
-              }}
-            ></p>
-
-            <Link
-              to={
-                !isDraft
-                  ? links.article(article._id)
-                  : links.edit(article._id, true)
-              }
-              className="unstyled-link"
-            >
-              <span className="hovered-link">Read more...</span>
-            </Link>
-          </div>
-        </div>
+        </ArticleCardBody>
       </div>
     </div>
   );

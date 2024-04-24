@@ -12,7 +12,7 @@ export const ArticleSections = ({ refProp }) => {
     /* console.log(sections, sectionsWithId); */
   }, [sections, sectionsWithId]);
 
-  const setTheNewSectionsWithId = (id, headerNumber, newSections) => {
+  const setTheParentSectionsWithId = (id, headerNumber, newSections) => {
     let parents = [];
     let smallestHeaderNumber = headerNumber;
     const pushToParents = () => {
@@ -44,16 +44,6 @@ export const ArticleSections = ({ refProp }) => {
   };
 
   const toggleHeadersBelow = (id, headerNumber) => {
-    const toggledState = sections.map((section) => {
-      if (+section.id === +id) {
-        section.toggled = !section.toggled;
-        return { ...section, toggled: section.toggled };
-      } else {
-        return section;
-      }
-    });
-    setSections(toggledState);
-
     let toggleBefore = sections.findIndex((section) => {
       if (+section.node.nodeName[1] <= headerNumber && +section.id > +id) {
         return true;
@@ -78,6 +68,9 @@ export const ArticleSections = ({ refProp }) => {
     //If any open before toggleBefore, close them all
     if (openSections) {
       const closedSections = sections.map((section, i) => {
+        if (+section.id === +id) {
+          return { ...section, toggled: !section.toggled };
+        }
         if (+section.id > +id && i < toggleBefore && section.open === true) {
           return { ...section, open: false };
         } else {
@@ -86,7 +79,7 @@ export const ArticleSections = ({ refProp }) => {
       });
       console.log("closing");
 
-      setTheNewSectionsWithId(id, headerNumber, closedSections);
+      setTheParentSectionsWithId(id, headerNumber, closedSections);
 
       setSections(closedSections);
     }
@@ -102,22 +95,25 @@ export const ArticleSections = ({ refProp }) => {
         const newState = [];
 
         sectionsInState.sections.forEach((section, i) => {
-          if (+section.id > +id && toggleBefore > i) {
+          if (+section.id >= +id && toggleBefore > i) {
             newState.push(section);
           } else {
             newState.push(sections[i]);
           }
         });
 
-        setTheNewSectionsWithId(id, headerNumber, newState);
+        setTheParentSectionsWithId(id, headerNumber, newState);
         setSections(newState);
       } else {
         console.log("opened without state");
         const filteredSections = sections.map((section, i) => {
+          if (+section.id === +id) {
+            return { ...section, toggled: !section.toggled };
+          }
           if (+section.id > +id && toggleBefore > i) {
             if (+section.node.nodeName[1] <= lowestHeaderNumber) {
               lowestHeaderNumber = +section.node.nodeName[1];
-              section.open = !section.open;
+              return { ...section, open: !section.open };
             }
 
             return section;
@@ -132,6 +128,7 @@ export const ArticleSections = ({ refProp }) => {
           ...sectionsWithId,
           { id, sections: filteredSections },
         ]);
+        setTheParentSectionsWithId(+id, headerNumber, filteredSections);
 
         setSections(filteredSections);
       }
@@ -197,7 +194,7 @@ export const ArticleSections = ({ refProp }) => {
                 ></i>
                 <a
                   className="text-info ps-1"
-                  title={section.innerText}
+                  title={section.node.innerText}
                   href={"#" + section.id}
                 >
                   {section.node.nodeName.substring(1)}.

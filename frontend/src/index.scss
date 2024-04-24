@@ -134,10 +134,10 @@ body {
   height: 400px;
 }
 .article-card {
-  transition: background-color 0.3s ease-in;
+  transition: box-shadow 0.3s ease;
 }
 .article-card:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 .article-card-inner-html,
 .article-card-inner-html * {

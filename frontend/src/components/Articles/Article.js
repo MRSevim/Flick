@@ -139,10 +139,7 @@ export const Article = () => {
               <p>
                 <i>
                   Written by{" "}
-                  <Link
-                    className="unstyled-link"
-                    to={links.publicUser(article.user?._id)}
-                  >
+                  <Link to={links.publicUser(article.user?._id)}>
                     <span className="fw-bold">{article.user?.username}</span>
                   </Link>
                 </i>
