@@ -30,8 +30,8 @@ export const Article = () => {
     useLikeArticle();
 
   const deleteArticle = async (_id) => {
-    const response = await deleteArticleCall(_id);
-    if (response.ok) {
+    const response = await deleteArticleCall(_id, article?.title);
+    if (response && response.ok) {
       navigate(links.allArticles(user._id));
     }
   };

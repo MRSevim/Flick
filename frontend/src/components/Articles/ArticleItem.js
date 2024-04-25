@@ -48,7 +48,7 @@ export const ArticleItem = ({
               <DeleteButton
                 classes="p-1 m-1 position-absolute top-0 end-0"
                 onClick={() => {
-                  deleteArticle(article._id);
+                  deleteArticle(article._id, article.title);
                 }}
                 deleteLoading={deleteLoading}
               />

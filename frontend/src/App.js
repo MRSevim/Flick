@@ -27,13 +27,17 @@ import { Article } from "./components/Articles/Article.js";
 import { MyProfile } from "./components/MyProfile.js";
 import { User } from "./components/User.js";
 import links from "./Utils/Links.js";
+import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
+import { Confirmation } from "./components/Confirmation.js";
 
 function App() {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <UserProvider>
         <GlobalErrorProvider>
-          <AppContent />
+          <ConfirmationProvider>
+            <AppContent />
+          </ConfirmationProvider>
         </GlobalErrorProvider>
       </UserProvider>
     </GoogleOAuthProvider>
@@ -47,6 +51,7 @@ function AppContent() {
     <Router basename="/">
       <GlobalError></GlobalError>
       <Header></Header>
+      <Confirmation></Confirmation>
       <Routes>
         {" "}
         <Route path="/most-liked" element={<MostLiked />} />

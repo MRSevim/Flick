@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import React from "react";
 import { useUserContext } from "../../Contexts/UserContext";
 import { Login } from "../Login";
-import { Modal } from "bootstrap";
 import { useCreateArticle } from "../../Hooks/ArticleHooks/UseCreateArticle";
 import links from "../../Utils/Links";
 import { EditorForm } from "../EditorForm";
+import { ModalWrapper } from "../ModalWrapper";
 
 export const CreateAnArticle = () => {
   const localStorageContent = JSON.parse(
@@ -25,9 +25,9 @@ export const CreateAnArticle = () => {
   const navigate = useNavigate();
   const [user] = useUserContext();
   const { createArticle, isLoading } = useCreateArticle();
-  const myModalRef = useRef(null);
   const [tags, setTags] = useState([]);
   const [image, setImage] = useState("");
+  const [ref, setRef] = useState(null);
 
   const onTagsChange = (newTags) => {
     setTags(newTags);
@@ -38,12 +38,6 @@ export const CreateAnArticle = () => {
     if (localStorageTitle) {
       setTitle(localStorageTitle);
     }
-
-    myModalRef.current = new Modal(document.getElementById("loginModal"), {
-      backdrop: true,
-      focus: true,
-      keyboard: true,
-    });
   }, []);
 
   useEffect(() => {
@@ -71,7 +65,7 @@ export const CreateAnArticle = () => {
       }
     }
     if (!user) {
-      myModalRef.current.show();
+      ref.current.show();
       setModalTriggered(true);
       setActionToRerun("submit");
     }
@@ -90,7 +84,7 @@ export const CreateAnArticle = () => {
       }
     }
     if (!user) {
-      myModalRef.current.show();
+      ref.current.show();
       setModalTriggered(true);
       setActionToRerun("saveDraft");
     }
@@ -117,25 +111,21 @@ export const CreateAnArticle = () => {
         saveDraft={saveDraft}
         submit={submit}
       />
-      <div className="modal fade" tabIndex="-1" id="loginModal">
-        <div className="modal-dialog d-flex justify-content-center">
-          <div className="modal-content mt-5 bg-primary border border-3 rounded">
-            <Login
-              type={"modal"}
-              onHideModal={() => {
-                myModalRef.current.hide();
-              }}
-            >
-              <button
-                type="button"
-                className="btn-close bg-light position-absolute top-0 start-0 m-1"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </Login>
-          </div>
-        </div>
-      </div>
+      <ModalWrapper id={"loginModal"} setRef={setRef}>
+        <Login
+          type={"modal"}
+          onHideModal={() => {
+            ref.current.hide();
+          }}
+        >
+          <button
+            type="button"
+            className="btn-close bg-light position-absolute top-0 start-0 m-1"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </Login>
+      </ModalWrapper>
     </>
   );
 };

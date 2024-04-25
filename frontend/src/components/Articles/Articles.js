@@ -56,9 +56,9 @@ export const Articles = ({ isDraft }) => {
     }
   }
 
-  const deleteArticle = async (_id) => {
-    const response = await deleteArticleCall(_id);
-    if (response.ok) {
+  const deleteArticle = async (_id, title) => {
+    const response = await deleteArticleCall(_id, title);
+    if (response && response.ok) {
       const { response, json } = await getArticles(id, page, isDraft);
       if (response.ok) {
         setTotalPages(json.totalPages);

@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useUpdateUser } from "../Hooks/UserHooks/UseUpdateUser";
 import { useGetUser } from "../Hooks/UserHooks/UseGetUser";
-import { Modal } from "bootstrap";
 import { DeleteModal } from "./DeleteModal";
 import { FollowButtons } from "./FollowButtons";
 import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
+import { ModalWrapper } from "./ModalWrapper";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -26,12 +26,12 @@ export const MyProfile = () => {
   const { getUser, isLoading: getLoading } = useGetUser();
   const { update, isLoading, successMessage, error, setError } =
     useUpdateUser();
-  const myModalRef = useRef(null);
+  const [ref, setRef] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user === undefined) {
-      myModalRef?.current?.hide();
+      ref?.current?.hide();
       navigate(links.homepage);
       return;
     }
@@ -60,14 +60,6 @@ export const MyProfile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, user]);
 
-  useEffect(() => {
-    myModalRef.current = new Modal(document.getElementById("deleteModal"), {
-      backdrop: true,
-      focus: true,
-      keyboard: true,
-    });
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -91,7 +83,7 @@ export const MyProfile = () => {
   };
 
   const handleDeleteAccount = async () => {
-    myModalRef.current.show();
+    ref.current.show();
   };
 
   return (
@@ -104,7 +96,7 @@ export const MyProfile = () => {
         <div className="container mt-5 pb-4">
           <div className="row d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-              <ImageComponent src={user.image} classes={"profile-img"} />
+              <ImageComponent src={user?.image} classes={"profile-img"} />
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>
@@ -218,20 +210,16 @@ export const MyProfile = () => {
           </div>
         </div>
       )}
-      <div className="modal fade" tabIndex="-1" id="deleteModal">
-        <div className="modal-dialog d-flex justify-content-center">
-          <div className="modal-content mt-5 bg-primary border border-3 rounded">
-            <DeleteModal>
-              <button
-                type="button"
-                className="btn-close bg-light position-absolute top-0 start-0 m-1"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </DeleteModal>
-          </div>
-        </div>
-      </div>
+      <ModalWrapper id={"deleteModal"} setRef={setRef}>
+        <DeleteModal>
+          <button
+            type="button"
+            className="btn-close bg-light position-absolute top-0 start-0 m-1"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </DeleteModal>
+      </ModalWrapper>
     </>
   );
 };
