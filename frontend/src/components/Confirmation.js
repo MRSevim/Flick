@@ -20,7 +20,7 @@ export const Confirmation = () => {
         ></button>
         Are you sure you want to {confirmation.info.text}
         <p>
-          <span className="fw-bold">{confirmation.info.title} </span>?
+          <span className="fw-bold">{confirmation.info.title}</span> ?
         </p>
         <div>
           <button

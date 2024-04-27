@@ -14,10 +14,10 @@ export const useDeleteArticle = () => {
       deleteArticle(confirmation.info.id, confirmation.info.target);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [confirmation]);
+  }, [confirmation.confirmed, confirmation.info]);
 
   const deleteArticle = async (id, title) => {
-    if (confirmation.confirmed === null) {
+    if (!confirmation.confirmed) {
       confirmation.ref.current.show();
     }
     setConfirmation({
@@ -31,18 +31,21 @@ export const useDeleteArticle = () => {
     setGlobalError(null);
     if (confirmation.confirmed) {
       setIsLoading(true);
-      setConfirmation({ ...confirmation, isLoading });
+      setConfirmation({ ...confirmation, isLoading: true });
       const response = await articleApi.delete(id);
       const json = await response.json();
 
       if (!response.ok) {
         setGlobalError(json.message);
       }
-      setConfirmation({ ...confirmation, confirmed: false });
+      setConfirmation({ ...confirmation, confirmed: false, isLoading: false });
+      confirmation.ref.current.hide();
       setIsLoading(false);
+
       return response;
     } else {
       setIsLoading(false);
+      console.log("returned null");
       return null;
     }
   };

@@ -168,7 +168,8 @@ export const ArticleSections = ({ refProp }) => {
       setSections(headers);
     }
     setLoading(false);
-  }, [refProp]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refProp, refProp.current]);
 
   if (loading) {
     return <LoadingRing />;
