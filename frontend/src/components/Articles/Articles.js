@@ -58,7 +58,7 @@ export const Articles = ({ isDraft }) => {
 
   const deleteArticle = async (_id, title) => {
     const response = await deleteArticleCall(_id, title);
-    console.log(response);
+
     if (response && response.ok) {
       const { response, json } = await getArticles(id, page, isDraft);
       if (response.ok) {
@@ -71,7 +71,7 @@ export const Articles = ({ isDraft }) => {
 
   const deleteSelected = async (selected) => {
     const response = await deleteMany(selected);
-    if (response.ok) {
+    if (response && response.ok) {
       const { response, json } = await getArticles(id, page, isDraft);
       if (response.ok) {
         setTotalPages(json.totalPages);
@@ -238,7 +238,7 @@ export const Articles = ({ isDraft }) => {
                 />{" "}
                 <label htmlFor="selectAll">Select all</label>
                 <button
-                  disabled={deleteManyLoading}
+                  disabled={deleteManyLoading || deleteLoading}
                   onClick={(e) => {
                     deleteSelected(selected);
                   }}
@@ -255,7 +255,7 @@ export const Articles = ({ isDraft }) => {
             updateValue={handleSelect}
             value={selected.includes(article._id)}
             likeLoading={likeLoading}
-            deleteLoading={deleteLoading}
+            deleteLoading={deleteManyLoading || deleteLoading}
             key={article._id}
             article={article}
             isDraft={isDraft}
