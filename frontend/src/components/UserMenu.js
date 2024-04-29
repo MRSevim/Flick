@@ -4,7 +4,7 @@ import links from "../Utils/Links";
 
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
   return (
-    <div className="user-menu-container rounded border bg-light rounded-2 position-absolute bg-primary">
+    <div className="user-menu-container rounded border bg-light position-absolute">
       <div>
         <p className="p-2 m-0 border-bottom text-center text-break">
           {user.username}

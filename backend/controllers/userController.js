@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const nodemailer = require("nodemailer");
+const htmls = require("../mailHTMLs");
 const { OAuth2Client } = require("google-auth-library");
 
 const generateToken = (res, userId) => {
@@ -18,6 +20,43 @@ const generateToken = (res, userId) => {
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
   return token;
+};
+const generateVerificationToken = (userId) => {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: "2m",
+  });
+  return token;
+};
+const sendEmail = async (type, email, username, token, next) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // Use `true` for port 465, `false` for all other ports
+    auth: {
+      user: "maddison53@ethereal.email",
+      pass: "jn7jnAPss4f63QBp6D",
+    },
+  });
+
+  let subject, html;
+  if (type === "signup-verification") {
+    subject = "Verify your email adress";
+    html = htmls.verificationHTML(username, process.env.FRONTEND_URL + token);
+  }
+  try {
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"Flick Articles" <maddison53@ethereal.email>', // sender address
+      to: email, // list of receivers
+      subject, // Subject line
+      html, // html body
+    });
+    console.log(nodemailer.getTestMessageUrl(info));
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -87,13 +126,13 @@ const signupUser = async (req, res, next) => {
     const user = await User.signup(res, username, email, password);
 
     // create a token
-    const token = generateToken(res, user._id);
+    const token = generateVerificationToken(user._id);
+
+    //send email
+    await sendEmail("signup-verification", email, username, token, next);
 
     res.status(201).json({
-      _id: user._id,
-      username,
-      isGoogleLogin: user.isGoogleLogin,
-      image: user.image,
+      message: "A verification email has been sent to your account",
     });
   } catch (error) {
     next(error);
@@ -181,7 +220,7 @@ const updateUserProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
 
-    const { username, email, password, image } = req.body;
+    const { username, email, password, newPassword, image } = req.body;
 
     if (user) {
       if (user.isGoogleLogin) {
@@ -191,7 +230,7 @@ const updateUserProfile = async (req, res, next) => {
         );
       }
 
-      if (!username && !email && !password && !image) {
+      if (!username && !email && !newPassword && !image) {
         res.status(400);
         throw new Error("Please send something to update");
       }
@@ -201,13 +240,24 @@ const updateUserProfile = async (req, res, next) => {
         throw new Error("Email is not valid");
       }
 
+      if (!password) {
+        res.status(400);
+        throw new Error("Please send your password to update user info");
+      }
+      const match = await bcrypt.compare(password, user.password);
+
+      if (!match) {
+        res.status(400);
+        throw new Error("Incorrect password");
+      }
+
       let emailExists, usernameExists;
 
       if (email) {
-        emailExists = await User.findOne({ email });
+        emailExists = await User.findOne({ email, isGoogleLogin: false });
       }
       if (username) {
-        usernameExists = await User.findOne({ username });
+        usernameExists = await User.findOne({ username, isGoogleLogin: false });
       }
 
       if (emailExists && usernameExists) {
@@ -221,9 +271,13 @@ const updateUserProfile = async (req, res, next) => {
         throw new Error("Username is already in use");
       }
 
-      if (password && !validator.isStrongPassword(password)) {
+      if (newPassword && !validator.isStrongPassword(newPassword)) {
         res.status(400);
-        throw new Error("Password is not strong enough");
+        throw new Error("New password is not strong enough");
+      }
+      if (newPassword && password === newPassword) {
+        res.status(400);
+        throw new Error("Your new password can't be same as your current one");
       }
       if (username && !validator.matches(username, "^[a-zA-Z0-9_.-]*$")) {
         res.status(400);
@@ -240,8 +294,8 @@ const updateUserProfile = async (req, res, next) => {
       user.email = email || user.email;
       user.image = image || user.image;
 
-      if (password) {
-        user.password = req.body.password;
+      if (newPassword) {
+        user.password = newPassword;
       }
 
       const updatedUser = await user.save();

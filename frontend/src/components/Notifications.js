@@ -94,17 +94,17 @@ export const Notifications = () => {
         )}
       </div>
       {open && (
-        <div className="position-absolute rounded border bg-light notifications-container overflow-auto">
+        <div className="position-absolute rounded border bg-light menu-container overflow-auto">
           <div className="d-flex justify-content-between">
             <div
               onClick={markAsRead}
-              className="pointer text-secondary notifications-clickable m-2"
+              className="pointer text-secondary menu-clickable m-2"
             >
               Mark all as read
             </div>
             <div
               onClick={clear}
-              className="pointer text-secondary notifications-clickable m-2"
+              className="pointer text-secondary menu-clickable m-2"
             >
               {" "}
               Clear All

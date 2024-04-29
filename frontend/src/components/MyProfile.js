@@ -17,7 +17,8 @@ export const MyProfile = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [image, setImage] = useState("");
   const [memberSince, setMemberSince] = useState("");
   const [followerNumber, setFollowerNumber] = useState(null);
@@ -64,11 +65,11 @@ export const MyProfile = () => {
     e.preventDefault();
 
     let apiUsername, apiEmail, apiPassword, apiImage;
-    if (password && password !== confirmPassword) {
+    if (newPassword && newPassword !== confirmNewPassword) {
       setError("Passwords do not match");
       return;
-    } else if (password && password === confirmPassword) {
-      apiPassword = password;
+    } else if (newPassword && newPassword === confirmNewPassword) {
+      apiPassword = newPassword;
     }
     if (username !== initialUsername) {
       apiUsername = username;
@@ -79,7 +80,18 @@ export const MyProfile = () => {
     if (image !== initialImage) {
       apiImage = image;
     }
-    await update(apiUsername, apiEmail, apiPassword, apiImage);
+    const response = await update(
+      apiUsername,
+      apiEmail,
+      password,
+      apiPassword,
+      apiImage
+    );
+    if (response.ok) {
+      setPassword("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+    }
   };
 
   const handleDeleteAccount = async () => {
@@ -94,7 +106,7 @@ export const MyProfile = () => {
         </div>
       ) : (
         <div className="container mt-5 pb-4">
-          <div className="row d-flex justify-content-center align-items-start">
+          <div className="row mb-3 d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
               <ImageComponent src={user?.image} classes={"profile-img"} />
               <p className="mt-5 text-center">
@@ -156,11 +168,25 @@ export const MyProfile = () => {
               </div>
               <div className="form-group">
                 <label>
-                  Password:
+                  Current Password:
                   <input
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
+                    }}
+                    className="form-control form-control-lg wide-input"
+                    type="password"
+                    required
+                  />
+                </label>
+              </div>
+              <div className="form-group">
+                <label>
+                  New Password:
+                  <input
+                    value={newPassword}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
                     }}
                     className="form-control form-control-lg wide-input"
                     type="password"
@@ -169,11 +195,11 @@ export const MyProfile = () => {
               </div>
               <div className="form-group">
                 <label>
-                  Confirm Password:
+                  Confirm New Password:
                   <input
-                    value={confirmPassword}
+                    value={confirmNewPassword}
                     onChange={(e) => {
-                      setConfirmPassword(e.target.value);
+                      setConfirmNewPassword(e.target.value);
                     }}
                     className="form-control form-control-lg wide-input"
                     type="password"

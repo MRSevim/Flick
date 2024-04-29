@@ -9,7 +9,7 @@
   }
 }
 /*Notifications*/
-.notifications-container {
+.menu-container {
   width: 325px;
   z-index: 200;
   max-height: 300px;
@@ -20,10 +20,10 @@
   background-color: rgba(158, 158, 158, 0.2);
 }
 @media (max-width: 750px) {
-  .notifications-container {
+  .menu-container {
     right: calc(-162.5px - 100%);
   }
 }
-.notifications-clickable:hover {
+.menu-clickable:hover {
   font-weight: 600;
 }

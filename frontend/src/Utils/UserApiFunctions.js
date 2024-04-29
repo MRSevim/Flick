@@ -39,11 +39,11 @@ const userApi = {
 
     return response;
   },
-  update: async (username, email, password, image) => {
+  update: async (username, email, password, newPassword, image) => {
     const response = await fetch("/user/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password, image }),
+      body: JSON.stringify({ username, email, password, newPassword, image }),
     });
 
     return response;
