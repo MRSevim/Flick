@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useSignup } from "../Hooks/UserHooks/UseSignup";
 import links from "../Utils/Links";
+import { Popup } from "./Popup";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -10,7 +11,7 @@ export const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [user] = useUserContext();
-  const { signup, isLoading, error, setError } = useSignup();
+  const { signup, isLoading, error, setError, successMessage } = useSignup();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -106,10 +107,16 @@ export const SignUp = () => {
             </button>
           </Link>
         </p>
-        {error && (
-          <div className="text-center mt-3 wide-input alert alert-danger">
-            {error}
-          </div>
+        {error && <Popup message={error} type="danger" />}
+        {successMessage && (
+          <>
+            <Popup message={successMessage} type="success" />
+            <Link to={links.resendVerificationEmail(email)}>
+              <button type="button" className="btn btn-outline-light">
+                Resend Verification Email
+              </button>
+            </Link>
+          </>
         )}
       </form>
     </div>

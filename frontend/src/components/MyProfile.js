@@ -9,6 +9,7 @@ import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { ModalWrapper } from "./ModalWrapper";
+import { Popup } from "./Popup";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -214,16 +215,8 @@ export const MyProfile = () => {
                   user?.isGoogleLogin ? "Google Users can't update" : "Submit"
                 }
               />
-              {error && (
-                <div className="text-center mt-3 wide-input alert alert-danger">
-                  {error}
-                </div>
-              )}
-              {successMessage && (
-                <div className="text-center mt-3 wide-input alert alert-success">
-                  {successMessage}
-                </div>
-              )}
+              {error && <Popup message={error} type="danger" />}
+              {successMessage && <Popup message={error} type="success" />}
             </form>
           </div>
           <div className="d-flex justify-content-center">

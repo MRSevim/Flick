@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  Link,
+  useSearchParams,
+} from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useLogin } from "../Hooks/UserHooks/UseLogin";
 import { GoogleLogin } from "@react-oauth/google";
 import classNames from "classnames";
 import links from "../Utils/Links";
+import { LoadingRing } from "./LoadingRing";
+import { useVerifyEmailToken } from "../Hooks/EmailHooks/UseVerifyEmailToken";
+import { Popup } from "./Popup";
 
 export const Login = ({ onHideModal, children, type }) => {
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user] = useUserContext();
+
   const { login, error, setError, isLoading } = useLogin();
+  const {
+    verifyEmailToken,
+    isLoading: verifyLoading,
+    successMessage,
+  } = useVerifyEmailToken();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,6 +35,15 @@ export const Login = ({ onHideModal, children, type }) => {
       navigate(links.homepage);
     }
   });
+  useEffect(() => {
+    if (token) {
+      const verify = async () => {
+        await verifyEmailToken(token);
+      };
+      verify();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const hideModalIfExists = (response) => {
     if (response.ok && onHideModal) {
@@ -107,10 +132,19 @@ export const Login = ({ onHideModal, children, type }) => {
             </Link>
           </p>
           {error && (
-            <div className="text-center mt-3 wide-input alert alert-danger">
-              {error}
-            </div>
+            <>
+              <Popup message={error} type="danger" />
+              {error === "Please verify your account first" && (
+                <Link to={links.resendVerificationEmail()}>
+                  <button type="button" className="btn btn-outline-light">
+                    Resend Verification Email
+                  </button>
+                </Link>
+              )}
+            </>
           )}
+          {verifyLoading && <LoadingRing></LoadingRing>}
+          {successMessage && <Popup message={successMessage} type="success" />}
         </form>
       </div>
     </>

@@ -19,9 +19,11 @@ export const Search = () => {
   useEffect(() => {
     const get = async () => {
       const json = await searchAll(query);
+
       setArticles(json.articles);
       setUsers(json.users);
     };
+
     if (!advancedSearch) {
       get();
     }

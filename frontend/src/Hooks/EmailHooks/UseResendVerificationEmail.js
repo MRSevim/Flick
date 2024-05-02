@@ -1,17 +1,17 @@
 import { useState } from "react";
-import userApi from "../../Utils/UserApiFunctions";
+import emailApi from "../../Utils/EmailApiFunctions";
 
-export const useSignup = () => {
+export const useResendVerificationEmail = () => {
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
-  const signup = async (username, email, password) => {
+  const resendVerificationEmail = async (email) => {
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
 
-    const response = await userApi.signup(username, email, password);
+    const response = await emailApi.resendVerificationEmail(email);
     const json = await response.json();
 
     if (!response.ok) {
@@ -20,10 +20,11 @@ export const useSignup = () => {
     if (response.ok) {
       setSuccessMessage(json.message);
     }
-    // update loading state
+
     setIsLoading(false);
-    return response;
+
+    return { response, json };
   };
 
-  return { signup, isLoading, error, setError, successMessage };
+  return { resendVerificationEmail, isLoading, error, successMessage };
 };

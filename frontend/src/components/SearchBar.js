@@ -23,7 +23,10 @@ export const SearchBar = () => {
       const json = await searchAll(searchParam);
       setOptions(json);
     };
-    get();
+
+    if (searchParam.trim()) {
+      get();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParam]);
 

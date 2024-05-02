@@ -111,11 +111,14 @@ userSchema.statics.login = async function (res, username, password) {
     res.status(400);
     throw new Error("Incorrect username or password");
   }
-
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
     res.status(400);
     throw new Error("Incorrect username or password");
+  }
+  if (!user.isVerified) {
+    res.status(400);
+    throw new Error("Please verify your account first");
   }
 
   return user;

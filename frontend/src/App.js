@@ -29,6 +29,7 @@ import { User } from "./components/User.js";
 import links from "./Utils/Links.js";
 import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
 import { Confirmation } from "./components/Confirmation.js";
+import { ResendVerificationEmail } from "./components/ResendVerificationEmail.js";
 
 function App() {
   return (
@@ -55,6 +56,10 @@ function AppContent() {
       <Routes>
         {" "}
         <Route path="/most-liked" element={<MostLiked />} />
+        <Route
+          path="/resend-verification-email"
+          element={<ResendVerificationEmail />}
+        />
         <Route
           path="/login"
           element={
