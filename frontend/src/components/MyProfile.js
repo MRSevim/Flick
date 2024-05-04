@@ -58,9 +58,6 @@ export const MyProfile = () => {
           day: "numeric",
         });
         setMemberSince(formattedDate);
-        if (updatedEmail === "") {
-          setUpdatedEmail(json.email);
-        }
       }
     };
     get();
@@ -82,6 +79,7 @@ export const MyProfile = () => {
     }
     if (email !== initialEmail) {
       apiEmail = email;
+      setUpdatedEmail(apiEmail);
     }
     if (image !== initialImage) {
       apiImage = image;
@@ -152,7 +150,6 @@ export const MyProfile = () => {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
-                      setUpdatedEmail(e.target.value);
                     }}
                     className="form-control form-control-lg wide-input"
                     type="email"
@@ -225,9 +222,7 @@ export const MyProfile = () => {
               {successMessage && (
                 <>
                   <Popup message={successMessage} type="success" />
-                  {email !== updatedEmail && (
-                    <ResendButton email={updatedEmail} />
-                  )}
+                  {updatedEmail && <ResendButton email={updatedEmail} />}
                 </>
               )}
             </form>
