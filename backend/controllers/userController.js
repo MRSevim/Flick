@@ -59,7 +59,7 @@ const signupUser = async (req, res, next) => {
     const token = generateVerificationToken(user._id);
 
     //send email
-    await sendEmail("signup-verification", email, username, token, next);
+    await sendEmail("email-verification", email, username, token, next);
 
     res.status(201).json({
       message: "A verification email has been sent to your account",
@@ -221,11 +221,25 @@ const updateUserProfile = async (req, res, next) => {
       }
 
       user.username = username || user.username;
-      user.email = email || user.email;
+      user.newEmail = email || user.newEmail;
       user.image = image || user.image;
 
       if (newPassword) {
         user.password = newPassword;
+      }
+
+      let message;
+      if (email) {
+        // create a token
+        const token = generateVerificationToken(user._id);
+
+        //send email
+        await sendEmail("email-verification", email, username, token, next);
+
+        message =
+          "Profile updated. A verification email has been sent to your new email adress to verify it";
+      } else {
+        message = "Profile updated";
       }
 
       const updatedUser = await user.save();
@@ -233,9 +247,9 @@ const updateUserProfile = async (req, res, next) => {
       res.status(200).json({
         _id: updatedUser._id,
         username: updatedUser.username,
-        email: updatedUser.email,
         image: updatedUser.image,
         isGoogleLogin: updatedUser.isGoogleLogin,
+        message,
       });
     } else {
       res.status(404);

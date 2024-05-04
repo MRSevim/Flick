@@ -4,3 +4,4 @@ export const getFirstDiv = (content) => {
 
   return firstDiv;
 };
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

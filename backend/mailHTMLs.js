@@ -2,9 +2,9 @@ const htmls = {
   verificationHTML: (username, token, email) => {
     return `<h1>Verification Email</h1>
         <p>Hi ${username},</p>
-        <p>You just need to verify your email address before you can use Flick Articles.</p>
+        <p>You can verify your email address through the button below.</p>
         <a style="text-decoration: none;"  href="${
-          process.env.FRONTEND_URL + "/login?token=" + token
+          process.env.FRONTEND_URL + "/" + token
         }">
         <button style="
           cursor:pointer;
@@ -37,6 +37,12 @@ const htmls = {
         </button>
         <a/>
   
+        <p>Thanks! – The Flick Articles</p>`;
+  },
+  verifiedHTML: (username) => {
+    return `<h1>Account verified</h1>
+        <p>Hi ${username},</p>
+        <p>This email account has been verified.</p>
         <p>Thanks! – The Flick Articles</p>`;
   },
 };

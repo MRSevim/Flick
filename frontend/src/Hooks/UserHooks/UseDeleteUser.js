@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUserContext } from "../../Contexts/UserContext";
 import userApi from "../../Utils/UserApiFunctions";
+import { delay } from "../../Utils/HelperFuncs";
 
 export const useDeleteUser = () => {
   const [error, setError] = useState(null);
@@ -9,8 +10,6 @@ export const useDeleteUser = () => {
   const [, setUser] = useUserContext();
 
   const deleteUser = async (password) => {
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
     setIsLoading(true);
     setError(null);
 

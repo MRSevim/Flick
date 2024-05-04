@@ -18,14 +18,11 @@ export const useVerifyEmailToken = () => {
     if (!response.ok) {
       setGlobalError(json.message);
     }
-    if (response.ok) {
-      setSuccessMessage(json.message);
-    }
 
     setIsLoading(false);
 
     return { response, json };
   };
 
-  return { verifyEmailToken, isLoading, successMessage };
+  return { verifyEmailToken, isLoading, successMessage, setSuccessMessage };
 };

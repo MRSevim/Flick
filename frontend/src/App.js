@@ -30,6 +30,7 @@ import links from "./Utils/Links.js";
 import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
 import { Confirmation } from "./components/Confirmation.js";
 import { ResendVerificationEmail } from "./components/ResendVerificationEmail.js";
+import { EmailVerification } from "./components/EmailVerification.js";
 
 function App() {
   return (
@@ -94,6 +95,7 @@ function AppContent() {
         <Route path="/article/:id" element={<Article />} />
         <Route path="/about" element={<About />} />
         <Route exact path="/" element={<Home />} />
+        <Route path="/:token" element={<EmailVerification />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer></Footer>

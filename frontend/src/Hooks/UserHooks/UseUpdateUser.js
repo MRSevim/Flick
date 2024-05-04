@@ -27,7 +27,7 @@ export const useUpdateUser = () => {
       setError(json.message);
     }
     if (response.ok) {
-      const { username, _id, isGoogleLogin, image } = json;
+      const { message, username, _id, isGoogleLogin, image } = json;
       const userObject = { username, _id, isGoogleLogin, image };
       // update the user in local storage
       let user = JSON.parse(localStorage.getItem("user"));
@@ -45,7 +45,7 @@ export const useUpdateUser = () => {
       setUser(userObject);
 
       // update state
-      setSuccessMessage("Profile updated");
+      setSuccessMessage(message);
     }
     setIsLoading(false);
     return response;

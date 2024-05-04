@@ -10,6 +10,7 @@ import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { ModalWrapper } from "./ModalWrapper";
 import { Popup } from "./Popup";
+import { ResendButton } from "./ResendButton";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -17,6 +18,7 @@ export const MyProfile = () => {
   const [initialImage, setInitialImage] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [updatedEmail, setUpdatedEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -56,6 +58,9 @@ export const MyProfile = () => {
           day: "numeric",
         });
         setMemberSince(formattedDate);
+        if (updatedEmail === "") {
+          setUpdatedEmail(json.email);
+        }
       }
     };
     get();
@@ -147,6 +152,7 @@ export const MyProfile = () => {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
+                      setUpdatedEmail(e.target.value);
                     }}
                     className="form-control form-control-lg wide-input"
                     type="email"
@@ -216,7 +222,14 @@ export const MyProfile = () => {
                 }
               />
               {error && <Popup message={error} type="danger" />}
-              {successMessage && <Popup message={error} type="success" />}
+              {successMessage && (
+                <>
+                  <Popup message={successMessage} type="success" />
+                  {email !== updatedEmail && (
+                    <ResendButton email={updatedEmail} />
+                  )}
+                </>
+              )}
             </form>
           </div>
           <div className="d-flex justify-content-center">

@@ -34,9 +34,12 @@ const sendEmail = async (type, email, username, token, next) => {
   });
 
   let subject, html;
-  if (type === "signup-verification") {
+  if (type === "email-verification") {
     subject = "Verify your email adress";
     html = htmls.verificationHTML(username, token, email);
+  } else if ("verified") {
+    subject = "Account verified";
+    html = htmls.verifiedHTML(username);
   }
   try {
     // send mail with defined transport object

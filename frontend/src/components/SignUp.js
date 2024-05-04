@@ -4,6 +4,7 @@ import { useUserContext } from "../Contexts/UserContext";
 import { useSignup } from "../Hooks/UserHooks/UseSignup";
 import links from "../Utils/Links";
 import { Popup } from "./Popup";
+import { ResendButton } from "./ResendButton";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -111,11 +112,7 @@ export const SignUp = () => {
         {successMessage && (
           <>
             <Popup message={successMessage} type="success" />
-            <Link to={links.resendVerificationEmail(email)}>
-              <button type="button" className="btn btn-outline-light">
-                Resend Verification Email
-              </button>
-            </Link>
+            <ResendButton email={email} />
           </>
         )}
       </form>
