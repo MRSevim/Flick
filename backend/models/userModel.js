@@ -57,6 +57,14 @@ userSchema.index(
     unique: true,
   }
 );
+userSchema.index(
+  { createdAt: 1 },
+  {
+    name: "Partial-TTL-Index",
+    partialFilterExpression: { isGoogleLogin: false, isVerified: false },
+    expireAfterSeconds: 3600,
+  }
+);
 
 // static signup method
 userSchema.statics.signup = async function (res, username, email, password) {

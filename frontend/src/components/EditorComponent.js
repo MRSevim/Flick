@@ -36,7 +36,6 @@ export const EditorComponent = ({
           "help",
           "wordcount",
           "image",
-          "code",
         ],
       }}
       onEditorChange={(newValue, editor) => {
