@@ -4,10 +4,23 @@
   --font-secondary: "Libre Baskerville", serif;
   --font-article: "Jost", sans-serif;
 }
-$primary: #00a9a5;
-$secondary: #0b5351;
-$info: #092327;
-$body-bg: #fff;
+$primary: null;
+$secondary: null;
+$info: null;
+$body-bg: null;
+
+body {
+  $primary: #00a9a5 !global;
+  $secondary: #0b5351 !global;
+  $info: #092327 !global;
+  $body-bg: #fff !global;
+}
+body.dark {
+  $primary: #00a9a5 !global;
+  $secondary: #0b5351 !global;
+  $info: #fff !global;
+  $body-bg: #121212 !global;
+}
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 *,
