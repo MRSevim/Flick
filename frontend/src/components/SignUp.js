@@ -35,7 +35,7 @@ export const SignUp = () => {
   return (
     <div className="container mt-5 d-flex justify-content-center">
       <form
-        className="bg-primary text-info p-5 border border-3 rounded"
+        className="bg-primary p-5 border border-3 rounded"
         onSubmit={handleSubmit}
       >
         <div className="form-group">

@@ -76,7 +76,7 @@ export const SearchBar = () => {
               }}
               {...params.inputProps}
               type="search"
-              className="form-control form-control-dark"
+              className="form-control"
               placeholder="Search..."
               aria-label="Search"
             ></input>

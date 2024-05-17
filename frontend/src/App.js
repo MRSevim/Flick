@@ -31,16 +31,19 @@ import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
 import { Confirmation } from "./components/Confirmation.js";
 import { ResendVerificationEmail } from "./components/ResendVerificationEmail.js";
 import { EmailVerification } from "./components/EmailVerification.js";
+import { DarkModeProvider } from "./Contexts/DarkModeContext.js";
 
 function App() {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <UserProvider>
-        <GlobalErrorProvider>
-          <ConfirmationProvider>
-            <AppContent />
-          </ConfirmationProvider>
-        </GlobalErrorProvider>
+        <DarkModeProvider>
+          <GlobalErrorProvider>
+            <ConfirmationProvider>
+              <AppContent />
+            </ConfirmationProvider>
+          </GlobalErrorProvider>
+        </DarkModeProvider>
       </UserProvider>
     </GoogleOAuthProvider>
   );

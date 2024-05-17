@@ -47,7 +47,7 @@ export const Login = ({ onHideModal, children, type }) => {
       <div className="d-flex justify-content-center">
         <form
           className={classNames({
-            "bg-primary text-info p-5": true,
+            "bg-primary p-5": true,
             "border border-3 rounded": type !== "modal",
           })}
           onSubmit={handleSubmit}

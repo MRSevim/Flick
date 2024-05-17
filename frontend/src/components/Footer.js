@@ -5,7 +5,7 @@ import links from "../Utils/Links";
 
 export const Footer = () => {
   return (
-    <footer className="bg-primary text-info">
+    <footer className="bg-primary">
       <div className="container my-3 d-flex justify-content-between align-items-center">
         <div>© 2024 Flick. All rights reserved.</div>
         <div>

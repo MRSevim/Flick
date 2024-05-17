@@ -15,7 +15,8 @@ export const EditorComponent = ({
       initialValue={initialContent}
       init={{
         height: 600,
-        content_style: "body {  font-family: 'Jost', sans-serif; color:black}",
+        content_style:
+          "body {  font-family: 'Jost', sans-serif; color:#092327}",
         plugins: [
           "advlist",
           "autolink",

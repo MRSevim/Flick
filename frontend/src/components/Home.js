@@ -7,7 +7,7 @@ export const Home = () => {
     <div className="pb-5">
       <div className="hero-image">
         <div className="container h-100">
-          <div className="pt-5 text-body-bg d-flex flex-column justify-content-center align-items-center h-100">
+          <div className="pt-5 text-white d-flex flex-column justify-content-center align-items-center h-100">
             <div className="mb-5 text-center">
               <h1 className="mb-3 fw-bold hero-3d display-5 font-secondary">
                 Find meaning in writing

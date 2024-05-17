@@ -165,7 +165,7 @@ export const Articles = ({ isDraft }) => {
       <LoadingRing />
     </div>
   ) : localUser && articles ? (
-    <div className="container mt-5 pb-4 text-info">
+    <div className="container mt-5 pb-4">
       <h1 className="text-center"> All of {localUser.username}'s Articles</h1>
       {myArticles && (
         <>

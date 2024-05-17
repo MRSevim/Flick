@@ -4,12 +4,25 @@
   --font-secondary: "Libre Baskerville", serif;
   --font-article: "Jost", sans-serif;
 }
+@import "../node_modules/bootstrap/scss/functions";
+
 $primary: #00a9a5;
 $secondary: #0b5351;
 $info: #092327;
-$body-bg: #fff;
+$dark-primary: #092327;
+$dark-info: #00a9a5;
+
+@import "../node_modules/bootstrap/scss/variables";
+
+$dark-theme-colors: (
+  "dark-primary": $dark-primary,
+  "dark-info": $dark-info,
+);
+
+$theme-colors: map-merge($theme-colors, $dark-theme-colors);
 
 @import "../node_modules/bootstrap/scss/bootstrap";
+
 *,
 *::after,
 *::before {
@@ -40,7 +53,6 @@ body {
   font-family: var(--font-primary);
   color: $info;
   font-optical-sizing: auto;
-  background-color: $body-bg;
   margin-bottom: 93px;
   min-height: calc(100vh - 93px);
 }
@@ -77,9 +89,6 @@ body {
 .font-secondary {
   font-family: var(--font-secondary);
 }
-.text-body-bg {
-  color: $body-bg;
-}
 .image-wrapper {
   display: flex;
   justify-content: center;
@@ -95,7 +104,7 @@ body {
   height: 700px;
 }
 .call-to-action:hover {
-  border: solid 2px $body-bg !important;
+  border: solid 2px #fff !important;
 }
 .hero-3d {
   text-shadow: 0.25px 0.25px 0 hsl(174, 5%, 80%),
@@ -119,9 +128,6 @@ body {
   margin-left: auto;
   margin-right: auto;
   height: auto;
-}
-.article-body {
-  color: $info !important;
 }
 .tox .tox-statusbar__branding svg {
   display: none;
@@ -206,7 +212,7 @@ body {
   width: 3px; /* Adjusted width of dots */
   height: 3px; /* Adjusted height of dots */
   border-radius: 50%;
-  background: #fff;
+  background: $info;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {

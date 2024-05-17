@@ -9,6 +9,7 @@ import { Notifications } from "./Notifications";
 import { UserMenu } from "./UserMenu";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
+import { DarkModeToggle } from "./DarkModeToggle";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -50,7 +51,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="bg-primary text-info p-3">
+      <header className="bg-primary p-3">
         <div className="container">
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <h1 className="d-flex align-items-center pe-lg-3 mb-2 mb-lg-0">
@@ -74,6 +75,7 @@ export const Header = () => {
               ))}
             </ul>
             <SearchBar />
+            <DarkModeToggle />
             {user && <Notifications />}
             {user ? (
               <div ref={wrapperRef} className="position-relative">

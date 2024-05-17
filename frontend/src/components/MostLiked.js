@@ -147,7 +147,7 @@ export const MostLiked = () => {
             </div>
           )}
           {!isLoading && articles?.length === 0 && (
-            <div className="text-center mt-3 text-info row pb-4">
+            <div className="text-center mt-3 row pb-4">
               <img
                 className="col col-12 col-lg-6 rounded-pill mb-4"
                 src={empty}

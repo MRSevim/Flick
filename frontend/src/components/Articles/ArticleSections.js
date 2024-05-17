@@ -194,7 +194,7 @@ export const ArticleSections = ({ refProp }) => {
                   })}
                 ></i>
                 <a
-                  className="text-info ps-1"
+                  className="ps-1"
                   title={section.node.innerText}
                   href={"#" + section.id}
                 >
