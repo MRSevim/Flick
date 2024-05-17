@@ -1,17 +1,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
+$primary: #00a9a5;
+$secondary: #0b5351;
+$info: #092327;
+$dark-primary: $info;
+$dark-info: $primary;
 :root {
   --font-primary: "Nunito", sans-serif;
   --font-secondary: "Libre Baskerville", serif;
   --font-article: "Jost", sans-serif;
+  --color-primary: #{$primary};
+  --color-secondary: #{$secondary};
+  --color-info: #{$info};
 }
+
+body.dark {
+  --color-primary: #{$dark-primary};
+  --color-info: #{$dark-info};
+}
+
 @import "../node_modules/bootstrap/scss/functions";
-
-$primary: #00a9a5;
-$secondary: #0b5351;
-$info: #092327;
-$dark-primary: #092327;
-$dark-info: #00a9a5;
-
 @import "../node_modules/bootstrap/scss/variables";
 
 $dark-theme-colors: (
@@ -38,7 +45,7 @@ $theme-colors: map-merge($theme-colors, $dark-theme-colors);
 }
 .unstyled-link {
   text-decoration: none;
-  color: $info;
+  color: var(--color-info);
 }
 .hovered-link:hover {
   text-decoration: underline;
@@ -51,7 +58,7 @@ html {
 }
 body {
   font-family: var(--font-primary);
-  color: $info;
+  color: var(--color-info);
   font-optical-sizing: auto;
   margin-bottom: 93px;
   min-height: calc(100vh - 93px);
@@ -71,7 +78,7 @@ body {
   font-weight: 700;
 }
 .line-right {
-  border-right: 2px solid $info;
+  border-right: 2px solid var(--color-info);
   margin-right: 10px;
   padding-right: 10px;
 }
@@ -150,7 +157,7 @@ body {
 .article-card-inner-html * {
   font-family: var(--font-article);
   font-size: 16px !important;
-  color: $info;
+  color: var(--color-info);
 }
 .article-card-inner-html img {
   display: none;
@@ -169,10 +176,10 @@ body {
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 8px solid $info;
+  border: 8px solid var(--color-info);
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: $info transparent transparent transparent;
+  border-color: var(--color-info) transparent transparent transparent;
 }
 .lds-ring.notification {
   width: 15px;
@@ -212,7 +219,7 @@ body {
   width: 3px; /* Adjusted width of dots */
   height: 3px; /* Adjusted height of dots */
   border-radius: 50%;
-  background: $info;
+  background: var(--color-info);
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {
@@ -257,7 +264,12 @@ body {
 }
 /*Search*/
 .search-card-text {
-  background-image: linear-gradient(to right, $info, $info 50%, $info 50%);
+  background-image: linear-gradient(
+    to right,
+    var(--color-info),
+    var(--color-info) 50%,
+    var(--color-info) 50%
+  );
   background-size: 200% 100%;
   background-position: -100%;
   /* display: inline-block; */
@@ -270,7 +282,7 @@ body {
 }
 .search-card-text:before {
   content: "";
-  background: $info;
+  background: var(--color-info);
   display: block;
   position: absolute;
   bottom: -3px;
