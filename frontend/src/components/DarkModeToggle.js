@@ -12,8 +12,7 @@ export const DarkModeToggle = () => {
   };
   return (
     <>
-      <i className="bi bi-moon"></i>
-
+      <i className="bi bi-moon h4 m-0"></i>
       <Switch
         checked={darkMode}
         onChange={handleChange}
