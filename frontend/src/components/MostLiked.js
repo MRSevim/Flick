@@ -9,6 +9,7 @@ import { LikeButton } from "./Articles/LikeButton";
 import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
 import { getFirstDiv } from "../Utils/HelperFuncs";
 import { ImageComponent } from "./ImageComponent";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const MostLiked = () => {
   const [time, setTime] = useState("week");
@@ -16,6 +17,7 @@ export const MostLiked = () => {
   const [articles, setArticles] = useState(null);
   const { likeArticle: likeArticleCall, isLoading: likeLoading } =
     useLikeArticle();
+  const [darkMode] = useDarkModeContext();
 
   useEffect(() => {
     const get = async (time) => {
@@ -90,7 +92,13 @@ export const MostLiked = () => {
           {!isLoading && articles?.length > 0 && (
             <div>
               {articles.map((article) => (
-                <div className="bg-primary rounded m-2 p-3" key={article._id}>
+                <div
+                  className={
+                    "bg-primary rounded m-2 p-3 " +
+                    (darkMode && "bg-dark-primary")
+                  }
+                  key={article._id}
+                >
                   <div className="d-flex justify-content-between">
                     <LikeButton
                       article={article}

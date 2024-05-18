@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./ArticleSections.css";
 import { LoadingRing } from "../LoadingRing";
 import classNames from "classnames";
+import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 
 export const ArticleSections = ({ refProp }) => {
   const [loading, setLoading] = useState(true);
   const [sections, setSections] = useState([]);
   const [sectionsWithId, setSectionsWithId] = useState([]);
+  const [darkMode] = useDarkModeContext();
 
   useEffect(() => {
     /* console.log(sections, sectionsWithId); */
@@ -182,7 +184,10 @@ export const ArticleSections = ({ refProp }) => {
           {sections.map((section) => {
             if (!section.open) return "";
             return (
-              <div key={section.id} className="header border-info">
+              <div
+                key={section.id}
+                className={"header border-info " + (darkMode && "border-white")}
+              >
                 <i
                   onClick={() => {
                     toggleHeadersBelow(+section.id, +section.node.nodeName[1]);

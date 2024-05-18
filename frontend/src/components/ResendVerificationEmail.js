@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Popup } from "./Popup";
 import { useResendVerificationEmail } from "../Hooks/EmailHooks/UseResendVerificationEmail";
 import { useSearchParams } from "react-router-dom";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const ResendVerificationEmail = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export const ResendVerificationEmail = () => {
   const emailFromUrl = searchParams.get("email");
   const { resendVerificationEmail, isLoading, error, successMessage } =
     useResendVerificationEmail();
+  const [darkMode] = useDarkModeContext();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +30,10 @@ export const ResendVerificationEmail = () => {
   return (
     <div className="container mt-5 d-flex justify-content-center">
       <form
-        className="bg-primary p-5 border border-3 rounded"
+        className={
+          "bg-primary p-5 border border-3 rounded " +
+          (darkMode && "bg-dark-primary")
+        }
         onSubmit={handleSubmit}
       >
         <div className="form-group">

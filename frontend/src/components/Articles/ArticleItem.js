@@ -5,6 +5,7 @@ import { DeleteButton } from "./DeleteButton";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
 import { ArticleCardBody } from "./ArticleCardBody";
+import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 
 export const ArticleItem = ({
   deleteLoading,
@@ -18,6 +19,7 @@ export const ArticleItem = ({
   value = false,
   updateValue = () => {},
 }) => {
+  const [darkMode] = useDarkModeContext();
   const handleCheckboxChange = () => {
     updateValue(!value, article._id);
   };
@@ -27,7 +29,9 @@ export const ArticleItem = ({
       key={article._id}
       className="col col-12 col-md-6 col-lg-4 articles-column"
     >
-      <div className="card h-100 article-card">
+      <div
+        className={"card h-100 article-card " + (darkMode && "bg-dark-primary")}
+      >
         <ArticleCardBody
           classes={"my-4"}
           article={article}

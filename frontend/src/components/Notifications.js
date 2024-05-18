@@ -7,6 +7,7 @@ import en from "javascript-time-ago/locale/en";
 import { useClearNotifications } from "../Hooks/NotificationHooks/UseClearNotifications";
 import notificationApi from "../Utils/NotificationApiFunctions";
 import links from "../Utils/Links";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -17,6 +18,7 @@ export const Notifications = () => {
   const { getNotifications, isLoading } = useGetNotifications();
   const wrapperRef = useRef(null);
   const { clearNotifications } = useClearNotifications();
+  const [darkMode] = useDarkModeContext();
 
   const getUnreadLength = (notifications) => {
     return notifications?.filter((notification) => {
@@ -94,7 +96,11 @@ export const Notifications = () => {
         )}
       </div>
       {open && (
-        <div className="position-absolute rounded border bg-light menu-container overflow-auto">
+        <div
+          className={
+            "position-absolute rounded border bg-light menu-container overflow-auto"
+          }
+        >
           <div className="d-flex justify-content-between">
             <div
               onClick={markAsRead}
@@ -110,67 +116,73 @@ export const Notifications = () => {
               Clear All
             </div>
           </div>
-          {notifications?.length === 0 && (
-            <div className="d-flex justify-content-center border-top p-2">
-              No notifications
-            </div>
-          )}
-          {notifications?.length > 0 &&
-            notifications?.map((notification) => {
-              return (
-                <div
-                  key={notification._id}
-                  className={classNames({
-                    "p-2 border-top": true,
-                    "unread-notification border-3": !notification.read,
-                  })}
-                >
-                  {notification.users[0].username && (
-                    <Link
-                      className={classNames({
-                        "d-inline": true,
-                        "": !notification.read,
-                      })}
-                      to={links.publicUser(notification.users[0]._id)}
-                    >
-                      {notification.users[0].username}
-                    </Link>
-                  )}
-                  {notification.users.length > 1 && (
-                    <span>
-                      {" "}
-                      and {notification.users.length - 1}{" "}
-                      {notification.users.length - 1 > 1 ? "others" : "other"}
-                    </span>
-                  )}
-                  {notification.action === "follow" && " started following you"}
-                  {notification.action === "like" && " liked your article: "}
-                  {notification.action === "comment" &&
-                    " commented on your article: "}
-                  {notification.action === "release" &&
-                    " released an article: "}
-                  {notification.target && (
-                    <>
-                      <br />
+          <div className={darkMode && "bg-dark-primary"}>
+            {notifications?.length === 0 && (
+              <div className="d-flex justify-content-center border-top p-2">
+                No notifications
+              </div>
+            )}
+            {notifications?.length > 0 &&
+              notifications?.map((notification) => {
+                return (
+                  <div
+                    key={notification._id}
+                    className={classNames({
+                      "p-2 border-top": true,
+                      "unread-notification border-3":
+                        !notification.read && !darkMode,
+                      "unread-nofication-dark-mode":
+                        !notification.read && darkMode,
+                    })}
+                  >
+                    {notification.users[0].username && (
                       <Link
-                        title={notification.target.title}
                         className={classNames({
+                          "d-inline": true,
                           "": !notification.read,
                         })}
-                        to={links.article(notification.target._id)}
+                        to={links.publicUser(notification.users[0]._id)}
                       >
-                        {notification.target.title.substring(0, 30)}
-                        {notification.target.title.length > 40 && "..."}
+                        {notification.users[0].username}
                       </Link>
-                    </>
-                  )}
-                  <br />
-                  <div className="text-end fw-lighter">
-                    {timeAgo.format(new Date(notification.created))}
+                    )}
+                    {notification.users.length > 1 && (
+                      <span>
+                        {" "}
+                        and {notification.users.length - 1}{" "}
+                        {notification.users.length - 1 > 1 ? "others" : "other"}
+                      </span>
+                    )}
+                    {notification.action === "follow" &&
+                      " started following you"}
+                    {notification.action === "like" && " liked your article: "}
+                    {notification.action === "comment" &&
+                      " commented on your article: "}
+                    {notification.action === "release" &&
+                      " released an article: "}
+                    {notification.target && (
+                      <>
+                        <br />
+                        <Link
+                          title={notification.target.title}
+                          className={classNames({
+                            "": !notification.read,
+                          })}
+                          to={links.article(notification.target._id)}
+                        >
+                          {notification.target.title.substring(0, 30)}
+                          {notification.target.title.length > 40 && "..."}
+                        </Link>
+                      </>
+                    )}
+                    <br />
+                    <div className="text-end fw-lighter">
+                      {timeAgo.format(new Date(notification.created))}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
         </div>
       )}
     </div>

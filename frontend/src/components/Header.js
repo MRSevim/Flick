@@ -10,6 +10,7 @@ import { UserMenu } from "./UserMenu";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { DarkModeToggle } from "./DarkModeToggle";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -18,6 +19,7 @@ export const Header = () => {
   const [myId, setMyId] = useState("");
   const { logout } = useLogout();
   const wrapperRef = useRef(null);
+  const [darkMode] = useDarkModeContext();
 
   useEffect(() => {
     if (user) {
@@ -46,12 +48,13 @@ export const Header = () => {
     return classNames({
       "nav-link px-2 text-info": true,
       active: location.pathname === type,
+      "text-white": darkMode,
     });
   };
 
   return (
     <>
-      <header className="bg-primary p-3">
+      <header className={"bg-primary p-3 " + (darkMode && "bg-dark-primary")}>
         <div className="container">
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <h1 className="d-flex align-items-center pe-lg-3 mb-2 mb-lg-0">

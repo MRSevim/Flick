@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import links from "../Utils/Links";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const Home = () => {
+  const [darkMode] = useDarkModeContext();
+  let darkModeString = darkMode && " bg-dark-primary text-white ";
+  let accordionItemClasses = "accordion-item " + darkModeString;
+
+  useEffect(() => {
+    document.querySelectorAll(".accordion-button").forEach((button) => {
+      if (darkMode) {
+        button.classList.add("bg-dark-primary");
+        button.classList.add("text-white");
+      } else {
+        button.classList.remove("bg-dark-primary");
+        button.classList.remove("text-white");
+      }
+    });
+  }, [darkMode, darkModeString]);
+
   return (
     <div className="pb-5">
       <div className="hero-image">
@@ -30,7 +47,7 @@ export const Home = () => {
       <div className="container mt-5">
         <h1 className="text-center"> Some Questions You Might Ask</h1>
         <div className="accordion" id="accordionFlick">
-          <div className="accordion-item">
+          <div className={accordionItemClasses}>
             <h2 className="accordion-header">
               <button
                 className="accordion-button"
@@ -57,7 +74,7 @@ export const Home = () => {
               </div>
             </div>
           </div>
-          <div className="accordion-item">
+          <div className={accordionItemClasses}>
             <h2 className="accordion-header">
               <button
                 className="accordion-button collapsed"
@@ -83,7 +100,7 @@ export const Home = () => {
               </div>
             </div>
           </div>
-          <div className="accordion-item">
+          <div className={accordionItemClasses}>
             <h2 className="accordion-header">
               <button
                 className="accordion-button collapsed"

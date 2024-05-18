@@ -1,10 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import links from "../Utils/Links";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
+  const [darkMode] = useDarkModeContext();
   return (
-    <div className="user-menu-container rounded border bg-light position-absolute">
+    <div
+      className={
+        "user-menu-container rounded border bg-light position-absolute " +
+        (darkMode && "bg-dark-primary")
+      }
+    >
       <div>
         <p className="p-2 m-0 border-bottom text-center text-break">
           {user.username}

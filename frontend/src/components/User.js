@@ -67,8 +67,7 @@ export const User = () => {
             <div className="text-center">
               <h1 className="fw-bold"> {user.username}</h1>
               <p className="mt-3">
-                They have been a member of the website since{" "}
-                <span className="fw-bold">{memberSince}</span>
+                Member since <span className="fw-bold">{memberSince}</span>
               </p>
               <Link className="unstyled-link" to={links.allArticles(user._id)}>
                 <button type="button" className="btn btn-primary">

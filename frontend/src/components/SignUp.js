@@ -5,6 +5,7 @@ import { useSignup } from "../Hooks/UserHooks/UseSignup";
 import links from "../Utils/Links";
 import { Popup } from "./Popup";
 import { ResendButton } from "./ResendButton";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +14,7 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [user] = useUserContext();
   const { signup, isLoading, error, setError, successMessage } = useSignup();
+  const [darkMode] = useDarkModeContext();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -35,7 +37,10 @@ export const SignUp = () => {
   return (
     <div className="container mt-5 d-flex justify-content-center">
       <form
-        className="bg-primary p-5 border border-3 rounded"
+        className={
+          "bg-primary p-5 border border-3 rounded " +
+          (darkMode && "bg-dark-primary")
+        }
         onSubmit={handleSubmit}
       >
         <div className="form-group">

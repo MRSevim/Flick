@@ -16,6 +16,7 @@ import { useDeleteMany } from "../../Hooks/ArticleHooks/UseDeleteMany";
 import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { AdvancedSearch } from "../AdvancedSearch";
+import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -38,6 +39,7 @@ export const Articles = ({ isDraft }) => {
   const titleParam = searchParams.get("title");
   const tagsParam = searchParams.get("tags");
   const [selected, setSelected] = useState([]);
+  const [darkMode] = useDarkModeContext();
 
   function handleSelect(value, id) {
     if (value) {
@@ -170,7 +172,12 @@ export const Articles = ({ isDraft }) => {
       {myArticles && (
         <>
           <div className="d-flex justify-content-center align-items-center">
-            <div className="d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-primary">
+            <div
+              className={
+                "d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-primary " +
+                (darkMode && "bg-dark-primary")
+              }
+            >
               <Link
                 onClick={setLoadingToTrue}
                 to={links.allArticles(id)}

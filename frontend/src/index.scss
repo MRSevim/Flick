@@ -3,7 +3,6 @@ $primary: #00a9a5;
 $secondary: #0b5351;
 $info: #092327;
 $dark-primary: $info;
-$dark-info: $primary;
 :root {
   --font-primary: "Nunito", sans-serif;
   --font-secondary: "Libre Baskerville", serif;
@@ -14,8 +13,9 @@ $dark-info: $primary;
 }
 
 body.dark {
+  background-color: #040e10;
   --color-primary: #{$dark-primary};
-  --color-info: #{$dark-info};
+  --color-info: #fff;
 }
 
 @import "../node_modules/bootstrap/scss/functions";
@@ -23,7 +23,6 @@ body.dark {
 
 $dark-theme-colors: (
   "dark-primary": $dark-primary,
-  "dark-info": $dark-info,
 );
 
 $theme-colors: map-merge($theme-colors, $dark-theme-colors);

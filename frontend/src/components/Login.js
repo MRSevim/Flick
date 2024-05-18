@@ -5,7 +5,7 @@ import { useLogin } from "../Hooks/UserHooks/UseLogin";
 import { GoogleLogin } from "@react-oauth/google";
 import classNames from "classnames";
 import links from "../Utils/Links";
-
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { Popup } from "./Popup";
 import { ResendButton } from "./ResendButton";
 
@@ -16,6 +16,7 @@ export const Login = ({ onHideModal, children, type }) => {
   const { login, error, setError, isLoading } = useLogin();
   const location = useLocation();
   const navigate = useNavigate();
+  const [darkMode] = useDarkModeContext();
 
   useEffect(() => {
     if (user && location.pathname === "/login") {
@@ -49,6 +50,7 @@ export const Login = ({ onHideModal, children, type }) => {
           className={classNames({
             "bg-primary p-5": true,
             "border border-3 rounded": type !== "modal",
+            "bg-dark-primary": darkMode,
           })}
           onSubmit={handleSubmit}
         >

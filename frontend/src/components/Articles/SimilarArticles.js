@@ -6,10 +6,12 @@ import { ImageComponent } from "../ImageComponent";
 import links from "../../Utils/Links.js";
 import { LoadingRing } from "../LoadingRing";
 import { ArticleCardBody } from "./ArticleCardBody.js";
+import { useDarkModeContext } from "../../Contexts/DarkModeContext.js";
 
 export const SimilarArticles = ({ id }) => {
   const [articles, setArticles] = useState([]);
   const { getSimilar, isLoading } = useGetSimilar();
+  const [darkMode] = useDarkModeContext();
 
   const responsive = {
     desktop: {
@@ -45,7 +47,12 @@ export const SimilarArticles = ({ id }) => {
       <Carousel responsive={responsive}>
         {articles.map((article) => {
           return (
-            <div key={article._id} className="card article-card m-2">
+            <div
+              key={article._id}
+              className={
+                "card article-card m-2 " + (darkMode && "bg-dark-primary")
+              }
+            >
               <ImageComponent src={article.image} />
               <ArticleCardBody
                 classes={"me-2"}
