@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import links from "../Utils/Links";
+import { addDarkBg } from "../Utils/HelperFuncs";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
@@ -9,7 +10,7 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
     <div
       className={
         "user-menu-container rounded border bg-light position-absolute " +
-        (darkMode && "bg-dark-primary")
+        addDarkBg(darkMode)
       }
     >
       <div>

@@ -17,6 +17,7 @@ import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { AdvancedSearch } from "../AdvancedSearch";
 import { useDarkModeContext } from "../../Contexts/DarkModeContext";
+import { addDarkBg } from "../../Utils/HelperFuncs";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -175,7 +176,7 @@ export const Articles = ({ isDraft }) => {
             <div
               className={
                 "d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-primary " +
-                (darkMode && "bg-dark-primary")
+                addDarkBg(darkMode)
               }
             >
               <Link

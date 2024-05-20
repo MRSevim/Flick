@@ -7,6 +7,7 @@ import links from "../../Utils/Links.js";
 import { LoadingRing } from "../LoadingRing";
 import { ArticleCardBody } from "./ArticleCardBody.js";
 import { useDarkModeContext } from "../../Contexts/DarkModeContext.js";
+import { addDarkBg } from "../../Utils/HelperFuncs.js";
 
 export const SimilarArticles = ({ id }) => {
   const [articles, setArticles] = useState([]);
@@ -49,9 +50,7 @@ export const SimilarArticles = ({ id }) => {
           return (
             <div
               key={article._id}
-              className={
-                "card article-card m-2 " + (darkMode && "bg-dark-primary")
-              }
+              className={"card article-card m-2 " + addDarkBg(darkMode)}
             >
               <ImageComponent src={article.image} />
               <ArticleCardBody

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Modal } from "bootstrap";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const ModalWrapper = ({ id, children, setRef }) => {
   const myModalRef = useRef(null);
@@ -24,7 +25,7 @@ export const ModalWrapper = ({ id, children, setRef }) => {
         <div
           className={
             "modal-content mt-5 bg-primary border border-3 rounded " +
-            (darkMode && "bg-dark-primary")
+            addDarkBg(darkMode)
           }
         >
           {children}

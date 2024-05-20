@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useSignup } from "../Hooks/UserHooks/UseSignup";
 import links from "../Utils/Links";
+import { addDarkBg } from "../Utils/HelperFuncs";
 import { Popup } from "./Popup";
 import { ResendButton } from "./ResendButton";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
@@ -38,8 +39,7 @@ export const SignUp = () => {
     <div className="container mt-5 d-flex justify-content-center">
       <form
         className={
-          "bg-primary p-5 border border-3 rounded " +
-          (darkMode && "bg-dark-primary")
+          "bg-primary p-5 border border-3 rounded " + addDarkBg(darkMode)
         }
         onSubmit={handleSubmit}
       >

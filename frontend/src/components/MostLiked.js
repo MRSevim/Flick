@@ -7,7 +7,7 @@ import links from "../Utils/Links";
 import empty from "../Utils/images/empty-most-liked.jpg";
 import { LikeButton } from "./Articles/LikeButton";
 import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
-import { getFirstDiv } from "../Utils/HelperFuncs";
+import { addDarkBg, getFirstDiv } from "../Utils/HelperFuncs";
 import { ImageComponent } from "./ImageComponent";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
@@ -94,8 +94,7 @@ export const MostLiked = () => {
               {articles.map((article) => (
                 <div
                   className={
-                    "bg-primary rounded m-2 p-3 " +
-                    (darkMode && "bg-dark-primary")
+                    "bg-primary rounded m-2 p-3 " + addDarkBg(darkMode)
                   }
                   key={article._id}
                 >

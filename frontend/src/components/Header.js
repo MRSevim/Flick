@@ -11,6 +11,7 @@ import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -54,7 +55,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className={"bg-primary p-3 " + (darkMode && "bg-dark-primary")}>
+      <header className={"bg-primary p-3 " + addDarkBg(darkMode)}>
         <div className="container">
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <h1 className="d-flex align-items-center pe-lg-3 mb-2 mb-lg-0">

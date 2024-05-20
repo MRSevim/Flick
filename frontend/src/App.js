@@ -31,7 +31,12 @@ import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
 import { Confirmation } from "./components/Confirmation.js";
 import { ResendVerificationEmail } from "./components/ResendVerificationEmail.js";
 import { EmailVerification } from "./components/EmailVerification.js";
-import { DarkModeProvider } from "./Contexts/DarkModeContext.js";
+import {
+  DarkModeProvider,
+  useDarkModeContext,
+} from "./Contexts/DarkModeContext.js";
+import { ThemeProvider } from "@mui/material";
+import { createMuiTheme } from "./Utils/MaterialUiStyles.js";
 
 function App() {
   return (
@@ -51,58 +56,65 @@ function App() {
 
 function AppContent() {
   const [user] = useUserContext();
+  const [darkMode] = useDarkModeContext();
+  const theme = createMuiTheme(darkMode);
 
   return (
-    <Router basename="/">
-      <GlobalError></GlobalError>
-      <Header></Header>
-      <Confirmation></Confirmation>
-      <Routes>
-        {" "}
-        <Route path="/most-liked" element={<MostLiked />} />
-        <Route
-          path="/resend-verification-email"
-          element={<ResendVerificationEmail />}
-        />
-        <Route
-          path="/login"
-          element={
-            user ? (
-              <Navigate to={links.homepage} />
-            ) : (
-              <div className="mt-5">
-                <Login />
-              </div>
-            )
-          }
-        />
-        <Route
-          path="/sign-up"
-          element={user ? <Navigate to={links.homepage} /> : <SignUp />}
-        />
-        <Route path="/create-an-article" element={<CreateAnArticle />} />
-        <Route
-          path="/article/user/:id/articles"
-          element={<Articles isDraft={false} />}
-        />
-        <Route
-          path="/article/user/:id/drafts"
-          element={<Articles isDraft={true} />}
-        />
-        <Route path="/search" element={<Search />} />
-        <Route path="/followers/:id" element={<Follows type="followers" />} />
-        <Route path="/followings/:id" element={<Follows type="followings" />} />
-        <Route path="/user/:id" element={<User />} />
-        <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/edit/:id" element={<Edit />} />
-        <Route path="/article/:id" element={<Article />} />
-        <Route path="/about" element={<About />} />
-        <Route exact path="/" element={<Home />} />
-        <Route path="/:token" element={<EmailVerification />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer></Footer>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router basename="/">
+        <GlobalError></GlobalError>
+        <Header></Header>
+        <Confirmation></Confirmation>
+        <Routes>
+          {" "}
+          <Route path="/most-liked" element={<MostLiked />} />
+          <Route
+            path="/resend-verification-email"
+            element={<ResendVerificationEmail />}
+          />
+          <Route
+            path="/login"
+            element={
+              user ? (
+                <Navigate to={links.homepage} />
+              ) : (
+                <div className="mt-5">
+                  <Login />
+                </div>
+              )
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={user ? <Navigate to={links.homepage} /> : <SignUp />}
+          />
+          <Route path="/create-an-article" element={<CreateAnArticle />} />
+          <Route
+            path="/article/user/:id/articles"
+            element={<Articles isDraft={false} />}
+          />
+          <Route
+            path="/article/user/:id/drafts"
+            element={<Articles isDraft={true} />}
+          />
+          <Route path="/search" element={<Search />} />
+          <Route path="/followers/:id" element={<Follows type="followers" />} />
+          <Route
+            path="/followings/:id"
+            element={<Follows type="followings" />}
+          />
+          <Route path="/user/:id" element={<User />} />
+          <Route path="/my-profile" element={<MyProfile />} />
+          <Route path="/edit/:id" element={<Edit />} />
+          <Route path="/article/:id" element={<Article />} />
+          <Route path="/about" element={<About />} />
+          <Route exact path="/" element={<Home />} />
+          <Route path="/:token" element={<EmailVerification />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer></Footer>
+      </Router>
+    </ThemeProvider>
   );
 }
 export default App;

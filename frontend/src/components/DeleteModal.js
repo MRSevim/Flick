@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDeleteUser } from "../Hooks/UserHooks/UseDeleteUser";
 import { useUserContext } from "../Contexts/UserContext";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const DeleteModal = ({ children }) => {
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ export const DeleteModal = ({ children }) => {
   return (
     <div className=" d-flex justify-content-center">
       <form
-        className={"bg-primary m-5 wide-input " + darkMode && "bg-dark-primary"}
+        className={"bg-primary m-5 wide-input " + addDarkBg(darkMode)}
         onSubmit={handleDeleteAccount}
       >
         {children}

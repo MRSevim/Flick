@@ -8,6 +8,7 @@ import { useClearNotifications } from "../Hooks/NotificationHooks/UseClearNotifi
 import notificationApi from "../Utils/NotificationApiFunctions";
 import links from "../Utils/Links";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -116,7 +117,7 @@ export const Notifications = () => {
               Clear All
             </div>
           </div>
-          <div className={darkMode && "bg-dark-primary"}>
+          <div className={addDarkBg(darkMode)}>
             {notifications?.length === 0 && (
               <div className="d-flex justify-content-center border-top p-2">
                 No notifications

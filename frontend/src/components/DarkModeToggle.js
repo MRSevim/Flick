@@ -1,6 +1,7 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import classNames from "classnames";
 
 export const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useDarkModeContext();
@@ -12,7 +13,13 @@ export const DarkModeToggle = () => {
   };
   return (
     <>
-      <i className="bi bi-moon h4 m-0"></i>
+      <i
+        className={classNames({
+          "bi h4 m-0": true,
+          "bi-moon-fill": darkMode,
+          "bi-moon": !darkMode,
+        })}
+      ></i>
       <Switch
         checked={darkMode}
         onChange={handleChange}

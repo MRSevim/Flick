@@ -3,6 +3,7 @@ import { Popup } from "./Popup";
 import { useResendVerificationEmail } from "../Hooks/EmailHooks/UseResendVerificationEmail";
 import { useSearchParams } from "react-router-dom";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const ResendVerificationEmail = () => {
   const [email, setEmail] = useState("");
@@ -31,8 +32,7 @@ export const ResendVerificationEmail = () => {
     <div className="container mt-5 d-flex justify-content-center">
       <form
         className={
-          "bg-primary p-5 border border-3 rounded " +
-          (darkMode && "bg-dark-primary")
+          "bg-primary p-5 border border-3 rounded " + addDarkBg(darkMode)
         }
         onSubmit={handleSubmit}
       >
