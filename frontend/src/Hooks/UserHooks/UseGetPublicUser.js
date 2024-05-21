@@ -3,12 +3,12 @@ import userApi from "../../Utils/UserApiFunctions";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 
 export const useGetPublicUser = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(null);
   const [, setGlobalError] = useGlobalErrorContext();
 
   const getPublicUser = async (param) => {
     setGlobalError(null);
-
+    setIsLoading(true);
     const response = await userApi.getPublicUser(param);
     const json = await response.json();
 

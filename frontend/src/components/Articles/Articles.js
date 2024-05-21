@@ -250,7 +250,7 @@ export const Articles = ({ isDraft }) => {
                   onClick={(e) => {
                     deleteSelected(selected);
                   }}
-                  className="btn btn-danger ms-2"
+                  className="btn btn-danger ms-4"
                 >
                   <i className="bi bi-trash-fill"></i> Delete Selected
                 </button>

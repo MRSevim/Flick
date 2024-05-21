@@ -4,13 +4,8 @@ import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import classNames from "classnames";
 
 export const DarkModeToggle = () => {
-  const [darkMode, setDarkMode] = useDarkModeContext();
+  const [darkMode, handleChange] = useDarkModeContext();
 
-  const handleChange = () => {
-    setDarkMode(!darkMode);
-    localStorage.setItem("darkMode", !darkMode);
-    document.body.classList.toggle("dark");
-  };
   return (
     <>
       <i

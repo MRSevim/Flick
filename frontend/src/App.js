@@ -28,6 +28,7 @@ import { MyProfile } from "./components/MyProfile.js";
 import { User } from "./components/User.js";
 import links from "./Utils/Links.js";
 import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
+
 import { Confirmation } from "./components/Confirmation.js";
 import { ResendVerificationEmail } from "./components/ResendVerificationEmail.js";
 import { EmailVerification } from "./components/EmailVerification.js";
@@ -42,13 +43,13 @@ function App() {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <UserProvider>
-        <DarkModeProvider>
-          <GlobalErrorProvider>
+        <GlobalErrorProvider>
+          <DarkModeProvider>
             <ConfirmationProvider>
               <AppContent />
             </ConfirmationProvider>
-          </GlobalErrorProvider>
-        </DarkModeProvider>
+          </DarkModeProvider>
+        </GlobalErrorProvider>
       </UserProvider>
     </GoogleOAuthProvider>
   );

@@ -5,7 +5,6 @@ import { googleLogout } from "@react-oauth/google";
 
 export const useLogout = () => {
   const [, setGlobalError] = useGlobalErrorContext();
-
   const [, setUser] = useUserContext();
 
   const logout = async () => {

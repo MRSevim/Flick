@@ -4,16 +4,12 @@ import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
 import Autocomplete from "@mui/material/Autocomplete";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
-import { useDarkModeContext } from "../Contexts/DarkModeContext";
-import { Paper } from "@mui/material";
-import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const SearchBar = () => {
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useState("");
   const { searchAll, isLoading } = useSearchAll();
   const [options, setOptions] = useState({ users: [], articles: [] });
-  const [darkMode] = useDarkModeContext();
 
   const search = (e) => {
     e.preventDefault();
@@ -89,20 +85,6 @@ export const SearchBar = () => {
               onClick={search}
             ></i>
           </div>
-        )}
-        open={true}
-        PaperComponent={({ children }) => (
-          <Paper className={"border border-rounded " + addDarkBg(darkMode)}>
-            {children}
-          </Paper>
-        )}
-        renderGroup={(params) => (
-          <li key={params.key}>
-            <div className={"p-2 px-3 " + (darkMode && "text-white")}>
-              {params.group}
-            </div>
-            <div>{params.children}</div>
-          </li>
         )}
       />
     </form>

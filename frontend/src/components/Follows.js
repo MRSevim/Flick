@@ -4,9 +4,12 @@ import { useGetFollows } from "../Hooks/FollowHooks/UseGetFollows";
 import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
+import { addDarkBg } from "../Utils/HelperFuncs";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const Follows = ({ type }) => {
   const [users, setUsers] = useState(null);
+  const [darkMode] = useDarkModeContext();
   const { id } = useParams();
   const { getFollows, isLoading } = useGetFollows();
   useEffect(() => {
@@ -40,7 +43,7 @@ export const Follows = ({ type }) => {
             <div className="mb-4 row g-3 w-100">
               {users.map((user) => (
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
-                  <div className="card">
+                  <div className={"card " + addDarkBg(darkMode)}>
                     <div className="card-body d-flex align-items-center">
                       <ImageComponent
                         src={user.image}

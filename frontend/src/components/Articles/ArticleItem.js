@@ -5,8 +5,8 @@ import { DeleteButton } from "./DeleteButton";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
 import { ArticleCardBody } from "./ArticleCardBody";
-import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 import { addDarkBg } from "../../Utils/HelperFuncs";
+import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 
 export const ArticleItem = ({
   deleteLoading,
