@@ -10,7 +10,7 @@ export const createMuiTheme = (darkMode) => {
               backgroundColor: darkMode ? "#fff" : "var(--color-info)",
             },
             "&& .MuiSwitch-track": {
-              backgroundColor: "var(--color-secondary)",
+              backgroundColor: "var(--color-secondary) !important",
             },
           },
         },
@@ -56,6 +56,17 @@ export const createMuiTheme = (darkMode) => {
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
               borderColor: "#80d4d2",
               boxShadow: "0 0 0 0.25rem rgba(0, 169, 165, 0.25)",
+            },
+          },
+        },
+      },
+      MuiPagination: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "var(--color-primary)",
+            borderRadius: "6px",
+            "& .MuiPaginationItem-root": {
+              color: "var(--color-info)",
             },
           },
         },

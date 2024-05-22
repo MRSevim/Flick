@@ -79,7 +79,7 @@ export const Header = () => {
               ))}
             </ul>
             <SearchBar />
-            <DarkModeToggle />
+            {!user && <DarkModeToggle />}
             {user && <Notifications />}
             {user ? (
               <div ref={wrapperRef} className="position-relative">

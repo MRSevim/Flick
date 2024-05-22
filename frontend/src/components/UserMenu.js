@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import links from "../Utils/Links";
 import { addDarkBg } from "../Utils/HelperFuncs";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { DarkModeToggle } from "./DarkModeToggle";
 
 export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
   const [darkMode] = useDarkModeContext();
@@ -36,6 +37,9 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
       >
         <p className="m-0 p-2 text-center usermenu-link">My Articles</p>
       </Link>
+      <div className="m-0 d-flex justify-content-center">
+        <DarkModeToggle />
+      </div>
       <p className="m-0 p-2 text-center usermenu-link pointer" onClick={logOut}>
         Logout
       </p>

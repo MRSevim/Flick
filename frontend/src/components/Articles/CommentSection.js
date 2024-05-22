@@ -97,23 +97,24 @@ export const CommentSection = ({ article }) => {
         </h3>
       )}
       {comments.map((comment) => (
-        <div
-          className="border border-4 my-2 p-2 position-relative"
-          key={comment._id}
-        >
-          <ImageComponent
-            src={comment.user.image}
-            classes={"profile-img-mini me-2"}
-          />
-          <Link
-            className="unstyled-link"
-            to={links.publicUser(comment.user._id)}
-          >
-            <b>{comment.user.username}</b>
-          </Link>
-          <span className="position-absolute top-0 end-0 m-2">
-            {timeAgo.format(new Date(comment.created))}
-          </span>
+        <div className="border border-4 my-2 p-2" key={comment._id}>
+          <div className="d-flex justify-content-between">
+            <div className="d-flex align-items-center">
+              <ImageComponent
+                src={comment.user.image}
+                classes={"profile-img-mini mx-2"}
+              />
+              <Link
+                className="unstyled-link"
+                to={links.publicUser(comment.user._id)}
+              >
+                <b>{comment.user.username}</b>
+              </Link>
+            </div>
+            <span className="">
+              {timeAgo.format(new Date(comment.created))}
+            </span>
+          </div>
 
           {editedCommentId !== comment._id && (
             <div

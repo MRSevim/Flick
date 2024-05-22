@@ -17,11 +17,11 @@ export const SimilarArticles = ({ id }) => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 992 },
-      items: 3,
+      items: articles.length > 2 ? 3 : articles.length > 1 ? 2 : 1,
     },
     tablet: {
       breakpoint: { max: 992, min: 576 },
-      items: 2,
+      items: articles.length > 1 ? 2 : 1,
     },
     mobile: {
       breakpoint: { max: 576, min: 0 },
@@ -52,9 +52,8 @@ export const SimilarArticles = ({ id }) => {
               key={article._id}
               className={"card article-card m-2 " + addDarkBg(darkMode)}
             >
-              <ImageComponent src={article.image} />
+              <ImageComponent classes={"p-2"} src={article.image} />
               <ArticleCardBody
-                classes={"me-2"}
                 article={article}
                 link={links.article(article._id)}
               />

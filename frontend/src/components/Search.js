@@ -5,6 +5,8 @@ import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { AdvancedSearch } from "./AdvancedSearch";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +17,7 @@ export const Search = () => {
   const advancedSearchString = searchParams.get("advancedSearch");
   const advancedSearch = advancedSearchString === "true";
   const [advancedLoading, setAdvancedLoading] = useState(true);
+  const [darkMode] = useDarkModeContext();
 
   useEffect(() => {
     const get = async () => {
@@ -50,7 +53,7 @@ export const Search = () => {
             <div className="mb-4 row g-3">
               {users.map((user) => (
                 <div key={user._id} className="col col-12 col-md-6 col-lg-4">
-                  <div className="card">
+                  <div className={"card " + addDarkBg(darkMode)}>
                     <div className="card-body d-flex align-items-center">
                       <ImageComponent
                         src={user.image}
@@ -77,9 +80,15 @@ export const Search = () => {
             <div className="pb-4 row g-3">
               {articles.map((article) => (
                 <div key={article._id} className="col col-12 col-md-6 col-lg-4">
-                  <div className="card">
+                  <div
+                    className={
+                      "card text-info " +
+                      addDarkBg(darkMode) +
+                      (darkMode && " text-white")
+                    }
+                  >
                     <div className="card-body">
-                      <span className="line-right">
+                      <span className="line-right ">
                         <i className="bi bi-hand-thumbs-up h5"></i>
                         {" " +
                           article.likes.length +

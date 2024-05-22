@@ -117,19 +117,20 @@ export const Notifications = () => {
               Clear All
             </div>
           </div>
-          <div className={addDarkBg(darkMode)}>
+          <div className={"border-top " + addDarkBg(darkMode)}>
             {notifications?.length === 0 && (
               <div className="d-flex justify-content-center border-top p-2">
                 No notifications
               </div>
             )}
+
             {notifications?.length > 0 &&
               notifications?.map((notification) => {
                 return (
                   <div
                     key={notification._id}
                     className={classNames({
-                      "p-2 border-top": true,
+                      "p-2": true,
                       "unread-notification border-3":
                         !notification.read && !darkMode,
                       "unread-nofication-dark-mode":

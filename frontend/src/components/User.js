@@ -112,7 +112,7 @@ export const User = () => {
                       <p className="my-3">
                         <button className="btn btn-warning btn-l">
                           <Link
-                            className="unstyled-link text-decoration-underline"
+                            className="unstyled-link text-info"
                             to={links.allArticles(user._id)}
                           >
                             Check out all of their articles!

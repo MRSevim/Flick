@@ -163,11 +163,7 @@ export const Article = () => {
         ) : (
           <div className="article col"></div>
         )}
-        {article && (
-          <div className="col col-12 col-lg-2 border border-dark">
-            <h3 className="">Extra Space</h3>
-          </div>
-        )}
+        {article && <div className="col col-12 col-lg-2 "></div>}
       </div>
     </div>
   );

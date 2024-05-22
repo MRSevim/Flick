@@ -10,7 +10,7 @@ export const DarkModeToggle = () => {
     <>
       <i
         className={classNames({
-          "bi h4 m-0": true,
+          "bi h4 m-0 d-flex flex-column justify-content-center negative-margin-right": true,
           "bi-moon-fill": darkMode,
           "bi-moon": !darkMode,
         })}

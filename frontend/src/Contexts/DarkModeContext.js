@@ -1,6 +1,10 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const DarkModeContext = createContext(null);
+
+let prefersDarkMode =
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 export const useDarkModeContext = () => {
   return useContext(DarkModeContext);
@@ -13,6 +17,13 @@ if (darkModeFromStorage) {
 
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(darkModeFromStorage);
+  useEffect(() => {
+    if (prefersDarkMode && localStorage.getItem("darkMode") === null) {
+      setDarkMode(true);
+      localStorage.setItem("darkMode", true);
+      document.body.classList.add("dark");
+    }
+  }, [setDarkMode]);
 
   const handleChange = () => {
     setDarkMode(!darkMode);

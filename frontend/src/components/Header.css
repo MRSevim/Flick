@@ -20,7 +20,7 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 .unread-nofication-dark-mode {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 @media (max-width: 750px) {
   .menu-container {
@@ -29,4 +29,7 @@
 }
 .menu-clickable:hover {
   font-weight: 600;
+}
+.negative-margin-right {
+  margin-right: -6px !important ;
 }
