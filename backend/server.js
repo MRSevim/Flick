@@ -9,6 +9,7 @@ const followRoutes = require("./routes/followRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const emailRoutes = require("./routes/emailRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const privateMessageRoutes = require("./routes/privateMessageRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/follow", followRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/email", emailRoutes);
+app.use("/api/pms", privateMessageRoutes);
 
 app.get("/", (req, res) => {
   res.send("APP IS RUNNING!");

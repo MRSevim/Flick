@@ -41,7 +41,7 @@ router.post("/", createArticle);
 //authenticated user update article route
 router.patch("/:id", updateArticle);
 
-//authenticated user create article route
+//authenticated user delete article route
 router.delete("/:id", deleteArticle);
 
 module.exports = router;

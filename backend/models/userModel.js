@@ -47,6 +47,34 @@ const userSchema = new mongoose.Schema(
         created: { type: Date, default: Date.now, required: true },
       },
     ],
+    messages: {
+      sent: [
+        {
+          to: {
+            _id: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "User",
+            },
+            username: String,
+          },
+          subject: String,
+          message: String,
+        },
+      ],
+      received: [
+        {
+          from: {
+            _id: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "User",
+            },
+            username: String,
+          },
+          subject: String,
+          message: String,
+        },
+      ],
+    },
   },
   { timestamps: true }
 );
