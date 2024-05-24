@@ -6,6 +6,7 @@ const {
   getPms,
   deletePm,
   deleteMany,
+  markAsRead,
 } = require("../controllers/privateMessageController");
 
 const requireAuth = require("../middlewares/authMiddleware");
@@ -23,7 +24,10 @@ router.get("/", getPms);
 //delete mayn pms route
 router.delete("/deleteMany", deleteMany);
 
+//mark as read route
+router.post("/read", markAsRead);
+
 //delete pm route
-router.delete("/:id", deletePm);
+router.post("/:id", deletePm);
 
 module.exports = router;

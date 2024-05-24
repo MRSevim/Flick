@@ -12,6 +12,7 @@ import { ImageComponent } from "./ImageComponent";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { addDarkBg } from "../Utils/HelperFuncs";
+import { PmIcon } from "./PmIcon";
 
 export const Header = () => {
   const [user] = useUserContext();
@@ -80,7 +81,12 @@ export const Header = () => {
             </ul>
             <SearchBar />
             {!user && <DarkModeToggle />}
-            {user && <Notifications />}
+            {user && (
+              <>
+                <PmIcon />
+                <Notifications />
+              </>
+            )}
             {user ? (
               <div ref={wrapperRef} className="position-relative">
                 <div

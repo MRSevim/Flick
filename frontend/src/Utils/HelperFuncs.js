@@ -11,3 +11,8 @@ export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const addDarkBg = (darkMode) => {
   return darkMode && "bg-dark-primary";
 };
+export const getUnreadLength = (items) => {
+  return items?.filter((items) => {
+    return !items.read;
+  })?.length;
+};

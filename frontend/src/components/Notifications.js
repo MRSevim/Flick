@@ -8,7 +8,8 @@ import { useClearNotifications } from "../Hooks/NotificationHooks/UseClearNotifi
 import notificationApi from "../Utils/NotificationApiFunctions";
 import links from "../Utils/Links";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
-import { addDarkBg } from "../Utils/HelperFuncs";
+import { addDarkBg, getUnreadLength } from "../Utils/HelperFuncs";
+import { LoadingDots } from "./LoadingDots";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -21,25 +22,21 @@ export const Notifications = () => {
   const { clearNotifications } = useClearNotifications();
   const [darkMode] = useDarkModeContext();
 
-  const getUnreadLength = (notifications) => {
-    return notifications?.filter((notification) => {
-      return !notification.read;
-    })?.length;
-  };
-
   const clear = async () => {
     const response = await clearNotifications();
     if (response.ok) {
       setNotifications([]);
     }
   };
-  const markAsRead = () => {
-    notificationApi.markAsRead();
-    setNotifications(
-      notifications.map((notification) => {
-        return { ...notification, read: true };
-      })
-    );
+  const markAsRead = async () => {
+    const response = await notificationApi.markAsRead();
+    if (response.ok) {
+      setNotifications(
+        notifications.map((notification) => {
+          return { ...notification, read: true };
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -81,14 +78,7 @@ export const Notifications = () => {
           }}
         >
           {" "}
-          {isLoading && (
-            <div className="lds-ellipsis me-2">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          )}
+          {isLoading && <LoadingDots />}
         </i>
         {getUnreadLength(notifications) > 0 && (
           <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1">

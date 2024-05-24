@@ -43,6 +43,10 @@ const sendPm = async (req, res, next) => {
       res.status(404);
       throw new Error("Target user is not found");
     }
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
     if (user._id.equals(targetUser._id)) {
       res.status(400);
       throw new Error("You cannot send message to yourself");
@@ -117,6 +121,11 @@ const deletePm = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     const messageId = req.params.id;
 
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
     const findInArray = (array) => {
       return array.find((message) => {
         return message._id.equals(messageId);
@@ -148,6 +157,11 @@ const deleteMany = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     const { ids } = req.body;
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
 
     if (!ids) {
       res.status(400);
@@ -185,10 +199,31 @@ const deleteMany = async (req, res, next) => {
     next(error);
   }
 };
+//mark as read
+const markAsRead = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+
+    user.messages.received.forEach((message) => {
+      message.read = true;
+    });
+    await user.save();
+
+    res.status(200).json(user.messages.received);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   sendPm,
   getPms,
   deletePm,
   deleteMany,
+  markAsRead,
 };

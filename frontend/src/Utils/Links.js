@@ -1,4 +1,5 @@
 const links = {
+  pms: "/pms",
   homepage: "/",
   mostLiked: "/most-liked",
   createAnArticle: "/create-an-article",

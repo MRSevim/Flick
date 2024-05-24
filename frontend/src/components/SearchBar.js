@@ -32,6 +32,9 @@ export const SearchBar = () => {
 
   const handleInputChange = (event, newInputValue) => {
     setSearchParam(newInputValue);
+    if (!newInputValue.trim()) {
+      setOptions({ users: [], articles: [] });
+    }
   };
 
   return (
