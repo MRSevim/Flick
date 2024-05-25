@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import articleApi from "../../Utils/ArticleApiFunctions";
 import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
+import { confirmationWrapper } from "../../Utils/HelperFuncs";
 
 export const useDeleteMany = () => {
   const [, setGlobalError] = useGlobalErrorContext();
@@ -9,32 +10,22 @@ export const useDeleteMany = () => {
   const { confirmation, setConfirmation } = useConfirmationContext();
 
   const deleteMany = async (ids) => {
-    confirmation.ref.current.show();
-
-    setConfirmation({
-      ...confirmation,
-      type: "deleteMany",
-      info: {
-        size: ids.length,
+    return confirmationWrapper(
+      confirmation,
+      {
+        ...confirmation,
+        type: "deleteManyArticles",
+        info: {
+          size: ids.length,
+        },
       },
-    });
-    setGlobalError(null);
-    const isConfirmed = await confirmation.confirmed;
-    if (isConfirmed) {
-      setIsLoading(true);
-
-      const response = await articleApi.deleteMany(ids);
-      const json = await response.json();
-
-      if (!response.ok) {
-        setGlobalError(json.message);
+      setConfirmation,
+      setGlobalError,
+      setIsLoading,
+      async () => {
+        return await articleApi.deleteMany(ids);
       }
-      setIsLoading(false);
-
-      return response;
-    } else {
-      return;
-    }
+    );
   };
 
   return { deleteMany, isLoading };

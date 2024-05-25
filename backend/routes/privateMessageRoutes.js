@@ -28,6 +28,6 @@ router.delete("/deleteMany", deleteMany);
 router.post("/read", markAsRead);
 
 //delete pm route
-router.post("/:id", deletePm);
+router.delete("/:id", deletePm);
 
 module.exports = router;

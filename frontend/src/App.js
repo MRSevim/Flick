@@ -70,7 +70,10 @@ function AppContent() {
         <Routes>
           {" "}
           <Route path="/most-liked" element={<MostLiked />} />
-          <Route path="/pms" element={<Pms />} />
+          <Route
+            path="/pms"
+            element={!user ? <Navigate to={links.homepage} /> : <Pms />}
+          />
           <Route
             path="/resend-verification-email"
             element={<ResendVerificationEmail />}

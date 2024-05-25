@@ -1,7 +1,7 @@
 const links = {
-  pms: "/pms",
+  pms: "/pms?open=false",
   homepage: "/",
-  mostLiked: "/most-liked",
+  mostLiked: "/most-liked?time=week",
   createAnArticle: "/create-an-article",
   myProfile: "/my-profile",
   about: "/about",

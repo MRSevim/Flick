@@ -32,7 +32,7 @@ export const Confirmation = () => {
           data-bs-dismiss="modal"
           aria-label="Close"
         ></button>
-        {confirmation.type === "delete" && (
+        {confirmation.type === "deleteArticle" && (
           <div>
             Are you sure you want to delete article titled:
             <p>
@@ -40,11 +40,30 @@ export const Confirmation = () => {
             </p>
           </div>
         )}
-        {confirmation.type === "deleteMany" && (
+        {confirmation.type === "deleteManyArticles" && (
           <p>
             Are you sure you want to delete all {confirmation.info.size}{" "}
             selected articles?
           </p>
+        )}
+        {confirmation.type === "deleteMessage" && (
+          <div className="mb-3">
+            Are you sure you want to delete message with subject of:
+            <p>
+              <span className="fw-bold">{confirmation.info.subject}</span> ?
+            </p>
+            Please note that it will only be deleted from your inbox.
+          </div>
+        )}
+        {confirmation.type === "deleteManyMessages" && (
+          <p>
+            Are you sure you want to delete all {confirmation.info.size}{" "}
+            selected messages? Please note that they will only be deleted from
+            your inbox.
+          </p>
+        )}
+        {confirmation.type === "deleteComment" && (
+          <p>Are you sure you want to delete the comment?</p>
         )}
         <div>
           <button

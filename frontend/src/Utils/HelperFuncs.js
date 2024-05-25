@@ -16,3 +16,34 @@ export const getUnreadLength = (items) => {
     return !items.read;
   })?.length;
 };
+export const confirmationWrapper = async (
+  confirmation,
+  newConfirmation,
+  setConfirmation,
+  setGlobalError,
+  setIsLoading,
+  func
+) => {
+  confirmation.ref.current.show();
+
+  setConfirmation(newConfirmation);
+  setGlobalError(null);
+
+  const isConfirmed = await confirmation.confirmed;
+
+  if (isConfirmed) {
+    setIsLoading(true);
+
+    const response = await func();
+    const json = await response.json();
+
+    if (!response.ok) {
+      setGlobalError(json.message);
+    }
+    setIsLoading(false);
+
+    return response;
+  } else {
+    return;
+  }
+};

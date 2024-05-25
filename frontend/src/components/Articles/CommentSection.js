@@ -62,7 +62,7 @@ export const CommentSection = ({ article }) => {
 
   const deleteComment = async (id) => {
     const response = await _deleteComment(article._id, id);
-    if (response.ok) {
+    if (response && response.ok) {
       const newComments = comments.filter((comment) => comment._id !== id);
 
       setComments(newComments);

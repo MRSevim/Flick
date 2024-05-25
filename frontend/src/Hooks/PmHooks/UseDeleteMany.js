@@ -1,30 +1,32 @@
 import { useState } from "react";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
-import commentApi from "../../Utils/CommentApiFunctions";
+import pmsApi from "../../Utils/PmApiFunctions";
 import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
 import { confirmationWrapper } from "../../Utils/HelperFuncs";
 
-export const useDeleteComment = () => {
+export const useDeleteMany = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
   const { confirmation, setConfirmation } = useConfirmationContext();
 
-  const deleteComment = async (articleId, commentId) => {
+  const deleteMany = async (ids) => {
     return confirmationWrapper(
       confirmation,
       {
         ...confirmation,
-        type: "deleteComment",
-        info: null,
+        type: "deleteManyMessages",
+        info: {
+          size: ids.length,
+        },
       },
       setConfirmation,
       setGlobalError,
       setIsLoading,
       async () => {
-        return await commentApi.delete(articleId, commentId);
+        return await pmsApi.deleteMany(ids);
       }
     );
   };
 
-  return { deleteComment, isLoading };
+  return { deleteMany, isLoading };
 };

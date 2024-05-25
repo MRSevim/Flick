@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useGetMostLiked } from "../Hooks/LikeHooks/UserGetMostLiked";
 import classNames from "classnames";
 import { LoadingRing } from "./LoadingRing";
@@ -12,12 +12,13 @@ import { ImageComponent } from "./ImageComponent";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const MostLiked = () => {
-  const [time, setTime] = useState("week");
   const { getMostLiked, isLoading } = useGetMostLiked();
   const [articles, setArticles] = useState(null);
   const { likeArticle: likeArticleCall, isLoading: likeLoading } =
     useLikeArticle();
   const [darkMode] = useDarkModeContext();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const time = searchParams.get("time");
 
   useEffect(() => {
     const get = async (time) => {
@@ -54,7 +55,9 @@ export const MostLiked = () => {
                 active: time === "week",
               })}
               onClick={() => {
-                setTime("week");
+                setSearchParams({
+                  time: "week",
+                });
               }}
             >
               Most Liked This Week
@@ -65,7 +68,9 @@ export const MostLiked = () => {
                 active: time === "month",
               })}
               onClick={() => {
-                setTime("month");
+                setSearchParams({
+                  time: "month",
+                });
               }}
             >
               Most Liked This Month
@@ -76,7 +81,9 @@ export const MostLiked = () => {
                 active: time === "year",
               })}
               onClick={() => {
-                setTime("year");
+                setSearchParams({
+                  time: "year",
+                });
               }}
             >
               Most Liked This Year

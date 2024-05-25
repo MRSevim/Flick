@@ -69,7 +69,10 @@ const sendPm = async (req, res, next) => {
 
     const createMessage = (key) => {
       return {
-        [key]: { _id: user._id, username: user.username },
+        [key]: {
+          _id: key === "to" ? targetUser._id : user._id,
+          username: key === "to" ? targetUser.username : user.username,
+        },
         subject: encryptedSubject,
         message: encryptedMessage,
       };
@@ -80,8 +83,17 @@ const sendPm = async (req, res, next) => {
 
     await Promise.all([targetUser.save(), user.save()]);
 
+    // Retrieve the newly created message _id
+    const savedMessage = user.messages.sent[user.messages.sent.length - 1];
+
     res.status(201).json({
-      message: "Message was sent to user with id of " + targetUser._id,
+      message: "Message is successfully sent",
+      pm: {
+        _id: savedMessage._id,
+        to: savedMessage.to,
+        subject: sanitizedSubject,
+        message: sanitizedMessage,
+      },
     });
   } catch (error) {
     next(error);
@@ -91,8 +103,8 @@ const sendPm = async (req, res, next) => {
 // get pms
 const getPms = async (req, res, next) => {
   try {
-    const sentMessages = req.user.messages.sent;
-    const receivedMessages = req.user.messages.received;
+    const sentMessages = req.user.messages.sent.reverse();
+    const receivedMessages = req.user.messages.received.reverse();
 
     const decrypt = (arr) => {
       return arr.map((message) => {

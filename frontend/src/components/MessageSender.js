@@ -4,32 +4,72 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useSearchAll } from "../Hooks/SearchHooks/UseSearchAll";
 import { ImageComponent } from "./ImageComponent";
 import { Link } from "react-router-dom";
+import { useSendPm } from "../Hooks/PmHooks/UseSendPm";
+import { Popup } from "./Popup";
 
-export const MessageSender = ({ children }) => {
-  const [user, setUser] = useState({
-    username: "",
-    _id: null,
-  });
+export const MessageSender = ({
+  children,
+  setPms,
+  pms,
+  open,
+  searchParams,
+  setSearchParams,
+}) => {
   const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("123");
+  const [selectedUsername, setSelectedUsername] = useState("");
+  const [message, setMessage] = useState("");
   const [options, setOptions] = useState([]);
   const { searchAll, isLoading } = useSearchAll();
+  const {
+    sendPm,
+    isLoading: sendLoading,
+    error,
+    setError,
+    successMessage,
+  } = useSendPm();
+  const username = searchParams.get("username") || "";
+  const id = searchParams.get("_id");
 
   useEffect(() => {
     const get = async () => {
-      const json = await searchAll(user.username);
+      const json = await searchAll(username);
       setOptions(json.users);
     };
 
-    if (user.username.trim()) {
+    if (username.trim() && username !== selectedUsername) {
       get();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.username]);
+  }, [username]);
+  useEffect(() => {
+    if (!open) {
+      setOptions([]);
+    }
+  }, [open]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!id.trim() || !username.trim()) {
+      setError("Please select a user from dropdown menu");
+      return;
+    }
+    if (!message.trim()) {
+      setError("Please type a message");
+      return;
+    }
+    const { response, json } = await sendPm(id, subject, message);
+
+    if (response && response.ok) {
+      setPms((prevPms) => ({
+        ...prevPms,
+        sent: [json.pm, ...prevPms.sent],
+      }));
+    }
+  };
 
   return (
     <div className="d-flex justify-content-center ">
-      <form className="m-5 w-100">
+      <form onSubmit={handleSubmit} className="m-5 w-100">
         {children}
         <div className="form-group">
           <label className="w-100">
@@ -37,15 +77,21 @@ export const MessageSender = ({ children }) => {
             <Autocomplete
               freeSolo
               options={isLoading ? [] : options}
-              inputValue={user.username}
-              getOptionLabel={(option) => option.username}
+              inputValue={username}
+              getOptionLabel={(option) =>
+                option["username"] ? option["username"] : option
+              }
               renderOption={(props, option, state, ownerState) => (
                 <Link
-                  onClick={() => {
-                    setUser({
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedUsername(option.username);
+                    setSearchParams({
+                      open,
                       username: option.username,
                       _id: option._id,
                     });
+                    setOptions([]);
                   }}
                   className="m-3 d-flex align-items-center"
                   key={option._id}
@@ -61,24 +107,23 @@ export const MessageSender = ({ children }) => {
                 </Link>
               )}
               onInputChange={(event, newInputValue) => {
-                setUser((prev) => {
-                  return { ...prev, username: newInputValue };
+                setSearchParams({
+                  open,
+                  username: newInputValue,
+                  _id: "",
                 });
                 if (!newInputValue.trim()) {
                   setOptions([]);
-                  setUser({
+                  setSearchParams({
+                    open,
                     username: "",
-                    _id: null,
+                    _id: "",
                   });
                 }
               }}
               renderInput={(params) => (
                 <div ref={params.InputProps.ref} className="d-flex">
                   <input
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                      }
-                    }}
                     {...params.inputProps}
                     type="search"
                     className="form-control"
@@ -115,6 +160,24 @@ export const MessageSender = ({ children }) => {
               setMessage(e.target.value);
             }}
           />
+        </div>
+        <input
+          disabled={sendLoading}
+          className="btn btn-secondary mt-3 w-100"
+          type="submit"
+          value="Send"
+        />
+        <div className="d-flex justify-content-center">
+          {error && (
+            <>
+              <Popup message={error} type="danger" />
+            </>
+          )}
+          {successMessage && (
+            <>
+              <Popup message={successMessage} type="success" />
+            </>
+          )}
         </div>
       </form>
     </div>

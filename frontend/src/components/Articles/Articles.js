@@ -18,6 +18,7 @@ import links from "../../Utils/Links";
 import { AdvancedSearch } from "../AdvancedSearch";
 import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 import { addDarkBg } from "../../Utils/HelperFuncs";
+import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -41,6 +42,7 @@ export const Articles = ({ isDraft }) => {
   const tagsParam = searchParams.get("tags");
   const [selected, setSelected] = useState([]);
   const [darkMode] = useDarkModeContext();
+  const [, setGlobalError] = useGlobalErrorContext();
 
   function handleSelect(value, id) {
     if (value) {
@@ -73,7 +75,12 @@ export const Articles = ({ isDraft }) => {
   };
 
   const deleteSelected = async (selected) => {
+    if (selected.length === 0) {
+      setGlobalError("Please select at least 1 article");
+      return;
+    }
     const response = await deleteMany(selected);
+
     if (response && response.ok) {
       const { response, json } = await getArticles(id, page, isDraft);
       if (response.ok) {
@@ -241,7 +248,7 @@ export const Articles = ({ isDraft }) => {
                   type="checkbox"
                   checked={selected.length === articles.length}
                   onChange={() => {
-                    selectAll(selected.length === articles.length);
+                    selectAll();
                   }}
                 />{" "}
                 <label htmlFor="selectAll">Select all</label>
