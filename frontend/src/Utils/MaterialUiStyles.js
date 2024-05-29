@@ -29,6 +29,10 @@ export const createMuiTheme = (darkMode) => {
             "& .MuiAutocomplete-clearIndicator": {
               color: "red",
             },
+            "& .MuiAutocomplete-groupUl .MuiAutocomplete-option[aria-selected='true']":
+              {
+                backgroundColor: "transparent",
+              },
           },
         },
       },

@@ -11,6 +11,8 @@ export const MessageSender = ({
   children,
   setPms,
   pms,
+  type,
+  page,
   open,
   searchParams,
   setSearchParams,
@@ -60,10 +62,8 @@ export const MessageSender = ({
     const { response, json } = await sendPm(id, subject, message);
 
     if (response && response.ok) {
-      setPms((prevPms) => ({
-        ...prevPms,
-        sent: [json.pm, ...prevPms.sent],
-      }));
+      if (type === "sent" && page === 1)
+        setPms((prevPms) => [json.pm, ...prevPms]);
     }
   };
 
@@ -86,11 +86,10 @@ export const MessageSender = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setSelectedUsername(option.username);
-                    setSearchParams({
-                      open,
-                      username: option.username,
-                      _id: option._id,
-                    });
+                    searchParams.set("username", option.username);
+                    searchParams.set("_id", option._id);
+                    setSearchParams(searchParams);
+
                     setOptions([]);
                   }}
                   className="m-3 d-flex align-items-center"
@@ -107,18 +106,15 @@ export const MessageSender = ({
                 </Link>
               )}
               onInputChange={(event, newInputValue) => {
-                setSearchParams({
-                  open,
-                  username: newInputValue,
-                  _id: "",
-                });
+                searchParams.set("username", newInputValue);
+                searchParams.set("_id", "");
+                setSearchParams(searchParams);
+
                 if (!newInputValue.trim()) {
                   setOptions([]);
-                  setSearchParams({
-                    open,
-                    username: "",
-                    _id: "",
-                  });
+                  searchParams.set("username", "");
+                  searchParams.set("_id", "");
+                  setSearchParams(searchParams);
                 }
               }}
               renderInput={(params) => (

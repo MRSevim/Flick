@@ -1,6 +1,11 @@
 const pmApi = {
-  getPms: async () => {
-    const response = await fetch("/pms");
+  getPms: async (page, type) => {
+    const response = await fetch(`/pms?page=${page}&type=${type}`);
+
+    return response;
+  },
+  getReceivedLength: async () => {
+    const response = await fetch("/pms/receivedLength");
 
     return response;
   },
@@ -25,6 +30,13 @@ const pmApi = {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ids }),
+    });
+
+    return response;
+  },
+  markAsRead: async () => {
+    const response = await fetch("/pms/read", {
+      method: "POST",
     });
 
     return response;

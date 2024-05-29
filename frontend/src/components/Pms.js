@@ -6,28 +6,51 @@ import { addDarkBg } from "../Utils/HelperFuncs";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { MessageSender } from "./MessageSender";
 import { ModalWrapper } from "./ModalWrapper";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import links from "../Utils/Links";
 import { DeleteButton } from "./Articles/DeleteButton";
 import { useDeletePm } from "../Hooks/PmHooks/UseDeletePm";
 import { useDeleteMany } from "../Hooks/PmHooks/UseDeleteMany";
 import { useGlobalErrorContext } from "../Contexts/GlobalErrorContext";
+import pmApi from "../Utils/PmApiFunctions";
+import { useRefetchForPmIconContext } from "../Contexts/RefetchForPmIcon";
+import { Pagination } from "@mui/material";
 
 export const Pms = () => {
-  const [section, setSection] = useState("received");
   const [searchParams, setSearchParams] = useSearchParams();
   const { deletePm, isLoading: deleteLoading } = useDeletePm();
   const openStr = searchParams.get("open");
   const open = openStr === "true";
+  const [totalPages, setTotalPages] = useState(null);
+  const page = +searchParams.get("page");
+  const type = searchParams.get("type");
+  const [, setRefetchForPmIcon] = useRefetchForPmIconContext();
   const [pms, setPms] = useState(null);
   const { getPms, isLoading } = useGetPms();
+  const navigate = useNavigate();
   const [darkMode] = useDarkModeContext();
   const [ref, setRef] = useState(null);
   const [selected, setSelected] = useState([]);
-  const sectionLength = pms ? pms[section].length : null;
+  const pmsLength = pms ? pms.length : null;
   const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [, setGlobalError] = useGlobalErrorContext();
 
+  const get = async () => {
+    if (!page) {
+      navigate({ search: "?page=1" });
+      return;
+    }
+    const { response, json } = await getPms(page, type);
+    if (response.ok) {
+      setPms(json.messages);
+      setTotalPages(json.totalPages);
+    }
+  };
+  const triggerRefetchForPmIcon = () => {
+    if (type === "received") {
+      setRefetchForPmIcon((prev) => prev + 1);
+    }
+  };
   function handleSelect(id) {
     if (!selected.includes(id)) {
       setSelected([...selected, id]);
@@ -36,8 +59,8 @@ export const Pms = () => {
     }
   }
   function selectAll() {
-    if (selected.length !== sectionLength) {
-      const ids = pms[section].map((message) => message._id);
+    if (selected.length !== pmsLength) {
+      const ids = pms.map((message) => message._id);
       setSelected(ids);
     } else {
       setSelected([]);
@@ -47,10 +70,14 @@ export const Pms = () => {
     const response = await deletePm(id, subject);
 
     if (response && response.ok) {
-      const { response, json } = await getPms();
-      if (response.ok) {
-        setPms(json.messages);
-      }
+      get();
+      triggerRefetchForPmIcon();
+    }
+  };
+  const handleMarkAsReadClick = async () => {
+    const response = await pmApi.markAsRead();
+    if (response.ok) {
+      triggerRefetchForPmIcon();
     }
   };
   const deleteSelected = async (selected) => {
@@ -60,22 +87,30 @@ export const Pms = () => {
     }
     const response = await deleteMany(selected);
     if (response && response.ok) {
-      const { response, json } = await getPms();
-      if (response.ok) {
-        setPms(json.messages);
-      }
+      get();
+      triggerRefetchForPmIcon();
     }
   };
+  const handlePaginationChange = (event, value) => {
+    searchParams.set("page", value);
+    setSearchParams(searchParams);
+  };
   useEffect(() => {
-    const get = async () => {
-      const { response, json } = await getPms();
-      if (response.ok) {
-        setPms(json.messages);
-      }
-    };
+    if (totalPages && pms.length === 0) {
+      searchParams.set("page", totalPages);
+      setSearchParams(searchParams);
+    }
+  }, [totalPages, pms, searchParams, setSearchParams]);
+
+  useEffect(() => {
+    setSelected([]);
+  }, [pms]);
+
+  useEffect(() => {
     get();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [type, page]);
+
   useEffect(() => {
     if (ref?.current) {
       if (open) {
@@ -86,24 +121,22 @@ export const Pms = () => {
 
       const myModal = document.getElementById("sendMessageModal");
       myModal.addEventListener("hide.bs.modal", () => {
-        setSearchParams({
-          open: "false",
-        });
+        searchParams.set("open", "false");
+        setSearchParams(searchParams);
       });
     }
-  }, [open, ref, setSearchParams]);
+  }, [open, ref, setSearchParams, searchParams]);
   return (
     <>
       <div className="pt-5">
-        <div className="container ">
+        <div className="container">
           <div className="row">
             <div className="col col-12 col-lg-3 text-center">
               <div
                 className="btn btn-warning"
                 onClick={() => {
-                  setSearchParams({
-                    open: "true",
-                  });
+                  searchParams.set("open", "true");
+                  setSearchParams(searchParams);
                 }}
               >
                 Send New Message
@@ -111,10 +144,11 @@ export const Pms = () => {
               <div
                 className={classNames({
                   "bg-secondary text-white p-2  my-2 pointer": true,
-                  active: section === "received",
+                  active: type === "received",
                 })}
                 onClick={() => {
-                  setSection("received");
+                  searchParams.set("type", "received");
+                  setSearchParams(searchParams);
                 }}
               >
                 Received Messages
@@ -122,10 +156,11 @@ export const Pms = () => {
               <div
                 className={classNames({
                   "bg-secondary text-white p-2 my-2 pointer": true,
-                  active: section === "sent",
+                  active: type === "sent",
                 })}
                 onClick={() => {
-                  setSection("sent");
+                  searchParams.set("type", "sent");
+                  setSearchParams(searchParams);
                 }}
               >
                 Sent Messages
@@ -140,37 +175,62 @@ export const Pms = () => {
               {!isLoading && (
                 <>
                   <div className="mt-3">
-                    {pms && pms[section] && pms[section].length > 0 && (
+                    {pms && pms.length > 0 && (
                       <>
-                        <input
-                          id="selectAll"
-                          type="checkbox"
-                          checked={selected.length === sectionLength}
-                          onChange={() => {
-                            selectAll();
-                          }}
-                        />{" "}
-                        <label htmlFor="selectAll">Select all</label>
-                        <button
-                          disabled={deleteManyLoading || deleteLoading}
-                          onClick={(e) => {
-                            deleteSelected(selected);
-                          }}
-                          className="btn btn-danger ms-4"
-                        >
-                          <i className="bi bi-trash-fill"></i> Delete Selected
-                        </button>
+                        <div className="d-flex justify-content-between">
+                          <div>
+                            <input
+                              id="selectAll"
+                              type="checkbox"
+                              checked={selected.length === pmsLength}
+                              onChange={() => {
+                                selectAll();
+                              }}
+                            />{" "}
+                            <label htmlFor="selectAll">Select all</label>
+                            <button
+                              disabled={deleteManyLoading || deleteLoading}
+                              onClick={(e) => {
+                                deleteSelected(selected);
+                              }}
+                              className="btn btn-danger ms-4"
+                            >
+                              <i className="bi bi-trash-fill"></i> Delete
+                              Selected
+                            </button>
+                          </div>
+                          {type === "received" && (
+                            <button
+                              onClick={handleMarkAsReadClick}
+                              className="btn btn-secondary"
+                            >
+                              Mark all as read
+                            </button>
+                          )}
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          {
+                            <Pagination
+                              page={Number(page)}
+                              showFirstButton
+                              showLastButton
+                              count={totalPages}
+                              shape="rounded"
+                              onChange={handlePaginationChange}
+                            />
+                          }
+                        </div>
                       </>
                     )}
                   </div>
-                  {pms && pms[section] && (
+                  {pms && (
                     <div>
-                      {!pms[section].length && (
+                      {!pms.length && (
                         <div className="m-3">
-                          {`You have no ${section} messages to display`}
+                          {`You have no ${type} messages to display`}
                         </div>
                       )}
-                      {pms[section].map((message) => (
+                      {pms.map((message) => (
                         <div
                           key={message._id}
                           className={
@@ -193,26 +253,30 @@ export const Pms = () => {
                             }}
                             deleteLoading={deleteLoading || deleteManyLoading}
                           />
-                          {section === "received" && (
+                          {type === "received" && (
                             <p>
                               <b className="me-2">From:</b>
-                              <Link
-                                to={links.publicUser(message.from._id)}
-                                className="unstyled-link"
-                              >
-                                {message.from.username}
-                              </Link>
+                              {message.from && (
+                                <Link
+                                  to={links.publicUser(message.from._id)}
+                                  className="unstyled-link"
+                                >
+                                  {message.from.username}
+                                </Link>
+                              )}
                             </p>
                           )}
-                          {section === "sent" && (
+                          {type === "sent" && (
                             <p>
                               <b className="me-2">To:</b>
-                              <Link
-                                to={links.publicUser(message.to._id)}
-                                className="unstyled-link"
-                              >
-                                {message.to.username}
-                              </Link>
+                              {message.to && (
+                                <Link
+                                  to={links.publicUser(message.to._id)}
+                                  className="unstyled-link"
+                                >
+                                  {message.to.username}
+                                </Link>
+                              )}
                             </p>
                           )}
                           <p>
@@ -244,6 +308,8 @@ export const Pms = () => {
         setRef={setRef}
       >
         <MessageSender
+          type={type}
+          page={page}
           pms={pms}
           setPms={setPms}
           open={open}

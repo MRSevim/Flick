@@ -99,29 +99,65 @@ const sendPm = async (req, res, next) => {
     next(error);
   }
 };
+//get received unread messages length
+const getReceivedLength = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const receivedTotal = user.messages.received;
+    const receivedUnreadLength = receivedTotal.filter(
+      (message) => message.read === false
+    ).length;
+
+    res.status(200).json({
+      receivedUnreadLength,
+      receivedTotalLength: receivedTotal.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 // get pms
 const getPms = async (req, res, next) => {
+  const { page, type } = req.query;
   try {
-    const sentMessages = req.user.messages.sent.reverse();
-    const receivedMessages = req.user.messages.received.reverse();
+    if (!page) {
+      res.status(400);
+      throw new Error("Please send a page number");
+    }
+    if (!type || !["received", "sent"].includes(type)) {
+      res.status(400);
+      throw new Error("Please send a type (received or sent)");
+    }
+    const user = await User.findById(req.user._id);
 
-    const decrypt = (arr) => {
-      return arr.map((message) => {
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const messages = user.messages[type];
+    const LIMIT = 10;
+    const startIndex = (Number(page) - 1) * LIMIT;
+
+    const paginatedMessages = messages
+      .slice(startIndex, startIndex + LIMIT)
+      .map((message) => {
         return {
-          ...message._doc,
+          ...message.toObject(),
           subject: decryptText(message.subject),
           message: decryptText(message.message),
         };
       });
-    };
 
-    const decryptedMessages = {
-      received: decrypt(receivedMessages),
-      sent: decrypt(sentMessages),
-    };
-
-    res.status(201).json({ messages: decryptedMessages });
+    res.status(200).json({
+      messages: paginatedMessages,
+      currentPage: Number(page),
+      totalPages: Math.ceil(messages.length / LIMIT),
+    });
   } catch (error) {
     next(error);
   }
@@ -226,7 +262,7 @@ const markAsRead = async (req, res, next) => {
     });
     await user.save();
 
-    res.status(200).json(user.messages.received);
+    res.status(200).json({ message: "Received messaged are marked as read" });
   } catch (error) {
     next(error);
   }
@@ -238,4 +274,5 @@ module.exports = {
   deletePm,
   deleteMany,
   markAsRead,
+  getReceivedLength,
 };

@@ -39,18 +39,21 @@ import {
 import { ThemeProvider } from "@mui/material";
 import { createMuiTheme } from "./Utils/MaterialUiStyles.js";
 import { Pms } from "./components/Pms.js";
+import { RefetchForPmIconProvider } from "./Contexts/RefetchForPmIcon.js";
 
 function App() {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <UserProvider>
-        <GlobalErrorProvider>
-          <DarkModeProvider>
-            <ConfirmationProvider>
-              <AppContent />
-            </ConfirmationProvider>
-          </DarkModeProvider>
-        </GlobalErrorProvider>
+        <RefetchForPmIconProvider>
+          <GlobalErrorProvider>
+            <DarkModeProvider>
+              <ConfirmationProvider>
+                <AppContent />
+              </ConfirmationProvider>
+            </DarkModeProvider>
+          </GlobalErrorProvider>
+        </RefetchForPmIconProvider>
       </UserProvider>
     </GoogleOAuthProvider>
   );

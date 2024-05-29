@@ -27,7 +27,7 @@ export const Articles = ({ isDraft }) => {
   const [user] = useUserContext();
   let { id } = useParams();
   const navigate = useNavigate();
-  const { getArticles, isLoading, setIsLoading } = useGetArticles();
+  const { getArticles, isLoading } = useGetArticles();
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
   const { likeArticle: likeArticleCall, isLoading: likeLoading } =
@@ -43,6 +43,26 @@ export const Articles = ({ isDraft }) => {
   const [selected, setSelected] = useState([]);
   const [darkMode] = useDarkModeContext();
   const [, setGlobalError] = useGlobalErrorContext();
+
+  const get = async () => {
+    if (!page) {
+      navigate({ search: "?page=1" });
+      return;
+    }
+    const { response, json } = await getArticles(
+      id,
+      page,
+      isDraft,
+      advancedSearch,
+      titleParam,
+      tagsParam
+    );
+    if (response.ok) {
+      setTotalPages(json.totalPages);
+      setArticles(json.articles);
+      setLocalUser(json.user);
+    }
+  };
 
   function handleSelect(value, id) {
     if (value) {
@@ -65,12 +85,7 @@ export const Articles = ({ isDraft }) => {
     const response = await deleteArticleCall(_id, title);
 
     if (response && response.ok) {
-      const { response, json } = await getArticles(id, page, isDraft);
-      if (response.ok) {
-        setTotalPages(json.totalPages);
-        setArticles(json.articles);
-        setLocalUser(json.user);
-      }
+      get();
     }
   };
 
@@ -82,12 +97,7 @@ export const Articles = ({ isDraft }) => {
     const response = await deleteMany(selected);
 
     if (response && response.ok) {
-      const { response, json } = await getArticles(id, page, isDraft);
-      if (response.ok) {
-        setTotalPages(json.totalPages);
-        setArticles(json.articles);
-        setLocalUser(json.user);
-      }
+      get();
     }
   };
 
@@ -114,45 +124,23 @@ export const Articles = ({ isDraft }) => {
   };
 
   const handlePaginationChange = (event, value) => {
-    navigate({ search: "?page=" + value });
+    searchParams.set("page", value);
+    setSearchParams(searchParams);
   };
 
-  const setLoadingToTrue = () => {
-    setIsLoading(true);
-  };
   useEffect(() => {
     if (totalPages && articles.length === 0) {
       searchParams.set("page", totalPages);
       setSearchParams(searchParams);
     }
-  }, [totalPages, articles, navigate, searchParams, setSearchParams]);
+  }, [totalPages, articles, searchParams, setSearchParams]);
 
   useEffect(() => {
     setSelected([]);
   }, [articles]);
 
   useEffect(() => {
-    const get = async () => {
-      if (!page) {
-        navigate({ search: "?page=1" });
-        return;
-      }
-      const { response, json } = await getArticles(
-        id,
-        page,
-        isDraft,
-        advancedSearch,
-        titleParam,
-        tagsParam
-      );
-      if (response.ok) {
-        setTotalPages(json.totalPages);
-        setArticles(json.articles);
-        setLocalUser(json.user);
-      }
-    };
     get();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, setArticles, setLocalUser, isDraft, searchParams]);
 
@@ -187,7 +175,6 @@ export const Articles = ({ isDraft }) => {
               }
             >
               <Link
-                onClick={setLoadingToTrue}
                 to={links.allArticles(id)}
                 className={classNames({
                   "unstyled-link me-2": true,
@@ -197,7 +184,6 @@ export const Articles = ({ isDraft }) => {
                 Articles
               </Link>
               <Link
-                onClick={setLoadingToTrue}
                 to={links.allDrafts(id)}
                 className={classNames({
                   "unstyled-link": true,

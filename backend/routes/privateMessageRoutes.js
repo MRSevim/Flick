@@ -7,6 +7,7 @@ const {
   deletePm,
   deleteMany,
   markAsRead,
+  getReceivedLength,
 } = require("../controllers/privateMessageController");
 
 const requireAuth = require("../middlewares/authMiddleware");
@@ -17,6 +18,9 @@ router.use(requireAuth);
 
 //send pm route
 router.put("/send/:id", sendPm);
+
+//get received unread messages length route
+router.get("/receivedLength", getReceivedLength);
 
 //get pms route
 router.get("/", getPms);

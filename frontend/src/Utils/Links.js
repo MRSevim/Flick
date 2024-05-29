@@ -1,5 +1,8 @@
 const links = {
-  pms: "/pms?open=false",
+  pms: "/pms?open=false&page=1&type=received",
+  sendPm: (username, id) => {
+    return `/pms?open=true&page=1&type=sent&username=${username}&_id=${id}`;
+  },
   homepage: "/",
   mostLiked: "/most-liked?time=week",
   createAnArticle: "/create-an-article",
