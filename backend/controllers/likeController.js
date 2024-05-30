@@ -103,13 +103,48 @@ const like = async (req, res, next) => {
       user: user._id,
       article: article._id,
     });
-
+    const notifiedUser = await User.findById(article?.user?._id);
+    const existingNotification = notifiedUser.notifications.find(
+      (notification) => {
+        return (
+          notification.target?.toString() === article._id.toString() &&
+          notification.action === "like"
+        );
+      }
+    );
     if (like) {
       message = "You disliked the article";
       article.likes = article.likes.filter((item) => {
         return !item.equals(like._id);
       });
       await like.deleteOne();
+      if (existingNotification) {
+        if (existingNotification.users.includes(user._id))
+          if (existingNotification.users.length === 1) {
+            notifiedUser.notifications = notifiedUser.notifications.filter(
+              (notification) => {
+                return !(
+                  notification.target?.toString() === article._id.toString() &&
+                  notification.action === "like"
+                );
+              }
+            );
+          } else {
+            notifiedUser.notifications = notifiedUser.notifications.map(
+              (notification) => {
+                if (
+                  notification.target?.toString() === article._id.toString() &&
+                  notification.action === "like"
+                ) {
+                  notification.users = notification.users.filter(
+                    (id) => id.toString() !== user._id.toString()
+                  );
+                }
+                return notification;
+              }
+            );
+          }
+      }
     } else {
       const like = await Like.create({
         article: article._id,
@@ -124,16 +159,6 @@ const like = async (req, res, next) => {
         target: article._id,
       };
 
-      const notifiedUser = await User.findById(article?.user?._id);
-      const existingNotification = notifiedUser.notifications.find(
-        (notification) => {
-          return (
-            notification.target?.toString() === article._id.toString() &&
-            notification.action === "like"
-          );
-        }
-      );
-
       if (existingNotification) {
         //add user to users array if user is not in it
         if (!existingNotification.users.includes(user._id))
@@ -141,9 +166,8 @@ const like = async (req, res, next) => {
       } else {
         notifiedUser.notifications.push(notification);
       }
-
-      await notifiedUser.save();
     }
+    await notifiedUser.save();
     const updatedArticle = await article.save();
 
     res.status(200).json({ message, updatedArticle });

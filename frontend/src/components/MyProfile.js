@@ -125,94 +125,94 @@ export const MyProfile = () => {
               </div>
             </div>
             <form
-              className="update-form col col-12 col-lg-9 p-0 d-flex flex-column mt-3"
+              className="update-form w-90 wide-input col col-12 col-lg-9 p-0 d-flex flex-column mt-3"
               onSubmit={handleSubmit}
             >
               <h2>Update Profile</h2>
               <div className="form-group">
-                <label>
+                <label className="w-100">
                   Username:
                   <input
                     value={username}
                     onChange={(e) => {
                       setUsername(e.target.value);
                     }}
-                    className="form-control form-control-lg wide-input"
+                    className="form-control form-control-lg"
                     type="text"
                     required
                   />
                 </label>
               </div>
               <div className="form-group">
-                <label>
+                <label className="w-100">
                   E-mail:
                   <input
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
-                    className="form-control form-control-lg wide-input"
+                    className="form-control form-control-lg"
                     type="email"
                     required
                   />
                 </label>
               </div>
               <div className="form-group">
-                <label>
+                <label className="w-100">
                   Image URL:
                   <input
                     value={image}
                     onChange={(e) => {
                       setImage(e.target.value);
                     }}
-                    className="form-control form-control-lg wide-input"
+                    className="form-control form-control-lg"
                     type="url"
                   />
                 </label>
               </div>
               <div className="form-group">
-                <label>
+                <label className="w-100">
                   Current Password:
                   <input
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
-                    className="form-control form-control-lg wide-input"
+                    className="form-control form-control-lg"
                     type="password"
                     required
                   />
                 </label>
               </div>
               <div className="form-group">
-                <label>
+                <label className="w-100">
                   New Password:
                   <input
                     value={newPassword}
                     onChange={(e) => {
                       setNewPassword(e.target.value);
                     }}
-                    className="form-control form-control-lg wide-input"
+                    className="form-control form-control-lg"
                     type="password"
                   />
                 </label>
               </div>
               <div className="form-group">
-                <label>
+                <label className="w-100">
                   Confirm New Password:
                   <input
                     value={confirmNewPassword}
                     onChange={(e) => {
                       setConfirmNewPassword(e.target.value);
                     }}
-                    className="form-control form-control-lg wide-input"
+                    className="form-control form-control-lg"
                     type="password"
                   />
                 </label>
               </div>
               <input
                 disabled={isLoading || user?.isGoogleLogin}
-                className="btn btn-primary mt-3"
+                className="btn btn-primary wide-input mt-3"
                 type="submit"
                 value={
                   user?.isGoogleLogin ? "Google Users can't update" : "Submit"
@@ -228,10 +228,7 @@ export const MyProfile = () => {
             </form>
           </div>
           <div className="d-flex justify-content-center">
-            <button
-              onClick={handleDeleteAccount}
-              className="btn btn-danger wide-input"
-            >
+            <button onClick={handleDeleteAccount} className="btn btn-danger">
               Delete account
             </button>
           </div>

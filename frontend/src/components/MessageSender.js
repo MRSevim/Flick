@@ -31,6 +31,12 @@ export const MessageSender = ({
   } = useSendPm();
   const username = searchParams.get("username") || "";
   const id = searchParams.get("_id");
+  const subjectInUrl = searchParams.get("subject");
+  useEffect(() => {
+    if (subjectInUrl?.trim()) {
+      setSubject(subjectInUrl);
+    }
+  }, [subjectInUrl]);
 
   useEffect(() => {
     const get = async () => {
@@ -69,7 +75,7 @@ export const MessageSender = ({
 
   return (
     <div className="d-flex justify-content-center ">
-      <form onSubmit={handleSubmit} className="m-5 w-100">
+      <form onSubmit={handleSubmit} className="m-5 w-90">
         {children}
         <div className="form-group">
           <label className="w-100">

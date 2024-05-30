@@ -63,7 +63,7 @@ body {
   min-height: calc(100vh - 93px);
 }
 .wide-input {
-  width: 300px;
+  max-width: 425px;
 }
 .update-form {
   min-height: 525px;
@@ -91,6 +91,9 @@ body {
 }
 .btn-l {
   font-size: 25px;
+}
+.w-90 {
+  width: 90% !important;
 }
 .font-secondary {
   font-family: var(--font-secondary);

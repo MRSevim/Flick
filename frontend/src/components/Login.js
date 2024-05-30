@@ -48,7 +48,7 @@ export const Login = ({ onHideModal, children, type }) => {
       <div className="d-flex justify-content-center">
         <form
           className={classNames({
-            "bg-primary p-5": true,
+            "bg-primary p-5 wide-input w-90": true,
             "border border-3 rounded": type !== "modal",
             "bg-dark-primary": darkMode,
           })}
@@ -56,28 +56,28 @@ export const Login = ({ onHideModal, children, type }) => {
         >
           {children}
           <div className="form-group">
-            <label>
+            <label className="w-100">
               Username:
               <input
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
-                className="form-control form-control-lg wide-input"
+                className="form-control form-control-lg"
                 type="text"
                 required
               />
             </label>
           </div>
           <div className="form-group">
-            <label>
+            <label className="w-100">
               Password:
               <input
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
-                className="form-control form-control-lg wide-input"
+                className="form-control form-control-lg"
                 type="password"
                 required
               />

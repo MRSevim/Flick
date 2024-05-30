@@ -177,7 +177,7 @@ export const Pms = () => {
                   <div className="mt-3">
                     {pms && pms.length > 0 && (
                       <>
-                        <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between mb-3">
                           <div>
                             <input
                               id="selectAll"
@@ -193,7 +193,7 @@ export const Pms = () => {
                               onClick={(e) => {
                                 deleteSelected(selected);
                               }}
-                              className="btn btn-danger ms-4"
+                              className="btn btn-danger ms-0 ms-sm-4"
                             >
                               <i className="bi bi-trash-fill"></i> Delete
                               Selected
@@ -246,13 +246,38 @@ export const Pms = () => {
                               handleSelect(message._id);
                             }}
                           />
-                          <DeleteButton
-                            classes="p-1 m-1 position-absolute top-0 end-0"
-                            onClick={() => {
-                              deleteOne(message._id, message.subject);
-                            }}
-                            deleteLoading={deleteLoading || deleteManyLoading}
-                          />
+                          <div className="position-absolute top-0 end-0">
+                            {type === "received" && (
+                              <button
+                                className={
+                                  "p-1 m-1 btn btn-secondary " +
+                                  (darkMode && "btn-primary")
+                                }
+                                onClick={() => {
+                                  searchParams.set("open", "true");
+                                  searchParams.set(
+                                    "username",
+                                    message.from.username
+                                  );
+                                  searchParams.set("_id", message.from._id);
+                                  searchParams.set(
+                                    "subject",
+                                    "Re:" + message.subject
+                                  );
+                                  setSearchParams(searchParams);
+                                }}
+                              >
+                                <i className="bi bi-reply me-1"></i>Reply
+                              </button>
+                            )}
+                            <DeleteButton
+                              classes="p-1 m-1"
+                              onClick={() => {
+                                deleteOne(message._id, message.subject);
+                              }}
+                              deleteLoading={deleteLoading || deleteManyLoading}
+                            />
+                          </div>
                           {type === "received" && (
                             <p>
                               <b className="me-2">From:</b>

@@ -131,7 +131,7 @@ export const Edit = () => {
           ref={successMessageRef}
           className="text-center mt-3 d-flex justify-content-center"
         >
-          <p className="m-0 alert alert-success wide-input">{successMessage}</p>
+          <p className="m-0 alert alert-success">{successMessage}</p>
         </div>
       )}
     </EditorForm>

@@ -62,7 +62,11 @@ const followUser = async (req, res, next) => {
       res.status(404);
       throw new Error("Target user is not found");
     }
-
+    const existingNotification = followedUser.notifications.find(
+      (notification) => {
+        return notification.action === "follow";
+      }
+    );
     if (!followedUser.followers.includes(user._id)) {
       message = "You followed " + followedUser.username;
       followedUser.followers.push(user._id);
@@ -71,11 +75,7 @@ const followUser = async (req, res, next) => {
         action: "follow",
         target: null,
       };
-      const existingNotification = followedUser.notifications.find(
-        (notification) => {
-          return notification.action === "follow";
-        }
-      );
+
       if (existingNotification) {
         //add user to users array if user is not in it
         if (!existingNotification.users.includes(user._id))
@@ -93,6 +93,29 @@ const followUser = async (req, res, next) => {
       followedUser.followers = followedUser.followers.filter((id) => {
         return id.toString() !== user._id.toString();
       });
+
+      if (existingNotification) {
+        if (existingNotification.users.includes(user._id))
+          if (existingNotification.users.length === 1) {
+            followedUser.notifications = followedUser.notifications.filter(
+              (notification) => {
+                return notification.action !== "follow";
+              }
+            );
+          } else {
+            followedUser.notifications = followedUser.notifications.map(
+              (notification) => {
+                if (notification.action === "follow") {
+                  notification.users = notification.users.filter(
+                    (id) => id.toString() !== user._id.toString()
+                  );
+                }
+                return notification;
+              }
+            );
+          }
+      }
+
       await followedUser.save();
 
       user.following = user.following.filter((id) => {

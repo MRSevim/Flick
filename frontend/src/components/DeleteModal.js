@@ -22,19 +22,19 @@ export const DeleteModal = ({ children }) => {
   return (
     <div className=" d-flex justify-content-center">
       <form
-        className={"bg-primary m-5 wide-input " + addDarkBg(darkMode)}
+        className={"bg-primary m-5 w-90 wide-input " + addDarkBg(darkMode)}
         onSubmit={handleDeleteAccount}
       >
         {children}
         <div className="form-group">
-          <label>
+          <label className="w-100">
             Password:
             <input
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              className="form-control form-control-lg wide-input"
+              className="form-control form-control-lg"
               type="password"
               required={!user?.isGoogleLogin}
             />
@@ -54,14 +54,12 @@ export const DeleteModal = ({ children }) => {
           value="Delete"
         />
         {successMessage && (
-          <div className="text-center mt-3 wide-input alert alert-success">
+          <div className="text-center mt-3 alert alert-success">
             {successMessage}
           </div>
         )}
         {error && (
-          <div className="text-center mt-3 wide-input alert alert-danger">
-            {error}
-          </div>
+          <div className="text-center mt-3 alert alert-danger">{error}</div>
         )}
       </form>
     </div>

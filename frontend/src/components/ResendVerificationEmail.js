@@ -32,19 +32,20 @@ export const ResendVerificationEmail = () => {
     <div className="container mt-5 d-flex justify-content-center">
       <form
         className={
-          "bg-primary p-5 border border-3 rounded " + addDarkBg(darkMode)
+          "bg-primary p-5 border border-3 w-90 wide-input rounded " +
+          addDarkBg(darkMode)
         }
         onSubmit={handleSubmit}
       >
         <div className="form-group">
-          <label>
+          <label className="w-100">
             E-mail:
             <input
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              className="form-control form-control-lg wide-input"
+              className="form-control form-control-lg"
               type="email"
               required
             />

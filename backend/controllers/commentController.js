@@ -2,6 +2,20 @@ const { Article } = require("../models/articleModel");
 const User = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
 
+const createNotifiedUserAndNotification = async (article) => {
+  const notifiedUser = await User.findById(article?.user?._id);
+
+  const existingNotification = notifiedUser.notifications.find(
+    (notification) => {
+      return (
+        notification.target?.toString() === article?._id?.toString() &&
+        notification.action === "comment"
+      );
+    }
+  );
+  return { notifiedUser, existingNotification };
+};
+
 //comment
 const comment = async (req, res, next) => {
   try {
@@ -42,29 +56,28 @@ const comment = async (req, res, next) => {
 
     article.comments.push(comment);
 
+    // Get the comment ID after pushing it to the array
+    const newComment = article.comments[article.comments.length - 1];
+    const commentId = newComment._id;
+
     const notification = {
       users: [user._id],
       action: "comment",
       target: article._id,
+      commentIds: [commentId],
     };
 
     //do no notify if you commented on your own article
     if (!user._id.equals(article.user._id)) {
-      const notifiedUser = await User.findById(article?.user?._id);
-
-      const existingNotification = notifiedUser.notifications.find(
-        (notification) => {
-          return (
-            notification.target?.toString() === article?._id?.toString() &&
-            notification.action === "comment"
-          );
-        }
-      );
+      const { notifiedUser, existingNotification } =
+        await createNotifiedUserAndNotification(article);
 
       if (existingNotification) {
         //add user to users array if user is not in it
-        if (!existingNotification.users.includes(user._id))
+        if (!existingNotification.users.includes(user._id)) {
           existingNotification.users.push(user._id);
+        }
+        existingNotification.commentIds.push(commentId);
       } else {
         notifiedUser.notifications.push(notification);
       }
@@ -182,6 +195,47 @@ const deleteComment = async (req, res, next) => {
     const comments = article.comments.filter((comment) => {
       return comment._id.toString() !== id.toString();
     });
+
+    const { notifiedUser, existingNotification } =
+      await createNotifiedUserAndNotification(article);
+
+    if (existingNotification) {
+      // Remove the deleted comment ID from the notification
+      existingNotification.commentIds = existingNotification.commentIds.filter(
+        (_id) => _id.toString() !== id.toString()
+      );
+
+      // Check if there are any remaining comments from the user
+      const userHasOtherComments = existingNotification.commentIds.some(
+        (_id) => {
+          const comment = article.comments.find(
+            (c) => c._id.toString() === _id.toString()
+          );
+          return comment && comment.user.toString() === user._id.toString();
+        }
+      );
+
+      if (!userHasOtherComments) {
+        // Remove the user from the notification's users array
+        existingNotification.users = existingNotification.users.filter(
+          (_id) => _id.toString() !== user._id.toString()
+        );
+      }
+
+      // Remove the notification if no users remain
+      if (existingNotification.users.length === 0) {
+        notifiedUser.notifications = notifiedUser.notifications.filter(
+          (notification) => {
+            return (
+              notification._id.toString() !==
+              existingNotification._id.toString()
+            );
+          }
+        );
+      }
+
+      await notifiedUser.save();
+    }
 
     article.comments = comments;
 

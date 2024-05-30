@@ -43,6 +43,7 @@ const userSchema = new mongoose.Schema(
         ],
         action: { type: String, required: true },
         target: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
+        commentIds: [{ type: String }],
         read: { type: Boolean, default: false, required: true },
         created: { type: Date, default: Date.now, required: true },
       },

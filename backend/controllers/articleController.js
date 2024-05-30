@@ -328,7 +328,11 @@ const deleteArticle = async (req, res, next) => {
       res.status(404);
       throw new Error("User is not found");
     }
-
+    // Find and remove notifications related to this article
+    await User.updateMany(
+      { "notifications.target": article._id },
+      { $pull: { notifications: { target: article._id } } }
+    );
     await article.deleteOne();
     await Like.deleteMany({ article: article._id });
 
@@ -370,6 +374,11 @@ const deleteMany = async (req, res, next) => {
       throw new Error("User is not found");
     }
     await Article.deleteMany({ _id: { $in: ids } });
+    // Find and remove notifications related to these articles
+    await User.updateMany(
+      { "notifications.target": { $in: ids } },
+      { $pull: { notifications: { target: { $in: ids } } } }
+    );
     await Like.deleteMany({ article: { $in: ids } });
 
     res.status(200).json({ message: "Articles are successfully deleted" });

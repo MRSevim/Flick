@@ -154,7 +154,7 @@ const getPms = async (req, res, next) => {
       });
 
     res.status(200).json({
-      messages: paginatedMessages,
+      messages: paginatedMessages.reverse(),
       currentPage: Number(page),
       totalPages: Math.ceil(messages.length / LIMIT),
     });

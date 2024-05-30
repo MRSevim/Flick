@@ -170,14 +170,14 @@ export const Articles = ({ isDraft }) => {
           <div className="d-flex justify-content-center align-items-center">
             <div
               className={
-                "d-flex justify-content-center align-items-center mb-2 wide-input rounded bg-primary " +
+                "d-flex justify-content-center align-items-center mb-2 p-3 rounded bg-primary " +
                 addDarkBg(darkMode)
               }
             >
               <Link
                 to={links.allArticles(id)}
                 className={classNames({
-                  "unstyled-link me-2": true,
+                  "unstyled-link mx-2": true,
                   active: !isDraft,
                 })}
               >
@@ -186,7 +186,7 @@ export const Articles = ({ isDraft }) => {
               <Link
                 to={links.allDrafts(id)}
                 className={classNames({
-                  "unstyled-link": true,
+                  "unstyled-link mx-2": true,
                   active: isDraft,
                 })}
               >

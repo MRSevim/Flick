@@ -39,54 +39,55 @@ export const SignUp = () => {
     <div className="container mt-5 d-flex justify-content-center">
       <form
         className={
-          "bg-primary p-5 border border-3 rounded " + addDarkBg(darkMode)
+          "bg-primary p-5 wide-input w-90 border border-3 rounded " +
+          addDarkBg(darkMode)
         }
         onSubmit={handleSubmit}
       >
         <div className="form-group">
-          <label>
+          <label className="w-100">
             Username:
             <input
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
-              className="form-control form-control-lg wide-input"
+              className="form-control form-control-lg"
               type="text"
               required
             />
           </label>
         </div>
         <div className="form-group">
-          <label>
+          <label className="w-100">
             E-mail:
             <input
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              className="form-control form-control-lg wide-input"
+              className="form-control form-control-lg"
               type="email"
               required
             />
           </label>
         </div>
         <div className="form-group">
-          <label>
+          <label className="w-100">
             Password:
             <input
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              className="form-control form-control-lg wide-input"
+              className="form-control form-control-lg"
               type="password"
               required
             />
           </label>
         </div>
         <div className="form-group">
-          <label>
+          <label className="w-100">
             Confirm Password:
             <input
               value={confirmPassword}
