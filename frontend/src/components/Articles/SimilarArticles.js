@@ -15,12 +15,8 @@ export const SimilarArticles = ({ id }) => {
   const [darkMode] = useDarkModeContext();
 
   const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 992 },
-      items: articles.length > 2 ? 3 : articles.length > 1 ? 2 : 1,
-    },
     tablet: {
-      breakpoint: { max: 992, min: 576 },
+      breakpoint: { max: 3000, min: 576 },
       items: articles.length > 1 ? 2 : 1,
     },
     mobile: {
@@ -50,7 +46,7 @@ export const SimilarArticles = ({ id }) => {
           return (
             <div
               key={article._id}
-              className={"card article-card m-2 " + addDarkBg(darkMode)}
+              className={"card article-card h-100 m-2 " + addDarkBg(darkMode)}
             >
               <ImageComponent classes={"p-2"} src={article.image} />
               <ArticleCardBody

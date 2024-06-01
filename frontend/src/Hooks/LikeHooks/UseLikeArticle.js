@@ -19,7 +19,7 @@ export const useLikeArticle = () => {
 
     setIsLoading(false);
 
-    return { response, json };
+    return response;
   };
 
   return { likeArticle, isLoading };

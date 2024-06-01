@@ -10,13 +10,11 @@ import { useDarkModeContext } from "../../Contexts/DarkModeContext";
 
 export const ArticleItem = ({
   deleteLoading,
-  likeLoading,
   article,
   isDraft,
   myArticles,
   editArticle,
   deleteArticle,
-  likeArticle,
   value = false,
   updateValue = () => {},
 }) => {
@@ -67,10 +65,6 @@ export const ArticleItem = ({
             <LikeButton
               classes="p-1 m-1 position-absolute bottom-0 start-0"
               article={article}
-              onClick={() => {
-                likeArticle(article._id);
-              }}
-              likeLoading={likeLoading}
             />
           )}
           <div className="my-2 image-wrapper">

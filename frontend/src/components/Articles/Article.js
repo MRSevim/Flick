@@ -4,7 +4,6 @@ import { ArticleSections } from "./ArticleSections";
 import { useGetArticle } from "../../Hooks/ArticleHooks/UseGetArticle";
 import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
 import { useUserContext } from "../../Contexts/UserContext";
-import { useLikeArticle } from "../../Hooks/LikeHooks/UseLikeArticle";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
 import { LikeButton } from "./LikeButton";
@@ -26,8 +25,6 @@ export const Article = () => {
   const [myArticle, setMyArticle] = useState(null);
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
-  const { likeArticle: likeArticleCall, isLoading: likeLoading } =
-    useLikeArticle();
 
   const deleteArticle = async (_id) => {
     const response = await deleteArticleCall(_id, article?.title);
@@ -38,12 +35,6 @@ export const Article = () => {
 
   const editArticle = (id) => {
     navigate(links.edit(id, false));
-  };
-  const likeArticle = async (id) => {
-    const { response, json } = await likeArticleCall(id);
-    if (response.ok) {
-      setArticle(json.updatedArticle);
-    }
   };
 
   useEffect(() => {
@@ -100,16 +91,7 @@ export const Article = () => {
               })}
             </div>
             <div className="mb-2">
-              {!myArticle && (
-                <LikeButton
-                  classes="me-1"
-                  article={article}
-                  onClick={() => {
-                    likeArticle(article._id);
-                  }}
-                  likeLoading={likeLoading}
-                />
-              )}
+              {!myArticle && <LikeButton classes="me-1" article={article} />}
               {myArticle && (
                 <>
                   <DeleteButton

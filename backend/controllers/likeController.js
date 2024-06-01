@@ -162,7 +162,7 @@ const like = async (req, res, next) => {
     await notifiedUser.save();
     const updatedArticle = await article.save();
 
-    res.status(200).json({ message, updatedArticle });
+    res.status(200).json({ message, id: article._id });
   } catch (error) {
     next(error);
   }

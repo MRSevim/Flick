@@ -8,7 +8,6 @@ import {
 import { useGetArticles } from "../../Hooks/ArticleHooks/UseGetArticles";
 import { useUserContext } from "../../Contexts/UserContext";
 import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
-import { useLikeArticle } from "../../Hooks/LikeHooks/UseLikeArticle";
 import { Pagination } from "@mui/material";
 import classNames from "classnames";
 import { ArticleItem } from "./ArticleItem";
@@ -30,8 +29,6 @@ export const Articles = ({ isDraft }) => {
   const { getArticles, isLoading } = useGetArticles();
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
-  const { likeArticle: likeArticleCall, isLoading: likeLoading } =
-    useLikeArticle();
   const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [totalPages, setTotalPages] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -106,20 +103,6 @@ export const Articles = ({ isDraft }) => {
       navigate(links.edit(id, true));
     } else {
       navigate(links.edit(id, false));
-    }
-  };
-  const likeArticle = async (id) => {
-    const { response, json } = await likeArticleCall(id);
-    if (response.ok) {
-      setArticles(
-        articles.map((article) => {
-          if (article._id === json.updatedArticle._id) {
-            return json.updatedArticle;
-          } else {
-            return article;
-          }
-        })
-      );
     }
   };
 
@@ -255,7 +238,6 @@ export const Articles = ({ isDraft }) => {
           <ArticleItem
             updateValue={handleSelect}
             value={selected.includes(article._id)}
-            likeLoading={likeLoading}
             deleteLoading={deleteManyLoading || deleteLoading}
             key={article._id}
             article={article}
@@ -263,7 +245,6 @@ export const Articles = ({ isDraft }) => {
             myArticles={myArticles}
             editArticle={editArticle}
             deleteArticle={deleteArticle}
-            likeArticle={likeArticle}
           />
         ))}
       </div>

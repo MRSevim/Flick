@@ -6,16 +6,13 @@ import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import empty from "../Utils/images/empty-most-liked.jpg";
 import { LikeButton } from "./Articles/LikeButton";
-import { useLikeArticle } from "../Hooks/LikeHooks/UseLikeArticle";
-import { addDarkBg, getFirstDiv } from "../Utils/HelperFuncs";
+import { addDarkBg, getExcerpt } from "../Utils/HelperFuncs";
 import { ImageComponent } from "./ImageComponent";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
 export const MostLiked = () => {
   const { getMostLiked, isLoading } = useGetMostLiked();
   const [articles, setArticles] = useState(null);
-  const { likeArticle: likeArticleCall, isLoading: likeLoading } =
-    useLikeArticle();
   const [darkMode] = useDarkModeContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const time = searchParams.get("time");
@@ -29,20 +26,6 @@ export const MostLiked = () => {
     get(time);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time, setArticles]);
-
-  const likeArticle = async (id) => {
-    const { response, json } = await likeArticleCall(id);
-    if (response.ok) {
-      setArticles(
-        articles.map((article) => {
-          if (article._id === id) {
-            return { ...article, likes: json.updatedArticle.likes };
-          }
-          return article;
-        })
-      );
-    }
-  };
 
   return (
     <div className="container mt-5">
@@ -106,14 +89,7 @@ export const MostLiked = () => {
                   key={article._id}
                 >
                   <div className="d-flex justify-content-between">
-                    <LikeButton
-                      article={article}
-                      onClick={() => {
-                        likeArticle(article._id);
-                      }}
-                      likeLoading={likeLoading}
-                      classes={"me-3"}
-                    />
+                    <LikeButton classes={"me-3"} article={article} />
                     <div>
                       {article.tags.map((tag, i) => {
                         return (
@@ -145,7 +121,7 @@ export const MostLiked = () => {
                       <p
                         className="article-card-inner-html"
                         dangerouslySetInnerHTML={{
-                          __html: getFirstDiv(article.content.trim()),
+                          __html: getExcerpt(article.content.trim()),
                         }}
                       ></p>
                       <Link

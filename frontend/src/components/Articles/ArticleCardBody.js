@@ -1,7 +1,7 @@
 import React from "react";
 import links from "../../Utils/Links";
 import { Link } from "react-router-dom";
-import { getFirstDiv } from "../../Utils/HelperFuncs";
+import { getExcerpt } from "../../Utils/HelperFuncs";
 
 export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
   return (
@@ -15,22 +15,24 @@ export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
           </span>
         </Link>
       </h5>
-      {article.tags?.map((tag, i) => {
-        return (
-          <Link to={links.tag(tag)} key={i} className="me-1">
-            #{tag}
-          </Link>
-        );
-      })}
+      <div className="mb-2">
+        {article.tags?.map((tag, i) => {
+          return (
+            <Link to={links.tag(tag)} key={i} className="me-1">
+              #{tag}
+            </Link>
+          );
+        })}
+      </div>
       <div>
         <p
           className="card-text article-card-inner-html"
           dangerouslySetInnerHTML={{
-            __html: getFirstDiv(article.content.trim()),
+            __html: getExcerpt(article.content.trim()),
           }}
         ></p>
 
-        <Link to={link} className="unstyled-link">
+        <Link to={link} className="unstyled-link ">
           <span className="hovered-link">Read more...</span>
         </Link>
       </div>
