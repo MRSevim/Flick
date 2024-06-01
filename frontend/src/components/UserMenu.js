@@ -37,6 +37,15 @@ export const UserMenu = ({ setUserMenu, logOut, myId, user }) => {
       >
         <p className="m-0 p-2 text-center usermenu-link">My Articles</p>
       </Link>
+      <Link
+        to={links.settings}
+        className="unstyled-link"
+        onClick={() => {
+          setUserMenu(false);
+        }}
+      >
+        <p className="m-0 p-2 text-center usermenu-link">Settings</p>
+      </Link>
       <div className="m-0 d-flex justify-content-center">
         <DarkModeToggle />
       </div>

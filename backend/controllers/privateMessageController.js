@@ -49,8 +49,14 @@ const sendPm = async (req, res, next) => {
     }
     if (user._id.equals(targetUser._id)) {
       res.status(400);
-      throw new Error("You cannot send message to yourself");
+      throw new Error("You cannot send a message to yourself");
     }
+
+    if (targetUser.newPmsDisabled) {
+      res.status(400);
+      throw new Error("You cannot send a message to this user");
+    }
+
     const { subject, message } = req.body;
 
     if (!subject || !message) {

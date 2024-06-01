@@ -57,5 +57,12 @@ const userApi = {
 
     return response;
   },
+  toggleUserVariables: async (type) => {
+    const response = await fetch("/user/toggle/" + type, {
+      method: "PUT",
+    });
+
+    return response;
+  },
 };
 export default userApi;

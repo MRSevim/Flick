@@ -135,6 +135,8 @@ const getUserProfile = async (req, res, next) => {
         createdAt: user.createdAt,
         followerNumber: user.followers.length,
         followingNumber: user.following.length,
+        newNotificationsDisabled: user.newNotificationsDisabled,
+        newPmsDisabled: user.newPmsDisabled,
       });
     } else {
       res.status(404);
@@ -317,6 +319,37 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const toggleUserVariables = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const type = req.params.type;
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+    if (type !== "pm" && type !== "notification") {
+      res.status(400);
+      throw new Error("Please sent a type after /toggle/ (pm or notification)");
+    }
+    let status;
+    if (type === "notification") {
+      user.newNotificationsDisabled = !user.newNotificationsDisabled;
+      status = user.newNotificationsDisabled;
+    } else if (type === "pm") {
+      user.newPmsDisabled = !user.newPmsDisabled;
+      status = user.newPmsDisabled;
+    }
+    await user.save();
+
+    res.status(200).json({
+      message: `New ${type}s are now ${status ? "disabled" : "enabled"}`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signupUser,
   loginUser,
@@ -325,4 +358,5 @@ module.exports = {
   updateUserProfile,
   deleteUser,
   getPublicUser,
+  toggleUserVariables,
 };

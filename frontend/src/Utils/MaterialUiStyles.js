@@ -12,6 +12,9 @@ export const createMuiTheme = (darkMode) => {
             "&& .MuiSwitch-track": {
               backgroundColor: "var(--color-secondary) !important",
             },
+            "&& .Mui-checked + .MuiSwitch-track": {
+              backgroundColor: "var(--color-info) !important",
+            },
           },
         },
       },

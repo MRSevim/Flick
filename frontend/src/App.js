@@ -40,6 +40,7 @@ import { ThemeProvider } from "@mui/material";
 import { createMuiTheme } from "./Utils/MaterialUiStyles.js";
 import { Pms } from "./components/Pms.js";
 import { RefetchForPmIconProvider } from "./Contexts/RefetchForPmIcon.js";
+import { Settings } from "./components/Settings.js";
 
 function App() {
   return (
@@ -73,6 +74,7 @@ function AppContent() {
         <Routes>
           {" "}
           <Route path="/most-liked" element={<MostLiked />} />
+          <Route path="/settings" element={<Settings />} />
           <Route
             path="/pms"
             element={!user ? <Navigate to={links.homepage} /> : <Pms />}

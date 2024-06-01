@@ -221,9 +221,12 @@ const createArticle = async (req, res, next) => {
 
     // Notify all followers
     for (const followerId of user.followers) {
-      await User.findByIdAndUpdate(followerId, {
-        $push: { notifications: notification },
-      });
+      const follower = await User.findById(followerId);
+      if (!follower.newNotificationsDisabled) {
+        await User.findByIdAndUpdate(followerId, {
+          $push: { notifications: notification },
+        });
+      }
     }
 
     res.status(201).json(article);

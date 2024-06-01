@@ -10,7 +10,7 @@ const {
   updateUserProfile,
   deleteUser,
   getPublicUser,
-  followUser,
+  toggleUserVariables,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -31,7 +31,12 @@ router
   .put(requireAuth, updateUserProfile)
   .delete(requireAuth, deleteUser);
 
-//get public user profile
+//get public user profile route
 router.get("/:id", getPublicUser);
+
+router.use(requireAuth);
+
+//toggle user variables route
+router.put("/toggle/:type", toggleUserVariables);
 
 module.exports = router;

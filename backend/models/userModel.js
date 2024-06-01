@@ -33,6 +33,8 @@ const userSchema = new mongoose.Schema(
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     isGoogleLogin: { type: Boolean, default: false, required: true },
     isVerified: { type: Boolean, default: false, required: true },
+    newNotificationsDisabled: { type: Boolean, default: false, required: true },
+    newPmsDisabled: { type: Boolean, default: false, required: true },
     notifications: [
       {
         users: [

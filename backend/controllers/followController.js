@@ -75,13 +75,14 @@ const followUser = async (req, res, next) => {
         action: "follow",
         target: null,
       };
-
-      if (existingNotification) {
-        //add user to users array if user is not in it
-        if (!existingNotification.users.includes(user._id))
-          existingNotification.users.push(user._id);
-      } else {
-        followedUser.notifications.push(notification);
+      if (!followedUser.newNotificationsDisabled) {
+        if (existingNotification) {
+          //add user to users array if user is not in it
+          if (!existingNotification.users.includes(user._id))
+            existingNotification.users.push(user._id);
+        } else {
+          followedUser.notifications.push(notification);
+        }
       }
 
       await followedUser.save();
@@ -95,25 +96,22 @@ const followUser = async (req, res, next) => {
       });
 
       if (existingNotification) {
-        if (existingNotification.users.includes(user._id))
+        if (existingNotification.users.includes(user._id)) {
           if (existingNotification.users.length === 1) {
             followedUser.notifications = followedUser.notifications.filter(
               (notification) => {
-                return notification.action !== "follow";
+                return (
+                  notification._id.toString() !==
+                  existingNotification._id.toString()
+                );
               }
             );
           } else {
-            followedUser.notifications = followedUser.notifications.map(
-              (notification) => {
-                if (notification.action === "follow") {
-                  notification.users = notification.users.filter(
-                    (id) => id.toString() !== user._id.toString()
-                  );
-                }
-                return notification;
-              }
+            existingNotification.users = existingNotification.users.filter(
+              (id) => id.toString() !== user._id.toString()
             );
           }
+        }
       }
 
       await followedUser.save();

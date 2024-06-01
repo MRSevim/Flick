@@ -1,5 +1,6 @@
 const links = {
   pms: "/pms?open=false&page=1&type=received",
+  settings: "/settings",
   sendPm: (username, id) => {
     return `/pms?open=true&page=1&type=sent&username=${username}&_id=${id}`;
   },

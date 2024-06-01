@@ -20,15 +20,21 @@ export const DarkModeProvider = ({ children }) => {
   useEffect(() => {
     if (prefersDarkMode && localStorage.getItem("darkMode") === null) {
       setDarkMode(true);
-      localStorage.setItem("darkMode", true);
-      document.body.classList.add("dark");
     }
   }, [setDarkMode]);
 
+  useEffect(() => {
+    if (darkMode) {
+      localStorage.setItem("darkMode", darkMode);
+      document.body.classList.add("dark");
+    } else {
+      localStorage.setItem("darkMode", darkMode);
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   const handleChange = () => {
     setDarkMode(!darkMode);
-    localStorage.setItem("darkMode", !darkMode);
-    document.body.classList.toggle("dark");
   };
   return (
     <DarkModeContext.Provider value={[darkMode, handleChange]}>

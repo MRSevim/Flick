@@ -71,17 +71,18 @@ const comment = async (req, res, next) => {
     if (!user._id.equals(article.user._id)) {
       const { notifiedUser, existingNotification } =
         await createNotifiedUserAndNotification(article);
-
-      if (existingNotification) {
-        //add user to users array if user is not in it
-        if (!existingNotification.users.includes(user._id)) {
-          existingNotification.users.push(user._id);
+      if (!notifiedUser.newNotificationsDisabled) {
+        if (existingNotification) {
+          //add user to users array if user is not in it
+          if (!existingNotification.users.includes(user._id)) {
+            existingNotification.users.push(user._id);
+          }
+          existingNotification.commentIds.push(commentId);
+        } else {
+          notifiedUser.notifications.push(notification);
         }
-        existingNotification.commentIds.push(commentId);
-      } else {
-        notifiedUser.notifications.push(notification);
+        await notifiedUser.save();
       }
-      await notifiedUser.save();
     }
 
     await article.save();

@@ -119,31 +119,22 @@ const like = async (req, res, next) => {
       });
       await like.deleteOne();
       if (existingNotification) {
-        if (existingNotification.users.includes(user._id))
+        if (existingNotification.users.includes(user._id)) {
           if (existingNotification.users.length === 1) {
             notifiedUser.notifications = notifiedUser.notifications.filter(
               (notification) => {
-                return !(
-                  notification.target?.toString() === article._id.toString() &&
-                  notification.action === "like"
+                return (
+                  notification._id.toString() !==
+                  existingNotification._id.toString()
                 );
               }
             );
           } else {
-            notifiedUser.notifications = notifiedUser.notifications.map(
-              (notification) => {
-                if (
-                  notification.target?.toString() === article._id.toString() &&
-                  notification.action === "like"
-                ) {
-                  notification.users = notification.users.filter(
-                    (id) => id.toString() !== user._id.toString()
-                  );
-                }
-                return notification;
-              }
+            existingNotification.users = existingNotification.users.filter(
+              (id) => id.toString() !== user._id.toString()
             );
           }
+        }
       }
     } else {
       const like = await Like.create({
@@ -158,13 +149,14 @@ const like = async (req, res, next) => {
         action: "like",
         target: article._id,
       };
-
-      if (existingNotification) {
-        //add user to users array if user is not in it
-        if (!existingNotification.users.includes(user._id))
-          existingNotification.users.push(user._id);
-      } else {
-        notifiedUser.notifications.push(notification);
+      if (!notifiedUser.newNotificationsDisabled) {
+        if (existingNotification) {
+          //add user to users array if user is not in it
+          if (!existingNotification.users.includes(user._id))
+            existingNotification.users.push(user._id);
+        } else {
+          notifiedUser.notifications.push(notification);
+        }
       }
     }
     await notifiedUser.save();
