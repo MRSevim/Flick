@@ -10,7 +10,7 @@ import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { ModalWrapper } from "./ModalWrapper";
 import { Popup } from "./Popup";
-import { ResendButton } from "./ResendButton";
+import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -222,7 +222,9 @@ export const MyProfile = () => {
               {successMessage && (
                 <>
                   <Popup message={successMessage} type="success" />
-                  {updatedEmail && <ResendButton email={updatedEmail} />}
+                  {updatedEmail && (
+                    <SendVerificationEmailButton email={updatedEmail} />
+                  )}
                 </>
               )}
             </form>

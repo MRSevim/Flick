@@ -5,8 +5,8 @@ const emailApi = {
     });
     return response;
   },
-  resendVerificationEmail: async (email) => {
-    const response = await fetch("/email/resend-verification-email", {
+  sendEmail: async (email, type) => {
+    const response = await fetch("/email/" + type, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

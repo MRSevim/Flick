@@ -45,5 +45,12 @@ const htmls = {
         <p>This email account has been verified.</p>
         <p>Thanks! – The Flick Articles</p>`;
   },
+  passwordReset: (username, password) => {
+    return `<h1>Password Reset</h1>
+        <p>Hi ${username},</p>
+        <p>Your password has been reset. Your new password is:</p>
+        <p>${password}</p>
+        <p>Thanks! – The Flick Articles</p>`;
+  },
 };
 module.exports = htmls;

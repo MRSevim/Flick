@@ -5,8 +5,8 @@ import { useSignup } from "../Hooks/UserHooks/UseSignup";
 import links from "../Utils/Links";
 import { addDarkBg } from "../Utils/HelperFuncs";
 import { Popup } from "./Popup";
-import { ResendButton } from "./ResendButton";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -118,7 +118,7 @@ export const SignUp = () => {
         {successMessage && (
           <>
             <Popup message={successMessage} type="success" />
-            <ResendButton email={email} />
+            <SendVerificationEmailButton email={email} re={true} />
           </>
         )}
       </form>

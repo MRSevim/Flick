@@ -7,7 +7,7 @@ import classNames from "classnames";
 import links from "../Utils/Links";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { Popup } from "./Popup";
-import { ResendButton } from "./ResendButton";
+import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 
 export const Login = ({ onHideModal, children, type }) => {
   const [username, setUsername] = useState("");
@@ -111,10 +111,20 @@ export const Login = ({ onHideModal, children, type }) => {
               </button>
             </Link>
           </p>
+          <div className="text-center">
+            <Link
+              className="unstyled-link hovered-link"
+              to={links.emailer(null, "send-reset-password-email")}
+            >
+              Forgot Password
+            </Link>
+          </div>
           {error && (
             <>
               <Popup message={error} type="danger" />
-              {error === "Please verify your account first" && <ResendButton />}
+              {error === "Please verify your account first" && (
+                <SendVerificationEmailButton />
+              )}
             </>
           )}
         </form>

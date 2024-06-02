@@ -22,7 +22,7 @@ const generateVerificationToken = (userId) => {
   });
   return token;
 };
-const sendEmail = async (type, email, username, token, next) => {
+const sendEmail = async (type, email, username, token, next, password) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
@@ -37,10 +37,14 @@ const sendEmail = async (type, email, username, token, next) => {
   if (type === "email-verification") {
     subject = "Verify your email adress";
     html = htmls.verificationHTML(username, token, email);
-  } else if ("verified") {
+  } else if (type === "verified") {
     subject = "Account verified";
     html = htmls.verifiedHTML(username);
+  } else if (type === "password-reset") {
+    subject = "Password reset";
+    html = htmls.passwordReset(username, password);
   }
+
   try {
     // send mail with defined transport object
     const info = await transporter.sendMail({

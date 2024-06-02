@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { generateVerificationToken, sendEmail } = require("../helpers");
+const crypto = require("crypto");
 
 const verifyEmail = async (req, res, next) => {
   try {
@@ -40,10 +41,58 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
-const resendVerificationEmail = async (req, res, next) => {
+const sendResetPasswordEmail = async (req, res, next) => {
   const { email } = req.body;
 
   try {
+    if (!email) {
+      res.status(404);
+      throw new Error("Please send an email");
+    }
+
+    const user = await User.findOne({
+      email,
+      isGoogleLogin: false,
+    });
+
+    if (!user) {
+      res.status(404);
+      throw new Error(
+        "There is no user with that email or User is google user and does not need password to log in"
+      );
+    }
+    const passwordBytes = crypto.randomBytes(16);
+    const password = passwordBytes.toString("base64").slice(0, 16);
+
+    user.password = password;
+
+    await user.save();
+
+    await sendEmail(
+      "password-reset",
+      email,
+      user.username,
+      null,
+      next,
+      password
+    );
+
+    res.status(200).json({
+      message: "Password reset email has been sent to your account",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const sendVerificationEmail = async (req, res, next) => {
+  const { email } = req.body;
+
+  try {
+    if (!email) {
+      res.status(404);
+      throw new Error("Please send an email");
+    }
     const user = await User.findOne({
       $or: [
         { email, isGoogleLogin: false },
@@ -68,11 +117,11 @@ const resendVerificationEmail = async (req, res, next) => {
     await sendEmail("email-verification", email, user.username, token, next);
 
     res.status(200).json({
-      message: "A verification email has been resent to your account",
+      message: "A verification email has been sent to your account",
     });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { verifyEmail, resendVerificationEmail };
+module.exports = { verifyEmail, sendVerificationEmail, sendResetPasswordEmail };

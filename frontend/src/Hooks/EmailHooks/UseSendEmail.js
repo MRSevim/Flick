@@ -1,17 +1,17 @@
 import { useState } from "react";
 import emailApi from "../../Utils/EmailApiFunctions";
 
-export const useResendVerificationEmail = () => {
+export const useSendEmail = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const resendVerificationEmail = async (email) => {
+  const sendEmail = async (email, type) => {
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
 
-    const response = await emailApi.resendVerificationEmail(email);
+    const response = await emailApi.sendEmail(email, type);
     const json = await response.json();
 
     if (!response.ok) {
@@ -26,5 +26,5 @@ export const useResendVerificationEmail = () => {
     return { response, json };
   };
 
-  return { resendVerificationEmail, isLoading, error, successMessage };
+  return { sendEmail, isLoading, error, successMessage };
 };

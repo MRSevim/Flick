@@ -14,10 +14,10 @@ const links = {
   linkedIn: "https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/",
   portfolio: "https://mrsevim.github.io/Portfolio/",
   mail: "mailto: lionrasit@gmail.com",
-  resendVerificationEmail: (email) => {
+  emailer: (email, type) => {
     const url = email
-      ? "/resend-verification-email?email=" + email
-      : "/resend-verification-email";
+      ? "/emailer?email=" + email + "&type=" + type
+      : "/emailer?type=" + type;
     return url;
   },
   followers: (id) => {

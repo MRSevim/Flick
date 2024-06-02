@@ -30,7 +30,7 @@ import links from "./Utils/Links.js";
 import { ConfirmationProvider } from "./Contexts/UseConfirmationContext.js";
 
 import { Confirmation } from "./components/Confirmation.js";
-import { ResendVerificationEmail } from "./components/ResendVerificationEmail.js";
+import { Emailer } from "./components/Emailer.js";
 import { EmailVerification } from "./components/EmailVerification.js";
 import {
   DarkModeProvider,
@@ -79,10 +79,7 @@ function AppContent() {
             path="/pms"
             element={!user ? <Navigate to={links.homepage} /> : <Pms />}
           />
-          <Route
-            path="/resend-verification-email"
-            element={<ResendVerificationEmail />}
-          />
+          <Route path="/emailer" element={<Emailer />} />
           <Route
             path="/login"
             element={

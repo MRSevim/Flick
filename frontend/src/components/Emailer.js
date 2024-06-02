@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Popup } from "./Popup";
-import { useResendVerificationEmail } from "../Hooks/EmailHooks/UseResendVerificationEmail";
+import { useSendEmail } from "../Hooks/EmailHooks/UseSendEmail";
 import { useSearchParams } from "react-router-dom";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { addDarkBg } from "../Utils/HelperFuncs";
 
-export const ResendVerificationEmail = () => {
+export const Emailer = () => {
   const [email, setEmail] = useState("");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const emailFromUrl = searchParams.get("email");
-  const { resendVerificationEmail, isLoading, error, successMessage } =
-    useResendVerificationEmail();
+  const type = searchParams.get("type");
+  const { sendEmail, isLoading, error, successMessage } = useSendEmail();
   const [darkMode] = useDarkModeContext();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await resendVerificationEmail(email);
+    await sendEmail(email, type);
   };
   useEffect(() => {
     if (emailFromUrl) {
       setEmail(emailFromUrl);
-      const resend = async () => {
-        await resendVerificationEmail(emailFromUrl);
+      const send = async () => {
+        await sendEmail(emailFromUrl, type);
       };
-      resend();
+      send();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailFromUrl, setEmail]);
@@ -37,6 +37,19 @@ export const ResendVerificationEmail = () => {
         }
         onSubmit={handleSubmit}
       >
+        <select
+          className="form-select mb-2"
+          onChange={(e) => {
+            searchParams.set("type", e.target.value);
+            setSearchParams(searchParams);
+          }}
+          defaultValue={type}
+        >
+          <option value="send-verification-email">
+            Send verification email
+          </option>
+          <option value="send-reset-password-email">Reset password</option>
+        </select>
         <div className="form-group">
           <label className="w-100">
             E-mail:
@@ -56,7 +69,7 @@ export const ResendVerificationEmail = () => {
           disabled={isLoading}
           className="btn  btn-secondary mt-3"
           type="submit"
-          value="Resend"
+          value="Send"
         />
 
         {error && <Popup message={error} type="danger" />}
