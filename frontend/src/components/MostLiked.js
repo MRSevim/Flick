@@ -84,7 +84,8 @@ export const MostLiked = () => {
               {articles.map((article) => (
                 <div
                   className={
-                    "bg-primary rounded m-2 p-3 " + addDarkBg(darkMode)
+                    "bg-primary position-relative rounded m-2 p-3 " +
+                    addDarkBg(darkMode)
                   }
                   key={article._id}
                 >
@@ -111,7 +112,7 @@ export const MostLiked = () => {
                         classes="mw-100 h-100"
                       />
                     </div>
-                    <div className="col col-12 col-lg-8">
+                    <div className="col col-12 col-lg-8 mb-3">
                       <Link
                         className="unstyled-link hovered-link"
                         to={"/article/" + article._id}
@@ -124,11 +125,23 @@ export const MostLiked = () => {
                           __html: getExcerpt(article.content.trim()),
                         }}
                       ></p>
+
                       <Link
                         className="unstyled-link hovered-link"
                         to={"/article/" + article._id}
                       >
                         Read More...
+                      </Link>
+                      <Link
+                        className="bg-secondary rounded text-white p-2 unstyled-link hovered-link d-flex align-items-center m-2 position-absolute bottom-0 end-0"
+                        to={links.publicUser(article.user._id)}
+                      >
+                        <ImageComponent
+                          src={article.user.image}
+                          classes={"profile-img-mini me-2"}
+                        />
+
+                        <p className="mb-1">{article.user.username}</p>
                       </Link>
                     </div>
                   </div>

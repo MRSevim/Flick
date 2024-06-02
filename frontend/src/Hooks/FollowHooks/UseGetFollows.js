@@ -6,11 +6,11 @@ export const useGetFollows = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const getFollows = async (id, type) => {
+  const getFollows = async (id, type, page) => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const response = await followApi.getFollows(id, type);
+    const response = await followApi.getFollows(id, type, page);
     const json = await response.json();
 
     if (!response.ok) {

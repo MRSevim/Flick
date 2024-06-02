@@ -63,7 +63,36 @@ const getMostLiked = async (req, res, next) => {
       {
         $limit: 10, // You can adjust the limit based on how many top articles you want
       },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $project: {
+          _id: "$_id",
+          title: 1,
+          content: 1,
+          isDraft: 1,
+          likes: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          tags: 1,
+          image: 1,
+          likeCount: 1,
+          "user._id": "$user._id",
+          "user.username": "$user.username",
+          "user.image": "$user.image",
+        },
+      },
     ]);
+
     res.status(200).json(articles);
   } catch (error) {
     next(error);

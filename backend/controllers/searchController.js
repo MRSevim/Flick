@@ -16,7 +16,10 @@ const getBySearch = async (req, res, next) => {
       users = await User.find({ username: param }).select("_id username image");
 
       articles = await Article.find({
-        title: param,
+        $or: [
+          { title: param },
+          { user: { $in: users.map((user) => user._id) } },
+        ],
         isDraft: false,
       })
         .select(selectFields)
@@ -38,13 +41,13 @@ const getByAdvancedSearch = async (req, res, next) => {
     }
     let users = [];
     let articles = [];
+    const query = { isDraft: false };
 
     if (username) {
       const param = new RegExp(username, "i");
       users = await User.find({ username: param }).select("_id username image");
+      query.user = { $in: users.map((user) => user._id) };
     }
-
-    const query = { isDraft: false };
 
     if (title) {
       const param = new RegExp(title, "i");
@@ -54,17 +57,11 @@ const getByAdvancedSearch = async (req, res, next) => {
       query.tags = { $all: tags.split(",") };
     }
 
-    if (title || tags) {
+    if (title || tags || username) {
       articles = await Article.find(query)
         .select(selectFields)
-        .populate("user", "username");
-    }
-
-    if (username) {
-      const param = new RegExp(username, "i");
-      articles = articles.filter((article) => {
-        return param.test(article.user.username);
-      });
+        .populate("user", "username")
+        .populate("likes", "user");
     }
 
     res.status(200).json({ users, articles });

@@ -50,6 +50,10 @@ export const getExcerpt = (content, wordLimit = 100) => {
   return truncatedHTML;
 };
 
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const addDarkBg = (darkMode) => {

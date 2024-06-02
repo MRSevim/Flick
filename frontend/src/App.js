@@ -109,10 +109,13 @@ function AppContent() {
             element={<Articles isDraft={true} />}
           />
           <Route path="/search" element={<Search />} />
-          <Route path="/followers/:id" element={<Follows type="followers" />} />
           <Route
-            path="/followings/:id"
-            element={<Follows type="followings" />}
+            path="/:id/followers/"
+            element={<Follows type="followers" />}
+          />
+          <Route
+            path="/:id/following/"
+            element={<Follows type="following" />}
           />
           <Route path="/user/:id" element={<User />} />
           <Route path="/my-profile" element={<MyProfile />} />

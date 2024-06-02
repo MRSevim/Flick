@@ -86,7 +86,8 @@ const getPublicUser = async (req, res, next) => {
       res.status(404);
       throw new Error("User is not found");
     }
-    const mostLikedArticles = await Article.aggregate([
+
+    const articles = await Article.aggregate([
       {
         $match: {
           user: new mongoose.Types.ObjectId(user._id),
@@ -106,12 +107,23 @@ const getPublicUser = async (req, res, next) => {
       },
     ]);
 
+    const articleIds = articles.map((article) => article._id);
+
+    const mostLikedArticles = await Article.find({
+      _id: { $in: articleIds },
+    }).populate("likes", "user");
+
+    // Sort the populated articles to match the order of articleIds
+    const sortedArticles = articleIds.map((id) =>
+      mostLikedArticles.find((article) => article._id.equals(id))
+    );
+
     res.status(200).json({
       _id: user._id,
       username: user.username,
       createdAt: user.createdAt,
       image: user.image,
-      mostLikedArticles,
+      mostLikedArticles: sortedArticles,
       followerNumber: user.followers.length,
       followingNumber: user.following.length,
       followers: user.followers,

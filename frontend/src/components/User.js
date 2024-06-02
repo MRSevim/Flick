@@ -8,6 +8,9 @@ import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import sad from "../Utils/images/sad.jpg";
+import { LikeButton } from "./Articles/LikeButton";
+import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { addDarkBg } from "../Utils/HelperFuncs";
 
 export const User = () => {
   const { id } = useParams();
@@ -20,6 +23,7 @@ export const User = () => {
   const [followingNumber, setFollowingNumber] = useState(null);
   const { followUser, isLoading: followLoading } = useFollowUser();
   const navigate = useNavigate();
+  const [darkMode] = useDarkModeContext();
 
   const handleFollow = async (id) => {
     const { response, json } = await followUser(id);
@@ -140,10 +144,11 @@ export const User = () => {
                 >
                   <li>
                     <span className="line-right">
-                      <i className="bi bi-hand-thumbs-up"></i>
-                      {" " +
-                        article.likeCount +
-                        (article.likeCount > 1 ? " likes" : " like")}{" "}
+                      {" "}
+                      <LikeButton
+                        classes={"p-1 m-1 bg-primary " + addDarkBg(darkMode)}
+                        article={article}
+                      />
                     </span>
                     <span>
                       <Link

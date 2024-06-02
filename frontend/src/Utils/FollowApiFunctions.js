@@ -6,10 +6,10 @@ const followApi = {
 
     return response;
   },
-  getFollows: async (id, type) => {
-    const response = await fetch("/follow/" + type + "/" + id, {
-      method: "GET",
-    });
+  getFollows: async (id, type, page) => {
+    const response = await fetch(
+      "/follow/follows/" + id + "?type=" + type + "&page=" + page
+    );
 
     return response;
   },

@@ -1,40 +1,47 @@
 const User = require("../models/userModel");
 
-const getFollowers = async (req, res, next) => {
+const getFollows = async (req, res, next) => {
+  const { page, type } = req.query;
   try {
-    const user = await User.findById(req.params.id).populate(
-      "followers",
-      "username image"
-    );
-    if (!user) {
+    const LIMIT = 18;
+    const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+    const fullUser = await User.findById(req.params.id);
+
+    if (!fullUser) {
       res.status(404);
       throw new Error("User is not found");
     }
+    if (!page) {
+      console.log(page);
+      res.status(400);
+      throw new Error("Please send a page number");
+    }
+    if (!type || (type !== "followers" && type !== "following")) {
+      res.status(400);
+      throw new Error("Please send a type (followers or following)");
+    }
 
-    res.status(200).json({
-      username: user.username,
-      _id: user._id,
-      followers: user.followers,
+    const total =
+      type === "followers"
+        ? fullUser.followers.length
+        : fullUser.following.length;
+
+    const user = await User.findById(req.params.id).populate({
+      path: type,
+      select: "username image",
+      options: {
+        sort: { username: 1 }, // Sort by username in ascending order (alphabetical)
+        skip: startIndex,
+        limit: LIMIT,
+      },
     });
-  } catch (error) {
-    next(error);
-  }
-};
-const getFollowing = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.id).populate(
-      "following",
-      "username image"
-    );
-    if (!user) {
-      res.status(404);
-      throw new Error("User is not found");
-    }
 
     res.status(200).json({
       username: user.username,
       _id: user._id,
-      followings: user.following,
+      [type]: user[type],
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / LIMIT),
     });
   } catch (error) {
     next(error);
@@ -140,6 +147,5 @@ const followUser = async (req, res, next) => {
 
 module.exports = {
   followUser,
-  getFollowers,
-  getFollowing,
+  getFollows,
 };

@@ -21,10 +21,10 @@ const links = {
     return url;
   },
   followers: (id) => {
-    return "/followers/" + id;
+    return "/" + id + "/followers?page=1";
   },
   followings: (id) => {
-    return "/followings/" + id;
+    return "/" + id + "/following?page=1";
   },
   publicUser: (id) => {
     return "/user/" + id;

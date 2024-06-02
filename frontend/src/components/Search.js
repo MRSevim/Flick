@@ -5,6 +5,7 @@ import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import { ImageComponent } from "./ImageComponent";
 import { AdvancedSearch } from "./AdvancedSearch";
+import { LikeButton } from "./Articles/LikeButton";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { addDarkBg } from "../Utils/HelperFuncs";
 
@@ -89,10 +90,10 @@ export const Search = () => {
                   >
                     <div className="card-body">
                       <span className="line-right ">
-                        <i className="bi bi-hand-thumbs-up h5"></i>
-                        {" " +
-                          article.likes.length +
-                          (article.likes.length > 1 ? " likes" : " like")}
+                        <LikeButton
+                          classes="p-1 m-1 bg-secondary"
+                          article={article}
+                        />
                       </span>
                       {article.tags.map((tag, i) => (
                         <Link key={i} className="me-1">
