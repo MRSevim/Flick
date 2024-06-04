@@ -29,18 +29,25 @@ export const useUpdateUser = () => {
     if (response.ok) {
       const { message, username, _id, isGoogleLogin, image } = json;
       const userObject = { username, _id, isGoogleLogin, image };
-      // update the user in local storage
-      let user = JSON.parse(localStorage.getItem("user"));
 
-      const { ttl } = user;
-      const now = new Date().getTime();
-      const milliseconds = ttl - now;
-      const seconds = milliseconds / 1000;
+      // update the user in storage
+      let userInLocalStorage = JSON.parse(localStorage.getItem("user"));
+      if (userInLocalStorage) {
+        const { ttl } = userInLocalStorage;
+        const now = new Date().getTime();
+        const milliseconds = ttl - now;
+        const seconds = milliseconds / 1000;
 
-      ls.set("user", JSON.stringify(userObject), {
-        ttl: seconds,
-      });
+        ls.set("user", JSON.stringify(userObject), {
+          ttl: seconds,
+        });
+      }
+      // update the user in storage
+      let userInSessionStorage = JSON.parse(sessionStorage.getItem("user"));
 
+      if (userInSessionStorage) {
+        sessionStorage.setItem("user", JSON.stringify(userObject));
+      }
       // update the user context
       setUser(userObject);
 

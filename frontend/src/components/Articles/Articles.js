@@ -211,16 +211,19 @@ export const Articles = ({ isDraft }) => {
               />
             </div>
             {myArticles && (
-              <div className="mt-3">
+              <div className="mt-3 form-check">
                 <input
                   id="selectAll"
+                  className="form-check-input"
                   type="checkbox"
                   checked={selected.length === articles.length}
                   onChange={() => {
                     selectAll();
                   }}
                 />{" "}
-                <label htmlFor="selectAll">Select all</label>
+                <label className="form-check-label" htmlFor="selectAll">
+                  Select all
+                </label>
                 <button
                   disabled={deleteManyLoading || deleteLoading}
                   onClick={(e) => {

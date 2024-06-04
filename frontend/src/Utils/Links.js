@@ -1,5 +1,6 @@
 const links = {
   pms: "/pms?open=false&page=1&type=received",
+  tocAndPrivacyPolicy: "/toc-and-privacy-policy",
   settings: "/settings",
   sendPm: (username, id) => {
     return `/pms?open=true&page=1&type=sent&username=${username}&_id=${id}`;
@@ -13,7 +14,7 @@ const links = {
   signup: "/sign-up",
   linkedIn: "https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/",
   portfolio: "https://mrsevim.github.io/Portfolio/",
-  mail: "mailto: lionrasit@gmail.com",
+  mail: "mailto: " + process.env.REACT_APP_CONTACT_MAIL,
   emailer: (email, type) => {
     const url = email
       ? "/emailer?email=" + email + "&type=" + type

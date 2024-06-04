@@ -34,7 +34,7 @@ export const createMuiTheme = (darkMode) => {
             },
             "& .MuiAutocomplete-groupUl .MuiAutocomplete-option[aria-selected='true']":
               {
-                backgroundColor: "transparent",
+                backgroundColor: "transparent !important",
               },
           },
         },

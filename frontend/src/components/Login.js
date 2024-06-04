@@ -12,6 +12,7 @@ import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 export const Login = ({ onHideModal, children, type }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [user] = useUserContext();
   const { login, error, setError, isLoading } = useLogin();
   const location = useLocation();
@@ -33,12 +34,12 @@ export const Login = ({ onHideModal, children, type }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await login(username, password, false, null);
+    const response = await login(username, password, false, null, rememberMe);
 
     hideModalIfExists(response);
   };
   const handleGoogleLogin = async (credential) => {
-    const response = await login(null, null, true, credential);
+    const response = await login(null, null, true, credential, rememberMe);
 
     hideModalIfExists(response);
   };
@@ -89,6 +90,29 @@ export const Login = ({ onHideModal, children, type }) => {
             type="submit"
             value="Login"
           />
+          <div className="form-check mb-2">
+            <label className="form-check-label">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => {
+                  setRememberMe((prev) => !prev);
+                }}
+              />
+              Remember me
+            </label>
+          </div>
+          <p className="text-center">
+            By logging in, you agree to our{" "}
+            <Link
+              to={links.tocAndPrivacyPolicy}
+              className="unstyled-link hovered-link"
+              target="_blank"
+            >
+              Terms of Conditions (ToC) and Privacy Policy
+            </Link>
+          </p>
           <div className="d-flex justify-content-center">
             <GoogleLogin
               onSuccess={(credentialResponse) => {
@@ -116,7 +140,7 @@ export const Login = ({ onHideModal, children, type }) => {
               className="unstyled-link hovered-link"
               to={links.emailer(null, "send-reset-password-email")}
             >
-              Forgot Password
+              Forgot Password?
             </Link>
           </div>
           {error && (

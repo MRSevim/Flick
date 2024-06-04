@@ -65,12 +65,12 @@ export const User = () => {
         <LoadingRing />
       ) : (
         <div className="row">
-          <div className="col col-12 col-lg-3">
+          <div className="col col-12 col-lg-4">
             <div className="d-flex justify-content-center">
               <ImageComponent src={user?.image} classes={"profile-img"} />
             </div>
             <div className="text-center">
-              <h1 className="fw-bold"> {user.username}</h1>
+              <h1 className="fw-bold text-wrap text-break"> {user.username}</h1>
               <p className="mt-3">
                 Member since <span className="fw-bold">{memberSince}</span>
               </p>
@@ -109,7 +109,7 @@ export const User = () => {
               />
             </div>
           </div>
-          <div className="col col-12 col-lg-9 d-flex flex-column mt-4 align-items-center">
+          <div className="col col-12 col-lg-8 d-flex flex-column mt-4 align-items-center">
             <h2 className="m-0">Top 10 Articles Of The User</h2>
             <div className="m-4 mt-2 w-100">
               {user?.mostLikedArticles?.length === 0 && (

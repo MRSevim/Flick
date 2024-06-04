@@ -37,7 +37,7 @@ export const Pms = () => {
 
   const get = async () => {
     if (!page) {
-      navigate({ search: "?page=1" });
+      navigate(links.pms);
       return;
     }
     const { response, json } = await getPms(page, type);
@@ -178,8 +178,9 @@ export const Pms = () => {
                     {pms && pms.length > 0 && (
                       <>
                         <div className="d-flex justify-content-between mb-3">
-                          <div>
+                          <div className="form-check">
                             <input
+                              className="form-check-input"
                               id="selectAll"
                               type="checkbox"
                               checked={selected.length === pmsLength}
@@ -187,7 +188,12 @@ export const Pms = () => {
                                 selectAll();
                               }}
                             />{" "}
-                            <label htmlFor="selectAll">Select all</label>
+                            <label
+                              className="form-check-label"
+                              htmlFor="selectAll"
+                            >
+                              Select all
+                            </label>
                             <button
                               disabled={deleteManyLoading || deleteLoading}
                               onClick={(e) => {
@@ -239,7 +245,7 @@ export const Pms = () => {
                           }
                         >
                           <input
-                            className="position-absolute top-0 start-0 m-1"
+                            className="position-absolute top-0 start-0 m-1 form-check-input"
                             type="checkbox"
                             checked={selected.includes(message._id)}
                             onChange={() => {

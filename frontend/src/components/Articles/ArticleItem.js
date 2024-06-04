@@ -19,6 +19,7 @@ export const ArticleItem = ({
   updateValue = () => {},
 }) => {
   const [darkMode] = useDarkModeContext();
+
   const handleCheckboxChange = () => {
     updateValue(!value, article._id);
   };
@@ -41,7 +42,7 @@ export const ArticleItem = ({
           {myArticles && (
             <div>
               <input
-                className="position-absolute top-0 start-0 m-1"
+                className="form-check-input position-absolute top-0 start-0 m-1"
                 type="checkbox"
                 checked={value}
                 onChange={handleCheckboxChange}

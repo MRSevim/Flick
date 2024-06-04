@@ -4,9 +4,9 @@ import links from "../Utils/Links";
 
 export const FollowButtons = ({ followerNumber, followingNumber, id }) => {
   return (
-    <div>
+    <>
       <Link to={links.followers(id)}>
-        <button className="btn btn-secondary me-3">
+        <button className="btn btn-secondary me-2">
           Followers({followerNumber})
         </button>
       </Link>
@@ -15,6 +15,6 @@ export const FollowButtons = ({ followerNumber, followingNumber, id }) => {
           Following({followingNumber})
         </button>
       </Link>
-    </div>
+    </>
   );
 };

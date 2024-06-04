@@ -22,8 +22,9 @@ export const useDeleteUser = () => {
     if (response.ok) {
       setSuccessMessage("User is deleted. Logging out in 5 seconds...");
 
-      // remove from local storage
+      // remove from storage
       localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
 
       await delay(5000);
 

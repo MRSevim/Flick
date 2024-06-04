@@ -116,7 +116,7 @@ export const MyProfile = () => {
               <p className="mt-5 text-center">
                 You've been a member since {memberSince}
               </p>
-              <div className="mt-4 d-flex justify-content-center">
+              <div className="mt-4 d-flex justify-content-between">
                 <FollowButtons
                   id={user?._id}
                   followerNumber={followerNumber}

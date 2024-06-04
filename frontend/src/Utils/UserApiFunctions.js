@@ -1,5 +1,11 @@
 const userApi = {
-  login: async (username, password, isGoogleLogin, googleCredential) => {
+  login: async (
+    username,
+    password,
+    isGoogleLogin,
+    googleCredential,
+    rememberMe
+  ) => {
     const response = await fetch("/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -8,6 +14,7 @@ const userApi = {
         password,
         isGoogleLogin,
         googleCredential,
+        rememberMe,
       }),
     });
 

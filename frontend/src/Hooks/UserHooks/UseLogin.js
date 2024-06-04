@@ -8,7 +8,13 @@ export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [, setUser] = useUserContext();
 
-  const login = async (username, password, isGoogleLogin, googleCredential) => {
+  const login = async (
+    username,
+    password,
+    isGoogleLogin,
+    googleCredential,
+    rememberMe
+  ) => {
     setIsLoading(true);
     setError(null);
 
@@ -16,7 +22,8 @@ export const useLogin = () => {
       username,
       password,
       isGoogleLogin,
-      googleCredential
+      googleCredential,
+      rememberMe
     );
     const json = await response.json();
 
@@ -24,10 +31,17 @@ export const useLogin = () => {
       setError(json.message);
     }
     if (response.ok) {
-      // save the user to local storage
-      ls.set("user", JSON.stringify(json), {
-        ttl: 30 * 24 * 60 * 60, // 30 days,
-      });
+      if (rememberMe) {
+        // save the user to local storage if rememberMe is true
+
+        ls.set("user", JSON.stringify(json), {
+          ttl: 30 * 24 * 60 * 60, // 30 days,
+        });
+      } else {
+        //else save to session storage
+
+        sessionStorage.setItem("user", JSON.stringify(json));
+      }
 
       // update the user context
       setUser(json);

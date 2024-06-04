@@ -17,8 +17,9 @@ export const useLogout = () => {
       setGlobalError(json.message);
     }
     if (response.ok) {
-      // remove from local storage
+      // remove from storage
       localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
 
       googleLogout();
 

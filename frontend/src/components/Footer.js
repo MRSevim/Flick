@@ -10,7 +10,18 @@ export const Footer = () => {
   return (
     <footer className={"bg-primary " + addDarkBg(darkMode)}>
       <div className="container my-3 d-flex justify-content-between align-items-center">
-        <div>© 2024 Flick. All rights reserved.</div>
+        <div>
+          <div>
+            © 2024 {process.env.REACT_APP_WEBSITE_NAME}. All rights reserved.
+          </div>
+          <Link
+            to={links.tocAndPrivacyPolicy}
+            className="unstyled-link hovered-link"
+            target="_blank"
+          >
+            Terms of Conditions (ToC) and Privacy Policy
+          </Link>
+        </div>
         <div>
           <b>Contact</b>
           <div className="d-flex mt-2">

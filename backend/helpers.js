@@ -3,17 +3,24 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 
-const generateToken = (res, userId) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-
-  res.cookie("jwt", token, {
+const generateToken = (res, userId, rememberMe) => {
+  let token;
+  let cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
     sameSite: "strict", // Prevent CSRF attacks
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-  });
+  };
+  if (rememberMe) {
+    cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000;
+    token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+  } else {
+    cookieOptions.expiresIn = 0;
+    token = jwt.sign({ userId }, process.env.JWT_SECRET);
+  }
+
+  res.cookie("jwt", token, cookieOptions);
   return token;
 };
 const generateVerificationToken = (userId) => {
@@ -48,7 +55,7 @@ const sendEmail = async (type, email, username, token, next, password) => {
   try {
     // send mail with defined transport object
     const info = await transporter.sendMail({
-      from: '"Flick Articles" <maddison53@ethereal.email>', // sender address
+      from: `"${process.env.WEBSITE_NAME}" <maddison53@ethereal.email>`, // sender address
       to: email, // list of receivers
       subject, // Subject line
       html, // html body

@@ -13,14 +13,25 @@ const {
 
 // login a user
 const loginUser = async (req, res, next) => {
-  const { username, password, isGoogleLogin, googleCredential } = req.body;
+  const { username, password, isGoogleLogin, googleCredential, rememberMe } =
+    req.body;
 
   try {
     if (!isGoogleLogin) {
       const user = await User.login(res, username, password);
 
+      if (!user) {
+        res.status(404);
+        throw new Error("User is not found");
+      }
+
+      if (rememberMe === undefined) {
+        res.status(400);
+        throw new Error("Please send a rememberMe boolean");
+      }
+
       // create a token
-      generateToken(res, user._id);
+      generateToken(res, user._id, rememberMe);
 
       res.status(201).json({
         _id: user._id,
@@ -33,8 +44,13 @@ const loginUser = async (req, res, next) => {
       const { picture, name, email } = ticket.getPayload();
       const user = await User.googleLogin(res, name, email, picture);
 
+      if (!user) {
+        res.status(404);
+        throw new Error("User is not found");
+      }
+
       // create a token
-      generateToken(res, user._id);
+      generateToken(res, user._id, rememberMe);
 
       res.status(201).json({
         _id: user._id,

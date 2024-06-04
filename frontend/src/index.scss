@@ -26,6 +26,7 @@ $dark-theme-colors: (
 );
 
 $theme-colors: map-merge($theme-colors, $dark-theme-colors);
+$form-check-input-checked-bg-color: $secondary;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 

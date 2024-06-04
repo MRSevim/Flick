@@ -41,6 +41,7 @@ import { createMuiTheme } from "./Utils/MaterialUiStyles.js";
 import { Pms } from "./components/Pms.js";
 import { RefetchForPmIconProvider } from "./Contexts/RefetchForPmIcon.js";
 import { Settings } from "./components/Settings.js";
+import { TocAndPrivacyPolicy } from "./components/TocAndPrivacyPolicy.js";
 
 function App() {
   return (
@@ -74,6 +75,10 @@ function AppContent() {
         <Routes>
           {" "}
           <Route path="/most-liked" element={<MostLiked />} />
+          <Route
+            path="/toc-and-privacy-policy"
+            element={<TocAndPrivacyPolicy />}
+          />
           <Route path="/settings" element={<Settings />} />
           <Route
             path="/pms"

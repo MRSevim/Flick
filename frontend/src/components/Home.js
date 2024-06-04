@@ -70,7 +70,7 @@ export const Home = () => {
                 follow each other, comment on articles, get notified on actions,
                 see most liked articles. However, to perform actions other than
                 reading, you must have an account. You can create an account or
-                login via your Google account
+                login via your Google account.
               </div>
             </div>
           </div>
