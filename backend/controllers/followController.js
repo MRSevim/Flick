@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 
 const getFollows = async (req, res, next) => {
   const { page, type } = req.query;

@@ -37,20 +37,27 @@ const htmls = {
         </button>
         <a/>
   
-        <p>Thanks! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
   },
   verifiedHTML: (username) => {
     return `<h1>Account verified</h1>
         <p>Hi ${username},</p>
         <p>This email account has been verified.</p>
-        <p>Thanks! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
   },
   passwordReset: (username, password) => {
     return `<h1>Password Reset</h1>
         <p>Hi ${username},</p>
         <p>Your password has been reset. Your new password is:</p>
         <p>${password}</p>
-        <p>Thanks! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
+  },
+  banned: (username, reason) => {
+    return `<h1>You are banned</h1>
+        <p>Hi ${username},</p>
+        <p>You are banned from using ${process.env.WEBSITE_NAME}. Reason for ban:</p>
+        <p>${reason}</p>
+        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
   },
 };
 module.exports = htmls;

@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { generateVerificationToken, sendEmail } = require("../helpers");
 const crypto = require("crypto");
@@ -24,7 +24,7 @@ const verifyEmail = async (req, res, next) => {
         user.email = user.newEmail;
         user.newEmail = "";
       }
-      await sendEmail("verified", user.email, user.username, null, next);
+      await sendEmail("verified", user.email, user.username, next);
 
       const updatedUser = await user.save();
       res.status(200).json({
@@ -68,14 +68,9 @@ const sendResetPasswordEmail = async (req, res, next) => {
 
     await user.save();
 
-    await sendEmail(
-      "password-reset",
-      email,
-      user.username,
-      null,
-      next,
-      password
-    );
+    await sendEmail("password-reset", email, user.username, next, {
+      password,
+    });
 
     res.status(200).json({
       message: "Password reset email has been sent to your account",
@@ -114,7 +109,9 @@ const sendVerificationEmail = async (req, res, next) => {
 
     const token = generateVerificationToken(user._id);
 
-    await sendEmail("email-verification", email, user.username, token, next);
+    await sendEmail("email-verification", email, user.username, next, {
+      token,
+    });
 
     res.status(200).json({
       message: "A verification email has been sent to your account",

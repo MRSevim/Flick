@@ -1,5 +1,5 @@
 const { Article, Like } = require("../models/articleModel");
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
 const validator = require("validator");
 
@@ -323,6 +323,14 @@ const updateArticle = async (req, res, next) => {
 
 //authenticated user delete article
 const deleteArticle = async (req, res, next) => {
+  const { reasonOfDeletion } = req.body;
+  const removeRelatedNotification = async (article) => {
+    // Find and remove notifications related to this article
+    await User.updateMany(
+      { "notifications.target": article._id },
+      { $pull: { notifications: { target: article._id } } }
+    );
+  };
   try {
     const user = await User.findById(req.user._id);
     const article = await Article.findById(req.params.id);
@@ -331,20 +339,38 @@ const deleteArticle = async (req, res, next) => {
       res.status(404);
       throw new Error("Article is not found");
     }
-
-    if (!user._id.equals(article.user)) {
-      res.status(401);
-      throw new Error("You are not authorized");
-    }
     if (!user) {
       res.status(404);
       throw new Error("User is not found");
     }
-    // Find and remove notifications related to this article
-    await User.updateMany(
-      { "notifications.target": article._id },
-      { $pull: { notifications: { target: article._id } } }
-    );
+
+    if (!user._id.equals(article.user) && user.role === "user") {
+      res.status(401);
+      throw new Error("You are not authorized");
+    }
+    if (user.role !== "user" && !user._id.equals(article.user)) {
+      if (!reasonOfDeletion) {
+        res.status(400);
+        throw new Error("Please send a reason of deletion");
+      }
+
+      const notification = {
+        reasonOfDeletion,
+        action: "article deletion",
+        target: article._id,
+      };
+
+      await removeRelatedNotification(article);
+
+      await User.findByIdAndUpdate(article.user, {
+        $push: { notifications: notification },
+      });
+    }
+
+    if (user._id.equals(article.user)) {
+      await removeRelatedNotification(article);
+    }
+
     await article.deleteOne();
     await Like.deleteMany({ article: article._id });
 

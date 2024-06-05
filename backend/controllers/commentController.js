@@ -1,5 +1,5 @@
 const { Article } = require("../models/articleModel");
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
 
 const createNotifiedUserAndNotification = async (article) => {
@@ -167,7 +167,7 @@ const deleteComment = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     const article = await Article.findById(req.params.id);
-    const { id } = req.body;
+    const { id, reasonOfDeletion } = req.body;
 
     if (!user) {
       res.status(404);
@@ -188,9 +188,23 @@ const deleteComment = async (req, res, next) => {
       throw new Error("Comment is not found");
     }
 
-    if (!user._id.equals(commentToBeDeleted.user._id)) {
+    if (!user._id.equals(commentToBeDeleted.user._id) && user.role === "user") {
       res.status(401);
       throw new Error("You are not authorized");
+    }
+    if (user.role !== "user" && !user._id.equals(commentToBeDeleted.user._id)) {
+      if (!reasonOfDeletion) {
+        res.status(400);
+        throw new Error("Please send a reason of deletion");
+      }
+      const notification = {
+        reasonOfDeletion,
+        action: "comment deletion",
+        target: article._id,
+      };
+      await User.findByIdAndUpdate(article.user, {
+        $push: { notifications: notification },
+      });
     }
 
     const comments = article.comments.filter((comment) => {

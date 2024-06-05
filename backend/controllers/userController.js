@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const { User, Banned } = require("../models/userModel");
 const { Article, Like } = require("../models/articleModel");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
@@ -85,7 +85,9 @@ const signupUser = async (req, res, next) => {
     const token = generateVerificationToken(user._id);
 
     //send email
-    await sendEmail("email-verification", email, username, token, next);
+    await sendEmail("email-verification", email, username, next, {
+      token,
+    });
 
     res.status(201).json({
       message: "A verification email has been sent to your account",
@@ -284,7 +286,8 @@ const updateUserProfile = async (req, res, next) => {
         const token = generateVerificationToken(user._id);
 
         //send email
-        await sendEmail("email-verification", email, username, token, next);
+
+        await sendEmail("email-verification", email, username, next, { token });
 
         message =
           "Profile updated. A verification email has been sent to your new email adress to verify it";
@@ -368,6 +371,78 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const banUser = async (req, res, next) => {
+  const { reasonOfBan } = req.body;
+  try {
+    const user = await User.findById(req.user._id);
+    const targetUser = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+    if (user.role !== "admin" && user.role !== "mod") {
+      res.status(400);
+      throw new Error("You cannot ban users");
+    }
+    if (!targetUser) {
+      res.status(404);
+      throw new Error("Target user is not found");
+    }
+    if (!reasonOfBan) {
+      res.status(400);
+      throw new Error("Please send a reason of ban");
+    }
+    if (targetUser.role === "admin" || targetUser.role === "mod") {
+      res.status(400);
+      throw new Error("You cannot ban another mod or admin");
+    }
+
+    await User.updateMany(
+      {},
+      { $pull: { followers: targetUser._id, following: targetUser._id } }
+    );
+
+    await User.updateMany(
+      { "notifications.user": targetUser._id }, // Find users with notifications by the user
+      { $pull: { notifications: { user: targetUser._id } } } // Remove notifications made by the user
+    );
+
+    const userLikeIds = await Like.find({ user: targetUser._id });
+
+    await Like.deleteMany({ user: targetUser._id });
+
+    await Article.updateMany(
+      { likes: { $in: userLikeIds } }, // Find articles with likes by the user
+      { $pull: { likes: { $in: userLikeIds } } } // Remove the like IDs from the likes array
+    );
+
+    await Article.deleteMany({ user: targetUser._id });
+
+    await Article.updateMany(
+      { "comments.user": targetUser._id }, // Find articles with comments by the user
+      { $pull: { comments: { user: targetUser._id } } } // Remove comments made by the user
+    );
+
+    await targetUser.deleteOne();
+
+    //send email
+    await sendEmail("ban-user", targetUser.email, targetUser.username, next, {
+      reasonOfBan,
+    });
+
+    const bannedUser = await Banned.create({
+      email: targetUser.email,
+      reason: reasonOfBan,
+      banner: user._id,
+    });
+
+    res.status(200).json({ email: bannedUser.email });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const toggleUserVariables = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -409,4 +484,5 @@ module.exports = {
   getPublicUser,
   toggleUserVariables,
   generateModLink,
+  banUser,
 };

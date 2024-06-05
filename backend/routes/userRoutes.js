@@ -12,6 +12,7 @@ const {
   getPublicUser,
   toggleUserVariables,
   generateModLink,
+  banUser,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -39,6 +40,9 @@ router
 router.get("/:id", getPublicUser);
 
 router.use(requireAuth);
+
+//ban user route
+router.post("/ban/:id", banUser);
 
 //toggle user variables route
 router.put("/toggle/:type", toggleUserVariables);

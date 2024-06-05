@@ -43,6 +43,7 @@ const userSchema = new mongoose.Schema(
     },
     notifications: [
       {
+        reasonOfDeletion: { type: String },
         users: [
           {
             type: mongoose.Schema.Types.ObjectId,
@@ -108,6 +109,27 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const bannedSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    reason: {
+      type: String,
+      required: true,
+    },
+    banner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  {
+    timestamps: { createdAt: true, updatedAt: false },
+  }
+);
+
 userSchema.index(
   { email: 1, isGoogleLogin: 1 },
   {
@@ -143,6 +165,12 @@ userSchema.statics.signup = async function (
 
   const emailExists = await this.findOne({ email, isGoogleLogin: false });
   const usernameExists = await this.findOne({ username, isGoogleLogin: false });
+  const banned = await Banned.findOne({ email });
+
+  if (banned) {
+    res.status(400);
+    throw new Error("You are banned from using the website");
+  }
 
   if (emailExists && usernameExists) {
     res.status(400);
@@ -217,4 +245,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+const Banned = mongoose.model("Banned", bannedSchema);
+
+module.exports = { User, Banned };
