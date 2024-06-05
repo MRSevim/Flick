@@ -20,8 +20,9 @@ const userApi = {
 
     return response;
   },
-  signup: async (username, email, password) => {
-    const response = await fetch("/user/register", {
+  signup: async (username, email, password, token) => {
+    const url = "/user/register/" + (token ? token : "");
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password }),

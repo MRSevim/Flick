@@ -27,7 +27,7 @@ export const EditorComponent = ({
         height: 600,
         content_style:
           "body { font-family: 'Jost', sans-serif; color:#092327;" +
-          (darkMode ? "background-color:#092327;color:#fff}" : "}"),
+          (darkMode ? "background-color:#092327 !important;color:#fff}" : "}"),
         plugins: [
           "advlist",
           "autolink",

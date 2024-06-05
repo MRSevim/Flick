@@ -11,6 +11,7 @@ import sad from "../Utils/images/sad.jpg";
 import { LikeButton } from "./Articles/LikeButton";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { addDarkBg } from "../Utils/HelperFuncs";
+import { RoleBanner } from "./RoleBanner";
 
 export const User = () => {
   const { id } = useParams();
@@ -71,6 +72,7 @@ export const User = () => {
             </div>
             <div className="text-center">
               <h1 className="fw-bold text-wrap text-break"> {user.username}</h1>
+              <RoleBanner role={user?.role} />
               <p className="mt-3">
                 Member since <span className="fw-bold">{memberSince}</span>
               </p>

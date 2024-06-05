@@ -3,6 +3,7 @@ const { Article, Like } = require("../models/articleModel");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const {
   generateToken,
@@ -38,6 +39,7 @@ const loginUser = async (req, res, next) => {
         username,
         isGoogleLogin: user.isGoogleLogin,
         image: user.image,
+        role: user.role,
       });
     } else {
       const ticket = await getDecodedOAuthJwtGoogle(googleCredential, next);
@@ -57,6 +59,7 @@ const loginUser = async (req, res, next) => {
         username: name,
         isGoogleLogin: user.isGoogleLogin,
         image: user.image,
+        role: user.role,
       });
     }
   } catch (error) {
@@ -67,9 +70,16 @@ const loginUser = async (req, res, next) => {
 // signup a user
 const signupUser = async (req, res, next) => {
   const { username, email, password } = req.body;
+  const urlToken = req.params.token;
 
   try {
-    const user = await User.signup(res, username, email, password);
+    let role = "user";
+    if (urlToken) {
+      const decoded = jwt.verify(urlToken, process.env.JWT_SECRET);
+
+      role = decoded.role;
+    }
+    const user = await User.signup(res, username, email, password, role);
 
     // create a token
     const token = generateVerificationToken(user._id);
@@ -92,6 +102,14 @@ const logoutUser = (req, res) => {
     expires: new Date(0),
   });
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+// logout user
+const generateModLink = (req, res) => {
+  const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+    expiresIn: "30m", // Expiring after 30 minutes
+  });
+  res.status(200).json({ message: "Backend route is /register/" + token });
 };
 
 //get Public User
@@ -143,6 +161,7 @@ const getPublicUser = async (req, res, next) => {
       followerNumber: user.followers.length,
       followingNumber: user.following.length,
       followers: user.followers,
+      role: user.role,
     });
   } catch (error) {
     next(error);
@@ -160,6 +179,7 @@ const getUserProfile = async (req, res, next) => {
         username: user.username,
         email: user.email,
         image: user.image,
+        role: user.role,
         createdAt: user.createdAt,
         followerNumber: user.followers.length,
         followingNumber: user.following.length,
@@ -279,6 +299,7 @@ const updateUserProfile = async (req, res, next) => {
         username: updatedUser.username,
         image: updatedUser.image,
         isGoogleLogin: updatedUser.isGoogleLogin,
+        role: updatedUser.role,
         message,
       });
     } else {
@@ -387,4 +408,5 @@ module.exports = {
   deleteUser,
   getPublicUser,
   toggleUserVariables,
+  generateModLink,
 };

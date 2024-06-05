@@ -98,7 +98,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/sign-up"
+            path="/sign-up/:token?"
             element={user ? <Navigate to={links.homepage} /> : <SignUp />}
           />
           <Route path="/create-an-article" element={<CreateAnArticle />} />

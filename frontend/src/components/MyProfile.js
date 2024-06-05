@@ -11,6 +11,7 @@ import { ImageComponent } from "./ImageComponent";
 import { ModalWrapper } from "./ModalWrapper";
 import { Popup } from "./Popup";
 import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
+import { RoleBanner } from "./RoleBanner";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -113,7 +114,8 @@ export const MyProfile = () => {
           <div className="row mb-3 d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
               <ImageComponent src={user?.image} classes={"profile-img"} />
-              <p className="mt-5 text-center">
+              <RoleBanner role={user?.role} />
+              <p className="mt-3 text-center">
                 You've been a member since {memberSince}
               </p>
               <div className="mt-4 d-flex justify-content-between">

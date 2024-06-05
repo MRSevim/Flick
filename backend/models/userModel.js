@@ -35,6 +35,12 @@ const userSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false, required: true },
     newNotificationsDisabled: { type: Boolean, default: false, required: true },
     newPmsDisabled: { type: Boolean, default: false, required: true },
+    role: {
+      type: String,
+      enum: ["user", "admin", "mod"],
+      default: "user",
+      required: true,
+    },
     notifications: [
       {
         users: [
@@ -118,7 +124,13 @@ userSchema.index(
 );
 
 // static signup method
-userSchema.statics.signup = async function (res, username, email, password) {
+userSchema.statics.signup = async function (
+  res,
+  username,
+  email,
+  password,
+  role
+) {
   // validation
   if (!username || !password || !email) {
     res.status(400);
@@ -154,7 +166,7 @@ userSchema.statics.signup = async function (res, username, email, password) {
     throw new Error("Password is not strong enough");
   }
 
-  const user = await this.create({ username, email, password });
+  const user = await this.create({ username, email, password, role });
 
   return user;
 };

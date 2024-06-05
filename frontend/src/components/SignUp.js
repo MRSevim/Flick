@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useSignup } from "../Hooks/UserHooks/UseSignup";
 import links from "../Utils/Links";
@@ -10,6 +10,7 @@ import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 
 export const SignUp = () => {
   const [username, setUsername] = useState("");
+  const { token } = useParams();
   const [email, setEmail] = useState("");
   const [accepted, setAccepted] = useState(false);
   const [password, setPassword] = useState("");
@@ -39,7 +40,7 @@ export const SignUp = () => {
       return;
     }
 
-    await signup(username, email, password);
+    await signup(username, email, password, token);
   };
 
   return (

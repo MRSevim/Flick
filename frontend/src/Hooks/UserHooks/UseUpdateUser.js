@@ -27,8 +27,8 @@ export const useUpdateUser = () => {
       setError(json.message);
     }
     if (response.ok) {
-      const { message, username, _id, isGoogleLogin, image } = json;
-      const userObject = { username, _id, isGoogleLogin, image };
+      const { message, username, _id, isGoogleLogin, image, role } = json;
+      const userObject = { username, _id, isGoogleLogin, image, role };
 
       // update the user in storage
       let userInLocalStorage = JSON.parse(localStorage.getItem("user"));

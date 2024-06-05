@@ -6,12 +6,12 @@ export const useSignup = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
 
-  const signup = async (username, email, password) => {
+  const signup = async (username, email, password, token) => {
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
 
-    const response = await userApi.signup(username, email, password);
+    const response = await userApi.signup(username, email, password, token);
     const json = await response.json();
 
     if (!response.ok) {

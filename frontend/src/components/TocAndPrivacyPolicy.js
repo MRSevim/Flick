@@ -42,8 +42,8 @@ export const TocAndPrivacyPolicy = () => {
             objectionable.
           </li>
           <li>
-            Post or transmit content that promotes terrorism, Nazism, or any
-            other form of violence or hate.
+            Post or transmit content that promotes terrorism, racism, sexism or
+            any other form of discrimination, violence or hate.
           </li>
           <li>
             Impersonate any person or entity, or falsely state or otherwise
@@ -68,15 +68,30 @@ export const TocAndPrivacyPolicy = () => {
         </p>
         <h2>5. Intellectual Property</h2>
         <p>
-          All content on the Website, including articles, graphics, logos, and
-          software, is the property of {process.env.REACT_APP_WEBSITE_NAME} or
-          its content suppliers and protected by copyright laws.
+          All content on the Website, including graphics, logos, software, and
+          content supplied by {process.env.REACT_APP_WEBSITE_NAME} or its
+          content suppliers, is the property of{" "}
+          {process.env.REACT_APP_WEBSITE_NAME} and protected by copyright laws.
+          User-generated content, such as articles, remains the property of the
+          respective users. However, by submitting content to the Website, users
+          grant {process.env.REACT_APP_WEBSITE_NAME} a non-exclusive,
+          royalty-free, worldwide license to use, distribute, display, and
+          create derivative works from their content.
         </p>
         <h2>6. Dispute Resolution</h2>
         <p>
-          Any disputes arising out of or related to these Terms or the Website
-          will be governed by the laws of Turkey and resolved through binding
-          arbitration in Sinop, Turkey.
+          Any disputes arising out of or relating to these Terms or the Website
+          shall be governed by the laws of Turkey and resolved through binding
+          arbitration, except for any disputes arising from the rights and
+          obligations regarding intellectual property, which may be brought
+          before the appropriate court of jurisdiction.
+        </p>
+        <p>
+          In the event of any disputes arising from intellectual property
+          rights, the parties agree to submit to the exclusive jurisdiction of
+          the international courts, such as the International Court of Justice
+          (ICJ) or other appropriate international arbitration tribunal, for
+          resolution.
         </p>
         <h2>7. Changes to Terms</h2>
         <p>
@@ -96,8 +111,8 @@ export const TocAndPrivacyPolicy = () => {
         <h2>1. Information We Collect</h2>
         <p>
           <strong>Personal Information:</strong> We collect information you
-          provide when creating an account, such as your name, email address,
-          and password.
+          provide when creating an account, such as your email address, and
+          password.
         </p>
         <p>
           <strong>Usage Data:</strong> We collect information about how you use
@@ -111,7 +126,8 @@ export const TocAndPrivacyPolicy = () => {
         </p>
         <p>
           <strong>Communication:</strong> To send you notifications about
-          actions on the Website, such as likes, comments, and new followers.
+          actions on the Website, such as releases, likes, comments, and new
+          followers.
         </p>
         <p>
           <strong>Security:</strong> To protect the security of our Website and

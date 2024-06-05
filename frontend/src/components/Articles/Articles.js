@@ -190,7 +190,7 @@ export const Articles = ({ isDraft }) => {
           )}
         </>
       )}
-      <div className="row g-3">
+      <div className="mb-3">
         {articles.length === 0 ? (
           <h2 className="text-center mt-3 no-articles-background rounded-pill">
             <div className="d-flex align-items-center justify-content-center text-white font-secondary h-100">
@@ -237,19 +237,24 @@ export const Articles = ({ isDraft }) => {
             )}
           </div>
         )}
-        {articles.map((article) => (
-          <ArticleItem
-            updateValue={handleSelect}
-            value={selected.includes(article._id)}
-            deleteLoading={deleteManyLoading || deleteLoading}
-            key={article._id}
-            article={article}
-            isDraft={isDraft}
-            myArticles={myArticles}
-            editArticle={editArticle}
-            deleteArticle={deleteArticle}
-          />
-        ))}
+      </div>
+      <div className="row g-3 flex-wrap-reverse">
+        {articles
+          .slice()
+          .reverse()
+          .map((article) => (
+            <ArticleItem
+              updateValue={handleSelect}
+              value={selected.includes(article._id)}
+              deleteLoading={deleteManyLoading || deleteLoading}
+              key={article._id}
+              article={article}
+              isDraft={isDraft}
+              myArticles={myArticles}
+              editArticle={editArticle}
+              deleteArticle={deleteArticle}
+            />
+          ))}
       </div>
 
       <AdvancedSearch

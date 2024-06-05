@@ -11,6 +11,7 @@ const {
   deleteUser,
   getPublicUser,
   toggleUserVariables,
+  generateModLink,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -19,10 +20,13 @@ const router = express.Router();
 router.post("/login", loginUser);
 
 // signup route
-router.post("/register", signupUser);
+router.post("/register/:token?", signupUser);
 
 // logout route
 router.post("/logout", logoutUser);
+
+//generate mod link route
+router.get("/generate-mod-link", generateModLink);
 
 //get, update and delete profile routes
 router

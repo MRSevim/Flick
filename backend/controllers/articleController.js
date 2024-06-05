@@ -127,9 +127,6 @@ const getArticles = (isDraft) => {
         throw new Error("User is not found");
       }
 
-      const LIMIT = 9;
-      const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
-
       if (isDraft && !authUser) {
         res.status(404);
         throw new Error("User is not found");
@@ -148,9 +145,21 @@ const getArticles = (isDraft) => {
         query.tags = { $in: tags.split(",") };
       }
 
+      let LIMIT = 9;
+      const currentPage = Number(page);
+      let startIndex = (currentPage - 1) * LIMIT; // get the starting index of every page
       const totalArticles = await Article.find(query);
-
       const total = totalArticles.length;
+      const totalPages = Math.ceil(total / LIMIT);
+
+      if (currentPage === 1) {
+        // Calculate remaining articles for the first page
+        const remainingArticles = total % LIMIT;
+        startIndex = 0;
+        LIMIT = remainingArticles === 0 ? LIMIT : remainingArticles;
+      } else {
+        startIndex = (currentPage - 2) * LIMIT + (total % LIMIT);
+      }
 
       const articles = await Article.find(query)
         .sort({
@@ -162,8 +171,8 @@ const getArticles = (isDraft) => {
 
       res.status(200).json({
         articles,
-        currentPage: Number(page),
-        totalPages: Math.ceil(total / LIMIT),
+        currentPage,
+        totalPages,
         user: {
           _id: isDraft ? authUser._id : user._id,
           username: isDraft ? authUser.username : user.username,
