@@ -17,11 +17,11 @@ const commentApi = {
 
     return response;
   },
-  delete: async (articleId, commentId) => {
+  delete: async (articleId, commentId, reasonOfDeletion) => {
     const response = await fetch("/comment/" + articleId, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: commentId }),
+      body: JSON.stringify({ id: commentId, reasonOfDeletion }),
     });
 
     return response;

@@ -1,29 +1,26 @@
 import { useState } from "react";
-import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import commentApi from "../../Utils/CommentApiFunctions";
-import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
-import { confirmationWrapper } from "../../Utils/HelperFuncs";
+import { useConfirmationErrorContext } from "../../Contexts/UseConfirmationErrorContext";
 
 export const useDeleteComment = () => {
-  const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
-  const { confirmation, setConfirmation } = useConfirmationContext();
+  const [, setConfirmationError] = useConfirmationErrorContext();
 
-  const deleteComment = async (articleId, commentId) => {
-    return confirmationWrapper(
-      confirmation,
-      {
-        ...confirmation,
-        type: "deleteComment",
-        info: null,
-      },
-      setConfirmation,
-      setGlobalError,
-      setIsLoading,
-      async () => {
-        return await commentApi.delete(articleId, commentId);
-      }
-    );
+  const deleteComment = async (articleId, commentId, reason) => {
+    setIsLoading(true);
+    setConfirmationError(null);
+
+    const response = await commentApi.delete(articleId, commentId, reason);
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      setConfirmationError(json.message);
+    }
+
+    setIsLoading(false);
+
+    return response;
   };
 
   return { deleteComment, isLoading };

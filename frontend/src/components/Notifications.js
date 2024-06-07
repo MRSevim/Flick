@@ -121,53 +121,87 @@ export const Notifications = () => {
                     key={notification._id}
                     className={classNames({
                       "p-2": true,
-                      "unread-notification border-3":
+                      "unread-notification border-bottom border-light":
                         !notification.read && !darkMode,
-                      "unread-nofication-dark-mode":
+                      "unread-nofication-dark-mode border-bottom border-dark":
                         !notification.read && darkMode,
                     })}
                   >
-                    {notification.users[0].username && (
-                      <Link
-                        className={classNames({
-                          "d-inline": true,
-                          "": !notification.read,
-                        })}
-                        to={links.publicUser(notification.users[0]._id)}
-                      >
-                        {notification.users[0].username}
-                      </Link>
-                    )}
-                    {notification.users.length > 1 && (
-                      <span>
-                        {" "}
-                        and {notification.users.length - 1}{" "}
-                        {notification.users.length - 1 > 1 ? "others" : "other"}
-                      </span>
-                    )}
-                    {notification.action === "follow" &&
-                      " started following you"}
-                    {notification.action === "like" && " liked your article: "}
-                    {notification.action === "comment" &&
-                      " commented on your article: "}
-                    {notification.action === "release" &&
-                      " released an article: "}
-                    {notification.target && (
+                    {(notification.action === "follow" ||
+                      notification.action === "like" ||
+                      notification.action === "comment" ||
+                      notification.action === "release") && (
                       <>
+                        {notification.users[0].username && (
+                          <Link
+                            to={links.publicUser(notification.users[0]._id)}
+                          >
+                            {notification.users[0].username}
+                          </Link>
+                        )}
+                        {notification.users.length > 1 && (
+                          <span>
+                            {" "}
+                            and {notification.users.length - 1}{" "}
+                            {notification.users.length - 1 > 1
+                              ? "others"
+                              : "other"}
+                          </span>
+                        )}
+                        {notification.action === "follow" &&
+                          " started following you"}
+                        {notification.action === "like" &&
+                          " liked your article: "}
+                        {notification.action === "comment" &&
+                          " commented on your article: "}
+                        {notification.action === "release" &&
+                          " released an article: "}
+                        {notification.target && (
+                          <>
+                            <br />
+                            <Link
+                              title={notification.target.title}
+                              to={links.article(notification.target._id)}
+                            >
+                              {notification.target.title.substring(0, 40)}
+                              {notification.target.title.length > 40 && "..."}
+                            </Link>
+                          </>
+                        )}
                         <br />
-                        <Link
-                          title={notification.target.title}
-                          className={classNames({
-                            "": !notification.read,
-                          })}
-                          to={links.article(notification.target._id)}
-                        >
-                          {notification.target.title.substring(0, 30)}
-                          {notification.target.title.length > 40 && "..."}
-                        </Link>
                       </>
                     )}
-                    <br />
+                    {notification.action === "comment deletion" && (
+                      <>
+                        One of your comments{" "}
+                        {notification.target && (
+                          <>
+                            in{" "}
+                            <Link
+                              title={notification.target.title}
+                              to={links.article(notification.target._id)}
+                            >
+                              {notification.target.title.substring(0, 40)}
+                              {notification.target.title.length > 40 && "..."}
+                            </Link>
+                          </>
+                        )}{" "}
+                        have been deleted for following reason:
+                        <br />
+                        {notification.reasonOfDeletion}
+                        <br />
+                      </>
+                    )}
+                    {notification.action === "article deletion" && (
+                      <>
+                        One of your articles have been deleted for following
+                        reason:
+                        <br />
+                        {notification.reasonOfDeletion}
+                        <br />
+                      </>
+                    )}
+
                     <div className="text-end fw-lighter">
                       {timeAgo.format(new Date(notification.created))}
                     </div>

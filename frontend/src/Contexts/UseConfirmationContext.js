@@ -6,36 +6,21 @@ export const useConfirmationContext = () => {
   return useContext(ConfirmationContext);
 };
 
-let outsideResolve;
-const confirmed = new Promise((resolve) => {
-  outsideResolve = resolve;
-});
-
 export const ConfirmationProvider = ({ children }) => {
   const [confirmation, setConfirmation] = useState({
-    confirmed,
-    outsideResolve,
     ref: null,
-    isLoading: null,
     type: "",
     info: null,
+    functionToRun: null,
+    isLoading: null,
   });
-
-  const resetConfirmationPromise = () => {
-    const newConfirmed = new Promise((resolve) => {
-      outsideResolve = resolve;
-    });
-
-    setConfirmation((prevConfirmation) => ({
-      ...prevConfirmation,
-      confirmed: newConfirmed,
-      outsideResolve,
-    }));
-  };
 
   return (
     <ConfirmationContext.Provider
-      value={{ confirmation, setConfirmation, resetConfirmationPromise }}
+      value={{
+        confirmation,
+        setConfirmation,
+      }}
     >
       {children}
     </ConfirmationContext.Provider>

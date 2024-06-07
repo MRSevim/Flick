@@ -1,30 +1,59 @@
 import React from "react";
 import { useConfirmationContext } from "../Contexts/UseConfirmationContext";
 import { ModalWrapper } from "./ModalWrapper";
+import { useConfirmationErrorContext } from "../Contexts/UseConfirmationErrorContext";
+import { Popup } from "./Popup";
 
 export const Confirmation = () => {
-  const { confirmation, setConfirmation, resetConfirmationPromise } =
-    useConfirmationContext();
+  const { confirmation, setConfirmation } = useConfirmationContext();
+  const [confirmationError] = useConfirmationErrorContext();
 
   const setRef = (ref) => {
     setConfirmation({ ...confirmation, ref });
   };
 
-  const handleConfirm = () => {
-    confirmation.outsideResolve(true);
-    resetConfirmationPromise();
-    confirmation.ref.current.hide();
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    confirmation.functionToRun(confirmation.info?.reason);
   };
 
   const handleCancel = () => {
-    confirmation.outsideResolve(false);
-    resetConfirmationPromise();
     confirmation.ref.current.hide();
+  };
+
+  const generateTextArea = () => {
+    if (confirmation.info?.owned) {
+      return;
+    }
+    return (
+      <div className="mb-3">
+        <label htmlFor="textarea" className="form-label">
+          Reason:
+        </label>
+
+        <textarea
+          value={confirmation?.info.reason}
+          required
+          onChange={(e) => {
+            setConfirmation({
+              ...confirmation,
+              info: { ...confirmation.info, reason: e.target.value },
+            });
+          }}
+          className="form-control"
+          id="textarea"
+          rows="3"
+        />
+      </div>
+    );
   };
 
   return (
     <ModalWrapper id={"confirmationModal"} setRef={setRef}>
-      <div className=" d-flex flex-column text-center justify-content-center m-3 p-3">
+      <form
+        onSubmit={handleConfirm}
+        className=" d-flex flex-column text-center justify-content-center m-3 p-3"
+      >
         <button
           onClick={handleCancel}
           type="button"
@@ -38,6 +67,7 @@ export const Confirmation = () => {
             <p>
               <span className="fw-bold">{confirmation.info.title}</span> ?
             </p>
+            {generateTextArea()}
           </div>
         )}
         {confirmation.type === "deleteManyArticles" && (
@@ -63,17 +93,21 @@ export const Confirmation = () => {
           </p>
         )}
         {confirmation.type === "deleteComment" && (
-          <p>Are you sure you want to delete the comment?</p>
+          <>
+            <p>Are you sure you want to delete the comment?</p>
+            {generateTextArea()}
+          </>
         )}
         <div>
           <button
+            type="submit"
             disabled={confirmation.isLoading}
-            onClick={handleConfirm}
             className="btn btn-danger me-2"
           >
             Delete
           </button>
           <button
+            type="button"
             disabled={confirmation.isLoading}
             onClick={handleCancel}
             className="btn btn-warning"
@@ -81,7 +115,12 @@ export const Confirmation = () => {
             Cancel
           </button>
         </div>
-      </div>
+        {confirmationError && (
+          <>
+            <Popup message={confirmationError} type="danger" />
+          </>
+        )}
+      </form>
     </ModalWrapper>
   );
 };

@@ -12,6 +12,8 @@ import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
 import { SimilarArticles } from "./SimilarArticles";
+import { confirmationWrapper } from "../../Utils/HelperFuncs";
+import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
 
 export const Article = () => {
   const [user] = useUserContext();
@@ -25,12 +27,34 @@ export const Article = () => {
   const [myArticle, setMyArticle] = useState(null);
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
+  const { confirmation, setConfirmation } = useConfirmationContext();
 
-  const deleteArticle = async (_id) => {
-    const response = await deleteArticleCall(_id, article?.title);
-    if (response && response.ok) {
-      navigate(links.allArticles(user._id));
-    }
+  const deleteArticle = async (_id, ownArticle) => {
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...confirmation,
+          type: "deleteArticle",
+          info: {
+            ...prev.info,
+            owned: ownArticle,
+            title: article?.title,
+          },
+        };
+      },
+      setConfirmation,
+      async (reason) => {
+        return await deleteArticleCall(_id, reason);
+      },
+      () => {
+        setConfirmation((prev) => ({
+          ...prev,
+          info: { ...prev.info, reason: "" },
+        }));
+        navigate(links.allArticles(user._id));
+      }
+    );
   };
 
   const editArticle = (id) => {
@@ -92,15 +116,19 @@ export const Article = () => {
             </div>
             <div className="mb-2">
               {!myArticle && <LikeButton classes="me-1" article={article} />}
+              {(myArticle ||
+                user?.role === "mod" ||
+                user?.role === "admin") && (
+                <DeleteButton
+                  classes="me-1"
+                  onClick={() => {
+                    deleteArticle(article._id, user._id === article.user._id);
+                  }}
+                  deleteLoading={deleteLoading}
+                />
+              )}
               {myArticle && (
                 <>
-                  <DeleteButton
-                    classes="me-1"
-                    onClick={() => {
-                      deleteArticle(article._id);
-                    }}
-                    deleteLoading={deleteLoading}
-                  />
                   <EditButton
                     classes="me-1"
                     onClick={() => {

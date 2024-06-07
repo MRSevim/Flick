@@ -193,6 +193,15 @@ const deleteComment = async (req, res, next) => {
       throw new Error("You are not authorized");
     }
     if (user.role !== "user" && !user._id.equals(commentToBeDeleted.user._id)) {
+      const commentUser = await User.findById(commentToBeDeleted.user._id);
+      if (
+        user.role === "mod" &&
+        (commentUser.role === "mod" || commentUser.role === "admin")
+      ) {
+        res.status(400);
+        throw new Error("You cannot delete since owner is admin/mod");
+      }
+
       if (!reasonOfDeletion) {
         res.status(400);
         throw new Error("Please send a reason of deletion");

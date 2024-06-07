@@ -23,12 +23,6 @@ router.post("/login", loginUser);
 // signup route
 router.post("/register/:token?", signupUser);
 
-// logout route
-router.post("/logout", logoutUser);
-
-//generate mod link route
-router.get("/generate-mod-link", generateModLink);
-
 //get, update and delete profile routes
 router
   .route("/profile")
@@ -43,6 +37,12 @@ router.use(requireAuth);
 
 //ban user route
 router.post("/ban/:id", banUser);
+
+//generate mod link route
+router.post("/generate-mod-link", generateModLink);
+
+// logout route
+router.post("/logout", logoutUser);
 
 //toggle user variables route
 router.put("/toggle/:type", toggleUserVariables);

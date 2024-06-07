@@ -107,11 +107,26 @@ const logoutUser = (req, res) => {
 };
 
 // logout user
-const generateModLink = (req, res) => {
-  const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
-    expiresIn: "30m", // Expiring after 30 minutes
-  });
-  res.status(200).json({ message: "Backend route is /register/" + token });
+const generateModLink = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User is not found");
+    }
+    /*  if(user.role!=="admin"){
+       res.status(400);
+       throw new Error("You cannot create mod links");
+    } */
+
+    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+      expiresIn: "30m", // Expiring after 30 minutes
+    });
+    res.status(200).json({ message: "Backend route is /register/" + token });
+  } catch (error) {
+    next(error);
+  }
 };
 
 //get Public User
@@ -384,6 +399,13 @@ const banUser = async (req, res, next) => {
     if (user.role !== "admin" && user.role !== "mod") {
       res.status(400);
       throw new Error("You cannot ban users");
+    }
+    if (
+      user.role === "mod" &&
+      (targetUser.role === "mod" || targetUser.role === "admin")
+    ) {
+      res.status(400);
+      throw new Error("You cannot ban since target user is admin/mod");
     }
     if (!targetUser) {
       res.status(404);

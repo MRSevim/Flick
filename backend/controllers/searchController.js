@@ -1,5 +1,5 @@
 const { Article } = require("../models/articleModel");
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 
 const selectFields = "_id title likes tags user image";
 //get articles and users by search

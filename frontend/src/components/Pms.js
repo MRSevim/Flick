@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { LoadingRing } from "./LoadingRing";
 import { useGetPms } from "../Hooks/PmHooks/UseGetPms";
-import { addDarkBg } from "../Utils/HelperFuncs";
+import { addDarkBg, confirmationWrapper } from "../Utils/HelperFuncs";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { MessageSender } from "./MessageSender";
 import { ModalWrapper } from "./ModalWrapper";
@@ -15,6 +15,7 @@ import { useGlobalErrorContext } from "../Contexts/GlobalErrorContext";
 import pmApi from "../Utils/PmApiFunctions";
 import { useRefetchForPmIconContext } from "../Contexts/RefetchForPmIcon";
 import { Pagination } from "@mui/material";
+import { useConfirmationContext } from "../Contexts/UseConfirmationContext";
 
 export const Pms = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,6 +35,7 @@ export const Pms = () => {
   const pmsLength = pms ? pms.length : null;
   const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [, setGlobalError] = useGlobalErrorContext();
+  const { confirmation, setConfirmation } = useConfirmationContext();
 
   const get = async () => {
     if (!page) {
@@ -67,13 +69,29 @@ export const Pms = () => {
     }
   }
   const deleteOne = async (id, subject) => {
-    const response = await deletePm(id, subject);
-
-    if (response && response.ok) {
-      get();
-      triggerRefetchForPmIcon();
-    }
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...confirmation,
+          type: "deleteMessage",
+          info: {
+            ...prev.info,
+            subject,
+          },
+        };
+      },
+      setConfirmation,
+      async () => {
+        return await deletePm(id, subject);
+      },
+      () => {
+        get();
+        triggerRefetchForPmIcon();
+      }
+    );
   };
+
   const handleMarkAsReadClick = async () => {
     const response = await pmApi.markAsRead();
     if (response.ok) {
@@ -85,11 +103,28 @@ export const Pms = () => {
       setGlobalError("Please select at least 1 message");
       return;
     }
-    const response = await deleteMany(selected);
-    if (response && response.ok) {
-      get();
-      triggerRefetchForPmIcon();
-    }
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...confirmation,
+
+          type: "deleteManyMessages",
+          info: {
+            ...prev.info,
+            size: selected.length,
+          },
+        };
+      },
+      setConfirmation,
+      async () => {
+        return await deleteMany(selected);
+      },
+      () => {
+        get();
+        triggerRefetchForPmIcon();
+      }
+    );
   };
   const handlePaginationChange = (event, value) => {
     searchParams.set("page", value);

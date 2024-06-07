@@ -186,7 +186,9 @@ export const ArticleSections = ({ refProp }) => {
             return (
               <div
                 key={section.id}
-                className={"header border-info " + (darkMode && "border-white")}
+                className={
+                  "header px-1 border-info " + (darkMode && "border-white")
+                }
               >
                 <i
                   onClick={() => {

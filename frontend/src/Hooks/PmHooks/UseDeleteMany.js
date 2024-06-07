@@ -1,31 +1,26 @@
 import { useState } from "react";
-import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
 import pmsApi from "../../Utils/PmApiFunctions";
-import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
-import { confirmationWrapper } from "../../Utils/HelperFuncs";
+import { useConfirmationErrorContext } from "../../Contexts/UseConfirmationErrorContext";
 
 export const useDeleteMany = () => {
-  const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
-  const { confirmation, setConfirmation } = useConfirmationContext();
+  const [, setConfirmationError] = useConfirmationErrorContext();
 
   const deleteMany = async (ids) => {
-    return confirmationWrapper(
-      confirmation,
-      {
-        ...confirmation,
-        type: "deleteManyMessages",
-        info: {
-          size: ids.length,
-        },
-      },
-      setConfirmation,
-      setGlobalError,
-      setIsLoading,
-      async () => {
-        return await pmsApi.deleteMany(ids);
-      }
-    );
+    setIsLoading(true);
+    setConfirmationError(null);
+
+    const response = await pmsApi.deleteMany(ids);
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      setConfirmationError(json.message);
+    }
+
+    setIsLoading(false);
+
+    return response;
   };
 
   return { deleteMany, isLoading };

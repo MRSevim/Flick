@@ -16,8 +16,9 @@ import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { AdvancedSearch } from "../AdvancedSearch";
 import { useDarkModeContext } from "../../Contexts/DarkModeContext";
-import { addDarkBg } from "../../Utils/HelperFuncs";
+import { addDarkBg, confirmationWrapper } from "../../Utils/HelperFuncs";
 import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
+import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
 
 export const Articles = ({ isDraft }) => {
   const [articles, setArticles] = useState([]);
@@ -38,6 +39,7 @@ export const Articles = ({ isDraft }) => {
   const titleParam = searchParams.get("title");
   const tagsParam = searchParams.get("tags");
   const [selected, setSelected] = useState([]);
+  const { confirmation, setConfirmation } = useConfirmationContext();
   const [darkMode] = useDarkModeContext();
   const [, setGlobalError] = useGlobalErrorContext();
 
@@ -78,12 +80,32 @@ export const Articles = ({ isDraft }) => {
     }
   }
 
-  const deleteArticle = async (_id, title) => {
-    const response = await deleteArticleCall(_id, title);
-
-    if (response && response.ok) {
-      get();
-    }
+  const deleteArticle = async (_id, title, ownArticle) => {
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...confirmation,
+          type: "deleteArticle",
+          info: {
+            ...prev.info,
+            owned: ownArticle,
+            title,
+          },
+        };
+      },
+      setConfirmation,
+      async (reason) => {
+        return await deleteArticleCall(_id, reason);
+      },
+      () => {
+        setConfirmation((prev) => ({
+          ...prev,
+          info: { ...prev.info, reason: "" },
+        }));
+        get();
+      }
+    );
   };
 
   const deleteSelected = async (selected) => {
@@ -91,11 +113,27 @@ export const Articles = ({ isDraft }) => {
       setGlobalError("Please select at least 1 article");
       return;
     }
-    const response = await deleteMany(selected);
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...confirmation,
 
-    if (response && response.ok) {
-      get();
-    }
+          type: "deleteManyArticles",
+          info: {
+            ...prev.info,
+            size: selected.length,
+          },
+        };
+      },
+      setConfirmation,
+      async () => {
+        return await deleteMany(selected);
+      },
+      () => {
+        get();
+      }
+    );
   };
 
   const editArticle = (id) => {
@@ -244,6 +282,7 @@ export const Articles = ({ isDraft }) => {
           .reverse()
           .map((article) => (
             <ArticleItem
+              user={user}
               updateValue={handleSelect}
               value={selected.includes(article._id)}
               deleteLoading={deleteManyLoading || deleteLoading}

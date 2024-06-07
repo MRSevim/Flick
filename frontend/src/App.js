@@ -40,6 +40,7 @@ import { ThemeProvider } from "@mui/material";
 import { createMuiTheme } from "./Utils/MaterialUiStyles.js";
 import { Pms } from "./components/Pms.js";
 import { RefetchForPmIconProvider } from "./Contexts/RefetchForPmIcon.js";
+import { ConfirmationErrorProvider } from "./Contexts/UseConfirmationErrorContext.js";
 import { Settings } from "./components/Settings.js";
 import { TocAndPrivacyPolicy } from "./components/TocAndPrivacyPolicy.js";
 
@@ -50,9 +51,11 @@ function App() {
         <RefetchForPmIconProvider>
           <GlobalErrorProvider>
             <DarkModeProvider>
-              <ConfirmationProvider>
-                <AppContent />
-              </ConfirmationProvider>
+              <ConfirmationErrorProvider>
+                <ConfirmationProvider>
+                  <AppContent />
+                </ConfirmationProvider>
+              </ConfirmationErrorProvider>
             </DarkModeProvider>
           </GlobalErrorProvider>
         </RefetchForPmIconProvider>

@@ -12,6 +12,7 @@ export const ArticleItem = ({
   deleteLoading,
   article,
   isDraft,
+  user,
   myArticles,
   editArticle,
   deleteArticle,
@@ -36,29 +37,37 @@ export const ArticleItem = ({
               : links.edit(article._id, true)
           }
         >
-          {myArticles && (
-            <div>
-              <input
-                className="form-check-input position-absolute top-0 start-0 m-1"
-                type="checkbox"
-                checked={value}
-                onChange={handleCheckboxChange}
-              />
+          <div>
+            {(myArticles || user?.role === "mod" || user?.role === "admin") && (
               <DeleteButton
                 classes="p-1 m-1 position-absolute top-0 end-0"
                 onClick={() => {
-                  deleteArticle(article._id, article.title);
+                  deleteArticle(
+                    article._id,
+                    article.title,
+                    article.user === user._id
+                  );
                 }}
                 deleteLoading={deleteLoading}
               />
-              <EditButton
-                classes="p-1 m-1 position-absolute bottom-0 end-0"
-                onClick={() => {
-                  editArticle(article._id);
-                }}
-              />
-            </div>
-          )}
+            )}
+            {myArticles && (
+              <>
+                <input
+                  className="form-check-input position-absolute top-0 start-0 m-1"
+                  type="checkbox"
+                  checked={value}
+                  onChange={handleCheckboxChange}
+                />
+                <EditButton
+                  classes="p-1 m-1 position-absolute bottom-0 end-0"
+                  onClick={() => {
+                    editArticle(article._id);
+                  }}
+                />
+              </>
+            )}
+          </div>
           {!isDraft && (
             <LikeButton
               classes="p-1 m-1 position-absolute bottom-0 start-0"

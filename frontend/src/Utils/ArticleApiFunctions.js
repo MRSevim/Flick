@@ -17,9 +17,11 @@ const articleApi = {
 
     return response;
   },
-  delete: async (id) => {
+  delete: async (id, reasonOfDeletion) => {
     const response = await fetch("/article/" + id, {
       method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reasonOfDeletion }),
     });
 
     return response;

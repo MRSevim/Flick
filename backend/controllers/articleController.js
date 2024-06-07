@@ -349,6 +349,14 @@ const deleteArticle = async (req, res, next) => {
       throw new Error("You are not authorized");
     }
     if (user.role !== "user" && !user._id.equals(article.user)) {
+      const articleUser = await User.findById(article.user);
+      if (
+        user.role === "mod" &&
+        (articleUser.role === "mod" || articleUser.role === "admin")
+      ) {
+        res.status(400);
+        throw new Error("You cannot delete since owner is admin/mod");
+      }
       if (!reasonOfDeletion) {
         res.status(400);
         throw new Error("Please send a reason of deletion");

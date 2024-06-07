@@ -66,32 +66,22 @@ export const getUnreadLength = (items) => {
 };
 export const confirmationWrapper = async (
   confirmation,
-  newConfirmation,
+  returnNewConfirmation,
   setConfirmation,
-  setGlobalError,
-  setIsLoading,
-  func
+  apiCall,
+  okResponseFunc
 ) => {
+  setConfirmation((prev) => returnNewConfirmation(prev));
   confirmation.ref.current.show();
+  const call = async (reason) => {
+    setConfirmation((prev) => ({ ...prev, isLoading: true }));
+    const response = await apiCall(reason);
 
-  setConfirmation(newConfirmation);
-  setGlobalError(null);
-
-  const isConfirmed = await confirmation.confirmed;
-
-  if (isConfirmed) {
-    setIsLoading(true);
-
-    const response = await func();
-    const json = await response.json();
-
-    if (!response.ok) {
-      setGlobalError(json.message);
+    if (response && response.ok) {
+      confirmation.ref.current.hide();
+      okResponseFunc();
     }
-    setIsLoading(false);
-
-    return response;
-  } else {
-    return;
-  }
+    setConfirmation((prev) => ({ ...prev, isLoading: false }));
+  };
+  setConfirmation((prev) => ({ ...prev, functionToRun: call }));
 };

@@ -12,6 +12,8 @@ import { useEditComment } from "../../Hooks/CommentHooks/UseEditComment";
 import { useDeleteComment } from "../../Hooks/CommentHooks/UseDeleteComment";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
+import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
+import { confirmationWrapper } from "../../Utils/HelperFuncs";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -27,6 +29,7 @@ export const CommentSection = ({ article }) => {
     useEditComment();
   const { deleteComment: _deleteComment, isLoading: deleteLoading } =
     useDeleteComment();
+  const { confirmation, setConfirmation } = useConfirmationContext();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -60,13 +63,30 @@ export const CommentSection = ({ article }) => {
     }
   };
 
-  const deleteComment = async (id) => {
-    const response = await _deleteComment(article._id, id);
-    if (response && response.ok) {
-      const newComments = comments.filter((comment) => comment._id !== id);
+  const deleteComment = async (id, ownComment) => {
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...prev,
+          type: "deleteComment",
+          info: { ...prev.info, owned: ownComment },
+        };
+      },
+      setConfirmation,
+      async (reason) => {
+        return await _deleteComment(article._id, id, reason);
+      },
+      () => {
+        setConfirmation((prev) => ({
+          ...prev,
+          info: { ...prev.info, reason: "" },
+        }));
+        const newComments = comments.filter((comment) => comment._id !== id);
 
-      setComments(newComments);
-    }
+        setComments(newComments);
+      }
+    );
   };
 
   return (
@@ -150,8 +170,8 @@ export const CommentSection = ({ article }) => {
             </form>
           )}
 
-          {comment.user._id === user?._id && (
-            <div className="text-end">
+          <div className="text-end">
+            {comment.user._id === user?._id && (
               <EditButton
                 classes={"me-1"}
                 onClick={() => {
@@ -164,14 +184,18 @@ export const CommentSection = ({ article }) => {
                   }
                 }}
               />
+            )}
+            {(comment.user._id === user?._id ||
+              user?.role === "mod" ||
+              user?.role === "admin") && (
               <DeleteButton
                 disabled={deleteLoading}
                 onClick={() => {
-                  deleteComment(comment._id);
+                  deleteComment(comment._id, comment.user._id === user?._id);
                 }}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       ))}
     </div>
