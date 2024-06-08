@@ -43,7 +43,7 @@ import { RefetchForPmIconProvider } from "./Contexts/RefetchForPmIcon.js";
 import { ConfirmationErrorProvider } from "./Contexts/UseConfirmationErrorContext.js";
 import { Settings } from "./components/Settings.js";
 import { TocAndPrivacyPolicy } from "./components/TocAndPrivacyPolicy.js";
-console.log(123);
+
 function App() {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
