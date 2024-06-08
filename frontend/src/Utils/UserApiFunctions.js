@@ -1,3 +1,4 @@
+import { backendUrl } from "./HelperFuncs";
 const userApi = {
   login: async (
     username,
@@ -6,7 +7,7 @@ const userApi = {
     googleCredential,
     rememberMe
   ) => {
-    const response = await fetch("/user/login", {
+    const response = await fetch(backendUrl + "/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -22,7 +23,7 @@ const userApi = {
   },
   signup: async (username, email, password, token) => {
     const url = "/user/register/" + (token ? token : "");
-    const response = await fetch(url, {
+    const response = await fetch(backendUrl + url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password }),
@@ -31,24 +32,24 @@ const userApi = {
     return response;
   },
   logout: async () => {
-    const response = await fetch("/user/logout", {
+    const response = await fetch(backendUrl + "/user/logout", {
       method: "POST",
     });
 
     return response;
   },
   getProfile: async () => {
-    const response = await fetch("/user/profile");
+    const response = await fetch(backendUrl + "/user/profile");
 
     return response;
   },
   getPublicUser: async (param) => {
-    const response = await fetch("/user/" + param);
+    const response = await fetch(backendUrl + "/user/" + param);
 
     return response;
   },
   update: async (username, email, password, newPassword, image) => {
-    const response = await fetch("/user/profile", {
+    const response = await fetch(backendUrl + "/user/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password, newPassword, image }),

@@ -85,3 +85,7 @@ export const confirmationWrapper = async (
   };
   setConfirmation((prev) => ({ ...prev, functionToRun: call }));
 };
+export const backendUrl =
+  process.env.REACT_APP_ENV === "production"
+    ? process.env.REACT_APP_BACKEND_URL_PRODUCTION
+    : "";

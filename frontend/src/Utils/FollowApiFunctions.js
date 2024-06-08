@@ -1,6 +1,8 @@
+import { backendUrl } from "./HelperFuncs";
+
 const followApi = {
   follow: async (id) => {
-    const response = await fetch("/follow/" + id, {
+    const response = await fetch(backendUrl + "/follow/" + id, {
       method: "POST",
     });
 
@@ -8,7 +10,7 @@ const followApi = {
   },
   getFollows: async (id, type, page) => {
     const response = await fetch(
-      "/follow/follows/" + id + "?type=" + type + "&page=" + page
+      backendUrl + "/follow/follows/" + id + "?type=" + type + "&page=" + page
     );
 
     return response;

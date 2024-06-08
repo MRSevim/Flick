@@ -1,6 +1,8 @@
+import { backendUrl } from "./HelperFuncs";
+
 const commentApi = {
   comment: async (content, id) => {
-    const response = await fetch("/comment/" + id, {
+    const response = await fetch(backendUrl + "/comment/" + id, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
@@ -9,7 +11,7 @@ const commentApi = {
     return response;
   },
   edit: async (content, articleId, commentId) => {
-    const response = await fetch("/comment/" + articleId, {
+    const response = await fetch(backendUrl + "/comment/" + articleId, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content, id: commentId }),
@@ -18,7 +20,7 @@ const commentApi = {
     return response;
   },
   delete: async (articleId, commentId, reasonOfDeletion) => {
-    const response = await fetch("/comment/" + articleId, {
+    const response = await fetch(backendUrl + "/comment/" + articleId, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: commentId, reasonOfDeletion }),

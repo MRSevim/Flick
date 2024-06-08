@@ -1,16 +1,22 @@
+import { backendUrl } from "./HelperFuncs";
+
 const notificationApi = {
   getNotifications: async () => {
-    const response = await fetch("/notifications");
+    const response = await fetch(backendUrl + "/notifications");
 
     return response;
   },
   markAsRead: async () => {
-    const response = await fetch("/notifications/read", { method: "POST" });
+    const response = await fetch(backendUrl + "/notifications/read", {
+      method: "POST",
+    });
 
     return response;
   },
   clearNotifications: async () => {
-    const response = await fetch("/notifications/clear", { method: "POST" });
+    const response = await fetch(backendUrl + "/notifications/clear", {
+      method: "POST",
+    });
 
     return response;
   },

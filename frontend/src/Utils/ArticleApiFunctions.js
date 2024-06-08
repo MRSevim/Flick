@@ -1,6 +1,7 @@
+import { backendUrl } from "./HelperFuncs";
 const articleApi = {
   create: async (title, content, isDraft, tags, image) => {
-    const response = await fetch("/article/", {
+    const response = await fetch(backendUrl + "/article/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, content, isDraft, tags, image }),
@@ -9,7 +10,7 @@ const articleApi = {
     return response;
   },
   update: async (title, content, isDraft, id, tags, image) => {
-    const response = await fetch("/article/" + id, {
+    const response = await fetch(backendUrl + "/article/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, content, isDraft, tags, image }),
@@ -18,7 +19,7 @@ const articleApi = {
     return response;
   },
   delete: async (id, reasonOfDeletion) => {
-    const response = await fetch("/article/" + id, {
+    const response = await fetch(backendUrl + "/article/" + id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ reasonOfDeletion }),
@@ -27,7 +28,7 @@ const articleApi = {
     return response;
   },
   comment: async (content, id) => {
-    const response = await fetch("/article/comment/" + id, {
+    const response = await fetch(backendUrl + "/article/comment/" + id, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
@@ -36,7 +37,7 @@ const articleApi = {
     return response;
   },
   deleteMany: async (ids) => {
-    const response = await fetch("/article/deleteMany", {
+    const response = await fetch(backendUrl + "/article/deleteMany", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ids }),
@@ -47,7 +48,7 @@ const articleApi = {
   getArticle: async (id, isDraft) => {
     const url = isDraft ? "/article/draft/" : "/article/";
 
-    const response = await fetch(url + id);
+    const response = await fetch(backendUrl + url + id);
 
     return response;
   },
@@ -61,12 +62,12 @@ const articleApi = {
       url = url + addition;
     }
 
-    const response = await fetch(url);
+    const response = await fetch(backendUrl + url);
 
     return response;
   },
   getSimilar: async (id) => {
-    const response = await fetch("/article/similar/" + id, {
+    const response = await fetch(backendUrl + "/article/similar/" + id, {
       headers: { "Content-Type": "application/json" },
     });
 

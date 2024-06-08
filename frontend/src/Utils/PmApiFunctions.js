@@ -1,16 +1,18 @@
+import { backendUrl } from "./HelperFuncs";
+
 const pmApi = {
   getPms: async (page, type) => {
-    const response = await fetch(`/pms?page=${page}&type=${type}`);
+    const response = await fetch(backendUrl + `/pms?page=${page}&type=${type}`);
 
     return response;
   },
   getReceivedLength: async () => {
-    const response = await fetch("/pms/receivedLength");
+    const response = await fetch(backendUrl + "/pms/receivedLength");
 
     return response;
   },
   sendPm: async (id, subject, message) => {
-    const response = await fetch("/pms/send/" + id, {
+    const response = await fetch(backendUrl + "/pms/send/" + id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subject, message }),
@@ -19,14 +21,14 @@ const pmApi = {
     return response;
   },
   delete: async (id) => {
-    const response = await fetch("/pms/" + id, {
+    const response = await fetch(backendUrl + "/pms/" + id, {
       method: "DELETE",
     });
 
     return response;
   },
   deleteMany: async (ids) => {
-    const response = await fetch("/pms/deleteMany", {
+    const response = await fetch(backendUrl + "/pms/deleteMany", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ids }),
@@ -35,7 +37,7 @@ const pmApi = {
     return response;
   },
   markAsRead: async () => {
-    const response = await fetch("/pms/read", {
+    const response = await fetch(backendUrl + "/pms/read", {
       method: "POST",
     });
 
