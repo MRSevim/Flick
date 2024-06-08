@@ -33,6 +33,9 @@ router
 //get public user profile route
 router.get("/:id", getPublicUser);
 
+// logout route
+router.post("/logout", logoutUser);
+
 router.use(requireAuth);
 
 //ban user route
@@ -40,9 +43,6 @@ router.post("/ban/:id", banUser);
 
 //generate mod link route
 router.post("/generate-mod-link", generateModLink);
-
-// logout route
-router.post("/logout", logoutUser);
 
 //toggle user variables route
 router.put("/toggle/:type", toggleUserVariables);
