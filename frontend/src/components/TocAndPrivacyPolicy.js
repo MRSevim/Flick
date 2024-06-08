@@ -81,17 +81,29 @@ export const TocAndPrivacyPolicy = () => {
         <h2>6. Dispute Resolution</h2>
         <p>
           Any disputes arising out of or relating to these Terms or the Website
-          shall be governed by the laws of Turkey and resolved through binding
-          arbitration, except for any disputes arising from the rights and
-          obligations regarding intellectual property, which may be brought
-          before the appropriate court of jurisdiction.
+          shall be resolved through binding arbitration, except for any disputes
+          arising from the rights and obligations regarding intellectual
+          property, which may be brought before the appropriate court of
+          jurisdiction.
+        </p>
+        <p>
+          For disputes not related to intellectual property, the arbitration
+          shall be conducted under the rules of an internationally recognized
+          arbitration body, such as the International Chamber of Commerce (ICC)
+          or the United Nations Commission on International Trade Law
+          (UNCITRAL). The place of arbitration shall be neutral and agreed upon
+          by both parties.
         </p>
         <p>
           In the event of any disputes arising from intellectual property
           rights, the parties agree to submit to the exclusive jurisdiction of
           the international courts, such as the International Court of Justice
-          (ICJ) or other appropriate international arbitration tribunal, for
-          resolution.
+          (ICJ) or another appropriate international arbitration tribunal.
+        </p>
+        <p>
+          This clause shall be governed by and interpreted in accordance with
+          the principles of international law, rather than the laws of any
+          specific country.
         </p>
         <h2>7. Changes to Terms</h2>
         <p>
@@ -134,11 +146,6 @@ export const TocAndPrivacyPolicy = () => {
           users.
         </p>
         <h2>3. Sharing Your Information</h2>
-        <p>
-          <strong>Service Providers:</strong> We may share your information with
-          third-party service providers who perform services on our behalf, such
-          as hosting and analytics.
-        </p>
         <p>
           <strong>Legal Requirements:</strong> We may disclose your information
           if required by law or in response to legal processes.

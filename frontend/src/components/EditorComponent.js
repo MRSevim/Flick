@@ -26,8 +26,8 @@ export const EditorComponent = ({
       init={{
         height: 600,
         content_style:
-          "body { font-family: 'Jost', sans-serif; color:#092327;" +
-          (darkMode ? "background-color:#092327 !important;color:#fff}" : "}"),
+          "code{background-color: #0b5351 !important; color:white!important}body { font-family: 'Jost', sans-serif; color:#092327;" +
+          (darkMode ? "background-color:#092327 !important;color:#fff}" : "} "),
         plugins: [
           "advlist",
           "autolink",

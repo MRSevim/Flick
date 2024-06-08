@@ -29,7 +29,7 @@ export const Home = () => {
               <h1 className="mb-3 fw-bold hero-3d display-5 font-secondary">
                 Find meaning in writing
               </h1>
-              <h4>A Website to consume and produce written content...</h4>
+              <h4>A Website to consume and produce articles...</h4>
             </div>
             <div>
               <div>
@@ -126,7 +126,7 @@ export const Home = () => {
                 challenging and average opinion can be a metric in that matter.
                 It is like Imdb rating. It can help you choose a movie but It
                 might not necessarily guarantee that you will like the movie. It
-                is a useful tool.
+                is a rating tool.
               </div>
             </div>
           </div>

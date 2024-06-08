@@ -66,6 +66,7 @@ export const Notifications = () => {
 
   return (
     <div ref={wrapperRef} className="me-3 position-relative">
+      {isLoading && <LoadingDots />}
       <div className="position-relative">
         <i
           className={classNames({
@@ -78,7 +79,6 @@ export const Notifications = () => {
           }}
         >
           {" "}
-          {isLoading && <LoadingDots />}
         </i>
         {getUnreadLength(notifications) > 0 && (
           <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1">

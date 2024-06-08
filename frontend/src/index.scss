@@ -18,6 +18,11 @@ body.dark {
   --color-info: #fff;
 }
 
+code {
+  background-color: #{$secondary};
+  color: white !important;
+}
+
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
 
@@ -127,6 +132,7 @@ body {
     5px 5px 5px rgba(0, 0, 0, 0.3);
 }
 /*Create an Article+article */
+
 .article,
 .article * {
   font-family: var(--font-article) !important;
