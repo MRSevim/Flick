@@ -8,7 +8,7 @@ const generateToken = (res, userId, rememberMe) => {
   let cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
-    sameSite: "strict", // Prevent CSRF attacks
+    sameSite: "None", // Prevent CSRF attacks
   };
   if (process.env.NODE_ENV !== "development") {
     cookieOptions.domain = process.env.DOMAIN_BASE;
