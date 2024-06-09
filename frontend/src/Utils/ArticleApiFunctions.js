@@ -4,6 +4,7 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ title, content, isDraft, tags, image }),
     });
 
@@ -13,6 +14,7 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ title, content, isDraft, tags, image }),
     });
 
@@ -22,16 +24,8 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/" + id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ reasonOfDeletion }),
-    });
-
-    return response;
-  },
-  comment: async (content, id) => {
-    const response = await fetch(backendUrl + "/article/comment/" + id, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content }),
     });
 
     return response;
@@ -40,6 +34,7 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/deleteMany", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ ids }),
     });
 
@@ -48,7 +43,9 @@ const articleApi = {
   getArticle: async (id, isDraft) => {
     const url = isDraft ? "/article/draft/" : "/article/";
 
-    const response = await fetch(backendUrl + url + id);
+    const response = await fetch(backendUrl + url + id, {
+      credentials: "include",
+    });
 
     return response;
   },
@@ -62,7 +59,7 @@ const articleApi = {
       url = url + addition;
     }
 
-    const response = await fetch(backendUrl + url);
+    const response = await fetch(backendUrl + url, { credentials: "include" });
 
     return response;
   },

@@ -4,6 +4,7 @@ const followApi = {
   follow: async (id) => {
     const response = await fetch(backendUrl + "/follow/" + id, {
       method: "POST",
+      credentials: "include",
     });
 
     return response;

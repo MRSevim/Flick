@@ -125,7 +125,7 @@ export const Login = ({ onHideModal, children, type }) => {
           </div>
           <p className="text-center mt-3">
             Don't have an account?
-            <Link to={links.signup}>
+            <Link to={links.signup()}>
               <button
                 onClick={onHideModal}
                 type="button"

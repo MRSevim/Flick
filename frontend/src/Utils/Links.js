@@ -11,7 +11,13 @@ const links = {
   myProfile: "/my-profile",
   about: "/about",
   login: "/login",
-  signup: "/sign-up",
+  signup: (token) => {
+    if (token) {
+      return "/sign-up/" + token;
+    } else {
+      return "/sign-up";
+    }
+  },
   linkedIn: "https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/",
   portfolio: "https://mrsevim.github.io/Portfolio/",
   mail: "mailto: " + process.env.REACT_APP_CONTACT_MAIL,

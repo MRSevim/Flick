@@ -70,6 +70,12 @@ export const Confirmation = () => {
             {generateTextArea()}
           </div>
         )}
+        {confirmation.type === "banUser" && (
+          <div>
+            Are you sure you want to ban {confirmation.info.username}?
+            {generateTextArea()}
+          </div>
+        )}
         {confirmation.type === "deleteManyArticles" && (
           <p>
             Are you sure you want to delete all {confirmation.info.size}{" "}
@@ -104,7 +110,7 @@ export const Confirmation = () => {
             disabled={confirmation.isLoading}
             className="btn btn-danger me-2"
           >
-            Delete
+            {confirmation.type === "banUser" ? "Ban" : "Delete"}
           </button>
           <button
             type="button"

@@ -125,7 +125,7 @@ const generateModLink = async (req, res, next) => {
     const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
       expiresIn: "30m", // Expiring after 30 minutes
     });
-    res.status(200).json({ message: "Backend route is /register/" + token });
+    res.status(200).json({ token });
   } catch (error) {
     next(error);
   }

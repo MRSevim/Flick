@@ -117,7 +117,7 @@ export const Header = () => {
                     Login
                   </button>
                 </Link>
-                <Link to={links.signup}>
+                <Link to={links.signup()}>
                   <button type="button" className="btn btn-secondary">
                     Sign-up
                   </button>

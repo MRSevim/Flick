@@ -12,6 +12,7 @@ import { ModalWrapper } from "./ModalWrapper";
 import { Popup } from "./Popup";
 import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 import { RoleBanner } from "./RoleBanner";
+import { useGenerateModLink } from "../Hooks/UserHooks/UseGenerateModLink";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -33,6 +34,10 @@ export const MyProfile = () => {
     useUpdateUser();
   const [ref, setRef] = useState(null);
   const navigate = useNavigate();
+  const {
+    generateModLink: generateModLinkCall,
+    isLoading: generateModLinkLoading,
+  } = useGenerateModLink();
 
   useEffect(() => {
     if (user === undefined) {
@@ -103,6 +108,15 @@ export const MyProfile = () => {
     ref.current.show();
   };
 
+  const generateModLink = async () => {
+    const { response, json } = await generateModLinkCall();
+    if (response.ok) {
+      const link = links.signup(json.token);
+
+      console.log("Link is " + window.location.origin + link);
+    }
+  };
+
   return (
     <>
       {getLoading ? (
@@ -118,6 +132,17 @@ export const MyProfile = () => {
               <p className="mt-3 text-center">
                 You've been a member since {memberSince}
               </p>
+              {user?.role === "admin" && (
+                <div className="d-flex justify-content-center">
+                  <button
+                    disabled={generateModLinkLoading}
+                    onClick={generateModLink}
+                    className="btn btn-secondary"
+                  >
+                    Generate Mod Link{" "}
+                  </button>
+                </div>
+              )}
               <div className="mt-4 d-flex justify-content-between">
                 <FollowButtons
                   id={user?._id}

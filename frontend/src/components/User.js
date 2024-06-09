@@ -10,8 +10,10 @@ import { ImageComponent } from "./ImageComponent";
 import sad from "../Utils/images/sad.jpg";
 import { LikeButton } from "./Articles/LikeButton";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
-import { addDarkBg } from "../Utils/HelperFuncs";
+import { addDarkBg, confirmationWrapper } from "../Utils/HelperFuncs";
 import { RoleBanner } from "./RoleBanner";
+import { useConfirmationContext } from "../Contexts/UseConfirmationContext";
+import { useBanUser } from "../Hooks/UserHooks/UseBanUser";
 
 export const User = () => {
   const { id } = useParams();
@@ -25,6 +27,8 @@ export const User = () => {
   const { followUser, isLoading: followLoading } = useFollowUser();
   const navigate = useNavigate();
   const [darkMode] = useDarkModeContext();
+  const { confirmation, setConfirmation } = useConfirmationContext();
+  const { banUser: banUserCall, isLoading: banLoading } = useBanUser();
 
   const handleFollow = async (id) => {
     const { response, json } = await followUser(id);
@@ -33,6 +37,33 @@ export const User = () => {
       setFollowingNumber(json.followingNumber);
       setFollowing(!following);
     }
+  };
+
+  const banUser = async (_id) => {
+    confirmationWrapper(
+      confirmation,
+      (prev) => {
+        return {
+          ...confirmation,
+          type: "banUser",
+          info: {
+            ...prev.info,
+            username: user.username,
+          },
+        };
+      },
+      setConfirmation,
+      async (reason) => {
+        return await banUserCall(_id, reason);
+      },
+      () => {
+        setConfirmation((prev) => ({
+          ...prev,
+          info: { ...prev.info, reason: "" },
+        }));
+        navigate(links.homepage);
+      }
+    );
   };
 
   useEffect(() => {
@@ -103,7 +134,20 @@ export const User = () => {
                 </button>
               </div>
             )}
-            <div className="mt-4 d-flex justify-content-center">
+            {(globalUser.role === "admin" || globalUser.role === "mod") && (
+              <div className="d-flex mt-2 justify-content-center">
+                <button
+                  disabled={banLoading}
+                  onClick={() => {
+                    banUser(user?._id);
+                  }}
+                  className="btn btn-warning"
+                >
+                  Ban
+                </button>
+              </div>
+            )}
+            <div className="mt-2 d-flex justify-content-center">
               <FollowButtons
                 id={user._id}
                 followerNumber={followerNumber}

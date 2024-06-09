@@ -11,6 +11,7 @@ const notificationApi = {
   markAsRead: async () => {
     const response = await fetch(backendUrl + "/notifications/read", {
       method: "POST",
+      credentials: "include",
     });
 
     return response;
@@ -18,6 +19,7 @@ const notificationApi = {
   clearNotifications: async () => {
     const response = await fetch(backendUrl + "/notifications/clear", {
       method: "POST",
+      credentials: "include",
     });
 
     return response;
