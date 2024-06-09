@@ -23,11 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: `${
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:" + process.env.PORT
-          : process.env.BACKEND_URL
-      }/default-user.jpg`,
+      default: `${process.env.BACKEND_URL}/default-user.jpg`,
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

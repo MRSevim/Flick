@@ -21,7 +21,10 @@ const htmls = {
         </button>
         </a>
         <a style="text-decoration: none;" href="${
-          process.env.FRONTEND_URL + "/resend-verification-email?email=" + email
+          process.env.FRONTEND_URL +
+          "/emailer?email=" +
+          email +
+          "&type=send-verification-email"
         }">
           <button style="
           cursor:pointer;

@@ -13,11 +13,7 @@ const articleSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: `${
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:" + process.env.PORT
-          : process.env.BACKEND_URL
-      }/default-image.png`,
+      default: `${process.env.BACKEND_URL}/default-image.png`,
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
     comments: [
