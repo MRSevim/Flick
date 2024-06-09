@@ -10,7 +10,6 @@ const userApi = {
     const response = await fetch(backendUrl + "/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({
         username,
         password,
