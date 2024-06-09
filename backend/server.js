@@ -34,9 +34,7 @@ app.use((req, res, next) => {
 });
 // Set middleware of CORS
 app.use(cors(corsOptions));
-app.options("/*", (_, res) => {
-  res.sendStatus(200);
-});
+app.options("*", cors(corsOptions)); // Pre-flight handling
 
 //Images
 app.use(express.static("images"));
