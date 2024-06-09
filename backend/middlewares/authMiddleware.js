@@ -4,7 +4,7 @@ const { User } = require("../models/userModel");
 const protect = async (req, res, next) => {
   try {
     let token;
-
+    console.log(req.cookies);
     token = req.cookies.jwt;
 
     if (token) {
