@@ -22,7 +22,7 @@ const generateToken = (res, userId, rememberMe) => {
     cookieOptions.expiresIn = 0;
     token = jwt.sign({ userId }, process.env.JWT_SECRET);
   }
-  console.log(cookieOptions);
+
   res.cookie("jwt", token, cookieOptions);
   return token;
 };
