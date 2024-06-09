@@ -103,7 +103,7 @@ const logoutUser = (req, res) => {
     httpOnly: true,
     expires: new Date(0),
     secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
-    sameSite: "lax",
+    sameSite: "none",
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
