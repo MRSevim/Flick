@@ -40,7 +40,9 @@ const userApi = {
     return response;
   },
   getProfile: async () => {
-    const response = await fetch(backendUrl + "/user/profile");
+    const response = await fetch(backendUrl + "/user/profile", {
+      credentials: "include",
+    });
 
     return response;
   },
