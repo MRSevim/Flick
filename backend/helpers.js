@@ -10,9 +10,9 @@ const generateToken = (res, userId, rememberMe) => {
     secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
     sameSite: "none",
   };
-  /*   if (process.env.NODE_ENV !== "development") {
-    cookieOptions.domain = process.env.DOMAIN_BASE;
-  } */
+  if (process.env.NODE_ENV !== "development") {
+    cookieOptions.domain = process.env.FRONTEND_URL;
+  }
   if (rememberMe) {
     cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000;
     token = jwt.sign({ userId }, process.env.JWT_SECRET, {
