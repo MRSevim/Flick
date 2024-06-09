@@ -11,7 +11,7 @@ const generateToken = (res, userId, rememberMe) => {
     sameSite: "strict", // Prevent CSRF attacks
   };
   if (process.env.NODE_ENV !== "development") {
-    cookieOptions.domain = process.env.DOMAIN_BASE;
+    cookieOptions.domain = process.env.FRONTEND_URL;
   }
   if (rememberMe) {
     cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000;
