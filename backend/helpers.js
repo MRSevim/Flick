@@ -11,7 +11,7 @@ const generateToken = (res, userId, rememberMe) => {
     sameSite: "none",
   };
   if (process.env.NODE_ENV !== "development") {
-    cookieOptions.domain = process.env.FRONTEND_URL;
+    cookieOptions.domain = process.env.DOMAIN_BASE;
   }
   if (rememberMe) {
     cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000;
