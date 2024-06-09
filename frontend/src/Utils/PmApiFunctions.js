@@ -7,7 +7,9 @@ const pmApi = {
     return response;
   },
   getReceivedLength: async () => {
-    const response = await fetch(backendUrl + "/pms/receivedLength");
+    const response = await fetch(backendUrl + "/pms/receivedLength", {
+      credentials: "include",
+    });
 
     return response;
   },

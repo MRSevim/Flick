@@ -2,7 +2,9 @@ import { backendUrl } from "./HelperFuncs";
 
 const notificationApi = {
   getNotifications: async () => {
-    const response = await fetch(backendUrl + "/notifications");
+    const response = await fetch(backendUrl + "/notifications", {
+      credentials: "include",
+    });
 
     return response;
   },
