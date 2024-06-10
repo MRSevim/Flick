@@ -7,7 +7,7 @@ export const TocAndPrivacyPolicy = () => {
     <div class="container py-3">
       <div>
         <h1>Terms of Conditions</h1>
-        <p>Last Updated: 4 June 2024</p>
+        <p>Last Updated: 10 June 2024</p>
         <p>
           Welcome to {process.env.REACT_APP_WEBSITE_NAME} (the "Website"). By
           accessing or using our Website, you agree to comply with and be bound
@@ -114,7 +114,7 @@ export const TocAndPrivacyPolicy = () => {
 
       <div>
         <h1>Privacy Policy</h1>
-        <p>Last Updated: 4 June 2024</p>
+        <p>Last Updated: 10 June 2024</p>
         <p>
           {process.env.REACT_APP_WEBSITE_NAME} ("we," "us," "our") is committed
           to protecting your privacy. This Privacy Policy explains how we
