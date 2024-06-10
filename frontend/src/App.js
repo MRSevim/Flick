@@ -90,15 +90,7 @@ function AppContent() {
           <Route path="/emailer" element={<Emailer />} />
           <Route
             path="/login"
-            element={
-              user ? (
-                <Navigate to={links.homepage} />
-              ) : (
-                <div className="mt-5">
-                  <Login />
-                </div>
-              )
-            }
+            element={user ? <Navigate to={links.homepage} /> : <Login />}
           />
           <Route
             path="/sign-up/:token?"
