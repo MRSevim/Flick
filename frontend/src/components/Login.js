@@ -45,7 +45,7 @@ export const Login = ({ onHideModal, children, type }) => {
   };
 
   return (
-    <>
+    <div className="container py-5">
       <div className="d-flex justify-content-center">
         <form
           className={classNames({
@@ -153,6 +153,6 @@ export const Login = ({ onHideModal, children, type }) => {
           )}
         </form>
       </div>
-    </>
+    </div>
   );
 };
