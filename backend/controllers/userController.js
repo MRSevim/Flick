@@ -99,12 +99,16 @@ const signupUser = async (req, res, next) => {
 
 // logout user
 const logoutUser = (req, res) => {
-  res.cookie("jwt", "", {
+  let cookieOptions = {
     httpOnly: true,
     expires: new Date(0),
     secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
-    sameSite: "none",
-  });
+    sameSite: "strict",
+  };
+  if (process.env.NODE_ENV !== "development") {
+    cookieOptions.domain = process.env.DOMAIN_BASE;
+  }
+  res.cookie("jwt", "", cookieOptions);
   res.status(200).json({ message: "Logged out successfully" });
 };
 
