@@ -34,15 +34,15 @@ const generateVerificationToken = (userId) => {
 };
 const sendEmail = async (type, email, username, next, info) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // Use `true` for port 465, `false` for all other ports
+    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Use `true` for port 465, `false` for all other ports
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
     },
   });
-
   let subject, html;
   if (type === "email-verification") {
     subject = "Verify your email adress";
@@ -65,7 +65,6 @@ const sendEmail = async (type, email, username, next, info) => {
       subject, // Subject line
       html, // html body
     });
-    console.log(nodemailer.getTestMessageUrl(info));
   } catch (error) {
     next(error);
   }

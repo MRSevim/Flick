@@ -10,10 +10,6 @@ export const ArticleSections = ({ refProp }) => {
   const [sectionsWithId, setSectionsWithId] = useState([]);
   const [darkMode] = useDarkModeContext();
 
-  useEffect(() => {
-    /* console.log(sections, sectionsWithId); */
-  }, [sections, sectionsWithId]);
-
   const setTheParentSectionsWithId = (id, headerNumber, newSections) => {
     let parents = [];
     let smallestHeaderNumber = headerNumber;
@@ -79,7 +75,6 @@ export const ArticleSections = ({ refProp }) => {
           return section;
         }
       });
-      console.log("closing");
 
       setTheParentSectionsWithId(id, headerNumber, closedSections);
 
@@ -87,13 +82,9 @@ export const ArticleSections = ({ refProp }) => {
     }
     //else get it from state or open them with filteredSections function if state does not exist
     else {
-      console.log("opening");
-
       const sectionsInState = sectionsWithId.find((item) => +item.id === +id);
 
       if (sectionsInState !== undefined) {
-        console.log("opened with state");
-
         const newState = [];
 
         sectionsInState.sections.forEach((section, i) => {
@@ -107,7 +98,6 @@ export const ArticleSections = ({ refProp }) => {
         setTheParentSectionsWithId(id, headerNumber, newState);
         setSections(newState);
       } else {
-        console.log("opened without state");
         const filteredSections = sections.map((section, i) => {
           if (+section.id === +id) {
             return { ...section, toggled: !section.toggled };

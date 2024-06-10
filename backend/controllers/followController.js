@@ -12,7 +12,6 @@ const getFollows = async (req, res, next) => {
       throw new Error("User is not found");
     }
     if (!page) {
-      console.log(page);
       res.status(400);
       throw new Error("Please send a page number");
     }

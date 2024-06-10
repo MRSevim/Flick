@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { LoadingRing } from "./LoadingRing";
 import { useVerifyEmailToken } from "../Hooks/EmailHooks/UseVerifyEmailToken";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import links from "../Utils/Links";
 
 export const EmailVerification = () => {
   const { token } = useParams();
+  const hasRun = useRef(false);
   const { verifyEmailToken, isLoading, successMessage, setSuccessMessage } =
     useVerifyEmailToken();
   const [user] = useUserContext();
@@ -17,6 +18,7 @@ export const EmailVerification = () => {
   useEffect(() => {
     const verify = async () => {
       const { response } = await verifyEmailToken(token);
+
       if (response.ok) {
         if (user) {
           setSuccessMessage(
@@ -33,7 +35,11 @@ export const EmailVerification = () => {
         }
       }
     };
-    verify();
+
+    if (!hasRun.current) {
+      hasRun.current = true;
+      verify();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);

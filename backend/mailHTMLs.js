@@ -3,7 +3,7 @@ const htmls = {
     return `<h1>Verification Email</h1>
         <p>Hi ${username},</p>
         <p>You can verify your email address through the button below.</p>
-        <a style="text-decoration: none;"  href="${
+        <a style="text-decoration: none; "  href="${
           process.env.FRONTEND_URL + "/" + token
         }">
         <button style="
