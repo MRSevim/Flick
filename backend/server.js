@@ -26,7 +26,6 @@ const corsOptions = {
 require("dotenv").config();
 
 // middlewares
-app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
