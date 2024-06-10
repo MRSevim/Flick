@@ -27,10 +27,10 @@ require("dotenv").config();
 
 // middlewares
 app.use(express.json());
+app.use(cookieParser());
 // Set middleware of CORS
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Pre-flight handling
-app.use(cookieParser());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
