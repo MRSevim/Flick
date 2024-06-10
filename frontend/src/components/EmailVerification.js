@@ -37,7 +37,7 @@ export const EmailVerification = () => {
     };
 
     if (!hasRun.current) {
-      hasRun.current = true;
+      /* hasRun.current = true; */
       verify();
     }
 
