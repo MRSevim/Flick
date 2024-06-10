@@ -117,10 +117,10 @@ const generateModLink = async (req, res, next) => {
       res.status(404);
       throw new Error("User is not found");
     }
-    /*  if(user.role!=="admin"){
-       res.status(400);
-       throw new Error("You cannot create mod links");
-    } */
+    if (user.role !== "admin") {
+      res.status(400);
+      throw new Error("You cannot create mod links");
+    }
 
     const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
       expiresIn: "30m", // Expiring after 30 minutes
