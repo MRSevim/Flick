@@ -19,7 +19,6 @@ const generateToken = (res, userId, rememberMe) => {
       expiresIn: "30d",
     });
   } else {
-    cookieOptions.expiresIn = 0;
     token = jwt.sign({ userId }, process.env.JWT_SECRET);
   }
 
