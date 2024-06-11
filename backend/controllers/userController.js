@@ -105,9 +105,9 @@ const logoutUser = (req, res) => {
     secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
     sameSite: "strict",
   };
-  if (process.env.NODE_ENV !== "development") {
+  /*   if (process.env.NODE_ENV !== "development") {
     cookieOptions.domain = process.env.DOMAIN_BASE;
-  }
+  } */
   res.cookie("jwt", "", cookieOptions);
   res.status(200).json({ message: "Logged out successfully" });
 };
