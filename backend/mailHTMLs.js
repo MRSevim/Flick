@@ -1,10 +1,12 @@
+const envVariables = require("./envVariables");
+
 const htmls = {
   verificationHTML: (username, token, email) => {
     return `<h1>Verification Email</h1>
         <p>Hi ${username},</p>
         <p>You can verify your email address through the button below.</p>
         <a style="text-decoration: none; "  href="${
-          process.env.FRONTEND_URL + "/" + token
+          envVariables.appUrl + "/" + token
         }">
         <button style="
           cursor:pointer;
@@ -21,7 +23,7 @@ const htmls = {
         </button>
         </a>
         <a style="text-decoration: none;" href="${
-          process.env.FRONTEND_URL +
+          envVariables.appUrl +
           "/emailer?email=" +
           email +
           "&type=send-verification-email"
@@ -40,27 +42,27 @@ const htmls = {
         </button>
         <a/>
   
-        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${envVariables.websiteName}</p>`;
   },
   verifiedHTML: (username) => {
     return `<h1>Account verified</h1>
         <p>Hi ${username},</p>
         <p>This email account has been verified.</p>
-        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${envVariables.websiteName}</p>`;
   },
   passwordReset: (username, password) => {
     return `<h1>Password Reset</h1>
         <p>Hi ${username},</p>
         <p>Your password has been reset. Your new password is:</p>
         <p>${password}</p>
-        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${envVariables.websiteName}</p>`;
   },
   banned: (username, reason) => {
     return `<h1>You are banned</h1>
         <p>Hi ${username},</p>
-        <p>You are banned from using ${process.env.WEBSITE_NAME}. Reason for ban:</p>
+        <p>You are banned from using ${envVariables.websiteName}. Reason for ban:</p>
         <p>${reason}</p>
-        <p>Best regards! – ${process.env.WEBSITE_NAME}</p>`;
+        <p>Best regards! – ${envVariables.websiteName}</p>`;
   },
 };
 module.exports = htmls;

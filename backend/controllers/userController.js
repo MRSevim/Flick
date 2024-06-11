@@ -4,6 +4,7 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const envVariables = require("../envVariables");
 
 const {
   generateToken,
@@ -75,7 +76,7 @@ const signupUser = async (req, res, next) => {
   try {
     let role = "user";
     if (urlToken) {
-      const decoded = jwt.verify(urlToken, process.env.JWT_SECRET);
+      const decoded = jwt.verify(urlToken, envVariables.jwtSecret);
 
       role = decoded.role;
     }
@@ -102,12 +103,9 @@ const logoutUser = (req, res) => {
   let cookieOptions = {
     httpOnly: true,
     expires: new Date(0),
-    secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
+    secure: envVariables.env !== "development", // Use secure cookies in production
     sameSite: "strict",
   };
-  /*   if (process.env.NODE_ENV !== "development") {
-    cookieOptions.domain = process.env.DOMAIN_BASE;
-  } */
   res.cookie("jwt", "", cookieOptions);
   res.status(200).json({ message: "Logged out successfully" });
 };
@@ -126,7 +124,7 @@ const generateModLink = async (req, res, next) => {
       throw new Error("You cannot create mod links");
     }
 
-    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ role: "admin" }, envVariables.jwtSecret, {
       expiresIn: "30m", // Expiring after 30 minutes
     });
     res.status(200).json({ token });

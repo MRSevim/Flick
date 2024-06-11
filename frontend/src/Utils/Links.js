@@ -1,3 +1,4 @@
+import { envVariables } from "./HelperFuncs";
 const links = {
   pms: "/pms?open=false&page=1&type=received",
   tocAndPrivacyPolicy: "/toc-and-privacy-policy",
@@ -20,7 +21,7 @@ const links = {
   },
   linkedIn: "https://www.linkedin.com/in/muhammed-ra%C5%9Fid-sevim/",
   portfolio: "https://mrsevim.github.io/Portfolio/",
-  mail: "mailto: " + process.env.REACT_APP_CONTACT_MAIL,
+  mail: "mailto: " + envVariables.email,
   emailer: (email, type) => {
     const url = email
       ? "/emailer?email=" + email + "&type=" + type

@@ -85,4 +85,13 @@ export const confirmationWrapper = async (
   };
   setConfirmation((prev) => ({ ...prev, functionToRun: call }));
 };
-export const backendUrl = process.env.REACT_APP_BACKEND_URL;
+export const envVariables = {
+  env: process.env.REACT_APP_ENV,
+  email: process.env.REACT_APP_EMAIL,
+  websiteName: process.env.REACT_APP_WEBSITE_NAME,
+  googleId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+  appUrl: process.env.REACT_APP_URL,
+  publicUrl: process.env.PUBLIC_URL,
+};
+export const backendUrl =
+  envVariables.env === "development" ? "" : envVariables.appUrl + "/api";

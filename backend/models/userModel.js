@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-require("dotenv").config();
+const envVariables = require("../envVariables");
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: `${process.env.BACKEND_URL}/default-user.jpg`,
+      default: `${envVariables.appUrl}/default-user.jpg`,
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

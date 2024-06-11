@@ -1,13 +1,14 @@
 const { User } = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
 const crypto = require("crypto");
+const envVariables = require("../envVariables");
 
 // Encryption function
 function encryptText(text) {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(
     "aes-256-cbc",
-    Buffer.from(process.env.ENCRYPTION_KEY),
+    Buffer.from(envVariables.encryptionKey),
     iv
   );
   let encrypted = cipher.update(text, "utf-8", "hex");
@@ -25,7 +26,7 @@ function decryptText(encryptedText) {
   const encrypted = encryptedArray[1];
   const decipher = crypto.createDecipheriv(
     "aes-256-cbc",
-    Buffer.from(process.env.ENCRYPTION_KEY),
+    Buffer.from(envVariables.encryptionKey),
     iv
   );
   let decrypted = decipher.update(encrypted, "hex", "utf-8");

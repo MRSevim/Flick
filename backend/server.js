@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const articleRoutes = require("./routes/articleRoutes");
@@ -11,25 +12,12 @@ const emailRoutes = require("./routes/emailRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const privateMessageRoutes = require("./routes/privateMessageRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
-const cors = require("cors");
+const envVariables = require("./envVariables");
 const app = express();
-
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-  allowedHeaders:
-    "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers,Set-Cookie",
-  credentials: true,
-  maxAge: 7200,
-};
-
-require("dotenv").config();
 
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(corsOptions));
-/* app.options("*", cors(corsOptions)); // Pre-flight handling */
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -49,20 +37,27 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/pms", privateMessageRoutes);
 
-app.get("/", (req, res) => {
-  res.send("APP IS RUNNING!");
-});
+if (envVariables.env === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("APP IS RUNNING!");
+  });
+}
 
 //error middlewares
 app.use(notFound);
 app.use(errorHandler);
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(envVariables.mongoUrı)
   .then(() => {
     // listen for requests
-    app.listen(process.env.PORT, () => {
-      console.log("connected to db & listening on port", process.env.PORT);
+    app.listen(envVariables.port, () => {
+      console.log("connected to db & listening on port", envVariables.port);
     });
   })
   .catch((error) => {

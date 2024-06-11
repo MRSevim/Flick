@@ -2,13 +2,14 @@ const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { generateVerificationToken, sendEmail } = require("../helpers");
 const crypto = require("crypto");
+const envVariables = require("../envVariables");
 
 const verifyEmail = async (req, res, next) => {
   try {
     const token = req.params.token;
 
     if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, envVariables.jwtSecret);
       const user = await User.findById(decoded.userId);
 
       if (!user) {

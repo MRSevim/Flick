@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import links from "../Utils/Links";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 import { addDarkBg } from "../Utils/HelperFuncs";
+import { envVariables } from "../Utils/HelperFuncs";
 
 export const Footer = () => {
   const [darkMode] = useDarkModeContext();
@@ -11,9 +12,7 @@ export const Footer = () => {
     <footer className={"bg-primary " + addDarkBg(darkMode)}>
       <div className="container my-3 d-flex justify-content-between align-items-center">
         <div>
-          <div>
-            © 2024 {process.env.REACT_APP_WEBSITE_NAME}. All rights reserved.
-          </div>
+          <div>© 2024 {envVariables.websiteName}. All rights reserved.</div>
           <Link
             to={links.tocAndPrivacyPolicy}
             className="unstyled-link hovered-link"

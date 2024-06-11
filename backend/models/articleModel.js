@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Tags = require("../Tags");
+const envVariables = require("../envVariables");
 
 const articleSchema = new mongoose.Schema(
   {
@@ -13,7 +14,7 @@ const articleSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: `${process.env.BACKEND_URL}/default-image.png`,
+      default: `${envVariables.appUrl}/default-image.png`,
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
     comments: [

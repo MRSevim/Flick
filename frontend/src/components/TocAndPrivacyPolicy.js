@@ -1,6 +1,7 @@
 import React from "react";
 import links from "../Utils/Links";
 import { Link } from "react-router-dom";
+import { envVariables } from "../Utils/HelperFuncs";
 
 export const TocAndPrivacyPolicy = () => {
   return (
@@ -9,9 +10,9 @@ export const TocAndPrivacyPolicy = () => {
         <h1>Terms of Conditions</h1>
         <p>Last Updated: 10 June 2024</p>
         <p>
-          Welcome to {process.env.REACT_APP_WEBSITE_NAME} (the "Website"). By
-          accessing or using our Website, you agree to comply with and be bound
-          by these Terms of Conditions ("Terms"). Please read them carefully.
+          Welcome to {envVariables.websiteName} (the "Website"). By accessing or
+          using our Website, you agree to comply with and be bound by these
+          Terms of Conditions ("Terms"). Please read them carefully.
         </p>
         <h2>1. Acceptance of Terms</h2>
         <p>
@@ -69,14 +70,13 @@ export const TocAndPrivacyPolicy = () => {
         <h2>5. Intellectual Property</h2>
         <p>
           All content on the Website, including graphics, logos, software, and
-          content supplied by {process.env.REACT_APP_WEBSITE_NAME} or its
-          content suppliers, is the property of{" "}
-          {process.env.REACT_APP_WEBSITE_NAME} and protected by copyright laws.
-          User-generated content, such as articles, remains the property of the
-          respective users. However, by submitting content to the Website, users
-          grant {process.env.REACT_APP_WEBSITE_NAME} a non-exclusive,
-          royalty-free, worldwide license to use, distribute, display, and
-          create derivative works from their content.
+          content supplied by {envVariables.websiteName} or its content
+          suppliers, is the property of {envVariables.websiteName} and protected
+          by copyright laws. User-generated content, such as articles, remains
+          the property of the respective users. However, by submitting content
+          to the Website, users grant {envVariables.websiteName} a
+          non-exclusive, royalty-free, worldwide license to use, distribute,
+          display, and create derivative works from their content.
         </p>
         <h2>6. Dispute Resolution</h2>
         <p>
@@ -116,9 +116,9 @@ export const TocAndPrivacyPolicy = () => {
         <h1>Privacy Policy</h1>
         <p>Last Updated: 10 June 2024</p>
         <p>
-          {process.env.REACT_APP_WEBSITE_NAME} ("we," "us," "our") is committed
-          to protecting your privacy. This Privacy Policy explains how we
-          collect, use, and share your personal information.
+          {envVariables.websiteName} ("we," "us," "our") is committed to
+          protecting your privacy. This Privacy Policy explains how we collect,
+          use, and share your personal information.
         </p>
         <h2>1. Information We Collect</h2>
         <p>
@@ -189,7 +189,7 @@ export const TocAndPrivacyPolicy = () => {
           className="unstyled-link hovered-link"
           target="_blank"
         >
-          {process.env.REACT_APP_CONTACT_MAIL}
+          {envVariables.email}
         </Link>{" "}
       </p>
     </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
+import { envVariables } from "../Utils/HelperFuncs";
 
 export const EditorComponent = ({
   initialContent,
@@ -18,7 +19,7 @@ export const EditorComponent = ({
   return (
     <Editor
       key={editorKey}
-      tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"}
+      tinymceScriptSrc={envVariables.publicUrl + "/tinymce/tinymce.min.js"}
       onInit={(evt, editor) => {
         onInit(editor);
       }}
