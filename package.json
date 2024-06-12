@@ -10,8 +10,5 @@
     "build": "npm install --prefix ./frontend &&npm run build --prefix ./frontend && npm install --prefix ./backend"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "env-cmd": "^10.1.0"
-  }
+  "license": "ISC"
 }
