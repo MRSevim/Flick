@@ -17,7 +17,6 @@
     "bootstrap-icons": "^1.11.3",
     "classnames": "^2.5.1",
     "dompurify": "^3.0.8",
-    "env-cmd": "^10.1.0",
     "fs-extra": "^11.2.0",
     "javascript-time-ago": "^2.5.9",
     "localstorage-slim": "^2.7.0",
@@ -56,6 +55,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "env-cmd": "^10.1.0"
   }
 }
