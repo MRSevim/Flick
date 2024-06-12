@@ -2,7 +2,8 @@ import React from "react";
 import { TagsForm } from "./TagsForm";
 import { EditorComponent } from "./EditorComponent";
 import { DeleteButton } from "./Articles/DeleteButton";
-import defaultImage from "../Utils/images/default-image.png";
+import { ImageComponent } from "./ImageComponent";
+import { RemoveImageButton } from "./Articles/RemoveImageButton";
 
 export const EditorForm = ({
   type,
@@ -22,6 +23,7 @@ export const EditorForm = ({
   editLoading,
   save,
   isDraft,
+  removeImage,
   children,
 }) => {
   return (
@@ -48,8 +50,11 @@ export const EditorForm = ({
       </div>
       <div className="form-group row">
         <div className="col col-12 col-md-3 text-center">
-          <img className="w-100" src={image || defaultImage} alt="featured" />
-          <div>Image preview</div>
+          <ImageComponent src={image} classes={"w-100"} />
+          <div>
+            <div>Image preview</div>
+            {type === "edit" && <RemoveImageButton onClick={removeImage} />}
+          </div>
         </div>
         <label className="col col-12 col-md-9 d-flex flex-column justify-content-center">
           Feauted Image URL:
@@ -59,7 +64,7 @@ export const EditorForm = ({
               setImage(e.target.value);
             }}
             className="form-control"
-            type="url"
+            type="text"
           />
         </label>
       </div>

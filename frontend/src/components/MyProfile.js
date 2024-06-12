@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../Contexts/UserContext";
 import { useUpdateUser } from "../Hooks/UserHooks/UseUpdateUser";
@@ -13,6 +13,8 @@ import { Popup } from "./Popup";
 import { SendVerificationEmailButton } from "./SendVerificationEmailButton";
 import { RoleBanner } from "./RoleBanner";
 import { useGenerateModLink } from "../Hooks/UserHooks/UseGenerateModLink";
+import { envVariables } from "../Utils/HelperFuncs";
+import { RemoveImageButton } from "./Articles/RemoveImageButton";
 
 export const MyProfile = () => {
   const [initialUsername, setInitialUsername] = useState("");
@@ -33,7 +35,9 @@ export const MyProfile = () => {
   const { update, isLoading, successMessage, error, setError } =
     useUpdateUser();
   const [ref, setRef] = useState(null);
+  const [removeImageClicked, setRemoveImageClicked] = useState(false);
   const navigate = useNavigate();
+  const submitButton = useRef(null);
   const {
     generateModLink: generateModLinkCall,
     isLoading: generateModLinkLoading,
@@ -104,6 +108,17 @@ export const MyProfile = () => {
     }
   };
 
+  const removeImage = async () => {
+    setImage(envVariables.defaultUserImage);
+    setRemoveImageClicked(true);
+  };
+  useEffect(() => {
+    if (image === envVariables.defaultUserImage && removeImageClicked) {
+      submitButton.current.click();
+      setRemoveImageClicked(false);
+    }
+  }, [image, removeImageClicked, setRemoveImageClicked]);
+
   const handleDeleteAccount = async () => {
     ref.current.show();
   };
@@ -128,8 +143,11 @@ export const MyProfile = () => {
           <div className="row mb-3 d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
               <ImageComponent src={user?.image} classes={"profile-img"} />
+              <div className="d-flex justify-content-center my-3">
+                <RemoveImageButton onClick={removeImage} />
+              </div>
               <RoleBanner role={user?.role} />
-              <p className="mt-3 text-center">
+              <p className="text-center">
                 You've been a member since {memberSince}
               </p>
               {user?.role === "admin" && (
@@ -193,7 +211,7 @@ export const MyProfile = () => {
                       setImage(e.target.value);
                     }}
                     className="form-control form-control-lg"
-                    type="url"
+                    type="text"
                   />
                 </label>
               </div>
@@ -238,6 +256,7 @@ export const MyProfile = () => {
                 </label>
               </div>
               <input
+                ref={submitButton}
                 disabled={isLoading || user?.isGoogleLogin}
                 className="btn btn-primary wide-input mt-3"
                 type="submit"

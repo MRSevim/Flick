@@ -286,7 +286,11 @@ const updateUserProfile = async (req, res, next) => {
           "Username can only contain English letters (both uppercase and lowercase), numbers, underscores (_), dots (.), and hyphens (-)"
         );
       }
-      if (image && !validator.isURL(image)) {
+      if (
+        image &&
+        !validator.isURL(image) &&
+        image !== envVariables.defaultUserImage
+      ) {
         res.status(400);
         throw new Error("Image Url is not valid");
       }

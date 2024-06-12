@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: `${envVariables.appUrl}/default-user.jpg`,
+      default: envVariables.defaultUserImage,
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

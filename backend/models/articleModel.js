@@ -14,7 +14,7 @@ const articleSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: `${envVariables.appUrl}/default-image.png`,
+      default: envVariables.defaultArticleImage,
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
     comments: [

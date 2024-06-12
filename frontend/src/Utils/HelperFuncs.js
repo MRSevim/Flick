@@ -92,6 +92,9 @@ export const envVariables = {
   googleId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
   appUrl: process.env.REACT_APP_URL,
   publicUrl: process.env.PUBLIC_URL,
+  defaultUserImage: process.env.REACT_APP_DEFAULT_USER_IMAGE,
+  defaultArticleImage: process.env.REACT_APP_DEFAULT_ARTICLE_IMAGE,
 };
+
 export const backendUrl =
   envVariables.env === "development" ? "" : envVariables.appUrl + "/api";

@@ -8,6 +8,7 @@ import { useCreateArticle } from "../../Hooks/ArticleHooks/UseCreateArticle";
 import links from "../../Utils/Links";
 import { EditorForm } from "../EditorForm";
 import { ModalWrapper } from "../ModalWrapper";
+import { envVariables } from "../../Utils/HelperFuncs";
 
 export const CreateAnArticle = () => {
   const localStorageContent = JSON.parse(
@@ -26,7 +27,7 @@ export const CreateAnArticle = () => {
   const [user] = useUserContext();
   const { createArticle, isLoading } = useCreateArticle();
   const [tags, setTags] = useState([]);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(envVariables.defaultArticleImage);
   const [ref, setRef] = useState(null);
 
   const onTagsChange = (newTags) => {

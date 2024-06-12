@@ -7,6 +7,7 @@ import { LoadingRing } from "../LoadingRing";
 import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
 import links from "../../Utils/Links";
 import { EditorForm } from "../EditorForm";
+import { envVariables } from "../../Utils/HelperFuncs";
 
 export const Edit = () => {
   const [searchParams] = useSearchParams();
@@ -26,6 +27,7 @@ export const Edit = () => {
   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
     useDeleteArticle();
   const [image, setImage] = useState("");
+  const [removeImageClicked, setRemoveImageClicked] = useState(false);
 
   const deleteArticle = async () => {
     const response = await deleteArticleCall(id);
@@ -77,7 +79,7 @@ export const Edit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, navigate, user]);
 
-  const save = (draft) => {
+  const save = async (draft) => {
     const edit = async () => {
       setSuccessMessage(null);
       const response = await editArticle(
@@ -101,8 +103,22 @@ export const Edit = () => {
         }
       }
     };
-    edit();
+    await edit();
   };
+  const removeImage = () => {
+    setImage(envVariables.defaultArticleImage);
+    setRemoveImageClicked(true);
+  };
+  useEffect(() => {
+    const check = async () => {
+      if (image === envVariables.defaultArticleImage && removeImageClicked) {
+        await save(isDraft);
+        setRemoveImageClicked(false);
+      }
+    };
+    check();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image, removeImageClicked, setRemoveImageClicked, isDraft]);
   return isLoading ? (
     <div className="container mt-5">
       <LoadingRing />
@@ -125,6 +141,7 @@ export const Edit = () => {
       editLoading={editLoading}
       save={save}
       isDraft={isDraft}
+      removeImage={removeImage}
     >
       {successMessage && (
         <div

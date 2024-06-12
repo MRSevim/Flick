@@ -2,6 +2,7 @@ const { Article, Like } = require("../models/articleModel");
 const { User } = require("../models/userModel");
 const sanitizeHtml = require("sanitize-html");
 const validator = require("validator");
+const envVariables = require("../envVariables");
 
 const allowedTags = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
@@ -293,7 +294,11 @@ const updateArticle = async (req, res, next) => {
         throw new Error("Sanitized inputs can't be empty");
       }
     }
-    if (image && !validator.isURL(image)) {
+    if (
+      image &&
+      !validator.isURL(image) &&
+      image !== envVariables.defaultArticleImage
+    ) {
       res.status(400);
       throw new Error("Featured Image Url is not valid");
     }

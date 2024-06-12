@@ -31,14 +31,22 @@ const generateVerificationToken = (userId) => {
   return token;
 };
 const sendEmail = async (type, email, username, next, info) => {
+  const client = new OAuth2Client(
+    envVariables.emailClientId,
+    envVariables.emailClientSecret
+  );
+  client.setCredentials({ refresh_token: envVariables.emailRefreshToken });
+  const accessToken = client.getAccessToken();
+
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // Use `true` for port 465, `false` for all other ports
+    service: "gmail",
     auth: {
+      type: "OAuth2",
       user: envVariables.email,
-      pass: envVariables.email.emailPw,
+      clientId: envVariables.emailClientId,
+      clientSecret: envVariables.emailClientSecret,
+      refreshToken: envVariables.emailRefreshToken,
+      accessToken,
     },
   });
   let subject, html;

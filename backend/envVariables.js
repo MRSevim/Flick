@@ -7,9 +7,16 @@ const envVariables = {
   mongoUri: process.env.MONGO_URI,
   jwtSecret: process.env.JWT_SECRET,
   email: process.env.REACT_APP_EMAIL,
-  emailPw: process.env.EMAIL_PASSWORD,
+  emailClientId: process.env.EMAIL_CLIENT_ID,
+  emailClientSecret: process.env.EMAIL_CLIENT_SECRET,
+  emailRefreshToken: process.env.EMAIL_REFRESH_TOKEN,
   websiteName: process.env.REACT_APP_WEBSITE_NAME,
   googleId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-  appUrl: process.env.REACT_APP_URL,
+  appUrl:
+    process.env.REACT_APP_ENV === "development"
+      ? process.env.DEVELOPMENT_FRONTEND_URL
+      : process.env.REACT_APP_URL,
+  defaultUserImage: process.env.REACT_APP_DEFAULT_USER_IMAGE,
+  defaultArticleImage: process.env.REACT_APP_DEFAULT_ARTICLE_IMAGE,
 };
 module.exports = envVariables;
