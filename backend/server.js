@@ -53,7 +53,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 mongoose
-  .connect(envVariables.mongoUrı)
+  .connect(envVariables.mongoUri)
   .then(() => {
     // listen for requests
     app.listen(envVariables.port, () => {

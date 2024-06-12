@@ -4,7 +4,7 @@ const envVariables = {
   env: process.env.REACT_APP_ENV,
   encryptionKey: process.env.ENCRYPTION_KEY,
   port: process.env.PORT,
-  mongoUrı: process.env.MONGO_URI,
+  mongoUri: process.env.MONGO_URI,
   jwtSecret: process.env.JWT_SECRET,
   email: process.env.REACT_APP_EMAIL,
   emailPw: process.env.EMAIL_PASSWORD,
