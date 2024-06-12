@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "env-cmd -f ../.env/. react-scripts start",
-    "build": "npm install env-cmd&&env-cmd -f react-scripts build",
+    "build": "react-scripts build",
     "test": "env-cmd -f ../.env/. react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "node ./postinstall.js"
