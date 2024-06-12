@@ -134,7 +134,7 @@ export const User = () => {
                 </button>
               </div>
             )}
-            {(globalUser.role === "admin" || globalUser.role === "mod") && (
+            {(globalUser?.role === "admin" || globalUser?.role === "mod") && (
               <div className="d-flex mt-2 justify-content-center">
                 <button
                   disabled={banLoading}
