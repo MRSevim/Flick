@@ -209,7 +209,11 @@ const createArticle = async (req, res, next) => {
       res.status(400);
       throw new Error("Sanitized inputs can't be empty");
     }
-    if (image && !validator.isURL(image)) {
+    if (
+      image &&
+      !validator.isURL(image) &&
+      image !== envVariables.defaultArticleImage
+    ) {
       res.status(400);
       throw new Error("Featured Image Url is not valid");
     }
