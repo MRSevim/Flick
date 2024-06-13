@@ -134,19 +134,20 @@ export const User = () => {
                 </button>
               </div>
             )}
-            {(globalUser?.role === "admin" || globalUser?.role === "mod") && (
-              <div className="d-flex mt-2 justify-content-center">
-                <button
-                  disabled={banLoading}
-                  onClick={() => {
-                    banUser(user?._id);
-                  }}
-                  className="btn btn-warning"
-                >
-                  Ban
-                </button>
-              </div>
-            )}
+            {(globalUser?.role === "admin" || globalUser?.role === "mod") &&
+              globalUser?._id !== user?._id && (
+                <div className="d-flex mt-2 justify-content-center">
+                  <button
+                    disabled={banLoading}
+                    onClick={() => {
+                      banUser(user?._id);
+                    }}
+                    className="btn btn-warning"
+                  >
+                    Ban
+                  </button>
+                </div>
+              )}
             <div className="mt-2 d-flex justify-content-center">
               <FollowButtons
                 id={user._id}
