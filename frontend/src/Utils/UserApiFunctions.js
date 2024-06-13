@@ -61,7 +61,7 @@ const userApi = {
     return response;
   },
   delete: async (password) => {
-    const response = await fetch("/user/profile", {
+    const response = await fetch(backendUrl + "/user/profile", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -71,7 +71,7 @@ const userApi = {
     return response;
   },
   toggleUserVariables: async (type) => {
-    const response = await fetch("/user/toggle/" + type, {
+    const response = await fetch(backendUrl + "/user/toggle/" + type, {
       method: "PUT",
       credentials: "include",
     });
@@ -79,7 +79,7 @@ const userApi = {
     return response;
   },
   ban: async (id, reasonOfBan) => {
-    const response = await fetch("/user/ban/" + id, {
+    const response = await fetch(backendUrl + "/user/ban/" + id, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -89,7 +89,7 @@ const userApi = {
     return response;
   },
   generateModLink: async () => {
-    const response = await fetch("/user/generate-mod-link", {
+    const response = await fetch(backendUrl + "/user/generate-mod-link", {
       method: "POST",
 
       credentials: "include",
