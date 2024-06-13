@@ -1,8 +1,8 @@
 import React from "react";
 
-export const RemoveImageButton = ({ onClick }) => {
+export const RemoveImageButton = ({ disabled, onClick }) => {
   return (
-    <button onClick={onClick} className="btn btn-secondary">
+    <button disabled={disabled} onClick={onClick} className="btn btn-secondary">
       Remove Image
     </button>
   );

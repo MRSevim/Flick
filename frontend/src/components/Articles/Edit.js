@@ -106,13 +106,22 @@ export const Edit = () => {
     await edit();
   };
   const removeImage = () => {
-    setImage(envVariables.defaultArticleImage);
     setRemoveImageClicked(true);
   };
   useEffect(() => {
     const check = async () => {
-      if (image === envVariables.defaultArticleImage && removeImageClicked) {
-        await save(isDraft);
+      if (removeImageClicked) {
+        const response = await editArticle(
+          null,
+          null,
+          isDraft,
+          id,
+          null,
+          envVariables.defaultArticleImage
+        );
+        if (response.ok) {
+          setImage(envVariables.defaultArticleImage);
+        }
         setRemoveImageClicked(false);
       }
     };

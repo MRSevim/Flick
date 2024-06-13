@@ -95,6 +95,9 @@ export const CreateAnArticle = () => {
     setContent(content);
     localStorage.setItem("editor-content", JSON.stringify(content));
   };
+  const removeImage = () => {
+    setImage(envVariables.defaultArticleImage);
+  };
 
   return (
     <>
@@ -110,6 +113,7 @@ export const CreateAnArticle = () => {
         setContent={setContent}
         isLoading={isLoading}
         saveDraft={saveDraft}
+        removeImage={removeImage}
         submit={submit}
       />
       <ModalWrapper id={"loginModal"} setRef={setRef}>

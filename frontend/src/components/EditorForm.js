@@ -53,7 +53,10 @@ export const EditorForm = ({
           <ImageComponent src={image} classes={"w-100"} />
           <div>
             <div>Image preview</div>
-            {type === "edit" && <RemoveImageButton onClick={removeImage} />}
+            <RemoveImageButton
+              disabled={isLoading || editLoading}
+              onClick={removeImage}
+            />
           </div>
         </div>
         <label className="col col-12 col-md-9 d-flex flex-column justify-content-center">

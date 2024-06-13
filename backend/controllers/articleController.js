@@ -276,7 +276,7 @@ const updateArticle = async (req, res, next) => {
       throw new Error("Please send some input to update");
     }
 
-    if (!title || !content) {
+    if (!title && !content && image !== envVariables.defaultArticleImage) {
       res.status(400);
       throw new Error("Title and content can't be empty");
     }
