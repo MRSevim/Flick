@@ -124,7 +124,7 @@ const generateModLink = async (req, res, next) => {
       throw new Error("You cannot create mod links");
     }
 
-    const token = jwt.sign({ role: "admin" }, envVariables.jwtSecret, {
+    const token = jwt.sign({ role: "mod" }, envVariables.jwtSecret, {
       expiresIn: "30m", // Expiring after 30 minutes
     });
     res.status(200).json({ token });
