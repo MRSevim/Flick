@@ -423,9 +423,15 @@ const banUser = async (req, res, next) => {
       res.status(400);
       throw new Error("Please send a reason of ban");
     }
-    if (targetUser.role === "admin" || targetUser.role === "mod") {
+    if (targetUser.role === "admin") {
       res.status(400);
-      throw new Error("You cannot ban another mod or admin");
+      throw new Error("You cannot ban another admin");
+    }
+    if (targetUser._id.equals(user._id)) {
+      res.status(400);
+      throw new Error(
+        "You cannot ban yourself. Try deleting your account if you wanna remove yourself from the website"
+      );
     }
 
     await User.updateMany(
