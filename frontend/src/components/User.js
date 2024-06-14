@@ -157,7 +157,7 @@ export const User = () => {
             </div>
           </div>
           <div className="col col-12 col-lg-8 d-flex flex-column mt-4 align-items-center">
-            <h2 className="m-0">Top 10 Articles Of The User</h2>
+            <h2 className="m-0">Top 10 Latest Articles Of The User</h2>
             <div className="m-4 mt-2 w-100">
               {user?.mostLikedArticles?.length === 0 && (
                 <div className="text-center row mt-3">
@@ -165,22 +165,7 @@ export const User = () => {
                     <img src={sad} alt="sad" className="w-100 rounded" />
                   </h3>
                   <div className="col col-12 col-lg-8 d-flex flex-column justify-content-center">
-                    <h3 className="m-0">
-                      They do not have any liked articles yet.
-                    </h3>
-                    <h5>
-                      <p className="my-3">
-                        <button className="btn btn-warning btn-l">
-                          <Link
-                            className="unstyled-link text-info"
-                            to={links.allArticles(user._id)}
-                          >
-                            Check out all of their articles!
-                          </Link>
-                        </button>
-                      </p>
-                      Who knows, You might end up liking some of them.
-                    </h5>
+                    <h3 className="m-0">They do not have any articles yet.</h3>
                   </div>
                 </div>
               )}

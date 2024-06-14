@@ -24,6 +24,7 @@ export const EditorForm = ({
   save,
   isDraft,
   removeImage,
+  removeButtonVisible,
   children,
 }) => {
   return (
@@ -54,6 +55,7 @@ export const EditorForm = ({
           <div>
             <div>Image preview</div>
             <RemoveImageButton
+              visible={removeButtonVisible}
               disabled={isLoading || editLoading}
               onClick={removeImage}
             />

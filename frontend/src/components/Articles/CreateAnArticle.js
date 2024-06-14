@@ -102,6 +102,7 @@ export const CreateAnArticle = () => {
   return (
     <>
       <EditorForm
+        removeButtonVisible={image !== envVariables.defaultArticleImage}
         type={"create"}
         title={title}
         setTitle={setTitle}

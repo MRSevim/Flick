@@ -52,7 +52,11 @@ export const Article = () => {
           ...prev,
           info: { ...prev.info, reason: "" },
         }));
-        navigate(links.allArticles(user._id));
+        if (ownArticle) {
+          navigate(links.allArticles(user._id));
+        } else {
+          navigate(links.homepage);
+        }
       }
     );
   };

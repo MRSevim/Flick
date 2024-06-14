@@ -211,7 +211,7 @@ const deleteComment = async (req, res, next) => {
         action: "comment deletion",
         target: article._id,
       };
-      await User.findByIdAndUpdate(article.user, {
+      await User.findByIdAndUpdate(commentUser._id, {
         $push: { notifications: notification },
       });
     }

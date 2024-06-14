@@ -43,7 +43,10 @@ export const createMuiTheme = (darkMode) => {
         styleOverrides: {
           root: {
             "& label": {
-              color: "#000",
+              color: darkMode ? " var(--color-info)" : "#000",
+              backgroundColor: "var(--color-primary)",
+              padding: "0 5px 0",
+              borderRadius: "4px",
             },
             "& label.Mui-focused": {
               color: "var(--color-info)",

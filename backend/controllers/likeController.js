@@ -1,5 +1,5 @@
 const { Article, Like } = require("../models/articleModel");
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 const { DateTime } = require("luxon");
 
 //get most liked posts
@@ -189,7 +189,7 @@ const like = async (req, res, next) => {
       }
     }
     await notifiedUser.save();
-    const updatedArticle = await article.save();
+    await article.save();
 
     res.status(200).json({ message, id: article._id });
   } catch (error) {

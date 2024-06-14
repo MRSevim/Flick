@@ -134,6 +134,7 @@ export const Edit = () => {
     </div>
   ) : (
     <EditorForm
+      removeButtonVisible={image !== envVariables.defaultArticleImage}
       type={"edit"}
       title={title}
       setTitle={setTitle}
