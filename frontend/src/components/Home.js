@@ -68,9 +68,10 @@ export const Home = () => {
               <div className="accordion-body">
                 You can read, create, edit and delete articles, like articles,
                 follow each other, comment on articles, get notified on actions,
-                see most liked articles. However, to perform actions other than
-                reading, you must have an account. You can create an account or
-                login via your Google account.
+                see most liked articles, send and receive private messages.
+                However, to perform actions other than reading, you must have an
+                account. You can create an account or login via your Google
+                account.
               </div>
             </div>
           </div>
