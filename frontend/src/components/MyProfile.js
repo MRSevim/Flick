@@ -145,7 +145,7 @@ export const MyProfile = () => {
               <ImageComponent src={user?.image} classes={"profile-img"} />
               <div className="d-flex justify-content-center my-3">
                 <RemoveImageButton
-                  removeButtonVisible={image !== envVariables.defaultUserImage}
+                  visible={image !== envVariables.defaultUserImage}
                   disabled={isLoading}
                   onClick={removeImage}
                 />
