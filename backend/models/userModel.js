@@ -221,6 +221,13 @@ userSchema.statics.login = async function (res, username, password) {
 };
 
 userSchema.statics.googleLogin = async function (res, name, email, picture) {
+  const banned = await Banned.findOne({ email });
+
+  if (banned) {
+    res.status(400);
+    throw new Error("You are banned from using the website");
+  }
+
   await this.findOneAndUpdate(
     { email, isGoogleLogin: true },
     { username: name, image: picture },
