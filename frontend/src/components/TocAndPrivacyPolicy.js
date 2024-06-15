@@ -8,7 +8,7 @@ export const TocAndPrivacyPolicy = () => {
     <div class="container py-3">
       <div>
         <h1>Terms of Conditions</h1>
-        <p>Last Updated: 10 June 2024</p>
+        <p>Last Updated: 15 June 2024</p>
         <p>
           Welcome to {envVariables.websiteName} (the "Website"). By accessing or
           using our Website, you agree to comply with and be bound by these
@@ -49,6 +49,11 @@ export const TocAndPrivacyPolicy = () => {
           <li>
             Impersonate any person or entity, or falsely state or otherwise
             misrepresent your affiliation with a person or entity.
+          </li>
+          <li>
+            Post or transmit content that is not written in English. Non-English
+            content is allowed if it serves a specific purpose, such as quoting
+            something in another language to make a point.
           </li>
           <li>
             Post or transmit any unsolicited advertising, promotional materials,
