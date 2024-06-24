@@ -12,7 +12,10 @@ export const Footer = () => {
     <footer className={"bg-primary " + addDarkBg(darkMode)}>
       <div className="container my-3 d-flex justify-content-between align-items-center">
         <div>
-          <div>© 2024 {envVariables.websiteName}. All rights reserved.</div>
+          <div>
+            © 2024-{new Date().getFullYear()} {envVariables.websiteName}. All
+            rights reserved.
+          </div>
           <Link
             to={links.tocAndPrivacyPolicy}
             className="unstyled-link hovered-link"

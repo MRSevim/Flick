@@ -32,10 +32,11 @@ export const About = () => {
 
       <h1>About</h1>
       <p>
-        Hello everyone, first of all, thank you for visiting the website. I have
-        developed/am still developing the website with the purpose of helping
-        users express their thought and emotions in written format. I have
-        referred the written media as "articles" throughout the website.
+        Hello everyone, first of all, thank you for visiting the website. I
+        created this website with the purpose of helping users express their
+        thought and emotions in written format. Writing and reading are some of
+        the most meaningful activities that a human being can engage with. To
+        that end, this website was created.
       </p>
       <h3>About the developer</h3>
       <p>
@@ -63,24 +64,24 @@ export const About = () => {
       </p>
       <h3>Mission</h3>
       <p>
-        My purpose to this website is to provide people an option where they can
-        write and share their writings. Writing can be quite meaningful and you
-        can tap into your consciousness. To provide a platform for that activity
-        is also meaningful. Therefore the mission of the website is to provide
-        that meaning by stimulating production of written content.
+        My purpose of this website is to provide people an area where they can
+        write and share their writings. Writing can be quite engaging and you
+        can tap into your consciousness. Mission of the website is the allowance
+        of free writing and reading.
       </p>
       <h3>Values</h3>
       <p>
-        Freedom of speech is one value of the website. I believe as long as it
-        is not personal insults or swears, people should be able to openly speak
-        their thoughts and feelings. It is important that those expressions are
-        not censored, irrespective of whether one agrees with them or not.
+        Freedom of speech is one value of the website. I believe, as long as it
+        is not personal insults, swears, threats or similar, people should be
+        able to openly speak their thoughts and feelings. It is important that
+        those expressions are not censored, irrespective of whether one agrees
+        with them or not.
       </p>
       <p>
         Another value is encouragement to write. I believe people should
         encourage and support each other to write. Evet some simple phrases such
-        as "good job" or "nice article" can be uplifting. So simple and more
-        complex and sophisticated form of encouragements are welcome.
+        as "good job" or "nice article" can go a long way in uplifting one's
+        mindstate. Therefore any form of encouragement is, ehm, encouraged.
       </p>
     </div>
   );
