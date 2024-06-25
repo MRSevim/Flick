@@ -135,11 +135,11 @@ export const MyProfile = () => {
   return (
     <>
       {getLoading ? (
-        <div className="container mt-5 ">
+        <div className="container">
           <LoadingRing />
         </div>
       ) : (
-        <div className="container mt-5 pb-4">
+        <div className="container">
           <div className="row mb-3 d-flex justify-content-center align-items-start">
             <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
               <ImageComponent src={user?.image} classes={"profile-img"} />

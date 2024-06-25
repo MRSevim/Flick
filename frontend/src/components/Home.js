@@ -21,7 +21,7 @@ export const Home = () => {
   }, [darkMode, darkModeString]);
 
   return (
-    <div className="pb-5">
+    <div>
       <div className="hero-image">
         <div className="container h-100">
           <div className="pt-5 text-white d-flex flex-column justify-content-center align-items-center h-100">

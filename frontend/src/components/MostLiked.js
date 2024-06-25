@@ -28,7 +28,7 @@ export const MostLiked = () => {
   }, [time, setArticles]);
 
   return (
-    <div className="container mt-5">
+    <div className="container">
       <section className="row g-3 pb-3">
         <div className="col col-12 text-center">
           <div className=" d-flex justify-content-center">

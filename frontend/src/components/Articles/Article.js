@@ -12,8 +12,10 @@ import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
 import { SimilarArticles } from "./SimilarArticles";
+import { Helmet } from "react-helmet";
 import { confirmationWrapper } from "../../Utils/HelperFuncs";
 import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
+import { extractExcerptFromHTML } from "../../Utils/HelperFuncs";
 
 export const Article = () => {
   const [user] = useUserContext();
@@ -91,7 +93,7 @@ export const Article = () => {
   }, [article, user, setMyArticle]);
 
   return (
-    <div className="container mt-3 pb-4">
+    <div className="container">
       <div className="row justify-content-center">
         {article && (
           <div className="col col-12 col-lg-2">
@@ -101,12 +103,21 @@ export const Article = () => {
         )}
         {isLoading ? (
           <div className="article col">
-            <div className="container mt-5 ">
+            <div className="container">
               <LoadingRing />
             </div>
           </div>
         ) : article ? (
-          <div className="article col col-12 col-lg-8 mt-2">
+          <div className="article col col-12 col-lg-8">
+            <Helmet>
+              <title>{article?.title}</title>
+              <meta
+                name="description"
+                content={extractExcerptFromHTML(article?.content)}
+              />
+              <meta name="keywords" content={article?.tags?.join(", ")} />
+              <meta name="author" content={user?.username}></meta>
+            </Helmet>
             <ImageComponent src={article.image} />
             <h1 className="article-title">{article.title}</h1>
             <div className="my-2">

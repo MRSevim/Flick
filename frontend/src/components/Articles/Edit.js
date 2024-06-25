@@ -129,7 +129,7 @@ export const Edit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image, removeImageClicked, setRemoveImageClicked, isDraft]);
   return isLoading ? (
-    <div className="container mt-5">
+    <div className="container">
       <LoadingRing />
     </div>
   ) : (

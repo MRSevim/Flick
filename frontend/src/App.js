@@ -11,6 +11,7 @@ import { GlobalErrorProvider } from "./Contexts/GlobalErrorContext.js";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Articles } from "./components/Articles/Articles.js";
 import { Edit } from "./components/Articles/Edit.js";
+import { useLocation } from "react-router-dom";
 import { GlobalError } from "./components/GlobalError.js";
 import { useUserContext } from "./Contexts/UserContext.js";
 import { Search } from "./components/Search.js";
@@ -66,16 +67,26 @@ function App() {
 }
 
 function AppContent() {
-  const [user] = useUserContext();
   const [darkMode] = useDarkModeContext();
   const theme = createMuiTheme(darkMode);
 
   return (
     <ThemeProvider theme={theme}>
       <Router basename="/">
-        <GlobalError></GlobalError>
-        <Header></Header>
-        <Confirmation></Confirmation>
+        <RouterContent />
+      </Router>
+    </ThemeProvider>
+  );
+}
+function RouterContent() {
+  const [user] = useUserContext();
+  const location = useLocation();
+  return (
+    <>
+      <GlobalError></GlobalError>
+      <Header></Header>
+      <Confirmation></Confirmation>
+      <div className={"pb-5 " + (location.pathname !== "/" && "pt-4")}>
         <Routes>
           {" "}
           <Route path="/most-liked" element={<MostLiked />} />
@@ -124,9 +135,9 @@ function AppContent() {
           <Route path="/:token" element={<EmailVerification />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <Footer></Footer>
-      </Router>
-    </ThemeProvider>
+      </div>
+      <Footer></Footer>
+    </>
   );
 }
 export default App;

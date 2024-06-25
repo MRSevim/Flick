@@ -35,7 +35,7 @@ export const Search = () => {
   }, [query]);
 
   return (
-    <div className="container mt-5">
+    <div className="container">
       <AdvancedSearch
         passLoading={(state) => {
           setAdvancedLoading(state);

@@ -49,6 +49,12 @@ export const getExcerpt = (content, wordLimit = 100) => {
 
   return truncatedHTML;
 };
+export const extractExcerptFromHTML = (html) => {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  const text = div.textContent || div.innerText || "";
+  return text.substring(0, 155);
+};
 
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

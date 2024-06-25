@@ -36,7 +36,7 @@ export const Follows = ({ type }) => {
   };
 
   return (
-    <div className="container mt-3">
+    <div className="container">
       {isLoading ? (
         <LoadingRing />
       ) : (

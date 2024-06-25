@@ -29,7 +29,7 @@ export const Emailer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailFromUrl, setEmail]);
   return (
-    <div className="container mt-5 d-flex justify-content-center">
+    <div className="container d-flex justify-content-center">
       <form
         className={
           "bg-primary p-5 border border-3 w-90 wide-input rounded " +

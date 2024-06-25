@@ -163,7 +163,7 @@ export const Pms = () => {
   }, [open, ref, setSearchParams, searchParams]);
   return (
     <>
-      <div className="pt-5">
+      <div>
         <div className="container">
           <div className="row">
             <div className="col col-12 col-lg-3 text-center">

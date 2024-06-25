@@ -4,7 +4,7 @@ import links from "../Utils/Links";
 
 export const About = () => {
   return (
-    <div className="container mt-5 position-relative">
+    <div className="container position-relative">
       <svg
         className="position-absolute top-0 end-0 z-n1"
         xmlns="http://www.w3.org/2000/svg"

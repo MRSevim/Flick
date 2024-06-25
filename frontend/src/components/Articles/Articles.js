@@ -180,11 +180,11 @@ export const Articles = ({ isDraft }) => {
   }, [myArticles, isDraft, navigate, id]);
 
   return isLoading ? (
-    <div className="container mt-5 ">
+    <div className="container">
       <LoadingRing />
     </div>
   ) : localUser && articles ? (
-    <div className="container mt-5 pb-4">
+    <div className="container">
       <h1 className="text-center"> All of {localUser.username}'s Articles</h1>
       {myArticles && (
         <>

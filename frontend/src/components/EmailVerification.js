@@ -40,7 +40,7 @@ export const EmailVerification = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
   return (
-    <div className="container mt-5 d-flex justify-content-center">
+    <div className="container d-flex justify-content-center">
       <div>
         {isLoading && <LoadingRing></LoadingRing>}
         {successMessage && <Popup message={successMessage} type="success" />}

@@ -28,7 +28,7 @@ export const EditorForm = ({
   children,
 }) => {
   return (
-    <div className="container mt-4 pb-4">
+    <div className="container">
       <div className="form-group row my-3 align-items-center">
         <label htmlFor="title" className="col-sm-1 text-center text-sm-end">
           Title:

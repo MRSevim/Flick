@@ -2,7 +2,7 @@ import React from "react";
 
 export const NotFound = () => {
   return (
-    <div className="container pt-5 text-center h2">
+    <div className="container text-center h2">
       <div className="d-flex justify-content-center">
         <div className="not-found-img"></div>
       </div>

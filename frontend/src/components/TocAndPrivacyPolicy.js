@@ -5,7 +5,7 @@ import { envVariables } from "../Utils/HelperFuncs";
 
 export const TocAndPrivacyPolicy = () => {
   return (
-    <div class="container py-3">
+    <div class="container">
       <div>
         <h1>Terms of Conditions</h1>
         <p>Last Updated: 15 June 2024</p>
