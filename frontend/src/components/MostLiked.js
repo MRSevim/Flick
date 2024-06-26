@@ -6,7 +6,7 @@ import { LoadingRing } from "./LoadingRing";
 import links from "../Utils/Links";
 import empty from "../Utils/images/empty-most-liked.jpg";
 import { LikeButton } from "./Articles/LikeButton";
-import { addDarkBg, getExcerpt } from "../Utils/HelperFuncs";
+import { addDarkBg, extractExcerptFromHTML } from "../Utils/HelperFuncs";
 import { ImageComponent } from "./ImageComponent";
 import { useDarkModeContext } from "../Contexts/DarkModeContext";
 
@@ -122,7 +122,9 @@ export const MostLiked = () => {
                       <p
                         className="article-card-inner-html"
                         dangerouslySetInnerHTML={{
-                          __html: getExcerpt(article.content.trim()),
+                          __html: extractExcerptFromHTML(
+                            article.content.trim()
+                          ),
                         }}
                       ></p>
 

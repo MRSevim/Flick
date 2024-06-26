@@ -1,59 +1,10 @@
-export const getExcerpt = (content, wordLimit = 100) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = content;
-
-  let wordCount = 0;
-  let reachedWordLimit = false;
-
-  const traverseNodes = (node) => {
-    if (reachedWordLimit) return "";
-
-    if (node.nodeType === Node.TEXT_NODE) {
-      const words = node.textContent
-        .split(/\s+/)
-        .filter((word) => word.length > 0);
-      if (wordCount + words.length > wordLimit) {
-        const remainingWords = wordLimit - wordCount;
-        const truncatedText = words.slice(0, remainingWords).join(" ");
-        wordCount = wordLimit;
-        reachedWordLimit = true;
-        return truncatedText;
-      } else {
-        wordCount += words.length;
-        return node.textContent;
-      }
-    }
-
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      let openingTag = `<${node.nodeName.toLowerCase()}`;
-      for (const attr of node.attributes) {
-        openingTag += ` ${attr.name}="${attr.value}"`;
-      }
-      openingTag += ">";
-
-      let innerContent = "";
-      for (const child of node.childNodes) {
-        innerContent += traverseNodes(child);
-        if (reachedWordLimit) break;
-      }
-
-      let closingTag = `</${node.nodeName.toLowerCase()}>`;
-
-      return openingTag + innerContent + closingTag;
-    }
-
-    return "";
-  };
-
-  const truncatedHTML = traverseNodes(tempElement);
-
-  return truncatedHTML;
-};
 export const extractExcerptFromHTML = (html) => {
   const div = document.createElement("div");
   div.innerHTML = html;
   const text = div.textContent || div.innerText || "";
-  return text.substring(0, 155);
+  const words = text.split(/\s+/); // Split the text by whitespace
+  const cutWords = words.slice(0, 100).join(" ");
+  return cutWords;
 };
 
 export function capitalizeFirstLetter(string) {

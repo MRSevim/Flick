@@ -12,10 +12,8 @@ import { LoadingRing } from "../LoadingRing";
 import links from "../../Utils/Links";
 import { ImageComponent } from "../ImageComponent";
 import { SimilarArticles } from "./SimilarArticles";
-import { Helmet } from "react-helmet";
 import { confirmationWrapper } from "../../Utils/HelperFuncs";
 import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
-import { extractExcerptFromHTML } from "../../Utils/HelperFuncs";
 
 export const Article = () => {
   const [user] = useUserContext();
@@ -109,15 +107,6 @@ export const Article = () => {
           </div>
         ) : article ? (
           <div className="article col col-12 col-lg-8">
-            <Helmet>
-              <title>{article?.title}</title>
-              <meta
-                name="description"
-                content={extractExcerptFromHTML(article?.content)}
-              />
-              <meta name="keywords" content={article?.tags?.join(", ")} />
-              <meta name="author" content={user?.username}></meta>
-            </Helmet>
             <ImageComponent src={article.image} />
             <h1 className="article-title">{article.title}</h1>
             <div className="my-2">

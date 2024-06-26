@@ -22,6 +22,10 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
+//Using prerender for google crawlers (SEO), Remove if you switch to nextjs
+app.use(
+  require("prerender-node").set("prerenderToken", envVariables.prerenderToken)
+);
 
 //Images
 app.use(express.static("images"));

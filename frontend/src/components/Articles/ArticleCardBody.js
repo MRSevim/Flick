@@ -1,7 +1,7 @@
 import React from "react";
 import links from "../../Utils/Links";
 import { Link } from "react-router-dom";
-import { getExcerpt } from "../../Utils/HelperFuncs";
+import { extractExcerptFromHTML } from "../../Utils/HelperFuncs";
 
 export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
   return (
@@ -28,7 +28,7 @@ export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
         <p
           className="card-text article-card-inner-html"
           dangerouslySetInnerHTML={{
-            __html: getExcerpt(article.content.trim()),
+            __html: extractExcerptFromHTML(article.content.trim()),
           }}
         ></p>
 
