@@ -3,7 +3,7 @@ require("dotenv").config({ path: "../.env" });
 const envVariables = {
   env: process.env.REACT_APP_ENV,
   encryptionKey: process.env.ENCRYPTION_KEY,
-  port: process.env.BACKEND_PORT,
+  port: process.env.PORT,
   prerenderToken: process.env.PRERENDER_TOKEN,
   mongoUri: process.env.MONGO_URI,
   jwtSecret: process.env.JWT_SECRET,
