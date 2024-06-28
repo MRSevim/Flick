@@ -6,6 +6,8 @@ These are the codes for the website [Flick Articles](https://www.flickarticles.c
 
 If you want to run this app on your machine, do the following steps
 
+- Download or clone the repository and Create .env file in root of the directory.
+- Write PORT=5000 in the .env file and save (You can change the port if you want)
 - In your development terminal run:
 
 ```bash
@@ -14,9 +16,9 @@ npm install
 npm run dev
 ```
 
-Then your backend should be live at localhost:5000
+Then your backend should be live at localhost:5000 (or in your port in .env file)
 
--In a seperate terminal, from root directory run:
+- In a seperate terminal, from root directory run:
 
 ```bash
 cd ./frontend
