@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Then your backend should be live at localhost:5000 (or in your port in .env file)
+Then your backend should be live at localhost:5000 (or at the port number in .env file)
 
 - In a seperate terminal, from root directory run:
 
