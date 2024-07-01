@@ -1,11 +1,10 @@
-"use client";
+/* "use client"; */
 import Link from "next/link";
 import links from "@/utils/Links";
 import { useDarkModeContext } from "@/Contexts/DarkModeContext";
-import { useEffect } from "react";
 
 export default function Home() {
-  const [darkMode] = useDarkModeContext();
+  /*   const [darkMode] = useDarkModeContext();
   let darkModeString = darkMode && " bg-dark-primary text-white ";
   let accordionItemClasses = "accordion-item " + darkModeString;
 
@@ -19,7 +18,7 @@ export default function Home() {
         button.classList.remove("text-white");
       }
     });
-  }, [darkMode, darkModeString]);
+  }, [darkMode, darkModeString]); */
   return (
     <main>
       <div>
@@ -48,7 +47,7 @@ export default function Home() {
         <div className="container mt-5">
           <h1 className="text-center"> Some Questions You Might Ask</h1>
           <div className="accordion" id="accordionFlick">
-            <div className={accordionItemClasses}>
+            <div /* className={accordionItemClasses} */>
               <h2 className="accordion-header">
                 <button
                   className="accordion-button"
@@ -76,7 +75,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className={accordionItemClasses}>
+            <div /* className={accordionItemClasses} */>
               <h2 className="accordion-header">
                 <button
                   className="accordion-button collapsed"
@@ -102,7 +101,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className={accordionItemClasses}>
+            <div /* className={accordionItemClasses} */>
               <h2 className="accordion-header">
                 <button
                   className="accordion-button collapsed"

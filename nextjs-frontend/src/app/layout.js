@@ -1,8 +1,8 @@
 import { DarkModeProvider } from "@/Contexts/DarkModeContext";
 import "@/../node_modules/bootstrap/dist/css/bootstrap.css";
-/* import "@/../node_modules/bootstrap/dist/js/bootstrap.bundle"; */
 import "@/../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.scss";
+import ClientInitializer from "@/Components/ClientInitializer";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <DarkModeProvider>
         <body>{children}</body>
+        <ClientInitializer />
       </DarkModeProvider>
     </html>
   );
