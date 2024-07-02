@@ -1,7 +1,7 @@
 /* "use client"; */
 import Link from "next/link";
 import links from "@/utils/Links";
-import { useDarkModeContext } from "@/Contexts/DarkModeContext";
+/* import { useDarkModeContext } from "@/contexts/DarkModeContext"; */
 
 export default function Home() {
   /*   const [darkMode] = useDarkModeContext();

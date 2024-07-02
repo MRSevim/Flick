@@ -2,24 +2,29 @@
 import { createContext, useState, useContext, useEffect } from "react";
 
 const DarkModeContext = createContext(null);
+let prefersDarkMode, darkModeFromStorage;
 
-let prefersDarkMode =
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
+if (typeof window !== "undefined") {
+  prefersDarkMode =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
 
 export const useDarkModeContext = () => {
   return useContext(DarkModeContext);
 };
-
-let darkModeFromStorage = localStorage.getItem("darkMode") === "true";
-if (darkModeFromStorage) {
-  document.body.classList.add("dark");
+if (typeof window !== "undefined") {
+  darkModeFromStorage = localStorage.getItem("darkMode") === "true";
+  if (darkModeFromStorage) {
+    document.body.classList.add("dark");
+  }
+  document.body.classList.remove("hidden");
 }
 
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(darkModeFromStorage);
   useEffect(() => {
-    if (prefersDarkMode && localStorage.getItem("darkMode") === null) {
+    if (prefersDarkMode && localStorage?.getItem("darkMode") === null) {
       setDarkMode(true);
     }
   }, [setDarkMode]);

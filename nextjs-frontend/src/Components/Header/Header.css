@@ -1,0 +1,35 @@
+.user-menu-container {
+  width: 220px;
+  z-index: 100;
+  right: 0;
+}
+@media (max-width: 400px) {
+  .user-menu-container {
+    right: calc(-110px + 50%);
+  }
+}
+/*Notifications*/
+.menu-container {
+  width: 325px;
+  z-index: 200;
+  max-height: 300px;
+  right: 0;
+}
+.unread-notification,
+.usermenu-link:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.unread-nofication-dark-mode {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+@media (max-width: 750px) {
+  .menu-container {
+    right: calc(-162.5px - 100%);
+  }
+}
+.menu-clickable:hover {
+  font-weight: 600;
+}
+.negative-margin-right {
+  margin-right: -6px !important ;
+}

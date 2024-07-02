@@ -4,12 +4,15 @@ import ls from "localstorage-slim";
 
 const UserContext = createContext(null);
 
-const userLocalStorage = JSON.parse(ls.get("user"));
+let userLocalStorage, userSessionStorage;
 
-const userSessionStorage = JSON.parse(sessionStorage.getItem("user"))
-  ? JSON.parse(sessionStorage.getItem("user"))
-  : undefined;
+if (typeof window !== "undefined") {
+  userLocalStorage = JSON.parse(ls.get("user"));
 
+  userSessionStorage = JSON.parse(sessionStorage.getItem("user"))
+    ? JSON.parse(sessionStorage.getItem("user"))
+    : undefined;
+}
 export const useUserContext = () => {
   return useContext(UserContext);
 };
