@@ -19,7 +19,7 @@ export const Header = () => {
     });
   }; */
   return (
-    <header className={"bg-primary p-3 " /* + addDarkBg(darkMode) */}>
+    <header className={"bg-primary p-3 " /*  + addDarkBg(darkMode) */}>
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <h2 className="d-flex flex-column pe-lg-3 mb-2 mb-lg-0">
