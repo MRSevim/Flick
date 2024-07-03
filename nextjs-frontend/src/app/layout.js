@@ -10,6 +10,10 @@ import { ConfirmationErrorProvider } from "@/contexts/ConfirmationErrorContext";
 import { ConfirmationProvider } from "@/contexts/ConfirmationContext";
 import { ThemeWrapper } from "./ThemeWrapper";
 import { Header } from "@/components/Header/Header";
+import { Nunito } from "next/font/google";
+
+const nunito = Nunito({ subsets: ["latin"] });
+
 export const metadata = {
   title: {
     template: "%s | Flick Articles",
@@ -55,7 +59,7 @@ export default function RootLayout({ children }) {
 
 function AppContent({ children }) {
   return (
-    <body className="hidden" suppressHydrationWarning>
+    <body className={"hidden " + nunito.className} suppressHydrationWarning>
       <Header />
       <ThemeWrapper>
         {children}

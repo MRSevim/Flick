@@ -1,7 +1,13 @@
 /* "use client"; */
 import Link from "next/link";
 import links from "@/utils/Links";
+import { Libre_Baskerville } from "next/font/google";
 /* import { useDarkModeContext } from "@/contexts/DarkModeContext"; */
+
+const libre_baskerville = Libre_Baskerville({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+});
 
 export default function Home() {
   /*   const [darkMode] = useDarkModeContext();
@@ -26,7 +32,12 @@ export default function Home() {
           <div className="container h-100">
             <div className="pt-5 text-white d-flex flex-column justify-content-center align-items-center h-100">
               <div className="mb-5 text-center">
-                <h1 className="mb-3 fw-bold hero-3d display-5 font-secondary">
+                <h1
+                  className={
+                    "mb-3 fw-bold hero-3d display-5 " +
+                    libre_baskerville.className
+                  }
+                >
                   Find meaning in writing
                 </h1>
                 <h4>A Website to consume and produce articles...</h4>
