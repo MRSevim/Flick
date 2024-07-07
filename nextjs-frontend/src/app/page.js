@@ -2,13 +2,15 @@
 import Link from "next/link";
 import links from "@/utils/Links";
 import { Libre_Baskerville } from "next/font/google";
+import { envVariables } from "@/utils/HelperFuncs";
+import { GoogleLogin } from "@react-oauth/google";
+
 /* import { useDarkModeContext } from "@/contexts/DarkModeContext"; */
 
 const libre_baskerville = Libre_Baskerville({
   weight: ["400", "700"],
   subsets: ["latin"],
 });
-
 export default function Home() {
   /*   const [darkMode] = useDarkModeContext();
   let darkModeString = darkMode && " bg-dark-primary text-white ";
@@ -25,6 +27,7 @@ export default function Home() {
       }
     });
   }, [darkMode, darkModeString]); */
+
   return (
     <main>
       <div>

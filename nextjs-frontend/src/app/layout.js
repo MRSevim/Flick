@@ -8,9 +8,11 @@ import { RefetchForPmIconProvider } from "@/contexts/RefetchForPmIcon";
 import { GlobalErrorProvider } from "@/contexts/GlobalErrorContext";
 import { ConfirmationErrorProvider } from "@/contexts/ConfirmationErrorContext";
 import { ConfirmationProvider } from "@/contexts/ConfirmationContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeWrapper } from "./ThemeWrapper";
 import { Header } from "@/components/Header/Header";
 import { Nunito } from "next/font/google";
+import { envVariables } from "@/utils/HelperFuncs";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -40,19 +42,21 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <UserProvider>
-        <RefetchForPmIconProvider>
-          <GlobalErrorProvider>
-            <DarkModeProvider>
-              <ConfirmationErrorProvider>
-                <ConfirmationProvider>
-                  <AppContent>{children}</AppContent>
-                </ConfirmationProvider>
-              </ConfirmationErrorProvider>
-            </DarkModeProvider>
-          </GlobalErrorProvider>
-        </RefetchForPmIconProvider>
-      </UserProvider>
+      <GoogleOAuthProvider clientId={envVariables.googleId}>
+        <UserProvider>
+          <RefetchForPmIconProvider>
+            <GlobalErrorProvider>
+              <DarkModeProvider>
+                <ConfirmationErrorProvider>
+                  <ConfirmationProvider>
+                    <AppContent>{children}</AppContent>
+                  </ConfirmationProvider>
+                </ConfirmationErrorProvider>
+              </DarkModeProvider>
+            </GlobalErrorProvider>
+          </RefetchForPmIconProvider>
+        </UserProvider>
+      </GoogleOAuthProvider>
     </html>
   );
 }

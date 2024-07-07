@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
-import dotenv from "dotenv";
-dotenv.config({ path: "../.env" });
-const nextConfig = {};
+const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: process.env.BACKEND_URL + "/api/:path*",
+      },
+    ];
+  },
+};
 
 export default nextConfig;
