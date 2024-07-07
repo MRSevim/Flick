@@ -43,7 +43,6 @@ export const confirmationWrapper = async (
   setConfirmation((prev) => ({ ...prev, functionToRun: call }));
 };
 export const envVariables = {
-  env: process.env.ENV,
   email: process.env.EMAIL,
   websiteName: process.env.WEBSITE_NAME,
   googleId: process.env.GOOGLE_CLIENT_ID,
