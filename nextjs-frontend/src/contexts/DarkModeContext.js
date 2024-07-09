@@ -1,47 +1,41 @@
 "use client";
-
 import { createContext, useState, useContext, useEffect } from "react";
 import { getClientSideCookie } from "@/utils/HelperFuncs";
-const DarkModeContext = createContext(null);
 
-/* if (typeof window !== "undefined") {
-  prefersDarkMode =
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.cookie = "darkMode=true";
-} */
+const DarkModeContext = createContext(null);
 
 export const useDarkModeContext = () => {
   return useContext(DarkModeContext);
 };
-/* if (typeof window !== "undefined") {
-  darkModeFromStorage = localStorage.getItem("darkMode") === "true";
-  if (darkModeFromStorage) {
-    document.body.classList.add("dark");
-  }
-  document.body.classList.remove("hidden");
-} */
 
-export const DarkModeProvider = ({ children, darkMode }) => {
-  const [darkModeState, setDarkModeState] = useState(darkMode);
+export const DarkModeProvider = ({ children, darkModeFromCookies }) => {
+  const [darkMode, setDarkMode] = useState(darkModeFromCookies);
 
   useEffect(() => {
     const prefersDarkMode =
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (prefersDarkMode && getClientSideCookie(darkMode)) {
-      document.cookie = "darkMode=true";
+    if (prefersDarkMode && !getClientSideCookie(darkMode)) {
+      document.cookie = "darkMode=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+      setDarkMode(true);
+      document.body.classList.add("dark");
     }
-  }, [setDarkModeState]);
+  }, [setDarkMode]);
 
   const handleChange = () => {
-    setDarkModeState((prev) => {
+    setDarkMode((prev) => {
+      document.cookie = `darkMode=${!prev}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+      if (!prev === true) {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
       return !prev;
     });
   };
 
   return (
-    <DarkModeContext.Provider value={[darkModeState, handleChange]}>
+    <DarkModeContext.Provider value={[darkMode, handleChange]}>
       {children}
     </DarkModeContext.Provider>
   );

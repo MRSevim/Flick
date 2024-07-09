@@ -10,6 +10,7 @@ export const extractExcerptFromHTML = (html) => {
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
 export function getClientSideCookie(cname) {
   if (typeof window !== "undefined") {
     let name = cname + "=";
@@ -27,19 +28,19 @@ export function getClientSideCookie(cname) {
     return "";
   }
 }
-export const getDarkModeFromCookies = (darkMode) => {
-  return darkMode === "true";
-};
+
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const addDarkBg = (darkMode) => {
   return darkMode && "bg-dark-primary";
 };
+
 export const getUnreadLength = (items) => {
   return items?.filter((items) => {
     return !items.read;
   })?.length;
 };
+
 export const confirmationWrapper = async (
   confirmation,
   returnNewConfirmation,
@@ -61,6 +62,7 @@ export const confirmationWrapper = async (
   };
   setConfirmation((prev) => ({ ...prev, functionToRun: call }));
 };
+
 export const envVariables = {
   email: process.env.EMAIL,
   websiteName: process.env.WEBSITE_NAME,

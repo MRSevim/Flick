@@ -62,12 +62,12 @@ export default function RootLayout({ children }) {
 }
 
 function AppContent({ children }) {
-  const darkMode = getDarkModeFromCookies(cookies().get("darkMode").value);
+  const darkModeFromCookies = cookies().get("darkMode")?.value === "true";
 
   return (
-    <body className={nunito.className + (darkMode && " dark")}>
-      <DarkModeProvider darkMode={darkMode}>
-        <ThemeWrapper darkMode={darkMode}>
+    <body className={(darkModeFromCookies ? "dark " : "") + nunito.className}>
+      <DarkModeProvider darkModeFromCookies={darkModeFromCookies}>
+        <ThemeWrapper>
           <Header />
           {children}
           <ClientInitializer />
