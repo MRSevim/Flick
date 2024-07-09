@@ -1,4 +1,3 @@
-import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.scss";
@@ -12,7 +11,10 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeWrapper } from "./ThemeWrapper";
 import { Header } from "@/components/Header/Header";
 import { Nunito } from "next/font/google";
-import { envVariables } from "@/utils/HelperFuncs";
+import { envVariables, getDarkModeFromCookies } from "@/utils/HelperFuncs";
+import { cookies } from "next/headers";
+import React from "react";
+import { DarkModeProvider } from "@/contexts/DarkModeContext";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -46,13 +48,11 @@ export default function RootLayout({ children }) {
         <UserProvider>
           <RefetchForPmIconProvider>
             <GlobalErrorProvider>
-              <DarkModeProvider>
-                <ConfirmationErrorProvider>
-                  <ConfirmationProvider>
-                    <AppContent>{children}</AppContent>
-                  </ConfirmationProvider>
-                </ConfirmationErrorProvider>
-              </DarkModeProvider>
+              <ConfirmationErrorProvider>
+                <ConfirmationProvider>
+                  <AppContent>{children}</AppContent>
+                </ConfirmationProvider>
+              </ConfirmationErrorProvider>
             </GlobalErrorProvider>
           </RefetchForPmIconProvider>
         </UserProvider>
@@ -62,13 +62,17 @@ export default function RootLayout({ children }) {
 }
 
 function AppContent({ children }) {
+  const darkMode = getDarkModeFromCookies(cookies().get("darkMode").value);
+
   return (
-    <body className={"hidden " + nunito.className} suppressHydrationWarning>
-      <Header />
-      <ThemeWrapper>
-        {children}
-        <ClientInitializer />
-      </ThemeWrapper>
+    <body className={nunito.className + (darkMode && " dark")}>
+      <DarkModeProvider darkMode={darkMode}>
+        <ThemeWrapper darkMode={darkMode}>
+          <Header />
+          {children}
+          <ClientInitializer />
+        </ThemeWrapper>
+      </DarkModeProvider>
     </body>
   );
 }

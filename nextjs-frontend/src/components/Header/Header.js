@@ -4,22 +4,23 @@ import "./Header.css";
 import links from "@/utils/Links";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import { addDarkBg, getDarkMode } from "@/utils/HelperFuncs";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
-import { addDarkBg } from "@/utils/HelperFuncs";
 
 export const Header = () => {
-  const location = usePathname();
   const [darkMode] = useDarkModeContext();
+  const location = usePathname();
 
-  /*   const setActiveClassNames = (type) => {
+  const setActiveClassNames = (type) => {
     return classNames({
       "nav-link px-2 text-info": true,
       active: location === type.split("?")[0],
       "text-white": darkMode,
     });
-  }; */
+  };
+
   return (
-    <header className={"bg-primary p-3 " /*  + addDarkBg(darkMode) */}>
+    <header className={"bg-primary p-3 " + addDarkBg(darkMode)}>
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <h2 className="d-flex flex-column pe-lg-3 mb-2 mb-lg-0">
@@ -36,7 +37,7 @@ export const Header = () => {
               <li key={item.link} className="nav-item">
                 <Link
                   href={item.link}
-                  /*  className={setActiveClassNames(item.link)} */
+                  className={setActiveClassNames(item.link)}
                 >
                   {item.text}
                 </Link>

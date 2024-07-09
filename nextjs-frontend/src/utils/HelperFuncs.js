@@ -10,7 +10,26 @@ export const extractExcerptFromHTML = (html) => {
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
+export function getClientSideCookie(cname) {
+  if (typeof window !== "undefined") {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+}
+export const getDarkModeFromCookies = (darkMode) => {
+  return darkMode === "true";
+};
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const addDarkBg = (darkMode) => {

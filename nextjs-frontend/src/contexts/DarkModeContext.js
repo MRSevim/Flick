@@ -1,49 +1,47 @@
 "use client";
+
 import { createContext, useState, useContext, useEffect } from "react";
-
+import { getClientSideCookie } from "@/utils/HelperFuncs";
 const DarkModeContext = createContext(null);
-let prefersDarkMode, darkModeFromStorage;
 
-if (typeof window !== "undefined") {
+/* if (typeof window !== "undefined") {
   prefersDarkMode =
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
+    document.cookie = "darkMode=true";
+} */
 
 export const useDarkModeContext = () => {
   return useContext(DarkModeContext);
 };
-if (typeof window !== "undefined") {
+/* if (typeof window !== "undefined") {
   darkModeFromStorage = localStorage.getItem("darkMode") === "true";
   if (darkModeFromStorage) {
     document.body.classList.add("dark");
   }
   document.body.classList.remove("hidden");
-}
+} */
 
-export const DarkModeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(darkModeFromStorage);
-  useEffect(() => {
-    if (prefersDarkMode && localStorage?.getItem("darkMode") === null) {
-      setDarkMode(true);
-    }
-  }, [setDarkMode]);
+export const DarkModeProvider = ({ children, darkMode }) => {
+  const [darkModeState, setDarkModeState] = useState(darkMode);
 
   useEffect(() => {
-    if (darkMode) {
-      localStorage.setItem("darkMode", darkMode);
-      document.body.classList.add("dark");
-    } else {
-      localStorage.setItem("darkMode", darkMode);
-      document.body.classList.remove("dark");
+    const prefersDarkMode =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (prefersDarkMode && getClientSideCookie(darkMode)) {
+      document.cookie = "darkMode=true";
     }
-  }, [darkMode]);
+  }, [setDarkModeState]);
 
   const handleChange = () => {
-    setDarkMode(!darkMode);
+    setDarkModeState((prev) => {
+      return !prev;
+    });
   };
+
   return (
-    <DarkModeContext.Provider value={[darkMode, handleChange]}>
+    <DarkModeContext.Provider value={[darkModeState, handleChange]}>
       {children}
     </DarkModeContext.Provider>
   );

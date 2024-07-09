@@ -2,35 +2,24 @@
 import Link from "next/link";
 import links from "@/utils/Links";
 import { Libre_Baskerville } from "next/font/google";
-import { login } from "@/utils/actions";
-
-/* import { useDarkModeContext } from "@/contexts/DarkModeContext"; */
+import { useDarkModeContext } from "@/contexts/DarkModeContext";
 
 const libre_baskerville = Libre_Baskerville({
   weight: ["400", "700"],
   subsets: ["latin"],
 });
 export default function Home() {
-  /*   const [darkMode] = useDarkModeContext();
-  let darkModeString = darkMode && " bg-dark-primary text-white ";
-  let accordionItemClasses = "accordion-item " + darkModeString;
+  const [darkMode] = useDarkModeContext();
+  let darkModeString = "";
 
-  useEffect(() => {
-    document.querySelectorAll(".accordion-button").forEach((button) => {
-      if (darkMode) {
-        button.classList.add("bg-dark-primary");
-        button.classList.add("text-white");
-      } else {
-        button.classList.remove("bg-dark-primary");
-        button.classList.remove("text-white");
-      }
-    });
-  }, [darkMode, darkModeString]); */
+  darkModeString = darkMode && " bg-dark-primary text-white ";
+
+  let accordionItemClasses = "accordion-item " + darkModeString;
 
   return (
     <main>
       <div>
-        <form action={login} className="bg-primary p-5 wide-input w-90">
+        {/*         <form action={login} className="bg-primary p-5 wide-input w-90">
           <div className="form-group">
             <label className="w-100">
               Username:
@@ -69,7 +58,7 @@ export default function Home() {
               Remember me
             </label>
           </div>
-        </form>
+        </form> */}
         <div className="hero-image">
           <div className="container h-100">
             <div className="pt-5 text-white d-flex flex-column justify-content-center align-items-center h-100">
@@ -100,10 +89,13 @@ export default function Home() {
         <div className="container mt-5">
           <h1 className="text-center"> Some Questions You Might Ask</h1>
           <div className="accordion" id="accordionFlick">
-            <div /* className={accordionItemClasses} */>
+            <div className={accordionItemClasses}>
               <h2 className="accordion-header">
                 <button
-                  className="accordion-button"
+                  className={
+                    "accordion-button " +
+                    (darkMode && "bg-dark-primary text-white")
+                  }
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseOne"
@@ -128,10 +120,13 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div /* className={accordionItemClasses} */>
+            <div className={accordionItemClasses}>
               <h2 className="accordion-header">
                 <button
-                  className="accordion-button collapsed"
+                  className={
+                    "accordion-button collapsed " +
+                    (darkMode && "bg-dark-primary text-white")
+                  }
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseTwo"
@@ -154,10 +149,13 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div /* className={accordionItemClasses} */>
+            <div className={accordionItemClasses}>
               <h2 className="accordion-header">
                 <button
-                  className="accordion-button collapsed"
+                  className={
+                    "accordion-button collapsed " +
+                    (darkMode && "bg-dark-primary text-white")
+                  }
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseThree"
