@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.scss";
-import { ClientInitializer } from "@/components/ClientInitializer";
 import { UserProvider } from "@/contexts/UserContext";
 import { RefetchForPmIconProvider } from "@/contexts/RefetchForPmIcon";
 import { GlobalErrorProvider } from "@/contexts/GlobalErrorContext";
@@ -15,6 +14,8 @@ import { envVariables, getDarkModeFromCookies } from "@/utils/HelperFuncs";
 import { cookies } from "next/headers";
 import React from "react";
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
+import { Footer } from "@/components/Footer/Footer";
+import { GlobalError } from "@/components/GlobalError";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -42,15 +43,34 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const darkModeFromCookies = cookies().get("darkMode")?.value === "true";
+  const userFromCookies = cookies().get("user")?.value
+    ? JSON.parse(cookies().get("user")?.value)
+    : undefined;
+
   return (
     <html lang="en">
       <GoogleOAuthProvider clientId={envVariables.googleId}>
-        <UserProvider>
+        <UserProvider userFromCookies={userFromCookies}>
           <RefetchForPmIconProvider>
             <GlobalErrorProvider>
               <ConfirmationErrorProvider>
                 <ConfirmationProvider>
-                  <AppContent>{children}</AppContent>
+                  <DarkModeProvider darkModeFromCookies={darkModeFromCookies}>
+                    <ThemeWrapper>
+                      <body
+                        className={
+                          (darkModeFromCookies ? "dark " : "") +
+                          nunito.className
+                        }
+                      >
+                        <Header />
+                        <GlobalError />
+                        <div className="pb-5 pt-4">{children}</div>
+                        <Footer />
+                      </body>
+                    </ThemeWrapper>
+                  </DarkModeProvider>
                 </ConfirmationProvider>
               </ConfirmationErrorProvider>
             </GlobalErrorProvider>
@@ -58,21 +78,5 @@ export default function RootLayout({ children }) {
         </UserProvider>
       </GoogleOAuthProvider>
     </html>
-  );
-}
-
-function AppContent({ children }) {
-  const darkModeFromCookies = cookies().get("darkMode")?.value === "true";
-
-  return (
-    <body className={(darkModeFromCookies ? "dark " : "") + nunito.className}>
-      <DarkModeProvider darkModeFromCookies={darkModeFromCookies}>
-        <ThemeWrapper>
-          <Header />
-          {children}
-          <ClientInitializer />
-        </ThemeWrapper>
-      </DarkModeProvider>
-    </body>
   );
 }

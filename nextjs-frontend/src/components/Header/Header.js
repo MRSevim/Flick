@@ -4,8 +4,10 @@ import "./Header.css";
 import links from "@/utils/Links";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
-import { addDarkBg, getDarkMode } from "@/utils/HelperFuncs";
+import { addDarkBg } from "@/utils/HelperFuncs";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
+import { SearchBar } from "./SearchBar";
+import RightSide from "./RightSide";
 
 export const Header = () => {
   const [darkMode] = useDarkModeContext();
@@ -44,6 +46,8 @@ export const Header = () => {
               </li>
             ))}
           </ul>
+          <SearchBar />
+          <RightSide />
         </div>
       </div>
     </header>

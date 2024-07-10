@@ -11,24 +11,6 @@ export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function getClientSideCookie(cname) {
-  if (typeof window !== "undefined") {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-}
-
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const addDarkBg = (darkMode) => {
@@ -64,11 +46,12 @@ export const confirmationWrapper = async (
 };
 
 export const envVariables = {
-  email: process.env.EMAIL,
-  websiteName: process.env.WEBSITE_NAME,
-  googleId: process.env.GOOGLE_CLIENT_ID,
+  email: process.env.NEXT_PUBLIC_EMAIL,
+  websiteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+  googleId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   backendUrl: process.env.BACKEND_URL,
   publicUrl: process.env.PUBLIC_URL,
-  defaultUserImage: process.env.DEFAULT_USER_IMAGE,
-  defaultArticleImage: process.env.DEFAULT_ARTICLE_IMAGE,
+  defaultUserImage: process.env.NEXT_PUBLIC_DEFAULT_USER_IMAGE,
+  defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
+export const backendUrl = envVariables.backendUrl + "/api";

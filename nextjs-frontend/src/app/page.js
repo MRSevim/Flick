@@ -17,7 +17,7 @@ export default function Home() {
   let accordionItemClasses = "accordion-item " + darkModeString;
 
   return (
-    <main>
+    <main className="homepage-negative-margin-top">
       <div>
         {/*         <form action={login} className="bg-primary p-5 wide-input w-90">
           <div className="form-group">

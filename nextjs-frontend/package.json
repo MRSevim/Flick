@@ -17,6 +17,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "classnames": "^2.5.1",
+    "js-cookie": "^3.0.5",
     "localstorage-slim": "^2.7.1",
     "next": "14.2.4",
     "react": "^18",

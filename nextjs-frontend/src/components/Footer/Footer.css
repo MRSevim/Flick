@@ -1,0 +1,9 @@
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.footer-link:hover {
+  scale: 1.1;
+}
