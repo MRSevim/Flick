@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSearchAll } from "@/hooks/SearchHooks/UseSearchAll";
 import Autocomplete from "@mui/material/Autocomplete";
 import links from "@/utils/Links";
 import { Image } from "@/components/Image";
+import { searchAll } from "@/utils/ApiCalls/SearchApiFunctions";
+import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 
 export const SearchBar = () => {
   const router = useRouter();
   const [searchParam, setSearchParam] = useState("");
-  const { searchAll, isLoading } = useSearchAll();
+  const [isLoading, setIsLoading] = useState(false);
+  const [, setGlobalError] = useGlobalErrorContext();
   const [options, setOptions] = useState({ users: [], articles: [] });
 
   const search = (e) => {
@@ -21,7 +23,13 @@ export const SearchBar = () => {
 
   useEffect(() => {
     const get = async () => {
+      setIsLoading(true);
       const json = await searchAll(searchParam);
+      setIsLoading(false);
+      if (json.error) {
+        setGlobalError(json.error);
+        return;
+      }
       setOptions(json);
     };
 
@@ -36,7 +44,6 @@ export const SearchBar = () => {
       setOptions({ users: [], articles: [] });
     }
   };
-
   return (
     <form className="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-5" onSubmit={search}>
       <Autocomplete

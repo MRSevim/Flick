@@ -1,11 +1,16 @@
+"use server";
 import { backendUrl } from "../HelperFuncs";
 
-const searchApi = {
-  searchAll: async (query) => {
-    const response = await fetch("/api/search/all?search=" + query);
+export const searchAll = async (query) => {
+  const response = await fetch(backendUrl + "/search/all?search=" + query);
+  const json = await response.json();
 
-    return response;
-  },
+  if (!response.ok) {
+    return { error: json.message };
+  }
+  return json;
+};
+/* const searchApi = {
   searchAdvanced: async (username, title, tags) => {
     const response = await fetch(
       backendUrl +
@@ -21,4 +26,4 @@ const searchApi = {
   },
 };
 
-export default searchApi;
+export default searchApi; */

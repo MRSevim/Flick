@@ -1,12 +1,42 @@
-"use client";
 import { useUserContext } from "@/contexts/UserContext";
 import { DarkModeToggle } from "./DarkModeToggle";
 import Link from "next/link";
 import links from "@/utils/Links";
 import { Image } from "../Image";
+import { UserMenu } from "./UserMenu";
+import { useEffect, useRef, useState } from "react";
+import { logoutCall } from "@/utils/ApiCalls/UserApiFunctions";
+import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 
 const RightSide = () => {
-  const [user] = useUserContext();
+  const [user, setUser] = useUserContext();
+  const [userMenu, setUserMenu] = useState(false);
+  const wrapperRef = useRef(null);
+  const [, setGlobalError] = useGlobalErrorContext();
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setUserMenu(false);
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
+
+  const logOut = async () => {
+    const error = await logoutCall();
+    if (error) {
+      setGlobalError(error);
+      return;
+    }
+    setUser(undefined);
+    setUserMenu(false);
+  };
   return (
     <>
       {!user && <DarkModeToggle />}
@@ -27,12 +57,7 @@ const RightSide = () => {
             <Image src={user.image} classes={"profile-img-mini"} />
           </div>
           {userMenu && (
-            <UserMenu
-              setUserMenu={setUserMenu}
-              logOut={logOut}
-              myId={myId}
-              user={user}
-            />
+            <UserMenu setUserMenu={setUserMenu} logOut={logOut} user={user} />
           )}
         </div>
       ) : (

@@ -3,9 +3,16 @@ import links from "@/utils/Links";
 import Link from "next/link";
 import { envVariables } from "@/utils/HelperFuncs";
 
+export const metadata = {
+  title: "Toc and Privacy Policy",
+  description:
+    "Terms of Conditions and Privacy Policy page of " +
+    envVariables.websiteName,
+};
+
 const page = () => {
   return (
-    <div class="container">
+    <div className="container">
       <div>
         <h1>Terms of Conditions</h1>
         <p>Last Updated: 15 June 2024</p>

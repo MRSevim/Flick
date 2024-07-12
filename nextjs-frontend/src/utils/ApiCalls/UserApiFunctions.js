@@ -1,26 +1,46 @@
 import { backendUrl } from "../HelperFuncs";
-const userApi = {
-  login: async (
-    username,
-    password,
-    isGoogleLogin,
-    googleCredential,
-    rememberMe
-  ) => {
-    const response = await fetch("/api/user/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username,
-        password,
-        isGoogleLogin,
-        googleCredential,
-        rememberMe,
-      }),
-    });
 
-    return response;
-  },
+export const loginCall = async (
+  { isGoogleLogin, googleCredential, rememberMe },
+  formData
+) => {
+  const username = formData?.get("username");
+  const password = formData?.get("password");
+
+  const response = await fetch("/api/user/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username,
+      password,
+      isGoogleLogin,
+      googleCredential,
+      rememberMe,
+    }),
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return { error: json.message };
+  }
+
+  return { user: json };
+};
+
+export const logoutCall = async () => {
+  const response = await fetch("/api/user/logout", {
+    method: "POST",
+  });
+  const json = await response.json();
+
+  if (!response.ok) {
+    return json.message;
+  }
+  return;
+};
+
+const userApi = {
   signup: async (username, email, password, token) => {
     const url = "/user/register/" + (token ? token : "");
     const response = await fetch(backendUrl + url, {
@@ -31,13 +51,7 @@ const userApi = {
 
     return response;
   },
-  logout: async () => {
-    const response = await fetch(backendUrl + "/user/logout", {
-      method: "POST",
-    });
 
-    return response;
-  },
   getProfile: async () => {
     const response = await fetch(backendUrl + "/user/profile", {
       credentials: "include",

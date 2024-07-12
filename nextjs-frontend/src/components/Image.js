@@ -4,8 +4,8 @@ export const Image = ({ src, classes = "" }) => {
   if (classes.includes("profile-img-mini")) {
     return (
       <NextImage
-        width="50px"
-        height="50px"
+        width="50"
+        height="50"
         src={src}
         alt="profile"
         className={classes}
