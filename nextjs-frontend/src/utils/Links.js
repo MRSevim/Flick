@@ -14,7 +14,7 @@ const links = {
   login: "/login",
   signup: (token) => {
     if (token) {
-      return "/sign-up/" + token;
+      return "/sign-up?token=" + token;
     } else {
       return "/sign-up";
     }

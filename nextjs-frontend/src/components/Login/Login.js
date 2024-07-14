@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Popup } from "@/components/Popup";
 import { SendVerificationEmailButton } from "@/components/SendVerificationEmailButton";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
-import { useFormStatus, useFormState } from "react-dom";
+import { useFormState } from "react-dom";
 import { loginCall } from "@/utils/ApiCalls/UserApiFunctions";
 import { useState } from "react";
 
@@ -16,9 +16,21 @@ export const Login = ({ onHideModal, children, type }) => {
   const [darkMode] = useDarkModeContext();
   const [rememberMe, setRememberMe] = useState(false);
   const [, setUser] = useUserContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
-  const handleSuccessfulLogin = (user) => {
+  const handleBefore = () => {
+    setError(null);
+    setIsLoading(true);
+  };
+  const handleAfter = (error, user) => {
+    setIsLoading(false);
+    if (error) {
+      setError(error);
+      return;
+    }
+
     if (onHideModal) {
       onHideModal();
     }
@@ -27,6 +39,7 @@ export const Login = ({ onHideModal, children, type }) => {
   };
 
   const handleSubmit = async (prevState, formData) => {
+    handleBefore();
     const { error, user } = await loginCall(
       {
         isGoogleLogin: false,
@@ -35,13 +48,14 @@ export const Login = ({ onHideModal, children, type }) => {
       },
       formData
     );
-    if (error) return error;
-    handleSuccessfulLogin(user);
+
+    handleAfter(error, user);
   };
 
-  const [error, formAction] = useFormState(handleSubmit, "");
+  const [, formAction] = useFormState(handleSubmit, "");
 
   const handleGoogleLogin = async (credential) => {
+    handleBefore();
     const { error, user } = await loginCall(
       {
         isGoogleLogin: true,
@@ -50,11 +64,7 @@ export const Login = ({ onHideModal, children, type }) => {
       },
       null
     );
-    if (error) {
-      console.log(error);
-      return;
-    }
-    handleSuccessfulLogin(user);
+    handleAfter(error, user);
   };
 
   return (
@@ -91,7 +101,12 @@ export const Login = ({ onHideModal, children, type }) => {
               />
             </label>
           </div>
-          <SubmitButton />
+          <input
+            disabled={isLoading}
+            className="btn btn-secondary my-3"
+            type="submit"
+            value="Login"
+          />
           <div className="form-check mb-2">
             <label className="form-check-label">
               <input
@@ -156,15 +171,3 @@ export const Login = ({ onHideModal, children, type }) => {
     </div>
   );
 };
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <input
-      disabled={pending}
-      className="btn btn-secondary my-3"
-      type="submit"
-      value="Login"
-    />
-  );
-}

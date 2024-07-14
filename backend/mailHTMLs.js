@@ -6,7 +6,7 @@ const htmls = {
         <p>Hi ${username},</p>
         <p>You can verify your email address through the button below.</p>
         <a style="text-decoration: none; "  href="${
-          envVariables.appUrl + "/" + token
+          envVariables.frontendUrl + "/token/" + token
         }">
         <button style="
           cursor:pointer;
@@ -23,7 +23,7 @@ const htmls = {
         </button>
         </a>
         <a style="text-decoration: none;" href="${
-          envVariables.appUrl +
+          envVariables.frontendUrl +
           "/emailer?email=" +
           email +
           "&type=send-verification-email"

@@ -1,5 +1,6 @@
 "use server";
-import { backendUrl } from "../HelperFuncs";
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
 
 export const searchAll = async (query) => {
   const response = await fetch(backendUrl + "/search/all?search=" + query);

@@ -1,10 +1,12 @@
-import { backendUrl } from "../HelperFuncs";
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
+
 const articleApi = {
   create: async (title, content, isDraft, tags, image) => {
     const response = await fetch(backendUrl + "/article/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ title, content, isDraft, tags, image }),
     });
 
@@ -14,7 +16,7 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/" + id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ title, content, isDraft, tags, image }),
     });
 
@@ -24,7 +26,7 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/" + id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ reasonOfDeletion }),
     });
 
@@ -34,7 +36,7 @@ const articleApi = {
     const response = await fetch(backendUrl + "/article/deleteMany", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ ids }),
     });
 
@@ -43,9 +45,7 @@ const articleApi = {
   getArticle: async (id, isDraft) => {
     const url = isDraft ? "/article/draft/" : "/article/";
 
-    const response = await fetch(backendUrl + url + id, {
-      credentials: "include",
-    });
+    const response = await fetch(backendUrl + url + id);
 
     return response;
   },

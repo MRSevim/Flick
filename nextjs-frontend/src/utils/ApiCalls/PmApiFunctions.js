@@ -1,18 +1,14 @@
-import { backendUrl } from "../HelperFuncs";
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
 
 const pmApi = {
   getPms: async (page, type) => {
-    const response = await fetch(
-      backendUrl + `/pms?page=${page}&type=${type}`,
-      { credentials: "include" }
-    );
+    const response = await fetch(backendUrl + `/pms?page=${page}&type=${type}`);
 
     return response;
   },
   getReceivedLength: async () => {
-    const response = await fetch(backendUrl + "/pms/receivedLength", {
-      credentials: "include",
-    });
+    const response = await fetch(backendUrl + "/pms/receivedLength");
 
     return response;
   },
@@ -20,7 +16,6 @@ const pmApi = {
     const response = await fetch(backendUrl + "/pms/send/" + id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ subject, message }),
     });
 
@@ -29,7 +24,6 @@ const pmApi = {
   delete: async (id) => {
     const response = await fetch(backendUrl + "/pms/" + id, {
       method: "DELETE",
-      credentials: "include",
     });
 
     return response;
@@ -38,7 +32,6 @@ const pmApi = {
     const response = await fetch(backendUrl + "/pms/deleteMany", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ ids }),
     });
 
@@ -47,7 +40,6 @@ const pmApi = {
   markAsRead: async () => {
     const response = await fetch(backendUrl + "/pms/read", {
       method: "POST",
-      credentials: "include",
     });
 
     return response;

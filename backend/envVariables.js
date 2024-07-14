@@ -13,10 +13,7 @@ const envVariables = {
   emailRefreshToken: process.env.EMAIL_REFRESH_TOKEN,
   websiteName: process.env.REACT_APP_WEBSITE_NAME,
   googleId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-  appUrl:
-    process.env.REACT_APP_ENV === "development"
-      ? process.env.DEVELOPMENT_FRONTEND_URL
-      : process.env.REACT_APP_URL,
+  frontendUrl: process.env.FRONTEND_URL,
   defaultUserImage: process.env.REACT_APP_DEFAULT_USER_IMAGE,
   defaultArticleImage: process.env.REACT_APP_DEFAULT_ARTICLE_IMAGE,
 };

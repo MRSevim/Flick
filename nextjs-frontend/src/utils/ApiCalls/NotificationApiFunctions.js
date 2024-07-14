@@ -1,17 +1,15 @@
-import { backendUrl } from "../HelperFuncs";
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
 
 const notificationApi = {
   getNotifications: async () => {
-    const response = await fetch(backendUrl + "/notifications", {
-      credentials: "include",
-    });
+    const response = await fetch(backendUrl + "/notifications");
 
     return response;
   },
   markAsRead: async () => {
     const response = await fetch(backendUrl + "/notifications/read", {
       method: "POST",
-      credentials: "include",
     });
 
     return response;
@@ -19,7 +17,6 @@ const notificationApi = {
   clearNotifications: async () => {
     const response = await fetch(backendUrl + "/notifications/clear", {
       method: "POST",
-      credentials: "include",
     });
 
     return response;

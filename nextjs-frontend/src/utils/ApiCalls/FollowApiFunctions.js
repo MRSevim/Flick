@@ -1,10 +1,10 @@
-import { backendUrl } from "../HelperFuncs";
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
 
 const followApi = {
   follow: async (id) => {
     const response = await fetch(backendUrl + "/follow/" + id, {
       method: "POST",
-      credentials: "include",
     });
 
     return response;

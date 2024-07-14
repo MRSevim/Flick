@@ -1,5 +1,3 @@
-import { backendUrl } from "../HelperFuncs";
-
 export const loginCall = async (
   { isGoogleLogin, googleCredential, rememberMe },
   formData
@@ -41,21 +39,8 @@ export const logoutCall = async () => {
 };
 
 const userApi = {
-  signup: async (username, email, password, token) => {
-    const url = "/user/register/" + (token ? token : "");
-    const response = await fetch(backendUrl + url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password }),
-    });
-
-    return response;
-  },
-
   getProfile: async () => {
-    const response = await fetch(backendUrl + "/user/profile", {
-      credentials: "include",
-    });
+    const response = await fetch(backendUrl + "/user/profile", {});
 
     return response;
   },
@@ -68,7 +53,7 @@ const userApi = {
     const response = await fetch(backendUrl + "/user/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ username, email, password, newPassword, image }),
     });
 
@@ -78,7 +63,7 @@ const userApi = {
     const response = await fetch(backendUrl + "/user/profile", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ password }),
     });
 
@@ -87,7 +72,6 @@ const userApi = {
   toggleUserVariables: async (type) => {
     const response = await fetch(backendUrl + "/user/toggle/" + type, {
       method: "PUT",
-      credentials: "include",
     });
 
     return response;
@@ -96,7 +80,7 @@ const userApi = {
     const response = await fetch(backendUrl + "/user/ban/" + id, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+
       body: JSON.stringify({ reasonOfBan }),
     });
 
@@ -105,8 +89,6 @@ const userApi = {
   generateModLink: async () => {
     const response = await fetch(backendUrl + "/user/generate-mod-link", {
       method: "POST",
-
-      credentials: "include",
     });
 
     return response;

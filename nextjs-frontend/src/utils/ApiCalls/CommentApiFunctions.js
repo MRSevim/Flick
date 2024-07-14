@@ -1,11 +1,11 @@
-import { backendUrl } from "../HelperFuncs";
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
 
 const commentApi = {
   comment: async (content, id) => {
     const response = await fetch(backendUrl + "/comment/" + id, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ content }),
     });
 
@@ -15,7 +15,6 @@ const commentApi = {
     const response = await fetch(backendUrl + "/comment/" + articleId, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ content, id: commentId }),
     });
 
@@ -25,7 +24,6 @@ const commentApi = {
     const response = await fetch(backendUrl + "/comment/" + articleId, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ id: commentId, reasonOfDeletion }),
     });
 
