@@ -19,46 +19,6 @@ export default function Home() {
   return (
     <main className="homepage-negative-margin-top">
       <div>
-        {/*         <form action={login} className="bg-primary p-5 wide-input w-90">
-          <div className="form-group">
-            <label className="w-100">
-              Username:
-              <input
-                className="form-control form-control-lg"
-                type="text"
-                name="username"
-                required
-              />
-            </label>
-          </div>
-          <div className="form-group">
-            <label className="w-100">
-              Password:
-              <input
-                className="form-control form-control-lg"
-                type="password"
-                name="password"
-                required
-              />
-            </label>
-          </div>
-          <input
-            className="btn btn-secondary my-3"
-            type="submit"
-            value="Login"
-          />
-          <div className="form-check mb-2">
-            <label className="form-check-label">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="rememberMe"
-                value="true"
-              />
-              Remember me
-            </label>
-          </div>
-        </form> */}
         <div className="hero-image">
           <div className="container h-100">
             <div className="pt-5 text-white d-flex flex-column justify-content-center align-items-center h-100">

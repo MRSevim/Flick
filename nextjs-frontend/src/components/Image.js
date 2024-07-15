@@ -1,8 +1,12 @@
 import NextImage from "next/image";
+import { envVariables } from "@/utils/HelperFuncs";
 
 export const Image = ({ src, classes = "" }) => {
   let modifiedSource;
-  if (src === "/default-article.png" || src === "/default-user.jpg") {
+  if (
+    src === envVariables.defaultArticleImage ||
+    src === envVariables.defaultUserImage
+  ) {
     modifiedSource = "/images" + src;
   }
 

@@ -10,7 +10,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeWrapper } from "./ThemeWrapper";
 import { Header } from "@/components/Header/Header";
 import { Nunito } from "next/font/google";
-import { envVariables, getDarkModeFromCookies } from "@/utils/HelperFuncs";
+import { envVariables } from "@/utils/HelperFuncs";
 import { cookies } from "next/headers";
 import React from "react";
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
@@ -21,8 +21,8 @@ const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
   title: {
-    template: "%s | Flick Articles",
-    default: "Flick Articles - Write Freely & Share",
+    template: "%s | " + envVariables.websiteName,
+    default: envVariables.websiteName + " - Write Freely & Share",
   },
   description:
     "Express yourself through writing! Share your thoughts, stories, and ideas on our free writing platform. Find encouragement and support from a community of writers.",
