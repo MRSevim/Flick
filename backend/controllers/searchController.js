@@ -2,6 +2,13 @@ const { Article } = require("../models/articleModel");
 const { User } = require("../models/userModel");
 
 const selectFields = "_id title likes tags user image";
+const userFilter = (param) => {
+  return {
+    username: param,
+    $or: [{ isVerified: true, isGoogleLogin: false }, { isGoogleLogin: true }],
+  };
+};
+
 //get articles and users by search
 const getBySearch = async (req, res, next) => {
   const { search } = req.query;
@@ -13,7 +20,7 @@ const getBySearch = async (req, res, next) => {
     if (search) {
       const param = new RegExp(search, "i");
 
-      users = await User.find({ username: param }).select("_id username image");
+      users = await User.find(userFilter(param)).select("_id username image");
 
       articles = await Article.find({
         $or: [
@@ -45,7 +52,7 @@ const getByAdvancedSearch = async (req, res, next) => {
 
     if (username) {
       const param = new RegExp(username, "i");
-      users = await User.find({ username: param }).select("_id username image");
+      users = await User.find(userFilter(param)).select("_id username image");
       query.user = { $in: users.map((user) => user._id) };
     }
 

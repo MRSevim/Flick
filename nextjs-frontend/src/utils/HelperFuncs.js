@@ -46,8 +46,8 @@ export const confirmationWrapper = async (
 };
 
 export const envVariables = {
-  email: process.env.EMAIL,
-  websiteName: process.env.WEBSITE_NAME,
+  email: process.env.NEXT_PUBLIC_EMAIL,
+  websiteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
   googleId: process.env.GOOGLE_CLIENT_ID,
   backendUrl: process.env.BACKEND_URL,
   publicUrl: process.env.PUBLIC_URL,

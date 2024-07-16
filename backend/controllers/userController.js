@@ -136,7 +136,13 @@ const generateModLink = async (req, res, next) => {
 //get Public User
 const getPublicUser = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await User.findOne({
+      _id: req.params.id,
+      $or: [
+        { isVerified: true, isGoogleLogin: false },
+        { isGoogleLogin: true },
+      ],
+    });
     if (!user) {
       res.status(404);
       throw new Error("User is not found");

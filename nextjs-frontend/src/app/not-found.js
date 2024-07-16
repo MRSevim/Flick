@@ -1,8 +1,11 @@
-export default function NotFound() {
-  return (
-    <div>
-      <h2>Not Found</h2>
-      <p>Could not find requested resource</p>
-    </div>
-  );
+import { NotFound } from "@/components/NotFound";
+import { envVariables } from "@/utils/HelperFuncs";
+
+export const metadata = {
+  title: "Page is not found",
+  description: "Not found page of " + envVariables.websiteName,
+};
+
+export default function page() {
+  return <NotFound />;
 }

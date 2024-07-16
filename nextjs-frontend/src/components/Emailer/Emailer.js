@@ -1,23 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Popup } from "../Popup";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { addDarkBg } from "@/utils/HelperFuncs";
 import { sendEmailCall } from "@/utils/ApiCalls/EmailApiFunctions";
 
 const initialState = { error: "", successMessage: "" };
 
-export const Emailer = () => {
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(useSearchParams().toString());
-  const email = searchParams.get("email");
+export const Emailer = ({ stateProp, emailProp, typeProp }) => {
+  const [email, setEmail] = useState(emailProp || "");
+  const [type, setType] = useState(typeProp || "");
   const [isLoading, setIsLoading] = useState(false);
-  const [state, setState] = useState(initialState);
-  const type = searchParams.get("type");
+  const [state, setState] = useState(stateProp || initialState);
   const [darkMode] = useDarkModeContext();
-  const pathname = usePathname();
-  const { replace } = useRouter();
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -28,12 +23,6 @@ export const Emailer = () => {
     setState({ error, successMessage });
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    if (email) {
-      handleSubmit();
-    }
-  }, []);
 
   return (
     <div className="container d-flex justify-content-center">
@@ -50,10 +39,9 @@ export const Emailer = () => {
         <select
           className="form-select mb-2"
           onChange={(e) => {
-            params.set("type", e.target.value);
-            replace(`${pathname}?${params.toString()}`);
+            setType(e.target.value);
           }}
-          defaultValue={type}
+          value={type}
         >
           <option value="send-verification-email">
             Send verification email
@@ -64,11 +52,10 @@ export const Emailer = () => {
           <label className="w-100">
             E-mail:
             <input
-              defaultValue={email || ""}
               onChange={(e) => {
-                params.set("email", e.target.value);
-                replace(`${pathname}?${params.toString()}`);
+                setEmail(e.target.value);
               }}
+              value={email}
               className="form-control form-control-lg"
               type="email"
               required
