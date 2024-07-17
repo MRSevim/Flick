@@ -1,3 +1,6 @@
+import { envVariables } from "../HelperFuncs";
+const backendUrl = envVariables.backendUrl;
+
 export const loginCall = async (
   { isGoogleLogin, googleCredential, rememberMe },
   formData
@@ -38,12 +41,7 @@ export const logoutCall = async () => {
   return;
 };
 
-const userApi = {
-  getProfile: async () => {
-    const response = await fetch(backendUrl + "/user/profile", {});
-
-    return response;
-  },
+/* const userApi = {
   getPublicUser: async (param) => {
     const response = await fetch(backendUrl + "/user/" + param);
 
@@ -94,4 +92,4 @@ const userApi = {
     return response;
   },
 };
-export default userApi;
+export default userApi; */
