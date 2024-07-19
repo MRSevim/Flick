@@ -13,13 +13,24 @@ export const UserProvider = ({ children, userFromCookies }) => {
   const changeUser = (user, rememberMe) => {
     if (!user) {
       Cookies.remove("user");
+      Cookies.remove("expirationDateOfUser");
       setUser(undefined);
       return;
     }
+    const userString = JSON.stringify(user);
     if (rememberMe) {
-      Cookies.set("user", JSON.stringify(user), { expires: 30 });
+      Cookies.set("user", userString, { expires: 30 });
+      let date = new Date();
+      date.setDate(date.getDate() + 30);
+      const utcDate = date.toUTCString();
+      Cookies.set("expirationDateOfUser", utcDate, { expires: 30 });
     } else {
-      Cookies.set("user", JSON.stringify(user));
+      const expirationDate = Cookies.get("expirationDateOfUser");
+      if (expirationDate) {
+        document.cookie = "user=" + userString + "; expires=" + expirationDate;
+      } else {
+        Cookies.set("user", userString);
+      }
     }
     setUser(user);
   };

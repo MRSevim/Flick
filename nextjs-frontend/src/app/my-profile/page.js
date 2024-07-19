@@ -7,7 +7,7 @@ export const metadata = {
   description: "Personal profile page of " + envVariables.websiteName,
 };
 const page = async () => {
-  const json = await getProfileCall();
+  const { json } = await getProfileCall();
 
   return <MyProfile json={json} />;
 };

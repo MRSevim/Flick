@@ -1,10 +1,20 @@
 "use client";
 import { useUserContext } from "@/contexts/UserContext";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
+import { Popup } from "../Popup";
+import { SendVerificationEmailButton } from "../SendVerificationEmailButton";
+import { Image } from "../Image";
+import { RoleBanner } from "../RoleBanner";
+import { RemoveImageButton } from "../RemoveImageButton";
+import { envVariables } from "@/utils/HelperFuncs";
+import { useUpdateUser } from "@/hooks/UseUpdateUser";
+import { GenerateModLinkButton } from "./GenerateModLinkButton";
+import { FollowButtons } from "../FollowButtons";
+import { DeleteUser } from "./DeleteUser";
 
 export const MyProfile = ({ json }) => {
   const [initialUsername, setInitialUsername] = useState(json.username);
-  const [initialEmail, setInitialEmail] = useState(json.email);
+  const [initialEmail] = useState(json.email);
   const [initialImage, setInitialImage] = useState(json.image);
   const [username, setUsername] = useState(json.username);
   const [email, setEmail] = useState(json.email);
@@ -14,17 +24,26 @@ export const MyProfile = ({ json }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [user] = useUserContext();
-  const [ref, setRef] = useState(null);
-  const [removeImageClicked, setRemoveImageClicked] = useState(false);
+  const submitButton = useRef();
   const date = new Date(json.createdAt);
   const formattedDate = date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+  const {
+    update,
+    isLoading,
+    successMessage,
+    error,
+    setError,
+    setSuccessMessage,
+  } = useUpdateUser();
 
-  /*  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
 
     let apiUsername, apiEmail, apiPassword, apiImage;
     if (newPassword && newPassword !== confirmNewPassword) {
@@ -43,73 +62,47 @@ export const MyProfile = ({ json }) => {
     if (image !== initialImage) {
       apiImage = image;
     }
-    const response = await update(
+    const { successMessage } = await update(
       apiUsername,
       apiEmail,
       password,
       apiPassword,
       apiImage
     );
-    if (response.ok) {
+
+    if (successMessage) {
+      setInitialUsername(username);
+      setInitialImage(image);
       setPassword("");
       setNewPassword("");
       setConfirmNewPassword("");
     }
-  }; */
-
-  /*   const removeImage = async () => {
-    setImage(envVariables.defaultUserImage);
-    setRemoveImageClicked(true);
   };
-  useEffect(() => {
-    if (image === envVariables.defaultUserImage && removeImageClicked) {
-      submitButton.current.click();
-      setRemoveImageClicked(false);
-    }
-  }, [image, removeImageClicked, setRemoveImageClicked]); */
 
-  /*   const handleDeleteAccount = async () => {
-    ref.current.show();
-  }; */
-
-  /*   const generateModLink = async () => {
-    const { response, json } = await generateModLinkCall();
-    if (response.ok) {
-      const link = links.signup(json.token);
-
-      console.log("Link is " + window.location.origin + link);
-    }
-  }; */
+  const removeImage = async () => {
+    setImage(envVariables.defaultUserImage);
+    submitButton.current.click();
+  };
 
   return (
     <div className="container">
       <div className="row mb-3 d-flex justify-content-center align-items-start">
         <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-          <ImageComponent src={user?.image} classes={"profile-img"} />
+          <Image src={user?.image} classes={"profile-img"} />
           <div className="d-flex justify-content-center my-3">
-            <RemoveImageButton
-              visible={
-                image !== envVariables.defaultUserImage && !user?.isGoogleLogin
-              }
-              disabled={isLoading}
-              onClick={removeImage}
-            />
+            {
+              <RemoveImageButton
+                visible={!user?.isGoogleLogin}
+                disabled={isLoading}
+                onClick={removeImage}
+              />
+            }
           </div>
           <RoleBanner role={user?.role} />
           <p className="text-center">
             You've been a member since {formattedDate}
           </p>
-          {user?.role === "admin" && (
-            <div className="d-flex justify-content-center">
-              <button
-                disabled={generateModLinkLoading}
-                onClick={generateModLink}
-                className="btn btn-secondary"
-              >
-                Generate Mod Link{" "}
-              </button>
-            </div>
-          )}
+          <GenerateModLinkButton role={user?.role} />
           <div className="mt-4 d-flex justify-content-between">
             <FollowButtons
               id={user?._id}
@@ -216,12 +209,13 @@ export const MyProfile = ({ json }) => {
             <>
               <Popup message={successMessage} type="success" />
               {updatedEmail && (
-                <SendVerificationEmailButton email={updatedEmail} />
+                <SendVerificationEmailButton email={updatedEmail} re={true} />
               )}
             </>
           )}
         </form>
       </div>
+      <DeleteUser />
     </div>
   );
 };

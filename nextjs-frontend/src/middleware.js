@@ -1,6 +1,6 @@
 import links from "@/utils/Links";
+import { authenticatedRoutes } from "./utils/HelperFuncs";
 
-const authenticatedRoutes = ["/my-profile"];
 export function middleware(request) {
   const user = request.cookies.get("user")?.value;
 

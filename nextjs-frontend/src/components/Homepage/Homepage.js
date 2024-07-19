@@ -21,6 +21,7 @@ export function HomePage() {
     <main className="homepage-negative-margin-top">
       <div className="hero-image position-relative">
         <Image
+          priority={true}
           src="/images/hero-background.jpg"
           style={{
             zIndex: "-1",

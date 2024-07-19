@@ -54,3 +54,5 @@ export const envVariables = {
   defaultUserImage: process.env.NEXT_PUBLIC_DEFAULT_USER_IMAGE,
   defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
+
+export const authenticatedRoutes = ["/my-profile"];

@@ -9,7 +9,7 @@ import { Popup } from "@/components/Popup";
 import { SendVerificationEmailButton } from "@/components/SendVerificationEmailButton";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { useFormState } from "react-dom";
-import { loginCall } from "@/utils/ApiCalls/UserApiFunctions";
+import { loginCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useState } from "react";
 
 export const Login = ({ onHideModal, children, type }) => {

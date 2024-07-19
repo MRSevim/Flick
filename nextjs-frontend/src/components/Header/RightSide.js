@@ -5,14 +5,17 @@ import links from "@/utils/Links";
 import { Image } from "../Image";
 import { UserMenu } from "./UserMenu";
 import { useEffect, useRef, useState } from "react";
-import { logoutCall } from "@/utils/ApiCalls/UserApiFunctions";
+import { logoutCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
+import { usePathname, useRouter } from "next/navigation";
 
 const RightSide = () => {
   const [user, setUser] = useUserContext();
   const [userMenu, setUserMenu] = useState(false);
   const wrapperRef = useRef(null);
   const [, setGlobalError] = useGlobalErrorContext();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -29,7 +32,7 @@ const RightSide = () => {
   }, [wrapperRef]);
 
   const logOut = async () => {
-    const error = await logoutCall();
+    const error = await logoutCall(pathname, router);
     if (error) {
       setGlobalError(error);
       return;

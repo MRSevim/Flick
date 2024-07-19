@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
 import links from "@/utils/Links";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { addDarkBg } from "@/utils/HelperFuncs";
 import { Popup } from "../Popup";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { SendVerificationEmailButton } from "../SendVerificationEmailButton";
-import { signupCall } from "@/utils/ApiCalls/UserApiFunctionsOnServer";
+import { signupCall } from "@/utils/ApiCalls/UserApiFunctions";
 import { useState } from "react";
 
 const initialState = { error: "", successMessage: "" };
@@ -94,11 +94,7 @@ export const SignUp = () => {
               </Link>
             </label>
           </div>
-          <input
-            className="btn btn-secondary mt-3"
-            type="submit"
-            value="Sign-up"
-          />
+          <SubmitButton />
           <p className="text-center mt-3">
             Already have an account?
             <Link href={links.login}>
@@ -117,5 +113,16 @@ export const SignUp = () => {
         </form>
       </div>{" "}
     </div>
+  );
+};
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <input
+      disabled={pending}
+      className="btn btn-secondary mt-3"
+      type="submit"
+      value="Sign-up"
+    />
   );
 };

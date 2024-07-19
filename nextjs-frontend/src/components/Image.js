@@ -2,7 +2,20 @@ import NextImage from "next/image";
 import { envVariables } from "@/utils/HelperFuncs";
 
 export const Image = ({ src, classes = "" }) => {
-  let modifiedSource;
+  if (!src) {
+    return;
+  }
+  let modifiedSource, width, height;
+  const alt = classes.includes("profile-img") ? "profile" : "featured";
+
+  if (classes.includes("profile-img-mini")) {
+    width = "50";
+    height = "50";
+  } else if (classes.includes("profile-img")) {
+    width = "200";
+    height = "200";
+  }
+
   if (
     src === envVariables.defaultArticleImage ||
     src === envVariables.defaultUserImage
@@ -10,22 +23,13 @@ export const Image = ({ src, classes = "" }) => {
     modifiedSource = "/images" + src;
   }
 
-  if (classes.includes("profile-img-mini")) {
-    return (
-      <NextImage
-        width="50"
-        height="50"
-        src={modifiedSource || src}
-        alt="profile"
-        className={classes}
-        referrerPolicy="no-referrer"
-      />
-    );
-  }
   return (
-    <img
+    <NextImage
+      priority={true}
+      width={width}
+      height={height}
       src={modifiedSource || src}
-      alt={classes.includes("profile-img") ? "profile" : "featured"}
+      alt={alt}
       className={classes}
       referrerPolicy="no-referrer"
     />
