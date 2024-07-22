@@ -2,7 +2,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.scss";
 import { UserProvider } from "@/contexts/UserContext";
-import { RefetchForPmIconProvider } from "@/contexts/RefetchForPmIcon";
 import { GlobalErrorProvider } from "@/contexts/GlobalErrorContext";
 import { ConfirmationErrorProvider } from "@/contexts/ConfirmationErrorContext";
 import { ConfirmationProvider } from "@/contexts/ConfirmationContext";
@@ -16,6 +15,7 @@ import React from "react";
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { Footer } from "@/components/Footer/Footer";
 import { GlobalError } from "@/components/GlobalError";
+import { Confirmation } from "@/components/Confirmation";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -52,29 +52,27 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <GoogleOAuthProvider clientId={envVariables.googleId}>
         <UserProvider userFromCookies={userFromCookies}>
-          <RefetchForPmIconProvider>
-            <GlobalErrorProvider>
-              <ConfirmationErrorProvider>
-                <ConfirmationProvider>
-                  <DarkModeProvider darkModeFromCookies={darkModeFromCookies}>
-                    <ThemeWrapper>
-                      <body
-                        className={
-                          (darkModeFromCookies ? "dark " : "") +
-                          nunito.className
-                        }
-                      >
-                        <Header />
-                        <GlobalError />
-                        <div className="pb-5 pt-4">{children}</div>
-                        <Footer />
-                      </body>
-                    </ThemeWrapper>
-                  </DarkModeProvider>
-                </ConfirmationProvider>
-              </ConfirmationErrorProvider>
-            </GlobalErrorProvider>
-          </RefetchForPmIconProvider>
+          <GlobalErrorProvider>
+            <ConfirmationErrorProvider>
+              <ConfirmationProvider>
+                <DarkModeProvider darkModeFromCookies={darkModeFromCookies}>
+                  <ThemeWrapper>
+                    <body
+                      className={
+                        (darkModeFromCookies ? "dark " : "") + nunito.className
+                      }
+                    >
+                      <Header />
+                      <GlobalError />
+                      <Confirmation />
+                      <div className="pb-5 pt-4">{children}</div>
+                      <Footer />
+                    </body>
+                  </ThemeWrapper>
+                </DarkModeProvider>
+              </ConfirmationProvider>
+            </ConfirmationErrorProvider>
+          </GlobalErrorProvider>
         </UserProvider>
       </GoogleOAuthProvider>
     </html>

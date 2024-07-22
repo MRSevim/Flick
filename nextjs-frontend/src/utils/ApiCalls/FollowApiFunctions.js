@@ -1,20 +1,24 @@
+"use server";
 import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
+import links from "../Links";
 
-const followApi = {
-  follow: async (id) => {
-    const response = await fetch(backendUrl + "/follow/" + id, {
-      method: "POST",
-    });
+export const followCall = async (id) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const response = await fetch(backendUrl + "/follow/" + id, {
+    method: "POST",
+    headers: {
+      Cookie: authTokenCookieString,
+    },
+  });
+  const json = await response.json();
 
-    return response;
-  },
-  getFollows: async (id, type, page) => {
-    const response = await fetch(
-      backendUrl + "/follow/follows/" + id + "?type=" + type + "&page=" + page
-    );
+  if (!response.ok) {
+    return { error: json.message };
+  }
 
-    return response;
-  },
+  revalidatePath(links.publicUser(id));
+  return { error: null };
 };
-export default followApi;

@@ -34,9 +34,9 @@ export const confirmationWrapper = async (
   confirmation.ref.current.show();
   const call = async (reason) => {
     setConfirmation((prev) => ({ ...prev, isLoading: true }));
-    const response = await apiCall(reason);
+    const error = await apiCall(reason);
 
-    if (response && response.ok) {
+    if (!error) {
       confirmation.ref.current.hide();
       okResponseFunc();
     }

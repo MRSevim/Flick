@@ -28,11 +28,8 @@ const links = {
       : "/emailer?type=" + type;
     return url;
   },
-  followers: (id) => {
-    return "/" + id + "/followers?page=1";
-  },
-  followings: (id) => {
-    return "/" + id + "/following?page=1";
+  follows: (id, type, page) => {
+    return "/user/" + id + "/" + type + "?page=" + page;
   },
   publicUser: (id) => {
     return "/user/" + id;

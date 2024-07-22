@@ -3,7 +3,9 @@ import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
 export const searchAll = async (query) => {
-  const response = await fetch(backendUrl + "/search/all?search=" + query);
+  const response = await fetch(backendUrl + "/search/all?search=" + query, {
+    cache: "no-store",
+  });
   const json = await response.json();
 
   if (!response.ok) {

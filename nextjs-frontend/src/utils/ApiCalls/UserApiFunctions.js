@@ -2,7 +2,6 @@
 import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 import { cookies } from "next/headers";
-const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
 
 export const signupCall = async (token, prevState, formData) => {
   const url = backendUrl + "/user/register/" + (token ? token : "");
@@ -47,6 +46,7 @@ export const updateUserCall = async (
   newPassword,
   image
 ) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/user/profile", {
     method: "PUT",
     headers: {
@@ -84,6 +84,7 @@ export const updateUserCall = async (
 };
 
 export const generateModLinkCall = async () => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/user/generate-mod-link", {
     method: "POST",
     headers: {
@@ -99,6 +100,7 @@ export const generateModLinkCall = async () => {
 };
 
 export const deleteAccountCall = async (formData) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const password = formData.get("password");
 
   const response = await fetch(backendUrl + "/user/profile", {
@@ -117,14 +119,27 @@ export const deleteAccountCall = async (formData) => {
   }
   return { error: null };
 };
+
+export const banUserCall = async (id, reasonOfBan) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const response = await fetch(backendUrl + "/user/ban/" + id, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: authTokenCookieString,
+    },
+
+    body: JSON.stringify({ reasonOfBan }),
+  });
+
+  const json = await response.json();
+  if (!response.ok) {
+    return { error: json.message };
+  }
+  return { error: null };
+};
+
 /* const userApi = {
-  getPublicUser: async (param) => {
-    const response = await fetch(backendUrl + "/user/" + param);
-
-    return response;
-  },
-
-
   toggleUserVariables: async (type) => {
     const response = await fetch(backendUrl + "/user/toggle/" + type, {
       method: "PUT",
@@ -132,16 +147,7 @@ export const deleteAccountCall = async (formData) => {
 
     return response;
   },
-  ban: async (id, reasonOfBan) => {
-    const response = await fetch(backendUrl + "/user/ban/" + id, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
 
-      body: JSON.stringify({ reasonOfBan }),
-    });
-
-    return response;
-  },
 
 };
 export default userApi; */

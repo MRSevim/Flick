@@ -4,7 +4,7 @@ import { getProfileCall } from "@/utils/ApiCalls/GetterUtils";
 
 export const metadata = {
   title: "My Profile",
-  description: "Personal profile page of " + envVariables.websiteName,
+  description: "Personal profile page on " + envVariables.websiteName,
 };
 const page = async () => {
   const { json } = await getProfileCall();
