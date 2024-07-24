@@ -1,4 +1,5 @@
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
+import { useUserContext } from "@/contexts/UserContext";
 import { followCall } from "@/utils/ApiCalls/FollowApiFunctions";
 import links from "@/utils/Links";
 import Link from "next/link";
@@ -6,9 +7,10 @@ import { useFormState, useFormStatus } from "react-dom";
 
 export const FollowAndMessageButtons = ({ user, following }) => {
   const [, setGlobalError] = useGlobalErrorContext();
+  const [loggedInUser] = useUserContext();
 
   const handleSubmit = async () => {
-    const { error } = await followCall(user._id);
+    const { error } = await followCall(user._id, loggedInUser._id);
     if (error) {
       setGlobalError(error);
     }

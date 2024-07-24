@@ -1,7 +1,10 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 import { cookies } from "next/headers";
+
+const userSlugPath = "/user/[id]";
 
 export const signupCall = async (token, prevState, formData) => {
   const url = backendUrl + "/user/register/" + (token ? token : "");
@@ -117,6 +120,9 @@ export const deleteAccountCall = async (formData) => {
   if (!response.ok) {
     return { error: json.message };
   }
+
+  revalidatePath(userSlugPath, "layout");
+
   return { error: null };
 };
 
@@ -136,6 +142,9 @@ export const banUserCall = async (id, reasonOfBan) => {
   if (!response.ok) {
     return { error: json.message };
   }
+
+  revalidatePath(userSlugPath, "layout");
+
   return { error: null };
 };
 

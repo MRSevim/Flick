@@ -38,10 +38,10 @@ const links = {
     return "/article/" + id;
   },
   allArticles: (id) => {
-    return "/article/user/" + id + "/articles?page=1";
+    return "/articles/" + id + "?page=1";
   },
   allDrafts: (id) => {
-    return "/article/user/" + id + "/drafts?page=1";
+    return "/drafts/" + id + "?page=1";
   },
   edit: (id, isDraft) => {
     return "/edit/" + id + "?isDraft=" + isDraft;

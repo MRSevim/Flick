@@ -1,17 +1,33 @@
+"use server";
 import { envVariables } from "../HelperFuncs";
+import { cookies } from "next/headers";
 const backendUrl = envVariables.backendUrl;
 
-const articleApi = {
-  create: async (title, content, isDraft, tags, image) => {
-    const response = await fetch(backendUrl + "/article/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+export const createArticleCall = async (
+  title,
+  content,
+  isDraft,
+  tags,
+  image
+) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const response = await fetch(backendUrl + "/article/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: authTokenCookieString,
+    },
 
-      body: JSON.stringify({ title, content, isDraft, tags, image }),
-    });
+    body: JSON.stringify({ title, content, isDraft, tags, image }),
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    return { error: json.message };
+  }
+  return { error: null };
+};
+/* const articleApi = {
 
-    return response;
-  },
   update: async (title, content, isDraft, id, tags, image) => {
     const response = await fetch(backendUrl + "/article/" + id, {
       method: "PATCH",
@@ -49,19 +65,7 @@ const articleApi = {
 
     return response;
   },
-  getArticles: async (id, page, isDraft, advancedSearch, title, tags) => {
-    let url = !isDraft
-      ? "/article/user/" + id + "?page=" + page
-      : "/article/draft?page=" + page;
 
-    if (advancedSearch) {
-      const addition = "&title=" + title + "&tags=" + tags;
-      url = url + addition;
-    }
-
-    const response = await fetch(backendUrl + url, { credentials: "include" });
-
-    return response;
   },
   getSimilar: async (id) => {
     const response = await fetch(backendUrl + "/article/similar/" + id, {
@@ -70,6 +74,4 @@ const articleApi = {
 
     return response;
   },
-};
-
-export default articleApi;
+}; */

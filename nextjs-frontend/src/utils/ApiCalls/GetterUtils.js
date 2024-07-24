@@ -27,7 +27,7 @@ export const getProfileCall = async () => {
 
 export const getPublicUserCall = async (param) => {
   const response = await fetch(backendUrl + "/user/" + param, {
-    cache: "no-store",
+    next: { tags: [param] },
   });
   const json = await response.json();
   if (!response.ok) {
@@ -39,8 +39,39 @@ export const getPublicUserCall = async (param) => {
 export const getFollowsCall = async (id, type, page) => {
   const response = await fetch(
     backendUrl + "/follow/follows/" + id + "?type=" + type + "&page=" + page,
-    { cache: "no-store" }
+    { next: { tags: [id] } }
   );
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    notFound();
+  }
+
+  return { json };
+};
+export const getArticlesCall = async (
+  id,
+  page,
+  isDraft,
+  advancedSearch,
+  title,
+  tags
+) => {
+  let url = !isDraft
+    ? "/article/user/" + id + "?page=" + page
+    : "/article/draft?page=" + page;
+
+  if (advancedSearch) {
+    const addition = "&title=" + title + "&tags=" + tags;
+    url = url + addition;
+  }
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const response = await fetch(backendUrl + url, {
+    headers: {
+      Cookie: authTokenCookieString,
+    },
+  });
 
   const json = await response.json();
 

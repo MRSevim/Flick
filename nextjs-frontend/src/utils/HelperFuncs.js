@@ -50,9 +50,29 @@ export const envVariables = {
   websiteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
   googleId: process.env.GOOGLE_CLIENT_ID,
   backendUrl: process.env.BACKEND_URL,
-  publicUrl: process.env.PUBLIC_URL,
   defaultUserImage: process.env.NEXT_PUBLIC_DEFAULT_USER_IMAGE,
   defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
 
-export const authenticatedRoutes = ["/my-profile"];
+export const authenticatedRoutes = ["/my-profile", "/drafts"];
+
+export const Tags = [
+  "Nature",
+  "Philosophy",
+  "Science",
+  "Technology",
+  "History",
+  "Art",
+  "Literature",
+  "Music",
+  "Film",
+  "Politics",
+  "Travel",
+  "Health",
+  "Fitness",
+  "Food",
+  "Fashion",
+  "Education",
+  "Business",
+  "Religion",
+];
