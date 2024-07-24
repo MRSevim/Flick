@@ -1,0 +1,21 @@
+const Tags = [
+  "Nature",
+  "Philosophy",
+  "Science",
+  "Technology",
+  "History",
+  "Art",
+  "Literature",
+  "Music",
+  "Film",
+  "Politics",
+  "Travel",
+  "Health",
+  "Fitness",
+  "Food",
+  "Fashion",
+  "Education",
+  "Business",
+  "Religion",
+];
+module.exports = Tags;
