@@ -8,7 +8,7 @@ import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
 export const getProfileCall = async () => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/user/profile", {
     cache: "no-store",
     headers: {
@@ -66,7 +66,7 @@ export const getArticlesCall = async (
     const addition = "&title=" + title + "&tags=" + tags;
     url = url + addition;
   }
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + url, {
     headers: {
       Cookie: authTokenCookieString,

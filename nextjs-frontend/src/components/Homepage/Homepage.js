@@ -5,7 +5,7 @@ import links from "@/utils/Links";
 import { Libre_Baskerville } from "next/font/google";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 
-const libre_baskerville = Libre_Baskerville({
+export const libre_baskerville = Libre_Baskerville({
   weight: ["400", "700"],
   subsets: ["latin"],
 });
@@ -19,18 +19,16 @@ export function HomePage() {
 
   return (
     <main className="homepage-negative-margin-top">
-      <div className="hero-image position-relative">
+      <div className="position-relative h-700">
+        <div className="h-100 w-100 background-shadow position-absolute"></div>
         <Image
           priority={true}
+          className="hero-image position-absolute"
           src="/images/hero-background.jpg"
-          style={{
-            zIndex: "-1",
-            objectFit: "cover",
-            objectPosition: "center",
-          }}
+          width="0"
+          height="700"
           alt="desk to write on"
           sizes="100vw"
-          fill
         />
         <div className="container h-100">
           <div className="pt-5 text-white d-flex flex-column justify-content-center align-items-center h-100">

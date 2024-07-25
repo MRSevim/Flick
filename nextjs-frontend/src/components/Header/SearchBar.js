@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Autocomplete from "@mui/material/Autocomplete";
 import links from "@/utils/Links";
 import { Image } from "@/components/Image";
-import { searchAll } from "@/utils/ApiCalls/SearchApiFunctions";
+import { searchAllCall } from "@/utils/ApiCalls/SearchApiFunctions";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 
 export const SearchBar = () => {
@@ -24,7 +24,7 @@ export const SearchBar = () => {
   useEffect(() => {
     const get = async () => {
       setIsLoading(true);
-      const json = await searchAll(searchParam);
+      const json = await searchAllCall(searchParam);
       setIsLoading(false);
       if (json.error) {
         setGlobalError(json.error);
@@ -50,6 +50,7 @@ export const SearchBar = () => {
         freeSolo
         options={isLoading ? [] : [...options.users, ...options.articles]}
         groupBy={(option) => (option.username ? "Users" : "Articles")}
+        filterOptions={(options) => options}
         inputValue={searchParam}
         getOptionLabel={(option) =>
           option.username || option.title

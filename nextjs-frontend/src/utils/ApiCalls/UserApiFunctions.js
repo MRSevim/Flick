@@ -49,7 +49,7 @@ export const updateUserCall = async (
   newPassword,
   image
 ) => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/user/profile", {
     method: "PUT",
     headers: {
@@ -87,7 +87,7 @@ export const updateUserCall = async (
 };
 
 export const generateModLinkCall = async () => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/user/generate-mod-link", {
     method: "POST",
     headers: {
@@ -103,7 +103,7 @@ export const generateModLinkCall = async () => {
 };
 
 export const deleteAccountCall = async (formData) => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const password = formData.get("password");
 
   const response = await fetch(backendUrl + "/user/profile", {
@@ -127,7 +127,7 @@ export const deleteAccountCall = async (formData) => {
 };
 
 export const banUserCall = async (id, reasonOfBan) => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/user/ban/" + id, {
     method: "POST",
     headers: {

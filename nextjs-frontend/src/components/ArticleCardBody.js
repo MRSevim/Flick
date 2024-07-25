@@ -1,6 +1,12 @@
 import links from "@/utils/Links";
 import Link from "next/link";
 import { extractExcerptFromHTML } from "@/utils/HelperFuncs";
+import { Jost } from "next/font/google";
+
+export const jost = Jost({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+});
 
 export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
   return (
@@ -25,7 +31,7 @@ export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
       </div>
       <div>
         <p
-          className="card-text article-card-inner-html"
+          className={"card-text article-card-inner-html " + jost.className}
           dangerouslySetInnerHTML={{
             __html: extractExcerptFromHTML(article.content.trim()),
           }}

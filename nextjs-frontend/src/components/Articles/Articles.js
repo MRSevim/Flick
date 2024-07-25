@@ -10,6 +10,8 @@ import { addDarkBg, confirmationWrapper } from "@/utils/HelperFuncs";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 import { useConfirmationContext } from "@/contexts/ConfirmationContext";
 import Link from "next/link";
+import { libre_baskerville } from "../Homepage/Homepage";
+import Image from "next/image";
 
 export const Articles = ({ json, isDraft }) => {
   const username = json.user.username;
@@ -102,14 +104,6 @@ export const Articles = ({ json, isDraft }) => {
     ); */
   };
 
-  const editArticle = (id) => {
-    if (isDraft) {
-      navigate(links.edit(id, true));
-    } else {
-      navigate(links.edit(id, false));
-    }
-  };
-
   const handlePaginationChange = (event, value) => {
     /*     searchParams.set("page", value);
     setSearchParams(searchParams); */
@@ -179,8 +173,22 @@ export const Articles = ({ json, isDraft }) => {
       )}
       <div className="mb-3">
         {articles.length === 0 ? (
-          <h2 className="text-center mt-3 no-articles-background rounded-pill">
-            <div className="d-flex align-items-center justify-content-center text-white font-secondary h-100">
+          <h2 className="mt-3 position-relative h-400">
+            <Image
+              priority={true}
+              src="/images/empty-articles.jpg"
+              width="0"
+              height="400"
+              className="no-articles-background w-100 position-absolute rounded-pill"
+              alt="no articles"
+              sizes="100%"
+            />
+            <div
+              className={
+                "d-flex align-items-center justify-content-center text-white h-100 " +
+                libre_baskerville.className
+              }
+            >
               {!isDraft && "No articles."}
               {isDraft && "No Drafts."}
             </div>
@@ -239,7 +247,6 @@ export const Articles = ({ json, isDraft }) => {
               article={article}
               isDraft={isDraft}
               myArticles={myArticles}
-              editArticle={editArticle}
               deleteArticle={deleteArticle}
             />
           ))}

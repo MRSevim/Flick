@@ -2,13 +2,12 @@
 import { envVariables } from "../HelperFuncs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { unstable_noStore as noStore } from "next/cache";
 import links from "../Links";
 const backendUrl = envVariables.backendUrl;
 
 export const sendEmailCall = async (email, type) => {
-  noStore();
   const response = await fetch(backendUrl + "/email/" + type, {
+    cache: "no-store",
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),

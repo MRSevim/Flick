@@ -1,4 +1,3 @@
-import React from "react";
 import { LikeButton } from "../LikeButton";
 import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";

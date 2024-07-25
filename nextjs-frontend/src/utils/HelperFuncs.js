@@ -1,8 +1,6 @@
 export const extractExcerptFromHTML = (html) => {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  const text = div.textContent || div.innerText || "";
-  const words = text.split(/\s+/); // Split the text by whitespace
+  const stripHtml = html.replace(/<[^>]*>?/gm, "");
+  const words = stripHtml.split(/\s+/); // Split the text by whitespace
   const cutWords = words.slice(0, 100).join(" ");
   return cutWords;
 };

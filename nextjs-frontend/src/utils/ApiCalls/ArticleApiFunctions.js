@@ -10,7 +10,7 @@ export const createArticleCall = async (
   tags,
   image
 ) => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/article/", {
     method: "POST",
     headers: {

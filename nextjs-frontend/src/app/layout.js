@@ -11,7 +11,6 @@ import { Header } from "@/components/Header/Header";
 import { Nunito } from "next/font/google";
 import { envVariables } from "@/utils/HelperFuncs";
 import { cookies } from "next/headers";
-import React from "react";
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { Footer } from "@/components/Footer/Footer";
 import { GlobalError } from "@/components/GlobalError";
@@ -26,7 +25,6 @@ export const metadata = {
   },
   description:
     "Express yourself through writing! Share your thoughts, stories, and ideas on our free writing platform. Find encouragement and support from a community of writers.",
-
   keywords: [
     "writing",
     "reading",
