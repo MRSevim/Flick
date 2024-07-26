@@ -7,7 +7,7 @@ const links = {
     return `/pms?open=true&page=1&type=sent&username=${username}&_id=${id}`;
   },
   homepage: "/",
-  mostLiked: "/most-liked?time=week",
+  mostLiked: (time) => "/mostLiked/" + time,
   createAnArticle: "/create-an-article",
   myProfile: "/my-profile",
   about: "/about",

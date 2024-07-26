@@ -6,7 +6,14 @@ export const useCreateArticle = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [, setGlobalError] = useGlobalErrorContext();
 
-  const createArticle = async (title, content, isDraft, tags, image) => {
+  const createArticle = async (
+    title,
+    content,
+    isDraft,
+    tags,
+    image,
+    userId
+  ) => {
     setIsLoading(true);
     setGlobalError(null);
 
@@ -15,7 +22,8 @@ export const useCreateArticle = () => {
       content,
       isDraft,
       tags,
-      image
+      image,
+      userId
     );
 
     if (error) {

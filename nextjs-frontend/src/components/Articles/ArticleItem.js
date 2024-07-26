@@ -8,12 +8,11 @@ import { addDarkBg } from "@/utils/HelperFuncs";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 
 export const ArticleItem = ({
-  deleteLoading,
+  deleteManyLoading,
   article,
   isDraft,
   user,
   myArticles,
-  deleteArticle,
   value = false,
   updateValue = () => {},
 }) => {
@@ -39,14 +38,9 @@ export const ArticleItem = ({
             {(myArticles || user?.role === "mod" || user?.role === "admin") && (
               <DeleteButton
                 classes="p-1 m-1 position-absolute top-0 end-0"
-                onClick={() => {
-                  deleteArticle(
-                    article._id,
-                    article.title,
-                    article.user === user._id
-                  );
-                }}
-                deleteLoading={deleteLoading}
+                article={article}
+                user={user}
+                deleteManyLoading={deleteManyLoading}
               />
             )}
             {myArticles && (

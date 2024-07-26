@@ -5,6 +5,7 @@ import { Pagination } from "@mui/material";
 import classNames from "classnames";
 import { ArticleItem } from "./ArticleItem";
 import links from "@/utils/Links";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { addDarkBg, confirmationWrapper } from "@/utils/HelperFuncs";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
@@ -12,8 +13,13 @@ import { useConfirmationContext } from "@/contexts/ConfirmationContext";
 import Link from "next/link";
 import { libre_baskerville } from "../Homepage/Homepage";
 import Image from "next/image";
+import { AdvancedSearch } from "../AdvancedSearch";
+import { useDeleteMany } from "@/hooks/UseDeleteMany";
 
 export const Articles = ({ json, isDraft }) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const username = json.user.username;
   const articles = json.articles;
   const [user] = useUserContext();
@@ -22,14 +28,17 @@ export const Articles = ({ json, isDraft }) => {
   const page = +json.currentPage;
   const totalPages = +json.totalPages;
 
-  /*   const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
-    useDeleteArticle();
-  const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany(); */
-
+  const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
   const [selected, setSelected] = useState([]);
   const { confirmation, setConfirmation } = useConfirmationContext();
   const [darkMode] = useDarkModeContext();
   const [, setGlobalError] = useGlobalErrorContext();
+
+  if (totalPages && articles.length === 0) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", totalPages);
+    router.push(pathname + "?" + params.toString());
+  }
 
   function handleSelect(value, id) {
     if (value) {
@@ -48,36 +57,8 @@ export const Articles = ({ json, isDraft }) => {
     }
   }
 
-  const deleteArticle = async (_id, title, ownArticle) => {
-    /*   confirmationWrapper(
-      confirmation,
-      (prev) => {
-        return {
-          ...confirmation,
-          type: "deleteArticle",
-          info: {
-            ...prev.info,
-            owned: ownArticle,
-            title,
-          },
-        };
-      },
-      setConfirmation,
-      async (reason) => {
-        return await deleteArticleCall(_id, reason);
-      },
-      () => {
-        setConfirmation((prev) => ({
-          ...prev,
-          info: { ...prev.info, reason: "" },
-        }));
-        get();
-      }
-    ); */
-  };
-
   const deleteSelected = async (selected) => {
-    /*     if (selected.length === 0) {
+    if (selected.length === 0) {
       setGlobalError("Please select at least 1 article");
       return;
     }
@@ -96,35 +77,21 @@ export const Articles = ({ json, isDraft }) => {
       },
       setConfirmation,
       async () => {
-        return await deleteMany(selected);
+        return await deleteMany(selected, user._id);
       },
-      () => {
-        get();
-      }
-    ); */
+      () => {}
+    );
   };
 
   const handlePaginationChange = (event, value) => {
-    /*     searchParams.set("page", value);
-    setSearchParams(searchParams); */
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", value);
+    router.push(pathname + "?" + params.toString());
   };
-
-  /*   useEffect(() => {
-    if (totalPages && articles.length === 0) {
-      searchParams.set("page", totalPages);
-      setSearchParams(searchParams);
-    }
-  }, [totalPages, articles, searchParams, setSearchParams]); */
 
   useEffect(() => {
     setSelected([]);
   }, [articles]);
-
-  /*   useEffect(() => {
-    if (myArticles === false && isDraft) {
-      navigate(links.allArticles(id));
-    }
-  }, [myArticles, isDraft, navigate, id]); */
 
   return (
     <div className="container">
@@ -220,7 +187,7 @@ export const Articles = ({ json, isDraft }) => {
                   Select all
                 </label>
                 <button
-                  /*   disabled={deleteManyLoading || deleteLoading} */
+                  disabled={deleteManyLoading}
                   onClick={(e) => {
                     deleteSelected(selected);
                   }}
@@ -242,23 +209,16 @@ export const Articles = ({ json, isDraft }) => {
               user={user}
               updateValue={handleSelect}
               value={selected.includes(article._id)}
-              deleteLoading={/* deleteManyLoading || deleteLoading */ false}
+              deleteManyLoading={deleteManyLoading}
               key={article._id}
               article={article}
               isDraft={isDraft}
               myArticles={myArticles}
-              deleteArticle={deleteArticle}
             />
           ))}
       </div>
 
-      {/*   <AdvancedSearch
-        page={page}
-        className="mt-5"
-        _username={localUser.username}
-        searchParams={searchParams}
-        setSearchParams={setSearchParams}
-      /> */}
+      <AdvancedSearch page={page} className="mt-5" _username={username} />
     </div>
   );
 };

@@ -3,12 +3,12 @@ import { getArticlesCall } from "@/utils/ApiCalls/GetterUtils";
 import { envVariables } from "@/utils/HelperFuncs";
 
 export async function generateMetadata({ params, searchParams }) {
-  const { json } = await getArticlesCall(params.id, searchParams.page, false);
+  const { json } = await getArticlesCall(params.id, searchParams.page, true);
   const username = json.user.username;
 
   return {
-    title: "Articles of " + username,
-    description: "Articles of " + username + " on " + envVariables.websiteName,
+    title: "Drafts of " + username,
+    description: "Drafts of " + username + " on " + envVariables.websiteName,
   };
 }
 
@@ -17,12 +17,12 @@ const page = async ({ params, searchParams }) => {
   const { json } = await getArticlesCall(
     params.id,
     searchParams.page,
-    false,
+    true,
     advancedSearch,
     searchParams.title,
     searchParams.tags
   );
-  return <Articles isDraft={false} json={json} />;
+  return <Articles isDraft={true} json={json} />;
 };
 
 export default page;

@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TagsForm } from "./TagsForm";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const AdvancedSearch = ({ className, page, _username }) => {
-  const [username, setUsername] = useState(_username || "");
-  const [title, setTitle] = useState("");
-  const [tags, setTags] = useState([]);
   const searchParams = useSearchParams();
   const usernameParam = searchParams.get("username");
   const titleParam = searchParams.get("title");
   const tagsParam = searchParams.get("tags");
+  let initialTags = [];
+  if (tagsParam) {
+    initialTags = tagsParam.split(",");
+  }
+  const [username, setUsername] = useState(_username || usernameParam || "");
+  const [title, setTitle] = useState(titleParam || "");
+  const [tags, setTags] = useState(initialTags);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -18,6 +22,9 @@ export const AdvancedSearch = ({ className, page, _username }) => {
     const params = new URLSearchParams(searchParams.toString());
 
     params.set("advancedSearch", "true");
+    if (!username && !title && !tags.length) {
+      params.set("advancedSearch", "false");
+    }
     params.set("page", page || "");
     params.set("username", username);
     params.set("title", title);
@@ -25,18 +32,6 @@ export const AdvancedSearch = ({ className, page, _username }) => {
 
     router.push(pathname + "?" + params.toString());
   };
-
-  useEffect(() => {
-    if (usernameParam) {
-      setUsername(usernameParam);
-    }
-    if (titleParam) {
-      setTitle(titleParam);
-    }
-    if (tagsParam) {
-      setTags(tagsParam.split(","));
-    }
-  }, [searchParams]);
 
   const clearFilters = () => {
     setUsername(_username || "");

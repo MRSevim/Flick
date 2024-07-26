@@ -5,6 +5,7 @@ import { Image } from "./Image";
 import { RemoveImageButton } from "./RemoveImageButton";
 
 export const EditorForm = ({
+  tags,
   type,
   title,
   setTitle,
@@ -72,7 +73,7 @@ export const EditorForm = ({
           />
         </label>
       </div>
-      <TagsForm classes={"my-3"} onTagsChange={onTagsChange} />
+      <TagsForm tags={tags} classes={"my-3"} onTagsChange={onTagsChange} />
       <Editor
         initialContent={initialContent}
         handleEditorChange={handleEditorChange}

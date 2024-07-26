@@ -25,9 +25,9 @@ export const getProfileCall = async () => {
   return { json };
 };
 
-export const getPublicUserCall = async (param) => {
-  const response = await fetch(backendUrl + "/user/" + param, {
-    next: { tags: [param] },
+export const getPublicUserCall = async (id) => {
+  const response = await fetch(backendUrl + "/user/" + id, {
+    next: { tags: [id] },
   });
   const json = await response.json();
   if (!response.ok) {
@@ -71,7 +71,19 @@ export const getArticlesCall = async (
     headers: {
       Cookie: authTokenCookieString,
     },
+    next: { tags: [id] },
   });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    notFound();
+  }
+
+  return { json };
+};
+export const getMostLikedCall = async (time) => {
+  const response = await fetch(backendUrl + "/like/getMostLiked/" + time);
 
   const json = await response.json();
 

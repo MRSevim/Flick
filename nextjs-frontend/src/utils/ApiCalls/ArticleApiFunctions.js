@@ -1,6 +1,7 @@
 "use server";
 import { envVariables } from "../HelperFuncs";
 import { cookies } from "next/headers";
+import { revalidateTag } from "next/cache";
 const backendUrl = envVariables.backendUrl;
 
 export const createArticleCall = async (
@@ -8,7 +9,8 @@ export const createArticleCall = async (
   content,
   isDraft,
   tags,
-  image
+  image,
+  userId
 ) => {
   const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/article/", {
@@ -24,6 +26,53 @@ export const createArticleCall = async (
   if (!response.ok) {
     return { error: json.message };
   }
+
+  revalidateTag(userId);
+
+  return { error: null };
+};
+
+export const deleteArticleCall = async (id, reasonOfDeletion, userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + "/article/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: authTokenCookieString,
+    },
+
+    body: JSON.stringify({ reasonOfDeletion }),
+  });
+
+  const json = await response.json();
+  if (!response.ok) {
+    return { error: json.message };
+  }
+
+  revalidateTag(userId);
+
+  return { error: null };
+};
+
+export const deleteManyCall = async (ids, userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + "/article/deleteMany", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: authTokenCookieString,
+    },
+
+    body: JSON.stringify({ ids }),
+  });
+
+  const json = await response.json();
+  if (!response.ok) {
+    return { error: json.message };
+  }
+
+  revalidateTag(userId);
+
   return { error: null };
 };
 /* const articleApi = {
@@ -38,26 +87,7 @@ export const createArticleCall = async (
 
     return response;
   },
-  delete: async (id, reasonOfDeletion) => {
-    const response = await fetch(backendUrl + "/article/" + id, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
 
-      body: JSON.stringify({ reasonOfDeletion }),
-    });
-
-    return response;
-  },
-  deleteMany: async (ids) => {
-    const response = await fetch(backendUrl + "/article/deleteMany", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-
-      body: JSON.stringify({ ids }),
-    });
-
-    return response;
-  },
   getArticle: async (id, isDraft) => {
     const url = isDraft ? "/article/draft/" : "/article/";
 

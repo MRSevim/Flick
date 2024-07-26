@@ -14,9 +14,12 @@ export const Header = () => {
   const location = usePathname();
 
   const setActiveClassNames = (type) => {
+    const path = "/" + type.split("/")[1];
+    const splitLocation = "/" + location.split("/")[1];
+
     return classNames({
       "nav-link px-2 text-info": true,
-      active: location === type.split("?")[0],
+      active: splitLocation === path,
       "text-white": darkMode,
     });
   };
@@ -32,7 +35,7 @@ export const Header = () => {
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             {[
               { link: links.homepage, text: "Home" },
-              { link: links.mostLiked, text: "Most Liked" },
+              { link: links.mostLiked("week"), text: "Most Liked" },
               { link: links.createAnArticle, text: "Create An Article" },
               { link: links.about, text: "About" },
             ].map((item) => (

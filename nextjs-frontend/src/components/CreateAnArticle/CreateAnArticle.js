@@ -58,7 +58,8 @@ export const CreateAnArticle = () => {
       DOMPurify.sanitize(content),
       false,
       tags,
-      image
+      image,
+      user._id
     );
     if (!error) {
       router.push(links.allArticles(user._id));
@@ -77,7 +78,9 @@ export const CreateAnArticle = () => {
       DOMPurify.sanitize(title),
       DOMPurify.sanitize(content),
       true,
-      tags
+      tags,
+      image,
+      user._id
     );
     if (!error) {
       router.push(links.allDrafts(user._id));
@@ -101,6 +104,7 @@ export const CreateAnArticle = () => {
         setTitle={setTitle}
         image={image}
         setImage={setImage}
+        tags={tags}
         onTagsChange={onTagsChange}
         initialContent={initialContent}
         handleEditorChange={handleEditorChange}

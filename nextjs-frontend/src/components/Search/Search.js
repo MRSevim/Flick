@@ -60,7 +60,7 @@ export const Search = ({ json }) => {
                       />
                     </span>
                     {article.tags.map((tag, i) => (
-                      <Link key={i} className="me-1">
+                      <Link href={links.tag(tag)} key={i} className="me-1">
                         #{tag}
                       </Link>
                     ))}

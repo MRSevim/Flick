@@ -1,7 +1,7 @@
 import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
-const likeApi = {
+/* const likeApi = {
   like: async (id) => {
     const response = await fetch(backendUrl + "/like/" + id, {
       method: "POST",
@@ -9,10 +9,5 @@ const likeApi = {
 
     return response;
   },
-  getMostLiked: async (time) => {
-    const response = await fetch(backendUrl + "/like/getMostLiked/" + time);
-
-    return response;
-  },
 };
-export default likeApi;
+export default likeApi; */
