@@ -93,3 +93,32 @@ export const getMostLikedCall = async (time) => {
 
   return { json };
 };
+export const getArticleCall = async (id, isDraft) => {
+  const url = isDraft ? "/article/draft/" : "/article/";
+
+  const response = await fetch(backendUrl + url + id, {
+    next: { tags: ["article/" + id] },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    notFound();
+  }
+
+  return { json };
+};
+export const getSimilarCall = async (id) => {
+  const response = await fetch(backendUrl + "/article/similar/" + id, {
+    headers: { "Content-Type": "application/json" },
+    next: { tags: ["similar"] },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return { error: "Could not fetch similar articles" };
+  }
+
+  return { similar: json };
+};

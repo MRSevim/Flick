@@ -26,7 +26,7 @@ export const ArticleItem = ({
     <div key={article._id} className="col col-12 col-md-6 col-lg-4">
       <div className={"card h-100 article-card " + addDarkBg(darkMode)}>
         <ArticleCardBody
-          classes={"my-4"}
+          classes="my-4"
           article={article}
           link={
             !isDraft

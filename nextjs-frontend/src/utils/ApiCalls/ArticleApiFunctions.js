@@ -88,20 +88,7 @@ export const deleteManyCall = async (ids, userId) => {
     return response;
   },
 
-  getArticle: async (id, isDraft) => {
-    const url = isDraft ? "/article/draft/" : "/article/";
-
-    const response = await fetch(backendUrl + url + id);
-
-    return response;
-  },
 
   },
-  getSimilar: async (id) => {
-    const response = await fetch(backendUrl + "/article/similar/" + id, {
-      headers: { "Content-Type": "application/json" },
-    });
 
-    return response;
-  },
 }; */

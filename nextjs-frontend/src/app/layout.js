@@ -16,7 +16,7 @@ import { Footer } from "@/components/Footer/Footer";
 import { GlobalError } from "@/components/GlobalError";
 import { Confirmation } from "@/components/Confirmation";
 
-const nunito = Nunito({ subsets: ["latin"] });
+const nunito = Nunito({ weight: ["400", "700"], subsets: ["latin"] });
 
 export const metadata = {
   title: {

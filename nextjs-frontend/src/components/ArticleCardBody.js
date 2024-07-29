@@ -13,7 +13,7 @@ export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
     <div className={"card-body " + classes}>
       <h5 className="card-title" title={article.title}>
         {children}{" "}
-        <Link href={link} className="unstyled-link">
+        <Link href={link} className={"unstyled-link " + jost.className}>
           <span className=" hovered-link">
             {article.title.substring(0, 50)}
             {article.title.length > 50 && "..."}

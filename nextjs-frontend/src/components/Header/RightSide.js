@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import { logoutCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 import { usePathname, useRouter } from "next/navigation";
+import { PmIcon } from "./PmIcon";
+import { Notifications } from "./Notifications";
 
 const RightSide = () => {
   const [user, setUser] = useUserContext();
@@ -43,12 +45,12 @@ const RightSide = () => {
   return (
     <>
       {!user && <DarkModeToggle />}
-      {/*  {user && (
+      {user && (
         <>
           <PmIcon />
           <Notifications />
         </>
-      )} */}
+      )}
       {user ? (
         <div ref={wrapperRef} className="position-relative">
           <div

@@ -9,6 +9,7 @@ export const libre_baskerville = Libre_Baskerville({
   weight: ["400", "700"],
   subsets: ["latin"],
 });
+
 export function HomePage() {
   const [darkMode] = useDarkModeContext();
   let darkModeString = "";

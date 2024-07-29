@@ -1,12 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
 $primary: #00a9a5;
 $secondary: #0b5351;
 $info: #092327;
 $dark-primary: $info;
 :root {
-  --font-primary: "Nunito", sans-serif;
-  --font-secondary: "Libre Baskerville", serif;
-  --font-article: "Jost", sans-serif;
   --color-primary: #{$primary};
   --color-secondary: #{$secondary};
   --color-info: #{$info};
@@ -62,7 +58,6 @@ html {
   position: relative;
 }
 body {
-  font-family: var(--font-primary);
   color: var(--color-info);
   font-optical-sizing: auto;
   margin-bottom: 93px;
@@ -138,7 +133,6 @@ body {
 /*Create an Article+article */
 .article,
 .article * {
-  font-family: var(--font-article) !important;
   word-wrap: break-word;
 }
 .article img {
