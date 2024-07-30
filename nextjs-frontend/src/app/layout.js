@@ -15,6 +15,10 @@ import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { Footer } from "@/components/Footer/Footer";
 import { GlobalError } from "@/components/GlobalError";
 import { Confirmation } from "@/components/Confirmation";
+import { LoadingDots } from "@/components/LoadingDots";
+import { NotificationsParent } from "@/components/Header/NotificationsParent";
+import { PmIconParent } from "@/components/Header/PmIconParent";
+import { Suspense } from "react";
 
 const nunito = Nunito({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -60,7 +64,14 @@ export default function RootLayout({ children }) {
                         (darkModeFromCookies ? "dark " : "") + nunito.className
                       }
                     >
-                      <Header />
+                      <Header>
+                        <Suspense fallback={<LoadingDots />}>
+                          <NotificationsParent />
+                        </Suspense>
+                        <Suspense fallback={<LoadingDots />}>
+                          <PmIconParent />
+                        </Suspense>
+                      </Header>
                       <GlobalError />
                       <Confirmation />
                       <div className="pb-5 pt-4">{children}</div>

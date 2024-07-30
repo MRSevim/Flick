@@ -10,7 +10,7 @@ export const useUserContext = () => {
 export const UserProvider = ({ children, userFromCookies }) => {
   const [user, setUser] = useState(userFromCookies);
 
-  const changeUser = (user, rememberMe) => {
+  const changeUser = async (user, rememberMe) => {
     if (!user) {
       Cookies.remove("user");
       Cookies.remove("expirationDateOfUser");
@@ -32,7 +32,19 @@ export const UserProvider = ({ children, userFromCookies }) => {
         Cookies.set("user", userString);
       }
     }
-    setUser(user);
+    /*Have to check if cookies are set, since cookie setting is async*/
+    const cookiesAreSet = () =>
+      new Promise((resolve) => {
+        const checkCookies = setInterval(() => {
+          if (Cookies.get("user")) {
+            clearInterval(checkCookies);
+            setUser(user);
+            resolve(Cookies.get("user"));
+          }
+        }, 50);
+      });
+
+    return cookiesAreSet();
   };
 
   return (

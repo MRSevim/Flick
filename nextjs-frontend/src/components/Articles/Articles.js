@@ -34,11 +34,13 @@ export const Articles = ({ json, isDraft }) => {
   const [darkMode] = useDarkModeContext();
   const [, setGlobalError] = useGlobalErrorContext();
 
-  if (totalPages && articles.length === 0) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", totalPages);
-    router.push(pathname + "?" + params.toString());
-  }
+  useEffect(() => {
+    if (totalPages && articles.length === 0) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", totalPages);
+      router.push(pathname + "?" + params.toString());
+    }
+  }, [totalPages, articles]);
 
   function handleSelect(value, id) {
     if (value) {

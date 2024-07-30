@@ -11,7 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { PmIcon } from "./PmIcon";
 import { Notifications } from "./Notifications";
 
-const RightSide = () => {
+const RightSide = ({ children }) => {
   const [user, setUser] = useUserContext();
   const [userMenu, setUserMenu] = useState(false);
   const wrapperRef = useRef(null);
@@ -45,12 +45,7 @@ const RightSide = () => {
   return (
     <>
       {!user && <DarkModeToggle />}
-      {user && (
-        <>
-          <PmIcon />
-          <Notifications />
-        </>
-      )}
+      {user && <>{children}</>}
       {user ? (
         <div ref={wrapperRef} className="position-relative">
           <div

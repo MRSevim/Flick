@@ -1,6 +1,6 @@
 import { envVariables } from "./HelperFuncs";
 const links = {
-  pms: "/pms?open=false&page=1&type=received",
+  pms: (type) => "/pms?open=false&page=1&type=" + type,
   tocAndPrivacyPolicy: "/toc-and-privacy-policy",
   settings: "/settings",
   sendPm: (username, id) => {

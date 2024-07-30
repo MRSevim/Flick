@@ -52,7 +52,7 @@ export const envVariables = {
   defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
 
-export const authenticatedRoutes = ["/my-profile", "/drafts"];
+export const authenticatedRoutes = ["/my-profile", "/drafts", "/pms"];
 
 export const Tags = [
   "Nature",

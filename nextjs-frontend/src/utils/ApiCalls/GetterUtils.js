@@ -122,3 +122,54 @@ export const getSimilarCall = async (id) => {
 
   return { similar: json };
 };
+
+export const getReceivedLengthCall = async () => {
+  const userFromCookies = JSON.parse(cookies().get("user")?.value);
+  const userId = userFromCookies._id;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + "/pms/receivedLength", {
+    headers: { Cookie: authTokenCookieString },
+    next: { tags: ["pms/received/" + userId] },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return { error: json.message };
+  }
+  return { json };
+};
+
+export const getNotificationsCall = async () => {
+  const userFromCookies = JSON.parse(cookies().get("user")?.value);
+  const userId = userFromCookies._id;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + "/notifications", {
+    headers: { Cookie: authTokenCookieString },
+    next: { tags: ["notifications/" + userId] },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return { error: json.message };
+  }
+  return { json };
+};
+
+export const getPmsCall = async (page, type) => {
+  const userFromCookies = JSON.parse(cookies().get("user")?.value);
+  const userId = userFromCookies._id;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + `/pms?page=${page}&type=${type}`, {
+    headers: { Cookie: authTokenCookieString },
+    next: { tags: ["pms/" + type + "/" + userId] },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    notFound();
+  }
+  return { json };
+};

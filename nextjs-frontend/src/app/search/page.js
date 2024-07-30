@@ -33,7 +33,7 @@ const page = async ({ searchParams }) => {
     );
     return <Search json={json} />;
   } else {
-    const json = await searchAllCall(searchParams.q);
+    const { json } = await searchAllCall(searchParams.q, true);
     return <Search json={json} />;
   }
 };

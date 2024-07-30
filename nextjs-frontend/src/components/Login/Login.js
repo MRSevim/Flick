@@ -24,7 +24,7 @@ export const Login = ({ onHideModal, children, type }) => {
     setError(null);
     setIsLoading(true);
   };
-  const handleAfter = (error, user) => {
+  const handleAfter = async (error, user) => {
     setIsLoading(false);
     if (error) {
       setError(error);
@@ -34,7 +34,8 @@ export const Login = ({ onHideModal, children, type }) => {
     if (onHideModal) {
       onHideModal();
     }
-    setUser(user, rememberMe);
+    const message = await setUser(user, rememberMe);
+    console.log(message);
     router.push(links.homepage);
   };
 

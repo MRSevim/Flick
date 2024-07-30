@@ -9,7 +9,7 @@ import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { SearchBar } from "./SearchBar";
 import RightSide from "./RightSide";
 
-export const Header = () => {
+export const Header = ({ children }) => {
   const [darkMode] = useDarkModeContext();
   const location = usePathname();
 
@@ -50,7 +50,7 @@ export const Header = () => {
             ))}
           </ul>
           <SearchBar />
-          <RightSide />
+          <RightSide children={children} />
         </div>
       </div>
     </header>

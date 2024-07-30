@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import classNames from "classnames";
@@ -6,22 +7,20 @@ import en from "javascript-time-ago/locale/en";
 import links from "@/utils/Links";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { addDarkBg, getUnreadLength } from "@/utils/HelperFuncs";
-import { LoadingDots } from "@/components/LoadingDots";
 import { useUserContext } from "@/contexts/UserContext";
 import {
   clearNotificationsCall,
-  getNotificationsCall,
+  markAsReadCall,
 } from "@/utils/ApiCalls/NotificationApiFunctions";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 
 TimeAgo.addLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
-export const Notifications = () => {
+export const Notifications = ({ json, error }) => {
   const [open, setOpen] = useState(false);
   const [, setGlobalError] = useGlobalErrorContext();
-  const [isLoading, setIsLoading] = useState();
-  const [notifications, setNotifications] = useState(null);
+  const notifications = json;
   const [user] = useUserContext();
   const wrapperRef = useRef(null);
   const [darkMode] = useDarkModeContext();
@@ -32,34 +31,19 @@ export const Notifications = () => {
       setGlobalError(error);
     }
   };
+
   const markAsRead = async () => {
-    /*    const response = await notificationApi.markAsRead();
-    if (response.ok) {
-      setNotifications(
-        notifications.map((notification) => {
-          return { ...notification, read: true };
-        })
-      );
-    } */
+    const { error } = await markAsReadCall(user._id);
+    if (error) {
+      setGlobalError(error);
+    }
   };
 
   useEffect(() => {
-    const get = async () => {
-      setIsLoading(true);
-      setGlobalError(null);
-      const response = await fetch("/api/notifications/" + user._id + "/");
-      console.log(response);
-      const json = await response.json();
-      setIsLoading(false);
-      /*   if (!response.ok) {
-        setGlobalError(json);
-        return;
-      }
-
-      setNotifications(json); */
-    };
-    get();
-  }, []);
+    if (error) {
+      setGlobalError(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -77,29 +61,25 @@ export const Notifications = () => {
 
   return (
     <div ref={wrapperRef} className="me-3 position-relative">
-      {isLoading ? (
-        <LoadingDots />
-      ) : (
-        <div className="position-relative">
-          <i
-            className={classNames({
-              "bi h4 m-0 pointer": true,
-              "bi-bell": notifications?.length === 0,
-              "bi-bell-fill": notifications?.length > 0,
-            })}
-            onClick={() => {
-              setOpen((prev) => !prev);
-            }}
-          >
-            {" "}
-          </i>
-          {getUnreadLength(notifications) > 0 && (
-            <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1">
-              {getUnreadLength(notifications)}
-            </div>
-          )}
-        </div>
-      )}
+      <div className="position-relative">
+        <i
+          className={classNames({
+            "bi h4 m-0 pointer": true,
+            "bi-bell": notifications?.length === 0,
+            "bi-bell-fill": notifications?.length > 0,
+          })}
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
+        >
+          {" "}
+        </i>
+        {getUnreadLength(notifications) > 0 && (
+          <div className="fs-6 bg-secondary text-white rounded-circle position-absolute top-0 start-100 translate-middle px-1">
+            {getUnreadLength(notifications)}
+          </div>
+        )}
+      </div>
       {open && (
         <div
           className={

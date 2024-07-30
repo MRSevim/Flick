@@ -4,15 +4,13 @@ import { useRouter } from "next/navigation";
 import Autocomplete from "@mui/material/Autocomplete";
 import links from "@/utils/Links";
 import { Image } from "@/components/Image";
-import { searchAllCall } from "@/utils/ApiCalls/SearchApiFunctions";
-import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
+import { useSearchAll } from "@/hooks/UseSearchAll";
 
 export const SearchBar = () => {
   const router = useRouter();
   const [searchParam, setSearchParam] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [, setGlobalError] = useGlobalErrorContext();
   const [options, setOptions] = useState({ users: [], articles: [] });
+  const { searchAll, isLoading } = useSearchAll();
 
   const search = (e) => {
     e.preventDefault();
@@ -23,14 +21,11 @@ export const SearchBar = () => {
 
   useEffect(() => {
     const get = async () => {
-      setIsLoading(true);
-      const json = await searchAllCall(searchParam);
-      setIsLoading(false);
-      if (json.error) {
-        setGlobalError(json.error);
-        return;
+      const json = await searchAll(searchParam);
+
+      if (json) {
+        setOptions(json);
       }
-      setOptions(json);
     };
 
     if (searchParam.trim()) {

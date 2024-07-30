@@ -3,16 +3,19 @@ import { envVariables } from "../HelperFuncs";
 import { notFound } from "next/navigation";
 const backendUrl = envVariables.backendUrl;
 
-export const searchAllCall = async (query) => {
+export const searchAllCall = async (query, searchPage) => {
   const response = await fetch(backendUrl + "/search/all?search=" + query, {
     cache: "no-store",
   });
   const json = await response.json();
 
   if (!response.ok) {
+    if (searchPage) {
+      notFound();
+    }
     return { error: json.message };
   }
-  return json;
+  return { json };
 };
 
 export const searchAdvancedCall = async (username, title, tags) => {
