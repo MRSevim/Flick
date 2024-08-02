@@ -8,7 +8,7 @@ import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
 export const getProfileCall = async () => {
-  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/user/profile", {
     cache: "no-store",
     headers: {
@@ -124,9 +124,9 @@ export const getSimilarCall = async (id) => {
 };
 
 export const getReceivedLengthCall = async () => {
-  const userFromCookies = JSON.parse(cookies().get("user")?.value);
+  const userFromCookies = JSON.parse(cookies().get("user").value);
   const userId = userFromCookies._id;
-  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/pms/receivedLength", {
     headers: { Cookie: authTokenCookieString },
     next: { tags: ["pms/received/" + userId] },
@@ -141,9 +141,10 @@ export const getReceivedLengthCall = async () => {
 };
 
 export const getNotificationsCall = async () => {
-  const userFromCookies = JSON.parse(cookies().get("user")?.value);
+  console.log(cookies().get("user").value);
+  const userFromCookies = JSON.parse(cookies().get("user").value);
   const userId = userFromCookies._id;
-  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/notifications", {
     headers: { Cookie: authTokenCookieString },
     next: { tags: ["notifications/" + userId] },
@@ -158,9 +159,9 @@ export const getNotificationsCall = async () => {
 };
 
 export const getPmsCall = async (page, type) => {
-  const userFromCookies = JSON.parse(cookies().get("user")?.value);
+  const userFromCookies = JSON.parse(cookies().get("user").value);
   const userId = userFromCookies._id;
-  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + `/pms?page=${page}&type=${type}`, {
     headers: { Cookie: authTokenCookieString },
     next: { tags: ["pms/" + type + "/" + userId] },

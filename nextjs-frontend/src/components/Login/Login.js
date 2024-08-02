@@ -34,8 +34,8 @@ export const Login = ({ onHideModal, children, type }) => {
     if (onHideModal) {
       onHideModal();
     }
-    const message = await setUser(user, rememberMe);
-    console.log(message);
+    setUser(user, rememberMe);
+
     router.push(links.homepage);
   };
 

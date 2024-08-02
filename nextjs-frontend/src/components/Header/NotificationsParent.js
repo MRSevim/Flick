@@ -1,5 +1,4 @@
 import { getNotificationsCall } from "@/utils/ApiCalls/GetterUtils";
-
 import { Notifications } from "./Notifications";
 
 export const NotificationsParent = async () => {

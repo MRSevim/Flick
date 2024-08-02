@@ -1,6 +1,8 @@
 "use client";
 import { createContext, useState, useContext } from "react";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
 const UserContext = createContext(null);
 
 export const useUserContext = () => {
@@ -9,8 +11,9 @@ export const useUserContext = () => {
 
 export const UserProvider = ({ children, userFromCookies }) => {
   const [user, setUser] = useState(userFromCookies);
+  const router = useRouter();
 
-  const changeUser = async (user, rememberMe) => {
+  const changeUser = (user, rememberMe) => {
     if (!user) {
       Cookies.remove("user");
       Cookies.remove("expirationDateOfUser");
@@ -32,19 +35,9 @@ export const UserProvider = ({ children, userFromCookies }) => {
         Cookies.set("user", userString);
       }
     }
-    /*Have to check if cookies are set, since cookie setting is async*/
-    const cookiesAreSet = () =>
-      new Promise((resolve) => {
-        const checkCookies = setInterval(() => {
-          if (Cookies.get("user")) {
-            clearInterval(checkCookies);
-            setUser(user);
-            resolve(Cookies.get("user"));
-          }
-        }, 50);
-      });
 
-    return cookiesAreSet();
+    /*  router.refresh(); */
+    setUser(user);
   };
 
   return (
