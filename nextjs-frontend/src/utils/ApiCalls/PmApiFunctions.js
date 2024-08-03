@@ -4,10 +4,8 @@ const backendUrl = envVariables.backendUrl;
 import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
 
-export const sendPmCall = async (id, subject, message) => {
-  const userFromCookies = JSON.parse(cookies().get("user")?.value);
-  const userId = userFromCookies._id;
-  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+export const sendPmCall = async (id, subject, message, userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/pms/send/" + id, {
     method: "PUT",
     headers: {
@@ -20,40 +18,65 @@ export const sendPmCall = async (id, subject, message) => {
   const json = await response.json();
 
   if (!response.ok) {
-    return { error: json.message };
+    return json.message;
   }
 
-  revalidateTag("pms/sent" + userId);
-  revalidateTag("pms/received" + id);
-  return { error: null };
+  revalidateTag("pms/sent/" + userId);
+  revalidateTag("pms/received/" + id);
 };
 
-/* const pmApi = {
- 
+export const markAsReadCall = async (userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
 
-  delete: async (id) => {
-    const response = await fetch(backendUrl + "/pms/" + id, {
-      method: "DELETE",
-    });
+  const response = await fetch(backendUrl + "/pms/read", {
+    method: "POST",
+    headers: {
+      Cookie: authTokenCookieString,
+    },
+  });
 
-    return response;
-  },
-  deleteMany: async (ids) => {
-    const response = await fetch(backendUrl + "/pms/deleteMany", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ids }),
-    });
+  const json = await response.json();
 
-    return response;
-  },
-  markAsRead: async () => {
-    const response = await fetch(backendUrl + "/pms/read", {
-      method: "POST",
-    });
+  if (!response.ok) {
+    return json.message;
+  }
 
-    return response;
-  },
+  revalidateTag("pms/received/" + userId);
 };
+export const deleteManyCall = async (ids, type, userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
 
-export default pmApi; */
+  const response = await fetch(backendUrl + "/pms/deleteMany", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: authTokenCookieString,
+    },
+    body: JSON.stringify({ ids }),
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return json.message;
+  }
+
+  revalidateTag("pms/" + type + "/" + userId);
+};
+export const deleteCall = async (id, type, userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
+  const response = await fetch(backendUrl + "/pms/" + id, {
+    method: "DELETE",
+    headers: {
+      Cookie: authTokenCookieString,
+    },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    return json.message;
+  }
+
+  revalidateTag("pms/" + type + "/" + userId);
+};

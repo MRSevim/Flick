@@ -12,8 +12,6 @@ import { ArticleSections } from "./ArticleSections";
 import { jost } from "../ArticleCardBody";
 /*import { CommentSection } from "./CommentSection";*/
 import { SimilarArticles } from "./SimilarArticles";
-import { confirmationWrapper } from "@/utils/HelperFuncs";
-import { useConfirmationContext } from "@/contexts/ConfirmationContext";
 
 export const Article = ({ json, similar, error }) => {
   const [user] = useUserContext();
@@ -23,39 +21,6 @@ export const Article = ({ json, similar, error }) => {
   const createdAt = new Date(json.createdAt).toLocaleString();
   const updatedAt = new Date(json.updatedAt).toLocaleString();
   const myArticle = article.user._id === user?._id;
-  const { confirmation, setConfirmation } = useConfirmationContext();
-
-  const deleteArticle = async (_id, ownArticle) => {
-    /*     confirmationWrapper(
-      confirmation,
-      (prev) => {
-        return {
-          ...confirmation,
-          type: "deleteArticle",
-          info: {
-            ...prev.info,
-            owned: ownArticle,
-            title: article?.title,
-          },
-        };
-      },
-      setConfirmation,
-      async (reason) => {
-        return await deleteArticleCall(_id, reason);
-      },
-      () => {
-        setConfirmation((prev) => ({
-          ...prev,
-          info: { ...prev.info, reason: "" },
-        }));
-        if (ownArticle) {
-          router.push(links.allArticles(user._id));
-        } else {
-          router.push(links.homepage);
-        }
-      }
-    ); */
-  };
 
   return (
     <div className="container">

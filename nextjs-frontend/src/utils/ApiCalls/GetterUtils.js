@@ -141,7 +141,6 @@ export const getReceivedLengthCall = async () => {
 };
 
 export const getNotificationsCall = async () => {
-  console.log(cookies().get("user").value);
   const userFromCookies = JSON.parse(cookies().get("user").value);
   const userId = userFromCookies._id;
   const authTokenCookieString = "jwt=" + cookies().get("jwt").value;

@@ -8,8 +8,6 @@ import { useEffect, useRef, useState } from "react";
 import { logoutCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 import { usePathname, useRouter } from "next/navigation";
-import { PmIcon } from "./PmIcon";
-import { Notifications } from "./Notifications";
 
 const RightSide = ({ children }) => {
   const [user, setUser] = useUserContext();

@@ -12,6 +12,10 @@ import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 import { Pagination } from "@mui/material";
 import { useConfirmationContext } from "@/contexts/ConfirmationContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { markAsReadCall } from "@/utils/ApiCalls/PmApiFunctions";
+import { useDeleteMany } from "@/hooks/UseDeleteManyPmsCall";
+import { useUserContext } from "@/contexts/UserContext";
+import { useDeletePm } from "@/hooks/UseDeletePm";
 
 export const Pms = ({ json }) => {
   const searchParams = useSearchParams();
@@ -28,6 +32,9 @@ export const Pms = ({ json }) => {
   const [selected, setSelected] = useState([]);
   const [, setGlobalError] = useGlobalErrorContext();
   const { confirmation, setConfirmation } = useConfirmationContext();
+  const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
+  const { deletePm, isLoading: deleteLoading } = useDeletePm();
+  const [user] = useUserContext();
 
   function handleSelect(id) {
     if (!selected.includes(id)) {
@@ -45,7 +52,7 @@ export const Pms = ({ json }) => {
     }
   }
   const deleteOne = async (id, subject) => {
-    /*   confirmationWrapper(
+    confirmationWrapper(
       confirmation,
       (prev) => {
         return {
@@ -59,27 +66,24 @@ export const Pms = ({ json }) => {
       },
       setConfirmation,
       async () => {
-        return await deletePm(id, subject);
+        return await deletePm(id, type, user._id);
       },
-      () => {
-        get();
-        triggerRefetchForPmIcon();
-      }
-    ); */
+      () => {}
+    );
   };
 
   const handleMarkAsReadClick = async () => {
-    /*  const { error } = await pmApi.markAsRead();
+    const error = await markAsReadCall(user._id);
     if (error) {
       setGlobalError(error);
-    } */
+    }
   };
   const deleteSelected = async (selected) => {
     if (selected.length === 0) {
       setGlobalError("Please select at least 1 message");
       return;
     }
-    /*   confirmationWrapper(
+    confirmationWrapper(
       confirmation,
       (prev) => {
         return {
@@ -94,13 +98,10 @@ export const Pms = ({ json }) => {
       },
       setConfirmation,
       async () => {
-        return await deleteMany(selected);
+        return await deleteMany(selected, type, user._id);
       },
-      () => {
-        get();
-        triggerRefetchForPmIcon();
-      }
-    ); */
+      () => {}
+    );
   };
   const handlePaginationChange = (event, value) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -189,9 +190,7 @@ export const Pms = ({ json }) => {
                         Select all
                       </label>
                       <button
-                        disabled={
-                          /* deleteManyLoading || deleteLoading */ false
-                        }
+                        disabled={deleteManyLoading || deleteLoading}
                         onClick={(e) => {
                           deleteSelected(selected);
                         }}
@@ -268,15 +267,15 @@ export const Pms = ({ json }) => {
                           <i className="bi bi-reply me-1"></i>Reply
                         </button>
                       )}
-                      <DeleteButton
-                        classes="p-1 m-1"
+                      <button
+                        disabled={deleteManyLoading || deleteLoading}
+                        className="btn btn-danger p-1 m-1"
                         onClick={() => {
                           deleteOne(message._id, message.subject);
                         }}
-                        deleteLoading={
-                          /* deleteLoading || deleteManyLoading */ false
-                        }
-                      />
+                      >
+                        <i className="bi bi-trash-fill"></i>
+                      </button>
                     </div>
                     {type === "received" && (
                       <p>
@@ -330,9 +329,10 @@ export const Pms = ({ json }) => {
         setRef={setRef}
       >
         <MessageSender
+          user={user}
+          refProp={ref}
           searchParams={searchParams}
           router={router}
-          pathname={pathname}
         >
           <button
             type="button"

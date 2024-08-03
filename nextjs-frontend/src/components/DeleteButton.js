@@ -9,7 +9,8 @@ export const DeleteButton = ({ article, user, deleteManyLoading, classes }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { _id, title, user: articleUser } = article;
-    const ownArticle = articleUser === user._id;
+    const articleUserId = articleUser._id || articleUser;
+    const ownArticle = articleUserId === user._id;
 
     confirmationWrapper(
       confirmation,

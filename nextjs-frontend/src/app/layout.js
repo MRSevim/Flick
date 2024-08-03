@@ -65,12 +65,16 @@ export default function RootLayout({ children }) {
                       }
                     >
                       <Header>
-                        <Suspense fallback={<LoadingDots />}>
-                          <NotificationsParent />
-                        </Suspense>
-                        <Suspense fallback={<LoadingDots />}>
-                          <PmIconParent />
-                        </Suspense>
+                        {cookies().get("user") && cookies().get("jwt") && (
+                          <>
+                            <Suspense fallback={<LoadingDots />}>
+                              <NotificationsParent />
+                            </Suspense>
+                            <Suspense fallback={<LoadingDots />}>
+                              <PmIconParent />
+                            </Suspense>
+                          </>
+                        )}
                       </Header>
                       <GlobalError />
                       <Confirmation />

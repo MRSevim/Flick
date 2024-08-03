@@ -1,7 +1,6 @@
 "use client";
 import { createContext, useState, useContext } from "react";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 
 const UserContext = createContext(null);
 
@@ -11,7 +10,6 @@ export const useUserContext = () => {
 
 export const UserProvider = ({ children, userFromCookies }) => {
   const [user, setUser] = useState(userFromCookies);
-  const router = useRouter();
 
   const changeUser = (user, rememberMe) => {
     if (!user) {
@@ -35,8 +33,8 @@ export const UserProvider = ({ children, userFromCookies }) => {
         Cookies.set("user", userString);
       }
     }
+    location.reload();
 
-    /*  router.refresh(); */
     setUser(user);
   };
 

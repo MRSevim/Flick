@@ -46,12 +46,10 @@ export const deleteArticleCall = async (id, reasonOfDeletion, userId) => {
 
   const json = await response.json();
   if (!response.ok) {
-    return { error: json.message };
+    return json.message;
   }
 
   revalidateTag(userId);
-
-  return { error: null };
 };
 
 export const deleteManyCall = async (ids, userId) => {
@@ -68,12 +66,10 @@ export const deleteManyCall = async (ids, userId) => {
 
   const json = await response.json();
   if (!response.ok) {
-    return { error: json.message };
+    return json.message;
   }
 
   revalidateTag(userId);
-
-  return { error: null };
 };
 /* const articleApi = {
 

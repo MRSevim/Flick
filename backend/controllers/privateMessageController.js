@@ -151,6 +151,7 @@ const getPms = async (req, res, next) => {
     const startIndex = (Number(page) - 1) * LIMIT;
 
     const paginatedMessages = messages
+      .reverse()
       .slice(startIndex, startIndex + LIMIT)
       .map((message) => {
         return {
@@ -161,7 +162,7 @@ const getPms = async (req, res, next) => {
       });
 
     res.status(200).json({
-      messages: paginatedMessages.reverse(),
+      messages: paginatedMessages,
       currentPage: Number(page),
       totalPages: Math.ceil(messages.length / LIMIT),
     });

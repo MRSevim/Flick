@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useConfirmationErrorContext } from "@/contexts/ConfirmationErrorContext";
-import { deleteArticleCall } from "@/utils/ApiCalls/ArticleApiFunctions";
+import { deleteCall } from "@/utils/ApiCalls/PmApiFunctions";
 
-export const useDeleteArticle = () => {
+export const useDeletePm = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [, setConfirmationError] = useConfirmationErrorContext();
 
-  const deleteArticle = async (id, reason, userId) => {
+  const deletePm = async (id, type, userId) => {
     setIsLoading(true);
     setConfirmationError(null);
 
-    const error = await deleteArticleCall(id, reason, userId);
+    const error = await deleteCall(id, type, userId);
 
     if (error) {
       setConfirmationError(error);
@@ -21,5 +21,5 @@ export const useDeleteArticle = () => {
     return error;
   };
 
-  return { deleteArticle, isLoading };
+  return { deletePm, isLoading };
 };

@@ -6,24 +6,36 @@ import { Image } from "../Image";
 import Link from "next/link";
 import { useSendPm } from "@/hooks/UseSendPm";
 import { Popup } from "../Popup";
+import links from "@/utils/Links";
 
-export const MessageSender = ({ children, searchParams, router, pathname }) => {
+export const MessageSender = ({
+  children,
+  searchParams,
+  router,
+  refProp,
+  user,
+}) => {
   const open = searchParams.get("open") === "true";
-  const [subject, setSubject] = useState("");
   const [selectedUsername, setSelectedUsername] = useState("");
+  const [subject, setSubject] = useState("");
+  const [username, setUsername] = useState("");
+  const [id, setId] = useState("");
   const [message, setMessage] = useState("");
   const [options, setOptions] = useState([]);
   const { searchAll, isLoading } = useSearchAll();
   const { sendPm, isLoading: sendLoading, error, setError } = useSendPm();
-  const username = searchParams.get("username") || "";
-  const id = searchParams.get("_id");
-  const subjectInUrl = searchParams.get("subject");
 
   useEffect(() => {
-    if (subjectInUrl?.trim()) {
-      setSubject(subjectInUrl);
+    if (searchParams.get("subject")) {
+      setSubject(searchParams.get("subject"));
     }
-  }, [subjectInUrl]);
+    if (searchParams.get("username")) {
+      setUsername(searchParams.get("username"));
+    }
+    if (searchParams.get("_id")) {
+      setId(searchParams.get("_id"));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const get = async () => {
@@ -31,7 +43,7 @@ export const MessageSender = ({ children, searchParams, router, pathname }) => {
       setOptions(json.users);
     };
 
-    if (username.trim() && username !== selectedUsername) {
+    if (username.trim() && selectedUsername !== username) {
       get();
     }
   }, [username]);
@@ -53,9 +65,10 @@ export const MessageSender = ({ children, searchParams, router, pathname }) => {
       setError("Please type a message");
       return;
     }
-    const { error } = await sendPm(id, subject, message);
-    if (error) {
-      setError(error);
+    const error = await sendPm(id, subject, message, user._id);
+    if (!error) {
+      refProp.current.hide();
+      router.push(links.pms("sent"));
     }
   };
 
@@ -77,13 +90,9 @@ export const MessageSender = ({ children, searchParams, router, pathname }) => {
                 <Link
                   onClick={(e) => {
                     e.preventDefault();
+                    setUsername(option.username);
                     setSelectedUsername(option.username);
-                    const params = new URLSearchParams(searchParams.toString());
-                    params.set("open", "true");
-                    params.set("username", option.username);
-                    params.set("_id", option._id);
-                    router.push(pathname + "?" + params.toString());
-
+                    setId(option._id);
                     setOptions([]);
                   }}
                   className="m-3 d-flex align-items-center"
@@ -101,17 +110,11 @@ export const MessageSender = ({ children, searchParams, router, pathname }) => {
                 </Link>
               )}
               onInputChange={(event, newInputValue) => {
-                const params = new URLSearchParams(searchParams.toString());
-
-                params.set("username", newInputValue);
-                params.set("_id", "");
-                router.push(pathname + "?" + params.toString());
+                setUsername(newInputValue);
 
                 if (!newInputValue.trim()) {
                   setOptions([]);
-                  params.set("username", "");
-                  params.set("_id", "");
-                  router.push(pathname + "?" + params.toString());
+                  setUsername("");
                 }
               }}
               renderInput={(params) => (
@@ -136,7 +139,7 @@ export const MessageSender = ({ children, searchParams, router, pathname }) => {
               onChange={(e) => {
                 setSubject(e.target.value);
               }}
-              className="form-control form-control-lg"
+              className="form-control"
               type="text"
               required
             />

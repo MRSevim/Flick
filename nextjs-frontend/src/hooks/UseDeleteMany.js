@@ -10,7 +10,7 @@ export const useDeleteMany = () => {
     setIsLoading(true);
     setConfirmationError(null);
 
-    const { error } = await deleteManyCall(ids, userId);
+    const error = await deleteManyCall(ids, userId);
 
     if (error) {
       setConfirmationError(error);
