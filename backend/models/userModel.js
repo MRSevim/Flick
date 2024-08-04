@@ -75,6 +75,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
           },
+          date: {
+            type: Date,
+            required: true,
+            default: Date.now,
+          },
         },
       ],
       received: [
@@ -98,6 +103,11 @@ const userSchema = new mongoose.Schema(
             required: true,
           },
           read: { type: Boolean, default: false, required: true },
+          date: {
+            type: Date,
+            required: true,
+            default: Date.now,
+          },
         },
       ],
     },

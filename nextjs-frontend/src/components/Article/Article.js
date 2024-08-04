@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useUserContext } from "@/contexts/UserContext";
 import { DeleteButton } from "../DeleteButton";
 import { EditButton } from "../EditButton";
@@ -10,12 +9,11 @@ import links from "@/utils/Links";
 import { Image } from "../Image";
 import { ArticleSections } from "./ArticleSections";
 import { jost } from "../ArticleCardBody";
-/*import { CommentSection } from "./CommentSection";*/
+import { CommentSection } from "./CommentSection";
 import { SimilarArticles } from "./SimilarArticles";
 
 export const Article = ({ json, similar, error }) => {
   const [user] = useUserContext();
-  const router = useRouter();
   const ref = useRef(null);
   const article = json;
   const createdAt = new Date(json.createdAt).toLocaleString();
@@ -85,7 +83,7 @@ export const Article = ({ json, similar, error }) => {
             )}
           </div>
           <SimilarArticles similar={similar} error={error} />
-          {/* <CommentSection article={article} />  */}
+          <CommentSection article={article} />
         </div>
 
         <div className="col col-12 col-lg-2 "></div>

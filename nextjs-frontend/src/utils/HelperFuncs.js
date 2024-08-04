@@ -1,9 +1,19 @@
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
 export const extractExcerptFromHTML = (html) => {
   const stripHtml = html.replace(/<[^>]*>?/gm, "");
   const words = stripHtml.split(/\s+/); // Split the text by whitespace
   const cutWords = words.slice(0, 100).join(" ");
   return cutWords;
 };
+
+TimeAgo.addLocale(en);
+export const timeAgo = new TimeAgo("en-US");
+
+export function extractDate(datetimeStr) {
+  return datetimeStr.split("T")[0];
+}
 
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

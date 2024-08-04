@@ -146,7 +146,7 @@ const getArticles = (isDraft) => {
         query.tags = { $in: tags.split(",") };
       }
 
-      let LIMIT = 9;
+      let LIMIT = 12;
       const currentPage = Number(page);
       let startIndex = (currentPage - 1) * LIMIT; // get the starting index of every page
       const totalArticles = await Article.find(query);

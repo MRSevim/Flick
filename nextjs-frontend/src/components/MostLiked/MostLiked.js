@@ -4,7 +4,11 @@ import classNames from "classnames";
 import NextImage from "next/image";
 import links from "@/utils/Links";
 import { LikeButton } from "../LikeButton";
-import { addDarkBg, extractExcerptFromHTML } from "@/utils/HelperFuncs";
+import {
+  addDarkBg,
+  extractExcerptFromHTML,
+  extractDate,
+} from "@/utils/HelperFuncs";
 import { Image } from "../Image";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 
@@ -57,8 +61,12 @@ export const MostLiked = ({ json, time }) => {
                   }
                   key={article._id}
                 >
+                  <div className="position-absolute top-0 end-0 m-1 p-1">
+                    published at {extractDate(article.createdAt)}
+                  </div>
                   <div className="d-flex justify-content-between">
                     <LikeButton classes={"me-3"} article={article} />
+
                     <div>
                       {article.tags.map((tag, i) => {
                         return (

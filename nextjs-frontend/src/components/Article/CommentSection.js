@@ -1,69 +1,60 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Editor from "react-simple-wysiwyg";
 import DOMPurify from "dompurify";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-import { useCommentArticle } from "../../Hooks/CommentHooks/UseCommentArticle";
-import { Link } from "react-router-dom";
-import { useUserContext } from "../../Contexts/UserContext";
-import { EditButton } from "./EditButton";
-import { DeleteButton } from "./DeleteButton";
-import { useEditComment } from "../../Hooks/CommentHooks/UseEditComment";
-import { useDeleteComment } from "../../Hooks/CommentHooks/UseDeleteComment";
-import links from "../../Utils/Links";
-import { ImageComponent } from "../ImageComponent";
-import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
-import { confirmationWrapper } from "../../Utils/HelperFuncs";
-
-TimeAgo.addLocale(en);
-const timeAgo = new TimeAgo("en-US");
+import { timeAgo, confirmationWrapper } from "@/utils/HelperFuncs";
+import Link from "next/link";
+import { useUserContext } from "@/contexts/UserContext";
+import links from "@/utils/Links";
+import { Image } from "../Image";
+import { useConfirmationContext } from "@/contexts/ConfirmationContext";
+import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
+import {
+  commentCall,
+  editCommentCall,
+} from "@/utils/ApiCalls/CommentApiFunctions";
+import { GenericDeleteButton } from "../GenericDeleteButton";
+import { useDeleteComment } from "@/hooks/UseDeleteComment";
 
 export const CommentSection = ({ article }) => {
   const [user] = useUserContext();
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(article.comments);
+  const comments = article.comments;
   const [editedContent, setEditedContent] = useState("");
   const [editedCommentId, setEditedCommentId] = useState("");
-  const { commentArticle, isLoading } = useCommentArticle();
-  const { editComment: _editComment, isLoading: editLoading } =
-    useEditComment();
+  const [isLoading, setIsLoading] = useState(null);
+  const [editLoading, setEditLoading] = useState(null);
+  const [, setGlobalError] = useGlobalErrorContext();
+  const { confirmation, setConfirmation } = useConfirmationContext();
   const { deleteComment: _deleteComment, isLoading: deleteLoading } =
     useDeleteComment();
-  const { confirmation, setConfirmation } = useConfirmationContext();
 
   const submit = async (e) => {
     e.preventDefault();
-    const { response, json } = await commentArticle(
+    setIsLoading(true);
+    const error = await commentCall(
       DOMPurify.sanitize(comment),
-      article._id
+      article._id,
+      article.user._id
     );
-    if (response.ok) {
-      setComments(json.comments);
+    setIsLoading(false);
+    if (error) {
+      setGlobalError(error);
     }
   };
 
   const editComment = async (id) => {
-    const { response, json } = await _editComment(
-      editedContent,
-      article._id,
-      id
-    );
-    if (response.ok) {
-      const newComments = comments.map((comment) => {
-        if (comment._id === id) {
-          return json;
-        } else {
-          return comment;
-        }
-      });
-
-      setComments(newComments);
+    setEditLoading(true);
+    const error = await editCommentCall(editedContent, article._id, id);
+    setEditLoading(false);
+    if (error) {
+      setGlobalError(error);
+    } else {
       setEditedCommentId("");
       setEditedContent("");
     }
   };
 
-  const deleteComment = async (id, ownComment) => {
+  const deleteComment = async (id, ownComment, commentOwnerId) => {
     confirmationWrapper(
       confirmation,
       (prev) => {
@@ -75,25 +66,28 @@ export const CommentSection = ({ article }) => {
       },
       setConfirmation,
       async (reason) => {
-        return await _deleteComment(article._id, id, reason);
+        return await _deleteComment(
+          article._id,
+          id,
+          reason,
+          article.user._id,
+          commentOwnerId
+        );
       },
       () => {
         setConfirmation((prev) => ({
           ...prev,
           info: { ...prev.info, reason: "" },
         }));
-        const newComments = comments.filter((comment) => comment._id !== id);
-
-        setComments(newComments);
       }
     );
   };
 
   return (
     <div className="my-3">
+      <h2 className="mb-2">Comments</h2>
       {user && (
-        <div>
-          <h2 className="mb-2">Comments</h2>
+        <>
           <form onSubmit={submit}>
             <Editor
               containerProps={{ style: { height: "175px" } }}
@@ -109,7 +103,7 @@ export const CommentSection = ({ article }) => {
               value="Comment"
             />
           </form>
-        </div>
+        </>
       )}
       {comments.length === 0 && user && (
         <h3 className="mt-3 ">
@@ -120,13 +114,15 @@ export const CommentSection = ({ article }) => {
         <div className="border border-4 my-2 p-2" key={comment._id}>
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
-              <ImageComponent
-                src={comment.user.image}
-                classes={"profile-img-mini mx-2"}
-              />
+              <div className="mx-2" style={{ width: "50px", height: "50px" }}>
+                <Image
+                  src={comment.user.image}
+                  classes={"profile-img-mini mw-100 mh-100"}
+                />
+              </div>
               <Link
                 className="unstyled-link"
-                to={links.publicUser(comment.user._id)}
+                href={links.publicUser(comment.user._id)}
               >
                 <b>{comment.user.username}</b>
               </Link>
@@ -170,10 +166,10 @@ export const CommentSection = ({ article }) => {
             </form>
           )}
 
-          <div className="text-end">
+          <div className="d-flex justify-content-end">
             {comment.user._id === user?._id && (
-              <EditButton
-                classes={"me-1"}
+              <button
+                className="btn btn-warning me-1"
                 onClick={() => {
                   if (editedCommentId === comment._id) {
                     setEditedContent("");
@@ -183,17 +179,25 @@ export const CommentSection = ({ article }) => {
                     setEditedCommentId(comment._id);
                   }
                 }}
-              />
+              >
+                <i className="bi bi-pencil-fill"></i>
+              </button>
             )}
             {(comment.user._id === user?._id ||
               user?.role === "mod" ||
               user?.role === "admin") && (
-              <DeleteButton
-                disabled={deleteLoading}
-                onClick={() => {
-                  deleteComment(comment._id, comment.user._id === user?._id);
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  deleteComment(
+                    comment._id,
+                    comment.user._id === user?._id,
+                    comment.user._id
+                  );
                 }}
-              />
+              >
+                <GenericDeleteButton disabled={deleteLoading} />
+              </form>
             )}
           </div>
         </div>

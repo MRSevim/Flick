@@ -46,7 +46,6 @@ export const Image = ({ src, classes = "" }) => {
       alt={alt}
       sizes={sizes}
       className={classes}
-      referrerPolicy="no-referrer"
     />
   );
 };

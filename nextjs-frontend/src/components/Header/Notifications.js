@@ -2,8 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import classNames from "classnames";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
+import { timeAgo } from "@/utils/HelperFuncs";
 import links from "@/utils/Links";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { addDarkBg, getUnreadLength } from "@/utils/HelperFuncs";
@@ -13,9 +12,6 @@ import {
   markAsReadCall,
 } from "@/utils/ApiCalls/NotificationApiFunctions";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
-
-TimeAgo.addLocale(en);
-const timeAgo = new TimeAgo("en-US");
 
 export const Notifications = ({ json, error }) => {
   const [open, setOpen] = useState(false);

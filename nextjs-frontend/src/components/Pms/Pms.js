@@ -1,13 +1,13 @@
 "use client";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import { addDarkBg, confirmationWrapper } from "@/utils/HelperFuncs";
+import { addDarkBg, confirmationWrapper, timeAgo } from "@/utils/HelperFuncs";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { MessageSender } from "./MessageSender";
 import { ModalWrapper } from "@/components/ModalWrapper";
 import Link from "next/link";
 import links from "@/utils/Links";
-import { DeleteButton } from "../DeleteButton";
+
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 import { Pagination } from "@mui/material";
 import { useConfirmationContext } from "@/contexts/ConfirmationContext";
@@ -16,6 +16,8 @@ import { markAsReadCall } from "@/utils/ApiCalls/PmApiFunctions";
 import { useDeleteMany } from "@/hooks/UseDeleteManyPmsCall";
 import { useUserContext } from "@/contexts/UserContext";
 import { useDeletePm } from "@/hooks/UseDeletePm";
+import { GenericDeleteButton } from "../GenericDeleteButton";
+import { GenericDeleteSelectedButton } from "../GenericDeleteSelectedButton";
 
 export const Pms = ({ json }) => {
   const searchParams = useSearchParams();
@@ -189,15 +191,13 @@ export const Pms = ({ json }) => {
                       <label className="form-check-label" htmlFor="selectAll">
                         Select all
                       </label>
-                      <button
+                      <GenericDeleteSelectedButton
                         disabled={deleteManyLoading || deleteLoading}
                         onClick={(e) => {
                           deleteSelected(selected);
                         }}
-                        className="btn btn-danger ms-0 ms-sm-4"
-                      >
-                        <i className="bi bi-trash-fill"></i> Delete Selected
-                      </button>
+                        classes="ms-0 ms-sm-4"
+                      />
                     </div>
                     {type === "received" && (
                       <button
@@ -267,15 +267,13 @@ export const Pms = ({ json }) => {
                           <i className="bi bi-reply me-1"></i>Reply
                         </button>
                       )}
-                      <button
+                      <GenericDeleteButton
                         disabled={deleteManyLoading || deleteLoading}
-                        className="btn btn-danger p-1 m-1"
+                        classes="p-1 m-1"
                         onClick={() => {
                           deleteOne(message._id, message.subject);
                         }}
-                      >
-                        <i className="bi bi-trash-fill"></i>
-                      </button>
+                      />
                     </div>
                     {type === "received" && (
                       <p>
@@ -310,11 +308,14 @@ export const Pms = ({ json }) => {
                     <div>
                       <b className="me-2">Message:</b>
                       <div
-                        className="mt-1 article-card-inner-html"
+                        className="my-2 article-card-inner-html text-wrap text-break"
                         dangerouslySetInnerHTML={{
                           __html: message.message,
                         }}
                       ></div>
+                    </div>
+                    <div className="position-absolute bottom-0 end-0 m-1 p-1 fw-lighter">
+                      {timeAgo.format(new Date(message.date))}
                     </div>
                   </div>
                 ))}

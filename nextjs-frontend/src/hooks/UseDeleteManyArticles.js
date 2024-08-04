@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useConfirmationErrorContext } from "@/contexts/ConfirmationErrorContext";
 import { deleteManyCall } from "@/utils/ApiCalls/ArticleApiFunctions";
 
-export const useDeleteMany = () => {
+export const UseDeleteManyArticles = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [, setConfirmationError] = useConfirmationErrorContext();
 
-  const deleteMany = async (ids, userId) => {
+  const deleteManyArticles = async (ids, userId) => {
     setIsLoading(true);
     setConfirmationError(null);
 
@@ -21,5 +21,5 @@ export const useDeleteMany = () => {
     return error;
   };
 
-  return { deleteMany, isLoading };
+  return { deleteManyArticles, isLoading };
 };

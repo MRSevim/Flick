@@ -14,7 +14,8 @@ import Link from "next/link";
 import { libre_baskerville } from "../Homepage/Homepage";
 import Image from "next/image";
 import { AdvancedSearch } from "../AdvancedSearch";
-import { useDeleteMany } from "@/hooks/UseDeleteMany";
+import { UseDeleteManyArticles } from "@/hooks/UseDeleteManyArticles";
+import { GenericDeleteSelectedButton } from "../GenericDeleteSelectedButton";
 
 export const Articles = ({ json, isDraft }) => {
   const searchParams = useSearchParams();
@@ -28,7 +29,8 @@ export const Articles = ({ json, isDraft }) => {
   const page = +json.currentPage;
   const totalPages = +json.totalPages;
 
-  const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
+  const { deleteManyArticles, isLoading: deleteManyLoading } =
+    UseDeleteManyArticles();
   const [selected, setSelected] = useState([]);
   const { confirmation, setConfirmation } = useConfirmationContext();
   const [darkMode] = useDarkModeContext();
@@ -79,7 +81,7 @@ export const Articles = ({ json, isDraft }) => {
       },
       setConfirmation,
       async () => {
-        return await deleteMany(selected, user._id);
+        return await deleteManyArticles(selected, user._id);
       },
       () => {}
     );
@@ -188,15 +190,13 @@ export const Articles = ({ json, isDraft }) => {
                 <label className="form-check-label" htmlFor="selectAll">
                   Select all
                 </label>
-                <button
+                <GenericDeleteSelectedButton
                   disabled={deleteManyLoading}
-                  onClick={(e) => {
+                  onClick={() => {
                     deleteSelected(selected);
                   }}
-                  className="btn btn-danger ms-4"
-                >
-                  <i className="bi bi-trash-fill"></i> Delete Selected
-                </button>
+                  classes="ms-4"
+                />
               </div>
             )}
           </div>

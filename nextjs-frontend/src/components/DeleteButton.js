@@ -1,13 +1,13 @@
 import { useConfirmationContext } from "@/contexts/ConfirmationContext";
 import { useDeleteArticle } from "@/hooks/UseDeleteArticle";
 import { confirmationWrapper } from "@/utils/HelperFuncs";
+import { GenericDeleteButton } from "./GenericDeleteButton";
 
 export const DeleteButton = ({ article, user, deleteManyLoading, classes }) => {
   const { confirmation, setConfirmation } = useConfirmationContext();
   const { deleteArticle, isLoading } = useDeleteArticle();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const { _id, title, user: articleUser } = article;
     const articleUserId = articleUser._id || articleUser;
     const ownArticle = articleUserId === user._id;
@@ -39,13 +39,10 @@ export const DeleteButton = ({ article, user, deleteManyLoading, classes }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <button
-        disabled={deleteManyLoading || isLoading}
-        className={"btn btn-danger " + classes}
-      >
-        <i className="bi bi-trash-fill"></i>
-      </button>
-    </form>
+    <GenericDeleteButton
+      onClick={handleSubmit}
+      disabled={deleteManyLoading || isLoading}
+      classes={classes}
+    />
   );
 };
