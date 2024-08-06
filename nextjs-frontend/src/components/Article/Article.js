@@ -42,7 +42,7 @@ export const Article = ({ json, similar, error }) => {
           <div className="mb-2 d-flex">
             <LikeButton classes="me-1" article={article} />
             {(myArticle || user?.role === "mod" || user?.role === "admin") && (
-              <DeleteButton classes="me-1" user={user} article={article} />
+              <DeleteButton classes="me-1" article={article} />
             )}
             {myArticle && (
               <>

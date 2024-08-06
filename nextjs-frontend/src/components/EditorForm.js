@@ -5,6 +5,7 @@ import { Image } from "./Image";
 import { RemoveImageButton } from "./RemoveImageButton";
 
 export const EditorForm = ({
+  article,
   tags,
   type,
   title,
@@ -18,8 +19,6 @@ export const EditorForm = ({
   isLoading,
   saveDraft,
   submit,
-  deleteArticle,
-  deleteLoading,
   editLoading,
   save,
   isDraft,
@@ -102,11 +101,7 @@ export const EditorForm = ({
         )}
         {type === "edit" && (
           <>
-            <DeleteButton
-              onClick={deleteArticle}
-              deleteLoading={deleteLoading}
-              classes={"me-2"}
-            />
+            <DeleteButton article={article} classes={"me-2"} />
             <button
               className="btn btn-lg btn-secondary me-2"
               disabled={editLoading}

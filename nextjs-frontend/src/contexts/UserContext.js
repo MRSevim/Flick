@@ -11,7 +11,7 @@ export const useUserContext = () => {
 export const UserProvider = ({ children, userFromCookies }) => {
   const [user, setUser] = useState(userFromCookies);
 
-  const changeUser = (user, rememberMe) => {
+  const changeUser = (user, rememberMe, type) => {
     if (!user) {
       Cookies.remove("user");
       Cookies.remove("expirationDateOfUser");
@@ -33,7 +33,9 @@ export const UserProvider = ({ children, userFromCookies }) => {
         Cookies.set("user", userString);
       }
     }
-    location.reload();
+    if (type === "login") {
+      location.reload();
+    }
 
     setUser(user);
   };

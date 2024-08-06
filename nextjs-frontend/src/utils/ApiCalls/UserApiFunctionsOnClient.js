@@ -1,4 +1,4 @@
-import { authenticatedRoutes } from "../HelperFuncs";
+import { authenticatedRoutes, getFirstPartOfPath } from "../HelperFuncs";
 import links from "../Links";
 
 export const loginCall = async (
@@ -38,8 +38,9 @@ export const logoutCall = async (path, router) => {
   if (!response.ok) {
     return json.message;
   }
+  const firstPart = "/" + getFirstPartOfPath(path);
 
-  if (authenticatedRoutes.includes(path)) {
+  if (authenticatedRoutes.includes(firstPart)) {
     router.push(links.homepage);
   }
   return;

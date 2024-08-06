@@ -11,6 +11,7 @@ import { useUpdateUser } from "@/hooks/UseUpdateUser";
 import { GenerateModLinkButton } from "./GenerateModLinkButton";
 import { FollowButtons } from "../FollowButtons";
 import { DeleteUser } from "./DeleteUser";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const MyProfile = ({ json }) => {
   const [initialUsername, setInitialUsername] = useState(json.username);
@@ -19,7 +20,6 @@ export const MyProfile = ({ json }) => {
   const [username, setUsername] = useState(json.username);
   const [email, setEmail] = useState(json.email);
   const [image, setImage] = useState(json.image);
-  const [updatedEmail, setUpdatedEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -31,19 +31,19 @@ export const MyProfile = ({ json }) => {
     month: "long",
     day: "numeric",
   });
-  const {
-    update,
-    isLoading,
-    successMessage,
-    error,
-    setError,
-    setSuccessMessage,
-  } = useUpdateUser();
+  const { update, isLoading, successMessage, error, setError } =
+    useUpdateUser();
+  const searchParams = useSearchParams();
+  const updatedEmail = searchParams.get("updatedEmail");
+  const params = new URLSearchParams(searchParams.toString());
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    setSuccessMessage(null);
+    params.set("successMessage", "");
+    router.replace(pathname + "?" + params.toString());
 
     let apiUsername, apiEmail, apiPassword, apiImage;
     if (newPassword && newPassword !== confirmNewPassword) {
@@ -57,11 +57,11 @@ export const MyProfile = ({ json }) => {
     }
     if (email !== initialEmail) {
       apiEmail = email;
-      setUpdatedEmail(apiEmail);
     }
     if (image !== initialImage) {
       apiImage = image;
     }
+
     const { successMessage } = await update(
       apiUsername,
       apiEmail,

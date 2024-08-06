@@ -70,6 +70,7 @@ export default function RootLayout({ children }) {
                             <Suspense fallback={<LoadingDots />}>
                               <NotificationsParent />
                             </Suspense>
+
                             <Suspense fallback={<LoadingDots />}>
                               <PmIconParent />
                             </Suspense>

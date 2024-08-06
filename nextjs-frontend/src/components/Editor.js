@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Editor as TinyMceEditor } from "@tinymce/tinymce-react";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
-import { envVariables } from "@/utils/HelperFuncs";
 
 export const Editor = ({ initialContent, onInit, handleEditorChange }) => {
   const [darkMode] = useDarkModeContext();
@@ -14,6 +13,7 @@ export const Editor = ({ initialContent, onInit, handleEditorChange }) => {
 
   return (
     <TinyMceEditor
+      id="123"
       key={editorKey}
       tinymceScriptSrc="/tinymce/tinymce.min.js"
       onInit={(evt, editor) => {

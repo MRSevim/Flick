@@ -34,7 +34,7 @@ export const Login = ({ onHideModal, children, type }) => {
     if (onHideModal) {
       onHideModal();
     }
-    setUser(user, rememberMe);
+    setUser(user, rememberMe, "login");
 
     router.push(links.homepage);
   };

@@ -1,7 +1,7 @@
 "use server";
 import { envVariables } from "../HelperFuncs";
 import { cookies } from "next/headers";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 const backendUrl = envVariables.backendUrl;
 
 export const createArticleCall = async (
@@ -28,6 +28,7 @@ export const createArticleCall = async (
   }
 
   revalidateTag(userId);
+  revalidateTag("similar");
 
   return { error: null };
 };
@@ -50,6 +51,7 @@ export const deleteArticleCall = async (id, reasonOfDeletion, userId) => {
   }
 
   revalidateTag(userId);
+  revalidateTag("similar");
 };
 
 export const deleteManyCall = async (ids, userId) => {
@@ -70,21 +72,31 @@ export const deleteManyCall = async (ids, userId) => {
   }
 
   revalidateTag(userId);
+  revalidateTag("similar");
 };
-/* const articleApi = {
+export const updateArticleCall = async (
+  title,
+  content,
+  isDraft,
+  id,
+  tags,
+  image
+) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + "/article/" + id, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: authTokenCookieString,
+    },
 
-  update: async (title, content, isDraft, id, tags, image) => {
-    const response = await fetch(backendUrl + "/article/" + id, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, content, isDraft, tags, image }),
+  });
+  const json = await response.json();
 
-      body: JSON.stringify({ title, content, isDraft, tags, image }),
-    });
+  if (!response.ok) {
+    return json.message;
+  }
 
-    return response;
-  },
-
-
-  },
-
-}; */
+  revalidatePath("/", "layout");
+};

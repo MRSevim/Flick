@@ -64,7 +64,7 @@ export const MostLiked = ({ json, time }) => {
                   <div className="position-absolute top-0 end-0 m-1 p-1">
                     published at {extractDate(article.createdAt)}
                   </div>
-                  <div className="d-flex justify-content-between">
+                  <div className="mt-3 d-flex justify-content-between">
                     <LikeButton classes={"me-3"} article={article} />
 
                     <div>

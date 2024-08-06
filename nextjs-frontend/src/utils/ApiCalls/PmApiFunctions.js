@@ -22,7 +22,11 @@ export const sendPmCall = async (id, subject, message, userId) => {
   }
 
   revalidateTag("pms/sent/" + userId);
-  revalidateTag("pms/received/" + id);
+
+  /*  
+  this code does nothing to router cache in other browsers
+  revalidateTag("pms/received/" + id); 
+  */
 };
 
 export const markAsReadCall = async (userId) => {

@@ -39,7 +39,6 @@ export const ArticleItem = ({
               <DeleteButton
                 classes="p-1 m-1 position-absolute top-0 end-0"
                 article={article}
-                user={user}
                 deleteManyLoading={deleteManyLoading}
               />
             )}

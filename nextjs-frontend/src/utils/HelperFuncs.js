@@ -15,6 +15,9 @@ export function extractDate(datetimeStr) {
   return datetimeStr.split("T")[0];
 }
 
+export const getFirstPartOfPath = (pathname) => {
+  return pathname.split("/")[1];
+};
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -62,7 +65,7 @@ export const envVariables = {
   defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
 
-export const authenticatedRoutes = ["/my-profile", "/drafts", "/pms"];
+export const authenticatedRoutes = ["/my-profile", "/drafts", "/pms", "/edit"];
 
 export const Tags = [
   "Nature",

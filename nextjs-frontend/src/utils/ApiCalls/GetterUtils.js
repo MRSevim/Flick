@@ -10,7 +10,6 @@ const backendUrl = envVariables.backendUrl;
 export const getProfileCall = async () => {
   const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/user/profile", {
-    cache: "no-store",
     headers: {
       Cookie: authTokenCookieString,
     },
@@ -129,7 +128,7 @@ export const getReceivedLengthCall = async () => {
   const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/pms/receivedLength", {
     headers: { Cookie: authTokenCookieString },
-    next: { tags: ["pms/received/" + userId] },
+    /*won't be needed? next: { tags: ["pms/received/" + userId] }, */
   });
 
   const json = await response.json();

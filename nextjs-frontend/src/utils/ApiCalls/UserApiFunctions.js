@@ -66,6 +66,10 @@ export const updateUserCall = async (
       error: json.message,
     };
   }
+  if (username) {
+    revalidatePath("/", "layout");
+  }
+
   const {
     message,
     username: _username,
