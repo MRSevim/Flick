@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { useUserContext } from "@/contexts/UserContext";
 import { updateUserCall } from "@/utils/ApiCalls/UserApiFunctions";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 
 export const useUpdateUser = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [, setUser] = useUserContext();
-  const searchParams = useSearchParams();
-  const successMessage = searchParams.get("successMessage");
-  const params = new URLSearchParams(searchParams.toString());
-  const router = useRouter();
-  const pathname = usePathname();
 
   const update = async (username, email, password, newPassword, image) => {
     setIsLoading(true);
+    Cookies.remove("profileUpdateSuccessMessage");
+    Cookies.remove("profileUpdatedEmail");
 
     const { error, successMessage, userObject } = await updateUserCall(
       username,
@@ -33,12 +30,12 @@ export const useUpdateUser = () => {
       // update the user context
       setUser(userObject);
 
-      // update url
-      params.set("successMessage", successMessage);
+      // update cookies
+      Cookies.set("profileUpdateSuccessMessage", successMessage);
+
       if (email) {
-        params.set("updatedEmail", email);
+        Cookies.set("profileUpdatedEmail", email);
       }
-      router.replace(pathname + "?" + params.toString());
 
       return { successMessage };
     }
@@ -47,7 +44,6 @@ export const useUpdateUser = () => {
   return {
     update,
     isLoading,
-    successMessage,
     error,
     setError,
   };

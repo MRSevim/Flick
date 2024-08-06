@@ -11,7 +11,7 @@ import { useUpdateUser } from "@/hooks/UseUpdateUser";
 import { GenerateModLinkButton } from "./GenerateModLinkButton";
 import { FollowButtons } from "../FollowButtons";
 import { DeleteUser } from "./DeleteUser";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 
 export const MyProfile = ({ json }) => {
   const [initialUsername, setInitialUsername] = useState(json.username);
@@ -31,19 +31,13 @@ export const MyProfile = ({ json }) => {
     month: "long",
     day: "numeric",
   });
-  const { update, isLoading, successMessage, error, setError } =
-    useUpdateUser();
-  const searchParams = useSearchParams();
-  const updatedEmail = searchParams.get("updatedEmail");
-  const params = new URLSearchParams(searchParams.toString());
-  const router = useRouter();
-  const pathname = usePathname();
+  const successMessage = Cookies.get("profileUpdateSuccessMessage");
+  const updatedEmail = Cookies.get("profileUpdatedEmail");
+  const { update, isLoading, error, setError } = useUpdateUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    params.set("successMessage", "");
-    router.replace(pathname + "?" + params.toString());
 
     let apiUsername, apiEmail, apiPassword, apiImage;
     if (newPassword && newPassword !== confirmNewPassword) {

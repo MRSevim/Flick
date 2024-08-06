@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useUserContext } from "@/contexts/UserContext";
 import links from "@/utils/Links";
 import { envVariables } from "@/utils/HelperFuncs";
@@ -20,7 +20,7 @@ export const Edit = ({ json, isDraft }) => {
   const successMessage = searchParams.get("successMessage");
   const params = new URLSearchParams(searchParams.toString());
   const pathname = usePathname();
-  const successMessageRef = useRef(null);
+
   const { editArticle, isLoading } = useEditArticle();
 
   if (user?._id !== json.user._id) {
@@ -29,12 +29,14 @@ export const Edit = ({ json, isDraft }) => {
 
   useEffect(() => {
     //this scrolling currently does not work
-    if (successMessageRef.current) {
-      successMessageRef.current.scrollIntoView({
+    const element = document.getElementById("mySuccessMessage");
+    if (element) {
+      element.scrollIntoView({
         behavior: "smooth",
         block: "end",
       });
     }
+    setTimeout(() => {}, 100);
   }, [successMessage]);
 
   const setSuccessMessageToUrl = (message) => {
@@ -100,7 +102,7 @@ export const Edit = ({ json, isDraft }) => {
     >
       {successMessage && (
         <div
-          ref={successMessageRef}
+          id="mySuccessMessage"
           className="text-center mt-3 d-flex justify-content-center"
         >
           <p className="m-0 alert alert-success">{successMessage}</p>
