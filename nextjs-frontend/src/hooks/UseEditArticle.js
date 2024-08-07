@@ -6,7 +6,15 @@ export const useEditArticle = () => {
   const [, setGlobalError] = useGlobalErrorContext();
   const [isLoading, setIsLoading] = useState(null);
 
-  const editArticle = async (title, content, isDraft, id, tags, image) => {
+  const editArticle = async (
+    title,
+    content,
+    isDraft,
+    id,
+    tags,
+    image,
+    previousIsDraft
+  ) => {
     setIsLoading(true);
     setGlobalError(null);
 
@@ -16,7 +24,8 @@ export const useEditArticle = () => {
       isDraft,
       id,
       tags,
-      image
+      image,
+      previousIsDraft
     );
 
     setIsLoading(false);

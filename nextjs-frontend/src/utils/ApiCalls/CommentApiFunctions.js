@@ -22,7 +22,6 @@ export const commentCall = async (content, id, articleOwnerId) => {
   }
 
   revalidateTag("article/" + id);
-  revalidateTag("notifications/" + articleOwnerId);
 
   return;
 };
@@ -69,10 +68,6 @@ export const deleteCommentCall = async (
   }
 
   revalidateTag("article/" + articleId);
-  revalidateTag("notifications/" + articleOwnerId);
-  if (reasonOfDeletion) {
-    revalidateTag("notifications/" + commentOwnerId);
-  }
 
   return;
 };

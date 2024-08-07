@@ -2,32 +2,31 @@
 import { useState } from "react";
 import classNames from "classnames";
 import { useUserContext } from "@/contexts/UserContext";
+import { likeCall } from "@/utils/ApiCalls/LikeApiFunctions";
+import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 
 export const LikeButton = ({ article, classes }) => {
   const [user] = useUserContext();
+  const [, setGlobalError] = useGlobalErrorContext();
+  const [isLoading, setIsLoading] = useState(null);
+  const liked = article.likes.some((like) => {
+    return like.user === user?._id;
+  });
 
-  const [liked, setLiked] = useState(
-    article.likes.some((like) => {
-      return like.user === user?._id;
-    })
-  );
-  const [likeCount, setLikeCount] = useState(+article.likes.length);
+  const likeCount = +article.likes.length;
 
   const likeArticle = async () => {
-    /*     const response = await likeArticleCall(article._id);
-    if (response.ok) {
-      if (!liked) {
-        setLikeCount((prev) => prev + 1);
-      } else if (liked) {
-        setLikeCount((prev) => prev - 1);
-      }
-      setLiked((prev) => !prev);
-    } */
+    setIsLoading(true);
+    const error = await likeCall(article._id);
+    if (error) {
+      setGlobalError(error);
+    }
+    setIsLoading(false);
   };
   return (
     <button
       onClick={likeArticle}
-      /* disabled={isLoading} */
+      disabled={isLoading}
       className={"btn btn-secondary rounded-3 " + classes}
     >
       <i

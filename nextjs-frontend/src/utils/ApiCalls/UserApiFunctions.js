@@ -1,10 +1,8 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 import { cookies } from "next/headers";
-
-const userSlugPath = "/user/[id]";
 
 export const signupCall = async (token, prevState, formData) => {
   const url = backendUrl + "/user/register/" + (token ? token : "");
@@ -125,7 +123,7 @@ export const deleteAccountCall = async (formData) => {
     return { error: json.message };
   }
 
-  revalidatePath(userSlugPath, "layout");
+  revalidatePath("/", "layout");
 
   return { error: null };
 };
@@ -147,20 +145,26 @@ export const banUserCall = async (id, reasonOfBan) => {
     return { error: json.message };
   }
 
-  revalidatePath(userSlugPath, "layout");
+  revalidatePath("/", "layout");
 
   return { error: null };
 };
 
-/* const userApi = {
-  toggleUserVariables: async (type) => {
-    const response = await fetch(backendUrl + "/user/toggle/" + type, {
-      method: "PUT",
-    });
+export const toggleUserVariablesCall = async (type, userId) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
+  const response = await fetch(backendUrl + "/user/toggle/" + type, {
+    method: "PUT",
+    headers: {
+      Cookie: authTokenCookieString,
+    },
+  });
 
-    return response;
-  },
+  const json = await response.json();
+  if (!response.ok) {
+    return { error: json.message };
+  }
 
+  revalidateTag("profile/" + userId);
 
+  return { error: null };
 };
-export default userApi; */

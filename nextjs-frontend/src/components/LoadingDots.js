@@ -1,5 +1,3 @@
-import React from "react";
-
 export const LoadingDots = () => {
   return (
     <div className="lds-ellipsis me-2">

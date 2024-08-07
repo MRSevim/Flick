@@ -10,7 +10,7 @@ export const libre_baskerville = Libre_Baskerville({
   subsets: ["latin"],
 });
 
-export function HomePage() {
+export function HomePage({ children }) {
   const [darkMode] = useDarkModeContext();
   let darkModeString = "";
 
@@ -154,6 +154,7 @@ export function HomePage() {
             </div>
           </div>
         </div>
+        {children}
       </div>
     </main>
   );

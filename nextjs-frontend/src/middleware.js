@@ -5,12 +5,6 @@ import { NextResponse } from "next/server";
 export function middleware(request) {
   const user = request.cookies.get("user")?.value;
 
-  if (!request.nextUrl.pathname.startsWith(links.myProfile)) {
-    const response = NextResponse.next();
-    response.cookies.set("profileUpdateSuccessMessage", "");
-    response.cookies.set("profileUpdatedEmail", "");
-    return response;
-  }
   if (
     user &&
     (request.nextUrl.pathname.startsWith(links.login) ||
@@ -24,6 +18,12 @@ export function middleware(request) {
 
   if (!user && requiresAuth) {
     return Response.redirect(new URL("/login", request.url));
+  }
+  if (!request.nextUrl.pathname.startsWith(links.myProfile)) {
+    const response = NextResponse.next();
+    response.cookies.delete("profileUpdateSuccessMessage");
+    response.cookies.delete("profileUpdatedEmail");
+    return response;
   }
 }
 

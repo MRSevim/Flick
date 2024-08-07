@@ -30,7 +30,8 @@ const getBySearch = async (req, res, next) => {
         isDraft: false,
       })
         .select(selectFields)
-        .populate("user", "username");
+        .populate("user", "username")
+        .populate("likes", "user");
     }
 
     res.status(200).json({ users, articles });

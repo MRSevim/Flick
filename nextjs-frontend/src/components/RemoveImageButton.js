@@ -1,5 +1,3 @@
-import React from "react";
-
 export const RemoveImageButton = ({ disabled, onClick, visible }) => {
   if (visible) {
     return (

@@ -24,7 +24,6 @@ export const EditorForm = ({
   isDraft,
   removeImage,
   removeButtonVisible,
-  children,
 }) => {
   return (
     <div className="container">
@@ -125,7 +124,6 @@ export const EditorForm = ({
           </>
         )}
       </div>
-      {children && children}
     </div>
   );
 };

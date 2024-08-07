@@ -9,6 +9,7 @@ const {
   deleteArticle,
   deleteMany,
   getSimilar,
+  getFeatured,
 } = require("../controllers/articleController");
 
 const requireAuth = require("../middlewares/authMiddleware");
@@ -29,6 +30,9 @@ router.get("/user/:id", getArticles(false));
 
 //get similar articles route
 router.get("/similar/:id", getSimilar);
+
+//get featured articles route
+router.get("/featured", getFeatured);
 
 //get an article route
 router.get("/:id", getArticle(false));

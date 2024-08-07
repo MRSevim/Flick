@@ -8,11 +8,14 @@ import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
 export const getProfileCall = async () => {
+  const userFromCookies = JSON.parse(cookies().get("user").value);
+  const userId = userFromCookies._id;
   const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/user/profile", {
     headers: {
       Cookie: authTokenCookieString,
     },
+    next: { tags: ["profile/" + userId] },
   });
 
   const json = await response.json();
@@ -24,6 +27,18 @@ export const getProfileCall = async () => {
   return { json };
 };
 
+export const getFeaturedCall = async () => {
+  const response = await fetch(backendUrl + "/article/featured", {
+    next: { tags: ["featured"] },
+  });
+  const json = await response.json();
+
+  if (!response.ok) {
+    return { error: json.message };
+  }
+
+  return { json };
+};
 export const getPublicUserCall = async (id) => {
   const response = await fetch(backendUrl + "/user/" + id, {
     next: { tags: [id] },
@@ -93,9 +108,13 @@ export const getMostLikedCall = async (time) => {
   return { json };
 };
 export const getArticleCall = async (id, isDraft) => {
+  const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const url = isDraft ? "/article/draft/" : "/article/";
 
   const response = await fetch(backendUrl + url + id, {
+    headers: {
+      Cookie: authTokenCookieString,
+    },
     next: { tags: ["article/" + id] },
   });
 
@@ -123,12 +142,9 @@ export const getSimilarCall = async (id) => {
 };
 
 export const getReceivedLengthCall = async () => {
-  const userFromCookies = JSON.parse(cookies().get("user").value);
-  const userId = userFromCookies._id;
   const authTokenCookieString = "jwt=" + cookies().get("jwt").value;
   const response = await fetch(backendUrl + "/pms/receivedLength", {
     headers: { Cookie: authTokenCookieString },
-    /*won't be needed? next: { tags: ["pms/received/" + userId] }, */
   });
 
   const json = await response.json();

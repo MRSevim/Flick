@@ -1,7 +1,9 @@
 "use server";
 import { envVariables } from "../HelperFuncs";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { revalidateTag, revalidatePath } from "next/cache";
+import links from "../Links";
 const backendUrl = envVariables.backendUrl;
 
 export const createArticleCall = async (
@@ -29,6 +31,7 @@ export const createArticleCall = async (
 
   revalidateTag(userId);
   revalidateTag("similar");
+  revalidateTag("featured");
 
   return { error: null };
 };
@@ -52,6 +55,7 @@ export const deleteArticleCall = async (id, reasonOfDeletion, userId) => {
 
   revalidateTag(userId);
   revalidateTag("similar");
+  revalidateTag("featured");
 };
 
 export const deleteManyCall = async (ids, userId) => {
@@ -73,6 +77,7 @@ export const deleteManyCall = async (ids, userId) => {
 
   revalidateTag(userId);
   revalidateTag("similar");
+  revalidateTag("featured");
 };
 export const updateArticleCall = async (
   title,
@@ -80,7 +85,8 @@ export const updateArticleCall = async (
   isDraft,
   id,
   tags,
-  image
+  image,
+  previousIsDraft
 ) => {
   const authTokenCookieString = "jwt=" + cookies().get("jwt")?.value;
   const response = await fetch(backendUrl + "/article/" + id, {
@@ -92,6 +98,7 @@ export const updateArticleCall = async (
 
     body: JSON.stringify({ title, content, isDraft, tags, image }),
   });
+
   const json = await response.json();
 
   if (!response.ok) {
@@ -99,4 +106,8 @@ export const updateArticleCall = async (
   }
 
   revalidatePath("/", "layout");
+
+  if (previousIsDraft && !isDraft) {
+    redirect(links.edit(id, false));
+  }
 };

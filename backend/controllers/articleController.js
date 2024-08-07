@@ -37,6 +37,23 @@ const getSimilar = async (req, res, next) => {
       path: "user",
       select: "username",
     });
+    await Article.populate(articles, {
+      path: "likes",
+      select: "user",
+    });
+
+    res.status(200).json(articles);
+  } catch (error) {
+    next(error);
+  }
+};
+//get featured articles
+const getFeatured = async (req, res, next) => {
+  try {
+    const articles = await Article.find({ isDraft: false })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate("likes", "user");
 
     res.status(200).json(articles);
   } catch (error) {
@@ -450,4 +467,5 @@ module.exports = {
   deleteArticle,
   deleteMany,
   getSimilar,
+  getFeatured,
 };

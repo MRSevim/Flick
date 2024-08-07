@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUserContext } from "@/contexts/UserContext";
 import links from "@/utils/Links";
 import { envVariables } from "@/utils/HelperFuncs";
 import { EditorForm } from "../EditorForm";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEditArticle } from "@/hooks/UseEditArticle";
 
 export const Edit = ({ json, isDraft }) => {
@@ -16,52 +16,14 @@ export const Edit = ({ json, isDraft }) => {
   const [content, setContent] = useState(null);
   const [tags, setTags] = useState(json.tags);
   const [image, setImage] = useState(json.image);
-  const searchParams = useSearchParams();
-  const successMessage = searchParams.get("successMessage");
-  const params = new URLSearchParams(searchParams.toString());
-  const pathname = usePathname();
-
   const { editArticle, isLoading } = useEditArticle();
 
   if (user?._id !== json.user._id) {
     router.push(links.homepage);
   }
 
-  useEffect(() => {
-    //this scrolling currently does not work
-    const element = document.getElementById("mySuccessMessage");
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    }
-    setTimeout(() => {}, 100);
-  }, [successMessage]);
-
-  const setSuccessMessageToUrl = (message) => {
-    params.set("successMessage", message);
-    router.replace(pathname + "?" + params.toString());
-  };
-
   const save = async (draft) => {
-    const edit = async () => {
-      setSuccessMessageToUrl("");
-      const error = await editArticle(title, content, draft, id, tags, image);
-      if (!error) {
-        if (isDraft && !draft) {
-          setSuccessMessageToUrl(
-            "Article published. Redirecting to published article..."
-          );
-          setTimeout(() => {
-            router.push(links.article(id));
-          }, 3000);
-        } else {
-          setSuccessMessageToUrl("Saved...");
-        }
-      }
-    };
-    await edit();
+    await editArticle(title, content, draft, id, tags, image, isDraft);
   };
   const removeImage = async () => {
     const error = await editArticle(
@@ -74,7 +36,6 @@ export const Edit = ({ json, isDraft }) => {
     );
     if (!error) {
       setImage(envVariables.defaultArticleImage);
-      setSuccessMessageToUrl("Saved...");
     }
   };
 
@@ -90,6 +51,7 @@ export const Edit = ({ json, isDraft }) => {
       onTagsChange={(newTags) => {
         setTags(newTags);
       }}
+      tags={tags}
       initialContent={initialContent}
       handleEditorChange={(content) => {
         setContent(content);
@@ -99,15 +61,6 @@ export const Edit = ({ json, isDraft }) => {
       save={save}
       isDraft={isDraft}
       removeImage={removeImage}
-    >
-      {successMessage && (
-        <div
-          id="mySuccessMessage"
-          className="text-center mt-3 d-flex justify-content-center"
-        >
-          <p className="m-0 alert alert-success">{successMessage}</p>
-        </div>
-      )}
-    </EditorForm>
+    ></EditorForm>
   );
 };

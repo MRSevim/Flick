@@ -1,6 +1,6 @@
 "use client";
 import { useUserContext } from "@/contexts/UserContext";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Popup } from "../Popup";
 import { SendVerificationEmailButton } from "../SendVerificationEmailButton";
 import { Image } from "../Image";
@@ -75,8 +75,13 @@ export const MyProfile = ({ json }) => {
 
   const removeImage = async () => {
     setImage(envVariables.defaultUserImage);
-    submitButton.current.click();
   };
+
+  useEffect(() => {
+    if (image === envVariables.defaultUserImage) {
+      submitButton.current.click();
+    }
+  }, [image]);
 
   return (
     <div className="container">

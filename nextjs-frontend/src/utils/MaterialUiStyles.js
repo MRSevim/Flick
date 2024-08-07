@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 export const CreateMuiTheme = (darkMode) => {
   return createTheme({
     components: {
+      //Switch is not used, but stays just in case
       MuiSwitch: {
         styleOverrides: {
           root: {

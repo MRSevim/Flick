@@ -1,5 +1,3 @@
-import React from "react";
-
 export const RoleBanner = ({ role }) => {
   const adminOrMod = role === "admin" || role === "mod";
 
