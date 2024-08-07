@@ -16,19 +16,12 @@ const envVariables = require("./envVariables");
 const app = express();
 
 // middlewares
-//Using prerender for google crawlers (SEO), Remove if you switch to nextjs
-app.use(
-  require("prerender-node").set("prerenderToken", envVariables.prerenderToken)
-);
 app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
-
-//Images
-app.use(express.static("images"));
 
 // routes
 app.use("/api/like", likeRoutes);
