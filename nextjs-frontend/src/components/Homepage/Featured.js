@@ -32,7 +32,7 @@ export const Featured = ({ json, error }) => {
                     src={article.image}
                   />
                   <ArticleCardBody
-                    classes={"my-5"}
+                    classes={"mt-2 mb-5"}
                     article={article}
                     link={links.article(article._id)}
                   >
