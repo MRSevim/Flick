@@ -33,6 +33,7 @@ export const MyProfile = ({ json }) => {
   });
   const successMessage = Cookies.get("profileUpdateSuccessMessage");
   const updatedEmail = Cookies.get("profileUpdatedEmail");
+  const [removeImageClicked, setRemoveImageClicked] = useState(null);
   const { update, isLoading, error, setError } = useUpdateUser();
 
   const handleSubmit = async (e) => {
@@ -75,13 +76,15 @@ export const MyProfile = ({ json }) => {
 
   const removeImage = async () => {
     setImage(envVariables.defaultUserImage);
+    setRemoveImageClicked(true);
   };
 
   useEffect(() => {
-    if (image === envVariables.defaultUserImage) {
+    if (image === envVariables.defaultUserImage && removeImageClicked) {
       submitButton.current.click();
+      setRemoveImageClicked(false);
     }
-  }, [image]);
+  }, [image, removeImageClicked]);
 
   return (
     <div className="container">
@@ -91,7 +94,10 @@ export const MyProfile = ({ json }) => {
           <div className="d-flex justify-content-center my-3">
             {
               <RemoveImageButton
-                visible={!user?.isGoogleLogin}
+                visible={
+                  !user?.isGoogleLogin &&
+                  image !== envVariables.defaultUserImage
+                }
                 disabled={isLoading}
                 onClick={removeImage}
               />

@@ -14,6 +14,7 @@ export async function generateMetadata({ params }) {
       : rawImage;
 
   return {
+    metadataBase: new URL(envVariables.frontendUrl),
     title,
     description,
     keywords: json.tags.join(","),
