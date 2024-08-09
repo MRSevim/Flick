@@ -6,10 +6,10 @@ import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { useEffect } from "react";
 
 export const ThemeWrapper = ({ children }) => {
-    useEffect(() => {
-      require("bootstrap/dist/js/bootstrap.bundle.min.js");
-    }, []);
-    
+  useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
+
   const [darkMode] = useDarkModeContext();
   const theme = CreateMuiTheme(darkMode);
   return (

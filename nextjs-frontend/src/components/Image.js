@@ -1,5 +1,5 @@
 import NextImage from "next/image";
-import { envVariables } from "@/utils/HelperFuncs";
+import { envVariables, redirectToImages } from "@/utils/HelperFuncs";
 
 export const Image = ({ src, classes = "" }) => {
   if (!src) {
@@ -34,7 +34,7 @@ export const Image = ({ src, classes = "" }) => {
     src === envVariables.defaultArticleImage ||
     src === envVariables.defaultUserImage
   ) {
-    modifiedSource = "/images" + src;
+    modifiedSource = redirectToImages(src);
   }
 
   return (

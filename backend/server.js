@@ -34,16 +34,13 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/pms", privateMessageRoutes);
 
-if (envVariables.env === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.send("APP IS RUNNING!");
-  });
-}
+app.get("/", (req, res) => {
+  res.send("APP IS RUNNING!");
+});
+
+app.get("/api", (req, res) => {
+  res.json("PLEASE PROVIDE FURTHER ROUTING AFTER /api!");
+});
 
 //error middlewares
 app.use(notFound);

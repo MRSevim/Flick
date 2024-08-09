@@ -57,7 +57,8 @@ export function HomePage({ children }) {
           </div>
         </div>
       </div>
-      <div className="container mt-5">
+      <div className="container">
+        {children}
         <h1 className="text-center"> Some Questions You Might Ask</h1>
         <div className="accordion" id="accordionFlick">
           <div className={accordionItemClasses}>
@@ -154,7 +155,6 @@ export function HomePage({ children }) {
             </div>
           </div>
         </div>
-        {children}
       </div>
     </main>
   );

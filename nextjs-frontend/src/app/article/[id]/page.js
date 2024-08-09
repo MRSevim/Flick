@@ -1,14 +1,27 @@
 import { Article } from "@/components/Article/Article";
 import { getArticleCall, getSimilarCall } from "@/utils/ApiCalls/GetterUtils";
-import { extractExcerptFromHTML } from "@/utils/HelperFuncs";
+import { extractExcerptFromHTML, redirectToImages } from "@/utils/HelperFuncs";
+import { envVariables } from "@/utils/HelperFuncs";
 
 export async function generateMetadata({ params }) {
   const { json } = await getArticleCall(params.id, false);
+  const title = json.title;
+  const description = extractExcerptFromHTML(json.content);
+  const rawImage = json.image;
+  const image =
+    rawImage === envVariables.defaultArticleImage
+      ? redirectToImages(rawImage)
+      : rawImage;
 
   return {
-    title: json.title,
-    description: extractExcerptFromHTML(json.content),
+    title,
+    description,
     keywords: json.tags.join(","),
+    openGraph: {
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

@@ -1,6 +1,9 @@
 import links from "@/utils/Links";
 import Link from "next/link";
-import { extractExcerptFromHTML } from "@/utils/HelperFuncs";
+import {
+  createShortenedTitle,
+  extractExcerptFromHTML,
+} from "@/utils/HelperFuncs";
 import { Jost } from "next/font/google";
 
 export const jost = Jost({
@@ -15,8 +18,7 @@ export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
         {children}{" "}
         <Link href={link} className={"unstyled-link " + jost.className}>
           <span className=" hovered-link">
-            {article.title.substring(0, 50)}
-            {article.title.length > 50 && "..."}
+            {createShortenedTitle(article.title, 70)}
           </span>
         </Link>
       </h5>

@@ -7,6 +7,34 @@ import { cookies } from "next/headers";
 import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
+export const getAllArticles = async () => {
+  const response = await fetch(backendUrl + "/article/all", {
+    next: { revalidate: 3600 },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    console.log(json.message);
+  }
+
+  return { articles: json };
+};
+
+export const getAllUsers = async () => {
+  const response = await fetch(backendUrl + "/user/all", {
+    next: { revalidate: 3600 },
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    console.log(json.message);
+  }
+
+  return { users: json };
+};
+
 export const getProfileCall = async () => {
   const userFromCookies = JSON.parse(cookies().get("user").value);
   const userId = userFromCookies._id;

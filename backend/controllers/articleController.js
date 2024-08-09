@@ -7,6 +7,16 @@ const envVariables = require("../envVariables");
 const allowedTags = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
 };
+//get all articles
+const getAll = async (req, res, next) => {
+  try {
+    const articles = await Article.find();
+
+    res.status(200).json(articles);
+  } catch (error) {
+    next(error);
+  }
+};
 //get similar articles
 const getSimilar = async (req, res, next) => {
   try {
@@ -468,4 +478,5 @@ module.exports = {
   deleteMany,
   getSimilar,
   getFeatured,
+  getAll,
 };

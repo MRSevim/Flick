@@ -13,12 +13,16 @@ const {
   toggleUserVariables,
   generateModLink,
   banUser,
+  getAll,
 } = require("../controllers/userController");
 
 const router = express.Router();
 
 // login route
 router.post("/login", loginUser);
+
+// get all users route
+router.get("/all", getAll);
 
 // signup route
 router.post("/register/:token?", signupUser);

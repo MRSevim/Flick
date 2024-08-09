@@ -8,6 +8,16 @@ export const extractExcerptFromHTML = (html) => {
   return cutWords;
 };
 
+export const createShortenedTitle = (title, limit) => {
+  const shortened = title.substring(0, limit);
+  const threeDots = title.length > limit ? "..." : "";
+  return shortened + threeDots;
+};
+
+export const redirectToImages = (src) => {
+  return "/images" + src;
+};
+
 TimeAgo.addLocale(en);
 export const timeAgo = new TimeAgo("en-US");
 
@@ -61,11 +71,19 @@ export const envVariables = {
   websiteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
   googleId: process.env.GOOGLE_CLIENT_ID,
   backendUrl: process.env.BACKEND_URL,
+  googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
+  frontendUrl: process.env.FRONTEND_URL,
   defaultUserImage: process.env.NEXT_PUBLIC_DEFAULT_USER_IMAGE,
   defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
 
-export const authenticatedRoutes = ["/my-profile", "/drafts", "/pms", "/edit"];
+export const authenticatedRoutes = [
+  "/my-profile",
+  "/drafts",
+  "/pms",
+  "/edit",
+  "/settings",
+];
 
 export const Tags = [
   "Nature",

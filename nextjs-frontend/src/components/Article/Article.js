@@ -11,6 +11,7 @@ import { ArticleSections } from "./ArticleSections";
 import { jost } from "../ArticleCardBody";
 import { CommentSection } from "./CommentSection";
 import { SimilarArticles } from "./SimilarArticles";
+import { Share } from "./Share";
 
 export const Article = ({ json, similar, error }) => {
   const [user] = useUserContext();
@@ -60,27 +61,30 @@ export const Article = ({ json, similar, error }) => {
               __html: article.content,
             }}
           ></article>
-          <div className="text-end">
-            <p>
-              <i>
-                Written by{" "}
-                <Link href={links.publicUser(article.user?._id)}>
-                  <span className="fw-bold">{article.user?.username}</span>
-                </Link>
-              </i>
-            </p>
-            <p>
-              <i>
-                Published <span className="fw-bold">{createdAt}</span>
-              </i>
-            </p>
-            {createdAt !== updatedAt && (
+          <div className="d-flex justify-content-between my-4">
+            <Share article={article} />
+            <div>
               <p>
                 <i>
-                  Last updated <span className="fw-bold">{updatedAt}</span>
+                  Written by{" "}
+                  <Link href={links.publicUser(article.user?._id)}>
+                    <span className="fw-bold">{article.user?.username}</span>
+                  </Link>
                 </i>
               </p>
-            )}
+              <p>
+                <i>
+                  Published <span className="fw-bold">{createdAt}</span>
+                </i>
+              </p>
+              {createdAt !== updatedAt && (
+                <p>
+                  <i>
+                    Last updated <span className="fw-bold">{updatedAt}</span>
+                  </i>
+                </p>
+              )}
+            </div>
           </div>
           <SimilarArticles similar={similar} error={error} />
           <CommentSection article={article} />

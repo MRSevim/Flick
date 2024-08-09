@@ -13,6 +13,17 @@ const {
   getDecodedOAuthJwtGoogle,
 } = require("../helpers");
 
+//get all users
+const getAll = async (req, res, next) => {
+  try {
+    const users = await User.find().select("_id updatedAt");
+
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // login a user
 const loginUser = async (req, res, next) => {
   const { username, password, isGoogleLogin, googleCredential, rememberMe } =
@@ -527,4 +538,5 @@ module.exports = {
   toggleUserVariables,
   generateModLink,
   banUser,
+  getAll,
 };
