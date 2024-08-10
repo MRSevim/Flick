@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "https://flick-7zc9.onrender.com",
+      "path": "/api/cron",
       "schedule": "*/14 * * * *"
     }
   ]
