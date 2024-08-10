@@ -7,7 +7,7 @@ export const RegularFetchCallWrapper = ({ children }) => {
       const response = await fetch("/api");
       const json = await response.json();
       console.log("fetch call made, json: " + json);
-    }, 1000 * 60 * 60);
+    }, 1000 * 60 * 14);
 
     return () => clearInterval(interval);
   }, []);
