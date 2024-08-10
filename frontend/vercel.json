@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "https://flick-7zc9.onrender.com",
+      "schedule": "*/14 * * * *"
+    }
+  ]
+}

@@ -20,7 +20,6 @@ import { NotificationsParent } from "@/components/Header/NotificationsParent";
 import { PmIconParent } from "@/components/Header/PmIconParent";
 import { Suspense } from "react";
 import Script from "next/script";
-import { RegularFetchCallWrapper } from "./RegularFetchCallWrapper";
 
 const nunito = Nunito({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -86,32 +85,29 @@ export default function RootLayout({ children }) {
               <ConfirmationProvider>
                 <DarkModeProvider darkModeFromCookies={darkModeFromCookies}>
                   <ThemeWrapper>
-                    <RegularFetchCallWrapper>
-                      <body
-                        className={
-                          (darkModeFromCookies ? "dark " : "") +
-                          nunito.className
-                        }
-                      >
-                        <Header>
-                          {cookies().get("user") && cookies().get("jwt") && (
-                            <>
-                              <Suspense fallback={<LoadingDots />}>
-                                <NotificationsParent />
-                              </Suspense>
+                    <body
+                      className={
+                        (darkModeFromCookies ? "dark " : "") + nunito.className
+                      }
+                    >
+                      <Header>
+                        {cookies().get("user") && cookies().get("jwt") && (
+                          <>
+                            <Suspense fallback={<LoadingDots />}>
+                              <NotificationsParent />
+                            </Suspense>
 
-                              <Suspense fallback={<LoadingDots />}>
-                                <PmIconParent />
-                              </Suspense>
-                            </>
-                          )}
-                        </Header>
-                        <GlobalError />
-                        <Confirmation />
-                        <div className="pb-5 pt-4">{children}</div>
-                        <Footer />
-                      </body>
-                    </RegularFetchCallWrapper>
+                            <Suspense fallback={<LoadingDots />}>
+                              <PmIconParent />
+                            </Suspense>
+                          </>
+                        )}
+                      </Header>
+                      <GlobalError />
+                      <Confirmation />
+                      <div className="pb-5 pt-4">{children}</div>
+                      <Footer />
+                    </body>
                   </ThemeWrapper>
                 </DarkModeProvider>
               </ConfirmationProvider>

@@ -38,10 +38,6 @@ app.get("/", (req, res) => {
   res.send("APP IS RUNNING!");
 });
 
-app.get("/api", (req, res) => {
-  res.json("PLEASE PROVIDE FURTHER ROUTING AFTER /api!");
-});
-
 //error middlewares
 app.use(notFound);
 app.use(errorHandler);
