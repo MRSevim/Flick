@@ -25,14 +25,18 @@ export const Slider = ({ children, itemLength }) => {
       >
         {children}
       </div>
-      <i
-        onClick={goLeft}
-        className="pointer bg-black bg-opacity-25 rounded h2 bi bi-chevron-compact-left position-absolute top-50 start-0 translate-middle-y"
-      ></i>
-      <i
-        onClick={goRight}
-        className="pointer bg-black bg-opacity-25 rounded h2 bi bi-chevron-compact-right position-absolute top-50 end-0 translate-middle-y"
-      ></i>
+      {sliderIndex > 0 && (
+        <i
+          onClick={goLeft}
+          className="pointer bg-black bg-opacity-25 rounded h2 bi bi-chevron-compact-left position-absolute top-50 start-0 translate-middle-y"
+        ></i>
+      )}
+      {sliderIndex < sliderLength - 1 && (
+        <i
+          onClick={goRight}
+          className="pointer bg-black bg-opacity-25 rounded h2 bi bi-chevron-compact-right position-absolute top-50 end-0 translate-middle-y"
+        ></i>
+      )}
     </div>
   );
 };

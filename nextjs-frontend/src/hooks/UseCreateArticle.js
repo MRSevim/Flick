@@ -17,7 +17,7 @@ export const useCreateArticle = () => {
     setIsLoading(true);
     setGlobalError(null);
 
-    const { error } = await createArticleCall(
+    const error = await createArticleCall(
       title,
       content,
       isDraft,
@@ -25,14 +25,11 @@ export const useCreateArticle = () => {
       image,
       userId
     );
-
     if (error) {
       setGlobalError(error);
     }
 
     setIsLoading(false);
-
-    return { error };
   };
 
   return { createArticle, isLoading };

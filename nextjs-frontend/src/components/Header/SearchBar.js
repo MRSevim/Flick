@@ -5,6 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import links from "@/utils/Links";
 import { Image } from "@/components/Image";
 import { useSearchAll } from "@/hooks/UseSearchAll";
+import Paper from "@mui/material/Paper";
 
 export const SearchBar = () => {
   const router = useRouter();
@@ -42,8 +43,10 @@ export const SearchBar = () => {
   return (
     <form className="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-5" onSubmit={search}>
       <Autocomplete
-        freeSolo
-        options={isLoading ? [] : [...options.users, ...options.articles]}
+        freeSolo={searchParam.length ? false : true}
+        loading={isLoading}
+        noOptionsText={"No Results"}
+        options={[...options.users, ...options.articles]}
         groupBy={(option) => (option.username ? "Users" : "Articles")}
         filterOptions={(options) => options}
         inputValue={searchParam}

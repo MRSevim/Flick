@@ -23,7 +23,7 @@ const page = async ({ searchParams }) => {
     );
   }
 
-  return <Emailer />;
+  return <Emailer typeProp={type} />;
 };
 
 export default page;

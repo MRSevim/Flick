@@ -26,14 +26,17 @@ export const createArticleCall = async (
   });
   const json = await response.json();
   if (!response.ok) {
-    return { error: json.message };
+    return json.message;
   }
 
   revalidateTag(userId);
   revalidateTag("similar");
   revalidateTag("featured");
-
-  return { error: null };
+  if (isDraft) {
+    redirect(links.allDrafts(userId));
+  } else {
+    redirect(links.allArticles(userId));
+  }
 };
 
 export const deleteArticleCall = async (id, reasonOfDeletion, userId) => {

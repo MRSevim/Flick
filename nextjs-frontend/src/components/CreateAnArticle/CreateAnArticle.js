@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import DOMPurify from "dompurify";
 import { useUserContext } from "@/contexts/UserContext";
 import { Login } from "../Login/Login";
-import links from "@/utils/Links";
 import { EditorForm } from "../EditorForm";
 import { ModalWrapper } from "../ModalWrapper";
 import { envVariables } from "@/utils/HelperFuncs";
@@ -42,6 +41,7 @@ export const CreateAnArticle = () => {
       } else if (actionToRerun === "submit") {
         submit();
       }
+      setModalTriggered(false);
     }
   }, [user, modalTriggered, actionToRerun]);
 
@@ -53,7 +53,7 @@ export const CreateAnArticle = () => {
       return;
     }
 
-    const { error } = await createArticle(
+    await createArticle(
       DOMPurify.sanitize(title),
       DOMPurify.sanitize(content),
       false,
@@ -61,9 +61,6 @@ export const CreateAnArticle = () => {
       image,
       user._id
     );
-    if (!error) {
-      router.push(links.allArticles(user._id));
-    }
   };
 
   const saveDraft = async () => {
@@ -74,7 +71,7 @@ export const CreateAnArticle = () => {
       return;
     }
 
-    const { error } = await createArticle(
+    await createArticle(
       DOMPurify.sanitize(title),
       DOMPurify.sanitize(content),
       true,
@@ -82,9 +79,6 @@ export const CreateAnArticle = () => {
       image,
       user._id
     );
-    if (!error) {
-      router.push(links.allDrafts(user._id));
-    }
   };
 
   const handleEditorChange = (content) => {

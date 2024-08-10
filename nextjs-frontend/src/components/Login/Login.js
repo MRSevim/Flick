@@ -34,9 +34,10 @@ export const Login = ({ onHideModal, children, type }) => {
     if (onHideModal) {
       onHideModal();
     }
-    setUser(user, rememberMe, "login");
-
-    router.push(links.homepage);
+    setUser(user, rememberMe, "login" && !onHideModal);
+    if (!onHideModal) {
+      router.push(links.homepage);
+    }
   };
 
   const handleSubmit = async (prevState, formData) => {

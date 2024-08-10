@@ -1,7 +1,7 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { useUserContext } from "@/contexts/UserContext";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
-import { addDarkBg, delay } from "@/utils/HelperFuncs";
+import { addDarkBg } from "@/utils/HelperFuncs";
 import { deleteAccountCall } from "@/utils/ApiCalls/UserApiFunctions";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -22,9 +22,7 @@ export const DeleteModal = ({ children, refProp }) => {
     if (error) {
       return error;
     }
-    setSuccessMessage("User is deleted. Logging out in 5 seconds...");
 
-    await delay(5000);
     const logoutError = await logoutCall(pathname, router);
     if (logoutError) {
       setGlobalError(logoutError);

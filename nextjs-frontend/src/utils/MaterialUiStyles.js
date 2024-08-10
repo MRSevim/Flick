@@ -26,6 +26,10 @@ export const CreateMuiTheme = (darkMode) => {
               border: "1px solid #fff",
               borderRadius: "6px",
             },
+            "& .MuiAutocomplete-loading,.MuiAutocomplete-noOptions": {
+              color: "var(--color-info)",
+              backgroundColor: "var(--color-primary)",
+            },
             "& .MuiAutocomplete-listbox,.MuiAutocomplete-groupLabel": {
               backgroundColor: darkMode && "var(--color-primary)",
               color: darkMode && "#fff",
