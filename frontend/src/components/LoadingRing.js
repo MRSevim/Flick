@@ -1,5 +1,3 @@
-import React from "react";
-
 export const LoadingRing = () => {
   return (
     <div className="d-flex justify-content-center">

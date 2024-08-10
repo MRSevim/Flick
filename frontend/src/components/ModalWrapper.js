@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import { Modal } from "bootstrap";
-import { useDarkModeContext } from "../Contexts/DarkModeContext";
-import { addDarkBg } from "../Utils/HelperFuncs";
+import { useEffect, useRef } from "react";
+import { useDarkModeContext } from "@/contexts/DarkModeContext";
+import { addDarkBg } from "@/utils/HelperFuncs";
 
 export const ModalWrapper = ({ id, children, setRef, dialogClasses }) => {
   const myModalRef = useRef(null);
   const [darkMode] = useDarkModeContext();
 
   useEffect(() => {
+    const { Modal } = require("bootstrap");
     myModalRef.current = new Modal(document.getElementById(id), {
       backdrop: true,
       focus: true,
@@ -16,7 +16,6 @@ export const ModalWrapper = ({ id, children, setRef, dialogClasses }) => {
   }, [id]);
   useEffect(() => {
     setRef(myModalRef);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

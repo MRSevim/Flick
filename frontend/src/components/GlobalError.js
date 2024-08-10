@@ -1,7 +1,7 @@
-import React from "react";
+"use client";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { useGlobalErrorContext } from "../Contexts/GlobalErrorContext";
+import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 
 export const GlobalError = () => {
   const [globalError, setGlobalError] = useGlobalErrorContext();

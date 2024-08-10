@@ -1,21 +1,18 @@
-import React from "react";
-import { LikeButton } from "./LikeButton";
-import { EditButton } from "./EditButton";
-import { DeleteButton } from "./DeleteButton";
-import links from "../../Utils/Links";
-import { ImageComponent } from "../ImageComponent";
-import { ArticleCardBody } from "./ArticleCardBody";
-import { addDarkBg } from "../../Utils/HelperFuncs";
-import { useDarkModeContext } from "../../Contexts/DarkModeContext";
+import { LikeButton } from "../LikeButton";
+import { EditButton } from "../EditButton";
+import { DeleteButton } from "../DeleteButton";
+import links from "@/utils/Links";
+import { Image } from "../Image";
+import { ArticleCardBody } from "../ArticleCardBody";
+import { addDarkBg } from "@/utils/HelperFuncs";
+import { useDarkModeContext } from "@/contexts/DarkModeContext";
 
 export const ArticleItem = ({
-  deleteLoading,
+  deleteManyLoading,
   article,
   isDraft,
   user,
   myArticles,
-  editArticle,
-  deleteArticle,
   value = false,
   updateValue = () => {},
 }) => {
@@ -29,7 +26,7 @@ export const ArticleItem = ({
     <div key={article._id} className="col col-12 col-md-6 col-lg-4">
       <div className={"card h-100 article-card " + addDarkBg(darkMode)}>
         <ArticleCardBody
-          classes={"my-4"}
+          classes="my-4"
           article={article}
           link={
             !isDraft
@@ -41,14 +38,8 @@ export const ArticleItem = ({
             {(myArticles || user?.role === "mod" || user?.role === "admin") && (
               <DeleteButton
                 classes="p-1 m-1 position-absolute top-0 end-0"
-                onClick={() => {
-                  deleteArticle(
-                    article._id,
-                    article.title,
-                    article.user === user._id
-                  );
-                }}
-                deleteLoading={deleteLoading}
+                article={article}
+                deleteManyLoading={deleteManyLoading}
               />
             )}
             {myArticles && (
@@ -61,9 +52,7 @@ export const ArticleItem = ({
                 />
                 <EditButton
                   classes="p-1 m-1 position-absolute bottom-0 end-0"
-                  onClick={() => {
-                    editArticle(article._id);
-                  }}
+                  href={links.edit(article._id, isDraft)}
                 />
               </>
             )}
@@ -75,7 +64,7 @@ export const ArticleItem = ({
             />
           )}
           <div className="my-2 image-wrapper">
-            <ImageComponent src={article.image} classes="mw-100 h-100" />
+            <Image src={article.image} classes="w-100 h-100" />
           </div>
         </ArticleCardBody>
       </div>

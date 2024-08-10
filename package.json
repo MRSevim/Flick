@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "next-start": "cd ./nextjs-frontend && npm run dev",
+    "start": "cd ./frontend && npm run dev",
     "server": "cd ./backend && npm run dev"
   },
   "author": "",

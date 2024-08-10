@@ -1,41 +1,40 @@
+"use client";
+import Cookies from "js-cookie";
 import { createContext, useState, useContext, useEffect } from "react";
 
 const DarkModeContext = createContext(null);
-
-let prefersDarkMode =
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 export const useDarkModeContext = () => {
   return useContext(DarkModeContext);
 };
 
-let darkModeFromStorage = localStorage.getItem("darkMode") === "true";
-if (darkModeFromStorage) {
-  document.body.classList.add("dark");
-}
+export const DarkModeProvider = ({ children, darkModeFromCookies }) => {
+  const [darkMode, setDarkMode] = useState(darkModeFromCookies);
 
-export const DarkModeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(darkModeFromStorage);
   useEffect(() => {
-    if (prefersDarkMode && localStorage.getItem("darkMode") === null) {
+    const prefersDarkMode =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (prefersDarkMode && !Cookies.get("darkMode")) {
+      Cookies.set("darkMode", "true", { expires: 1000 });
+
       setDarkMode(true);
+      document.body.classList.add("dark");
     }
   }, [setDarkMode]);
 
-  useEffect(() => {
-    if (darkMode) {
-      localStorage.setItem("darkMode", darkMode);
-      document.body.classList.add("dark");
-    } else {
-      localStorage.setItem("darkMode", darkMode);
-      document.body.classList.remove("dark");
-    }
-  }, [darkMode]);
-
   const handleChange = () => {
-    setDarkMode(!darkMode);
+    setDarkMode((prev) => {
+      Cookies.set("darkMode", `${!prev}`, { expires: 1000 });
+      if (!prev === true) {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+      return !prev;
+    });
   };
+
   return (
     <DarkModeContext.Provider value={[darkMode, handleChange]}>
       {children}

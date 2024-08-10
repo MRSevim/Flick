@@ -1,7 +1,7 @@
-import React from "react";
-import { useConfirmationContext } from "../Contexts/UseConfirmationContext";
+"use client";
+import { useConfirmationContext } from "@/contexts/ConfirmationContext";
 import { ModalWrapper } from "./ModalWrapper";
-import { useConfirmationErrorContext } from "../Contexts/UseConfirmationErrorContext";
+import { useConfirmationErrorContext } from "@/contexts/ConfirmationErrorContext";
 import { Popup } from "./Popup";
 
 export const Confirmation = () => {

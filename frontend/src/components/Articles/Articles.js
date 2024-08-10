@@ -1,67 +1,48 @@
-import React, { useEffect, useState } from "react";
-import {
-  Link,
-  useParams,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import { useGetArticles } from "../../Hooks/ArticleHooks/UseGetArticles";
-import { useUserContext } from "../../Contexts/UserContext";
-import { useDeleteArticle } from "../../Hooks/ArticleHooks/UseDeleteArticle";
+"use client";
+import { useEffect, useState } from "react";
+import { useUserContext } from "@/contexts/UserContext";
 import { Pagination } from "@mui/material";
 import classNames from "classnames";
 import { ArticleItem } from "./ArticleItem";
-import { useDeleteMany } from "../../Hooks/ArticleHooks/UseDeleteMany";
-import { LoadingRing } from "../LoadingRing";
-import links from "../../Utils/Links";
+import links from "@/utils/Links";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDarkModeContext } from "@/contexts/DarkModeContext";
+import { addDarkBg, confirmationWrapper } from "@/utils/HelperFuncs";
+import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
+import { useConfirmationContext } from "@/contexts/ConfirmationContext";
+import Link from "next/link";
+import { libre_baskerville } from "../Homepage/Homepage";
+import Image from "next/image";
 import { AdvancedSearch } from "../AdvancedSearch";
-import { useDarkModeContext } from "../../Contexts/DarkModeContext";
-import { addDarkBg, confirmationWrapper } from "../../Utils/HelperFuncs";
-import { useGlobalErrorContext } from "../../Contexts/GlobalErrorContext";
-import { useConfirmationContext } from "../../Contexts/UseConfirmationContext";
+import { UseDeleteManyArticles } from "@/hooks/UseDeleteManyArticles";
+import { GenericDeleteSelectedButton } from "../GenericDeleteSelectedButton";
 
-export const Articles = ({ isDraft }) => {
-  const [articles, setArticles] = useState([]);
-  const [localUser, setLocalUser] = useState(null);
-  const [myArticles, setMyArticles] = useState(null);
+export const Articles = ({ json, isDraft }) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const username = json.user.username;
+  const articles = json.articles;
   const [user] = useUserContext();
-  let { id } = useParams();
-  const navigate = useNavigate();
-  const { getArticles, isLoading } = useGetArticles();
-  const { deleteArticle: deleteArticleCall, isLoading: deleteLoading } =
-    useDeleteArticle();
-  const { deleteMany, isLoading: deleteManyLoading } = useDeleteMany();
-  const [totalPages, setTotalPages] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get("page");
-  const advancedSearchString = searchParams.get("advancedSearch");
-  const advancedSearch = advancedSearchString === "true";
-  const titleParam = searchParams.get("title");
-  const tagsParam = searchParams.get("tags");
+  const id = json.user._id;
+  const myArticles = user?._id === id;
+  const page = +json.currentPage;
+  const totalPages = +json.totalPages;
+
+  const { deleteManyArticles, isLoading: deleteManyLoading } =
+    UseDeleteManyArticles();
   const [selected, setSelected] = useState([]);
   const { confirmation, setConfirmation } = useConfirmationContext();
   const [darkMode] = useDarkModeContext();
   const [, setGlobalError] = useGlobalErrorContext();
 
-  const get = async () => {
-    if (!page) {
-      navigate({ search: "?page=1" });
-      return;
+  useEffect(() => {
+    if (totalPages && articles.length === 0) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", totalPages);
+      router.push(pathname + "?" + params.toString());
     }
-    const { response, json } = await getArticles(
-      id,
-      page,
-      isDraft,
-      advancedSearch,
-      titleParam,
-      tagsParam
-    );
-    if (response.ok) {
-      setTotalPages(json.totalPages);
-      setArticles(json.articles);
-      setLocalUser(json.user);
-    }
-  };
+  }, [totalPages, articles]);
 
   function handleSelect(value, id) {
     if (value) {
@@ -79,34 +60,6 @@ export const Articles = ({ isDraft }) => {
       setSelected([]);
     }
   }
-
-  const deleteArticle = async (_id, title, ownArticle) => {
-    confirmationWrapper(
-      confirmation,
-      (prev) => {
-        return {
-          ...confirmation,
-          type: "deleteArticle",
-          info: {
-            ...prev.info,
-            owned: ownArticle,
-            title,
-          },
-        };
-      },
-      setConfirmation,
-      async (reason) => {
-        return await deleteArticleCall(_id, reason);
-      },
-      () => {
-        setConfirmation((prev) => ({
-          ...prev,
-          info: { ...prev.info, reason: "" },
-        }));
-        get();
-      }
-    );
-  };
 
   const deleteSelected = async (selected) => {
     if (selected.length === 0) {
@@ -128,64 +81,25 @@ export const Articles = ({ isDraft }) => {
       },
       setConfirmation,
       async () => {
-        return await deleteMany(selected);
+        return await deleteManyArticles(selected, user._id);
       },
-      () => {
-        get();
-      }
+      () => {}
     );
   };
 
-  const editArticle = (id) => {
-    if (isDraft) {
-      navigate(links.edit(id, true));
-    } else {
-      navigate(links.edit(id, false));
-    }
-  };
-
   const handlePaginationChange = (event, value) => {
-    searchParams.set("page", value);
-    setSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", value);
+    router.push(pathname + "?" + params.toString());
   };
-
-  useEffect(() => {
-    if (totalPages && articles.length === 0) {
-      searchParams.set("page", totalPages);
-      setSearchParams(searchParams);
-    }
-  }, [totalPages, articles, searchParams, setSearchParams]);
 
   useEffect(() => {
     setSelected([]);
   }, [articles]);
 
-  useEffect(() => {
-    get();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, setArticles, setLocalUser, isDraft, searchParams]);
-
-  useEffect(() => {
-    if (user?._id === id) {
-      setMyArticles(true);
-    } else {
-      setMyArticles(false);
-    }
-  }, [user, id, setMyArticles]);
-
-  useEffect(() => {
-    if (myArticles === false && isDraft) {
-      navigate(links.allArticles(id));
-    }
-  }, [myArticles, isDraft, navigate, id]);
-
-  return isLoading ? (
+  return (
     <div className="container">
-      <LoadingRing />
-    </div>
-  ) : localUser && articles ? (
-    <div className="container">
-      <h1 className="text-center"> All of {localUser.username}'s Articles</h1>
+      <h1 className="text-center"> All of {username}'s Articles</h1>
       {myArticles && (
         <>
           <div className="d-flex justify-content-center align-items-center">
@@ -196,7 +110,7 @@ export const Articles = ({ isDraft }) => {
               }
             >
               <Link
-                to={links.allArticles(id)}
+                href={links.allArticles(id)}
                 className={classNames({
                   "unstyled-link mx-2": true,
                   active: !isDraft,
@@ -205,7 +119,7 @@ export const Articles = ({ isDraft }) => {
                 Articles
               </Link>
               <Link
-                to={links.allDrafts(id)}
+                href={links.allDrafts(id)}
                 className={classNames({
                   "unstyled-link mx-2": true,
                   active: isDraft,
@@ -230,8 +144,22 @@ export const Articles = ({ isDraft }) => {
       )}
       <div className="mb-3">
         {articles.length === 0 ? (
-          <h2 className="text-center mt-3 no-articles-background rounded-pill">
-            <div className="d-flex align-items-center justify-content-center text-white font-secondary h-100">
+          <h2 className="mt-3 position-relative h-400">
+            <Image
+              priority={true}
+              src="/images/empty-articles.jpg"
+              width="0"
+              height="400"
+              className="no-articles-background w-100 position-absolute rounded-pill"
+              alt="no articles"
+              sizes="100%"
+            />
+            <div
+              className={
+                "d-flex align-items-center justify-content-center text-white h-100 " +
+                libre_baskerville.className
+              }
+            >
               {!isDraft && "No articles."}
               {isDraft && "No Drafts."}
             </div>
@@ -262,15 +190,13 @@ export const Articles = ({ isDraft }) => {
                 <label className="form-check-label" htmlFor="selectAll">
                   Select all
                 </label>
-                <button
-                  disabled={deleteManyLoading || deleteLoading}
-                  onClick={(e) => {
+                <GenericDeleteSelectedButton
+                  disabled={deleteManyLoading}
+                  onClick={() => {
                     deleteSelected(selected);
                   }}
-                  className="btn btn-danger ms-4"
-                >
-                  <i className="bi bi-trash-fill"></i> Delete Selected
-                </button>
+                  classes="ms-4"
+                />
               </div>
             )}
           </div>
@@ -285,26 +211,16 @@ export const Articles = ({ isDraft }) => {
               user={user}
               updateValue={handleSelect}
               value={selected.includes(article._id)}
-              deleteLoading={deleteManyLoading || deleteLoading}
+              deleteManyLoading={deleteManyLoading}
               key={article._id}
               article={article}
               isDraft={isDraft}
               myArticles={myArticles}
-              editArticle={editArticle}
-              deleteArticle={deleteArticle}
             />
           ))}
       </div>
 
-      <AdvancedSearch
-        page={page}
-        className="mt-5"
-        _username={localUser.username}
-        searchParams={searchParams}
-        setSearchParams={setSearchParams}
-      />
+      <AdvancedSearch page={page} className="mt-5" _username={username} />
     </div>
-  ) : (
-    <div></div>
   );
 };

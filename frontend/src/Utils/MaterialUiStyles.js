@@ -1,8 +1,9 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
-export const createMuiTheme = (darkMode) => {
+export const CreateMuiTheme = (darkMode) => {
   return createTheme({
     components: {
+      //Switch is not used, but stays just in case
       MuiSwitch: {
         styleOverrides: {
           root: {
@@ -24,6 +25,10 @@ export const createMuiTheme = (darkMode) => {
             "& .MuiAutocomplete-listbox": {
               border: "1px solid #fff",
               borderRadius: "6px",
+            },
+            "& .MuiAutocomplete-loading,.MuiAutocomplete-noOptions": {
+              color: "var(--color-info)",
+              backgroundColor: "var(--color-primary)",
             },
             "& .MuiAutocomplete-listbox,.MuiAutocomplete-groupLabel": {
               backgroundColor: darkMode && "var(--color-primary)",

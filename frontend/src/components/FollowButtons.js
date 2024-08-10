@@ -1,16 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import links from "../Utils/Links";
+import links from "@/utils/Links";
+import Link from "next/link";
 
 export const FollowButtons = ({ followerNumber, followingNumber, id }) => {
   return (
     <>
-      <Link to={links.followers(id)}>
+      <Link href={links.follows(id, "followers", 1)}>
         <button className="btn btn-secondary me-2">
           Followers({followerNumber})
         </button>
       </Link>
-      <Link to={links.followings(id)}>
+      <Link href={links.follows(id, "following", 1)}>
         <button className="btn btn-secondary">
           Following({followingNumber})
         </button>

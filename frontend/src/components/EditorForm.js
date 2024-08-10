@@ -1,11 +1,12 @@
-import React from "react";
 import { TagsForm } from "./TagsForm";
-import { EditorComponent } from "./EditorComponent";
-import { DeleteButton } from "./Articles/DeleteButton";
-import { ImageComponent } from "./ImageComponent";
-import { RemoveImageButton } from "./Articles/RemoveImageButton";
+import { Editor } from "./Editor";
+import { DeleteButton } from "./DeleteButton";
+import { Image } from "./Image";
+import { RemoveImageButton } from "./RemoveImageButton";
 
 export const EditorForm = ({
+  article,
+  tags,
   type,
   title,
   setTitle,
@@ -18,14 +19,11 @@ export const EditorForm = ({
   isLoading,
   saveDraft,
   submit,
-  deleteArticle,
-  deleteLoading,
   editLoading,
   save,
   isDraft,
   removeImage,
   removeButtonVisible,
-  children,
 }) => {
   return (
     <div className="container">
@@ -51,7 +49,7 @@ export const EditorForm = ({
       </div>
       <div className="form-group row">
         <div className="col col-12 col-md-3 text-center">
-          <ImageComponent src={image} classes={"w-100"} />
+          <Image src={image} classes={"w-100 h-auto"} />
           <div>
             <div>Image preview</div>
             <RemoveImageButton
@@ -73,14 +71,14 @@ export const EditorForm = ({
           />
         </label>
       </div>
-      <TagsForm classes={"my-3"} onTagsChange={onTagsChange} />
-      <EditorComponent
+      <TagsForm tags={tags} classes={"my-3"} onTagsChange={onTagsChange} />
+      <Editor
         initialContent={initialContent}
         handleEditorChange={handleEditorChange}
         onInit={(editor) => {
           setContent(editor.getContent());
         }}
-      ></EditorComponent>
+      ></Editor>
       <div className="mt-3 d-flex justify-content-center">
         {type === "create" && (
           <>
@@ -102,11 +100,7 @@ export const EditorForm = ({
         )}
         {type === "edit" && (
           <>
-            <DeleteButton
-              onClick={deleteArticle}
-              deleteLoading={deleteLoading}
-              classes={"me-2"}
-            />
+            <DeleteButton article={article} classes={"me-2"} />
             <button
               className="btn btn-lg btn-secondary me-2"
               disabled={editLoading}
@@ -130,7 +124,6 @@ export const EditorForm = ({
           </>
         )}
       </div>
-      {children && children}
     </div>
   );
 };

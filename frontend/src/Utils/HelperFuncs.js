@@ -1,12 +1,33 @@
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
 export const extractExcerptFromHTML = (html) => {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  const text = div.textContent || div.innerText || "";
-  const words = text.split(/\s+/); // Split the text by whitespace
+  const stripHtml = html.replace(/<[^>]*>?/gm, "");
+  const words = stripHtml.split(/\s+/); // Split the text by whitespace
   const cutWords = words.slice(0, 100).join(" ");
   return cutWords;
 };
 
+export const createShortenedTitle = (title, limit) => {
+  const shortened = title.substring(0, limit);
+  const threeDots = title.length > limit ? "..." : "";
+  return shortened + threeDots;
+};
+
+export const redirectToImages = (src) => {
+  return "/images" + src;
+};
+
+TimeAgo.addLocale(en);
+export const timeAgo = new TimeAgo("en-US");
+
+export function extractDate(datetimeStr) {
+  return datetimeStr.split("T")[0];
+}
+
+export const getFirstPartOfPath = (pathname) => {
+  return pathname.split("/")[1];
+};
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -16,11 +37,13 @@ export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const addDarkBg = (darkMode) => {
   return darkMode && "bg-dark-primary";
 };
+
 export const getUnreadLength = (items) => {
   return items?.filter((items) => {
     return !items.read;
   })?.length;
 };
+
 export const confirmationWrapper = async (
   confirmation,
   returnNewConfirmation,
@@ -32,9 +55,9 @@ export const confirmationWrapper = async (
   confirmation.ref.current.show();
   const call = async (reason) => {
     setConfirmation((prev) => ({ ...prev, isLoading: true }));
-    const response = await apiCall(reason);
+    const error = await apiCall(reason);
 
-    if (response && response.ok) {
+    if (!error) {
       confirmation.ref.current.hide();
       okResponseFunc();
     }
@@ -42,16 +65,43 @@ export const confirmationWrapper = async (
   };
   setConfirmation((prev) => ({ ...prev, functionToRun: call }));
 };
+
 export const envVariables = {
-  env: process.env.REACT_APP_ENV,
-  email: process.env.REACT_APP_EMAIL,
-  websiteName: process.env.REACT_APP_WEBSITE_NAME,
-  googleId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-  appUrl: process.env.REACT_APP_URL,
-  publicUrl: process.env.PUBLIC_URL,
-  defaultUserImage: process.env.REACT_APP_DEFAULT_USER_IMAGE,
-  defaultArticleImage: process.env.REACT_APP_DEFAULT_ARTICLE_IMAGE,
+  email: process.env.NEXT_PUBLIC_EMAIL,
+  websiteName: process.env.NEXT_PUBLIC_WEBSITE_NAME,
+  googleId: process.env.GOOGLE_CLIENT_ID,
+  backendUrl: process.env.BACKEND_URL,
+  googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
+  frontendUrl: process.env.FRONTEND_URL,
+  defaultUserImage: process.env.NEXT_PUBLIC_DEFAULT_USER_IMAGE,
+  defaultArticleImage: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
 };
 
-export const backendUrl =
-  envVariables.env === "development" ? "" : envVariables.appUrl + "/api";
+export const authenticatedRoutes = [
+  "/my-profile",
+  "/drafts",
+  "/pms",
+  "/edit",
+  "/settings",
+];
+
+export const Tags = [
+  "Nature",
+  "Philosophy",
+  "Science",
+  "Technology",
+  "History",
+  "Art",
+  "Literature",
+  "Music",
+  "Film",
+  "Politics",
+  "Travel",
+  "Health",
+  "Fitness",
+  "Food",
+  "Fashion",
+  "Education",
+  "Business",
+  "Religion",
+];
