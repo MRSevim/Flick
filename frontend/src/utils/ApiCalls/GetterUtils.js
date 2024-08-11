@@ -8,9 +8,7 @@ import { envVariables } from "../HelperFuncs";
 const backendUrl = envVariables.backendUrl;
 
 export const getAllArticles = async () => {
-  const response = await fetch(backendUrl + "/article/all", {
-    next: { revalidate: 3600 },
-  });
+  const response = await fetch(backendUrl + "/article/all");
 
   const json = await response.json();
 
@@ -22,9 +20,7 @@ export const getAllArticles = async () => {
 };
 
 export const getAllUsers = async () => {
-  const response = await fetch(backendUrl + "/user/all", {
-    next: { revalidate: 3600 },
-  });
+  const response = await fetch(backendUrl + "/user/all");
 
   const json = await response.json();
 

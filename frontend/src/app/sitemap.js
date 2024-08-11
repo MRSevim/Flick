@@ -3,6 +3,8 @@ import { envVariables } from "@/utils/HelperFuncs";
 import links from "@/utils/Links";
 const frontendUrl = envVariables.frontendUrl;
 
+export const revalidate = 3600; //revalidates every hour
+
 export default async function sitemap() {
   const { articles } = await getAllArticles();
   const { users } = await getAllUsers();

@@ -3,6 +3,7 @@ import { envVariables } from "../HelperFuncs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import links from "../Links";
+import { revalidateTag } from "next/cache";
 const backendUrl = envVariables.backendUrl;
 
 export const sendEmailCall = async (email, type) => {
@@ -37,6 +38,7 @@ export const verifyEmailTokenCall = async (token) => {
     : undefined;
 
   if (userFromCookies) {
+    revalidateTag("profile/" + userFromCookies._id);
     redirect(links.myProfile);
   } else {
     redirect(links.login);
