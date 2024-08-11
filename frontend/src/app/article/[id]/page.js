@@ -2,6 +2,7 @@ import { Article } from "@/components/Article/Article";
 import { getArticleCall, getSimilarCall } from "@/utils/ApiCalls/GetterUtils";
 import { extractExcerptFromHTML, redirectToImages } from "@/utils/HelperFuncs";
 import { envVariables } from "@/utils/HelperFuncs";
+import links from "@/utils/Links";
 
 export async function generateMetadata({ params }) {
   const { json } = await getArticleCall(params.id, false);
@@ -22,6 +23,9 @@ export async function generateMetadata({ params }) {
       title,
       description,
       images: [image],
+    },
+    alternates: {
+      canonical: envVariables.frontendUrl + links.article(params.id),
     },
   };
 }
