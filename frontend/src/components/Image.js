@@ -14,7 +14,7 @@ export const Image = ({ src, classes = "" }) => {
   } else if (classes.includes("profile-img")) {
     width = "200";
     height = "200";
-  } else if (classes.includes("w-100")) {
+  } else if (classes.includes("w-100") || classes.includes("w-auto")) {
     width = "0";
     height = "0";
     sizes = "100%";

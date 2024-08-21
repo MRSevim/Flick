@@ -7,7 +7,7 @@ export async function generateMetadata({ params, searchParams }) {
   const { json } = await getArticleCall(params.id, isDraft);
 
   return {
-    title: "Edit article titled:" + json.title,
+    title: "Edit article titled: " + json.title,
     description: "Edit article page of " + envVariables.websiteName,
   };
 }
