@@ -30,7 +30,7 @@ export const Article = ({ json, similar, error }) => {
         </div>
         <div className="article col col-12 col-lg-8">
           <Image src={article.image} classes="mw-100 w-auto h-auto" />
-          <h1 className={"article-title " + jost.className}>{article.title}</h1>
+          <h1 className={"display-3 " + jost.className}>{article.title}</h1>
           <div className="my-2">
             {article.tags?.map((tag, i) => {
               return (
