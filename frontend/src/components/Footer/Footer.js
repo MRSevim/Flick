@@ -32,14 +32,18 @@ export const Footer = () => {
               className="footer-link unstyled-link me-2"
               target="_blank"
             >
-              <i className="bi bi-linkedin h4"></i>
+              <i className="bi bi-linkedin h4">
+                <div className="d-none">LinkedIn</div>
+              </i>
             </Link>
             <Link
               href={links.mail}
               className="footer-link unstyled-link me-2"
               target="_blank"
             >
-              <i className="bi bi-at h4"></i>
+              <i className="bi bi-at h4">
+                <div className="d-none">Mail</div>
+              </i>
             </Link>
           </div>
         </div>

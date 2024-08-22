@@ -3,7 +3,7 @@ import Link from "next/link";
 import links from "@/utils/Links";
 import { useFormState, useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
-import { addDarkBg } from "@/utils/HelperFuncs";
+import { addDarkBg, addLightOutlineBtn } from "@/utils/HelperFuncs";
 import { Popup } from "../Popup";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { SendVerificationEmailButton } from "../SendVerificationEmailButton";
@@ -98,7 +98,12 @@ export const SignUp = () => {
           <p className="text-center mt-3">
             Already have an account?
             <Link href={links.login}>
-              <button type="button" className="btn btn-outline-light ms-2">
+              <button
+                type="button"
+                className={
+                  "btn btn-outline-info ms-2 " + addLightOutlineBtn(darkMode)
+                }
+              >
                 Login
               </button>
             </Link>

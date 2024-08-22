@@ -19,7 +19,7 @@ export const Featured = ({ json, error }) => {
   if (articles.length) {
     return (
       <div className="mt-3">
-        <h2 className="d-flex justify-content-center">Featured Articles</h2>
+        <h1 className="d-flex justify-content-center">Featured Articles</h1>
         <Slider itemLength={articles.length}>
           {articles.map((article) => {
             return (
@@ -27,11 +27,8 @@ export const Featured = ({ json, error }) => {
                 <div
                   className={"card w-100 article-card " + addDarkBg(darkMode)}
                 >
-                  <div className="my-2 image-wrapper">
-                    <Image
-                      classes={"w-auto h-100 mw-100 mh-100"}
-                      src={article.image}
-                    />
+                  <div className="m-2 image-wrapper">
+                    <Image classes="featured-image-mini" src={article.image} />
                   </div>
                   <ArticleCardBody
                     classes={"mt-2 mb-5"}

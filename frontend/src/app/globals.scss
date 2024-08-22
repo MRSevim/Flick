@@ -1,4 +1,4 @@
-$primary: #00a9a5;
+$primary: #01bead;
 $secondary: #0b5351;
 $info: #092327;
 $dark-primary: $info;
@@ -98,7 +98,13 @@ body {
 .image-wrapper {
   display: flex;
   justify-content: center;
-  height: 200px;
+}
+.featured-image-mini {
+  width: auto;
+  max-width: 100%;
+}
+.underline-on-hover:hover {
+  text-decoration: underline;
 }
 /*Homepage*/
 .background-shadow {
@@ -130,7 +136,7 @@ body {
 .homepage-negative-margin-top {
   margin-top: -24px;
 }
-/*Create an Article+article */
+/*article */
 .article,
 .article * {
   word-wrap: break-word;
@@ -141,9 +147,6 @@ body {
   margin-left: auto;
   margin-right: auto;
   height: auto;
-}
-.tox .tox-statusbar__branding svg {
-  display: none;
 }
 /*Articles*/
 .no-articles-background {
@@ -267,41 +270,6 @@ body {
   100% {
     transform: translate(9px, 0); /* Adjusted translation */
   }
-}
-/*Search*/
-.search-card-text {
-  background-image: linear-gradient(
-    to right,
-    var(--color-info),
-    var(--color-info) 50%,
-    var(--color-info) 50%
-  );
-  background-size: 200% 100%;
-  background-position: -100%;
-  /* display: inline-block; */
-  padding: 5px 0;
-  position: relative;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: all 0.3s ease-in-out;
-}
-.search-card-text:before {
-  content: "";
-  background: var(--color-info);
-  display: block;
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 3px;
-  transition: all 0.3s ease-in-out;
-}
-.search-card-text:hover {
-  background-position: 0;
-}
-.search-card-text:hover::before {
-  width: 100%;
 }
 /*Profile*/
 .profile-img {

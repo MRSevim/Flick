@@ -11,6 +11,7 @@ import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { useFormState } from "react-dom";
 import { loginCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useState } from "react";
+import { addLightOutlineBtn } from "@/utils/HelperFuncs";
 
 export const Login = ({ onHideModal, children, type }) => {
   const [darkMode] = useDarkModeContext();
@@ -146,7 +147,9 @@ export const Login = ({ onHideModal, children, type }) => {
               <button
                 onClick={onHideModal}
                 type="button"
-                className="btn btn-outline-light ms-2"
+                className={
+                  "btn btn-outline-info ms-2 " + addLightOutlineBtn(darkMode)
+                }
               >
                 Create one...
               </button>

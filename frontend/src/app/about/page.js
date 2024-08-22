@@ -29,7 +29,7 @@ const page = () => {
         ></path>
         <defs>
           <linearGradient id="SvgjsLinearGradient1049">
-            <stop stopColor="#00a9a5" offset="0"></stop>
+            <stop stopColor="#01BEAD" offset="0"></stop>
             <stop stopColor="#0b5351" offset="1"></stop>
           </linearGradient>
         </defs>

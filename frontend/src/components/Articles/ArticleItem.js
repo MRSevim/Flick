@@ -63,8 +63,8 @@ export const ArticleItem = ({
               article={article}
             />
           )}
-          <div className="my-2 image-wrapper">
-            <Image src={article.image} classes="w-auto h-100 mw-100 mh-100" />
+          <div className="m-2 image-wrapper">
+            <Image src={article.image} classes="featured-image-mini" />
           </div>
         </ArticleCardBody>
       </div>

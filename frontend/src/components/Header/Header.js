@@ -50,7 +50,7 @@ export const Header = ({ children }) => {
             ))}
           </ul>
           <SearchBar />
-          <RightSide children={children} />
+          <RightSide darkMode={darkMode} children={children} />
         </div>
       </div>
     </header>

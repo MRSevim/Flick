@@ -8,8 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import { logoutCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useGlobalErrorContext } from "@/contexts/GlobalErrorContext";
 import { usePathname, useRouter } from "next/navigation";
+import { addLightOutlineBtn } from "@/utils/HelperFuncs";
 
-const RightSide = ({ children }) => {
+const RightSide = ({ children, darkMode }) => {
   const [user, setUser] = useUserContext();
   const [userMenu, setUserMenu] = useState(false);
   const wrapperRef = useRef(null);
@@ -61,7 +62,12 @@ const RightSide = ({ children }) => {
       ) : (
         <div className="text-end user-container">
           <Link href={links.login}>
-            <button type="button" className="btn btn-outline-light me-2">
+            <button
+              type="button"
+              className={
+                "btn btn-outline-info me-2 " + addLightOutlineBtn(darkMode)
+              }
+            >
               Login
             </button>
           </Link>

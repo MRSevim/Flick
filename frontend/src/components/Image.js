@@ -14,6 +14,10 @@ export const Image = ({ src, classes = "" }) => {
   } else if (classes.includes("profile-img")) {
     width = "200";
     height = "200";
+  } else if (classes.includes("featured-image-mini")) {
+    width = "0";
+    height = "200";
+    sizes = "100%";
   } else if (classes.includes("w-100") || classes.includes("w-auto")) {
     width = "0";
     height = "0";
@@ -39,7 +43,6 @@ export const Image = ({ src, classes = "" }) => {
 
   return (
     <NextImage
-      priority={true}
       width={width}
       height={height}
       src={modifiedSource || src}

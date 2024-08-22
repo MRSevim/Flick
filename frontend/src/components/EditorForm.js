@@ -49,7 +49,7 @@ export const EditorForm = ({
       </div>
       <div className="form-group row">
         <div className="col col-12 col-md-3 text-center">
-          <Image src={image} classes={"w-100 h-auto"} />
+          <Image src={image} classes="featured-image-mini" />
           <div>
             <div>Image preview</div>
             <RemoveImageButton

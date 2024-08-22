@@ -26,11 +26,8 @@ export const SimilarArticles = ({ similar, error }) => {
                 <div
                   className={"card w-100 article-card " + addDarkBg(darkMode)}
                 >
-                  <div className="my-2 image-wrapper">
-                    <Image
-                      classes={"w-auto h-100 mw-100 mh-100"}
-                      src={article.image}
-                    />
+                  <div className="m-2 image-wrapper">
+                    <Image classes="featured-image-mini" src={article.image} />
                   </div>
                   <ArticleCardBody
                     classes={"mt-2 mb-5"}

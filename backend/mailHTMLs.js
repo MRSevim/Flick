@@ -10,7 +10,7 @@ const htmls = {
         }">
         <button style="
           cursor:pointer;
-          background-color: #00a9a5; 
+          background-color: #01BEAD; 
           border: none;
           color: white;
           padding: 15px 32px;
