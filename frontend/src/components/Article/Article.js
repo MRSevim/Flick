@@ -12,12 +12,9 @@ import { jost } from "../ArticleCardBody";
 import { CommentSection } from "./CommentSection";
 import { SimilarArticles } from "./SimilarArticles";
 import { Share } from "./Share";
-import { useDarkModeContext } from "@/contexts/DarkModeContext";
-import { addWhiteText } from "@/utils/HelperFuncs";
 
 export const Article = ({ json, similar, error }) => {
   const [user] = useUserContext();
-  const [darkMode] = useDarkModeContext();
   const ref = useRef(null);
   const article = json;
   const createdAt = new Date(json.createdAt).toLocaleString();
@@ -37,11 +34,7 @@ export const Article = ({ json, similar, error }) => {
           <div className="my-2">
             {article.tags?.map((tag, i) => {
               return (
-                <Link
-                  href={links.tag(tag)}
-                  key={i}
-                  className={"me-1 text-info " + addWhiteText(darkMode)}
-                >
+                <Link href={links.tag(tag)} key={i} className="me-1 ">
                   #{tag}
                 </Link>
               );

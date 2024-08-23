@@ -42,10 +42,6 @@ export const addLightOutlineBtn = (darkMode) => {
   return darkMode && "btn-outline-light";
 };
 
-export const addWhiteText = (darkMode) => {
-  return darkMode && "text-white";
-};
-
 export const getUnreadLength = (items) => {
   return items?.filter((items) => {
     return !items.read;

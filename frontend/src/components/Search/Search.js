@@ -5,7 +5,7 @@ import { Image } from "../Image";
 import { AdvancedSearch } from "../AdvancedSearch";
 import { LikeButton } from "../LikeButton";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
-import { addDarkBg, addWhiteText } from "@/utils/HelperFuncs";
+import { addDarkBg } from "@/utils/HelperFuncs";
 
 export const Search = ({ json }) => {
   const articles = json.articles;
@@ -60,11 +60,7 @@ export const Search = ({ json }) => {
                       />
                     </span>
                     {article.tags.map((tag, i) => (
-                      <Link
-                        href={links.tag(tag)}
-                        key={i}
-                        className={"me-1 text-info " + addWhiteText(darkMode)}
-                      >
+                      <Link href={links.tag(tag)} key={i} className="me-1 ">
                         #{tag}
                       </Link>
                     ))}

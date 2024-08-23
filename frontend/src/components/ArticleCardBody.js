@@ -1,12 +1,10 @@
 import links from "@/utils/Links";
 import Link from "next/link";
 import {
-  addWhiteText,
   createShortenedTitle,
   extractExcerptFromHTML,
 } from "@/utils/HelperFuncs";
 import { Jost } from "next/font/google";
-import { useDarkModeContext } from "@/contexts/DarkModeContext";
 
 export const jost = Jost({
   weight: ["400", "700"],
@@ -14,7 +12,6 @@ export const jost = Jost({
 });
 
 export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
-  const [darkMode] = useDarkModeContext();
   return (
     <div className={"card-body " + classes}>
       <h5 className="card-title" title={article.title}>
@@ -28,11 +25,7 @@ export const ArticleCardBody = ({ classes, article, link, children = [] }) => {
       <div className="mb-2">
         {article.tags?.map((tag, i) => {
           return (
-            <Link
-              href={links.tag(tag)}
-              key={i}
-              className={"me-1 text-info " + addWhiteText(darkMode)}
-            >
+            <Link href={links.tag(tag)} key={i} className="me-1">
               #{tag}
             </Link>
           );

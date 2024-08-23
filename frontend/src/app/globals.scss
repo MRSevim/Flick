@@ -106,6 +106,9 @@ body {
 .underline-on-hover:hover {
   text-decoration: underline;
 }
+a {
+  color: var(--color-info);
+}
 /*Homepage*/
 .background-shadow {
   z-index: -1;

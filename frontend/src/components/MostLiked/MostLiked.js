@@ -8,7 +8,6 @@ import {
   addDarkBg,
   extractExcerptFromHTML,
   extractDate,
-  addWhiteText,
 } from "@/utils/HelperFuncs";
 import { Image } from "../Image";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
@@ -74,10 +73,7 @@ export const MostLiked = ({ json, time }) => {
                           <Link
                             href={links.tag(tag)}
                             key={i}
-                            className={
-                              "me-2 unstyled-link text-info hovered-link " +
-                              addWhiteText(darkMode)
-                            }
+                            className="me-2 unstyled-link hovered-link"
                           >
                             #{tag}
                           </Link>
@@ -86,7 +82,7 @@ export const MostLiked = ({ json, time }) => {
                     </div>
                   </div>
                   <div className="row mt-2">
-                    <div className="col col-12 col-lg-4 m-2 image-wrapper">
+                    <div className="col col-12 col-lg-4 image-wrapper">
                       <Image
                         src={article.image}
                         classes="featured-image-mini"

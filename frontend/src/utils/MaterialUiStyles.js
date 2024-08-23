@@ -28,7 +28,6 @@ export const CreateMuiTheme = (darkMode) => {
             },
             "& .MuiAutocomplete-loading,.MuiAutocomplete-noOptions": {
               color: "var(--color-info)",
-              backgroundColor: "var(--color-primary)",
             },
             "& .MuiAutocomplete-listbox,.MuiAutocomplete-groupLabel": {
               backgroundColor: darkMode && "var(--color-primary)",
