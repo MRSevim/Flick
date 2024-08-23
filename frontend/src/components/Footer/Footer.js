@@ -33,7 +33,7 @@ export const Footer = () => {
               target="_blank"
             >
               <i className="bi bi-linkedin h4">
-                <div className="d-none">LinkedIn</div>
+                <span class="visually-hidden">LinkedIn</span>
               </i>
             </Link>
             <Link
@@ -42,7 +42,7 @@ export const Footer = () => {
               target="_blank"
             >
               <i className="bi bi-at h4">
-                <div className="d-none">Mail</div>
+                <span class="visually-hidden">Mail</span>
               </i>
             </Link>
           </div>
