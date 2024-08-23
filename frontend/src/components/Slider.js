@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export const Slider = ({ children, itemLength }) => {
   const [sliderLength, setSliderLength] = useState(null);
+  const [sliderIndex, setSliderIndex] = useState(0);
 
   useEffect(() => {
     setSliderLength(
@@ -9,8 +10,6 @@ export const Slider = ({ children, itemLength }) => {
     );
   }, []);
 
-  const [sliderIndex, setSliderIndex] = useState(0);
-  console.log(sliderIndex, sliderLength);
   const goLeft = () => {
     if (sliderIndex > 0) {
       setSliderIndex((prev) => prev - 1);
