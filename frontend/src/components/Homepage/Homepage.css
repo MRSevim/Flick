@@ -1,0 +1,29 @@
+.background-shadow {
+  z-index: -1;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+}
+.hero-image {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+.h-700 {
+  height: 700px;
+}
+.call-to-action:hover {
+  border: solid 2px #fff !important;
+}
+.hero-3d {
+  text-shadow: 0.25px 0.25px 0 hsl(174, 5%, 80%),
+    0.5px 0.5px 0 hsl(174, 5%, 75%), 0.75px 0.75px 0 hsl(174, 5%, 70%),
+    1px 1px 0 hsl(174, 5%, 66%), 1.25px 1.25px 0 hsl(174, 5%, 64%),
+    1.5px 1.5px 0 hsl(174, 5%, 62%), 1.75px 1.75px 0 hsl(174, 5%, 61%),
+    2px 2px 0 hsl(174, 5%, 60%), 0 0 2px rgba(0, 0, 0, 0.05),
+    0.25px 0.75px 2px rgba(0, 0, 0, 0.2), 0.75px 1.25px 4px rgba(0, 0, 0, 0.2),
+    1.25px 2.5px 6px rgba(0, 0, 0, 0.2), 2.5px 2.5px 6px rgba(0, 0, 0, 0.2),
+    5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+.homepage-negative-margin-top {
+  margin-top: -24px;
+}

@@ -1,0 +1,5 @@
+.not-found-img {
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: bottom;
+}

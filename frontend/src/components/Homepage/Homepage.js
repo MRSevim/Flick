@@ -4,6 +4,7 @@ import Link from "next/link";
 import links from "@/utils/Links";
 import { Libre_Baskerville } from "next/font/google";
 import { useDarkModeContext } from "@/contexts/DarkModeContext";
+import "./Homepage.css";
 
 export const libre_baskerville = Libre_Baskerville({
   weight: ["400", "700"],

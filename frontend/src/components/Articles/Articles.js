@@ -16,6 +16,7 @@ import Image from "next/image";
 import { AdvancedSearch } from "../AdvancedSearch";
 import { UseDeleteManyArticles } from "@/hooks/UseDeleteManyArticles";
 import { GenericDeleteSelectedButton } from "../GenericDeleteSelectedButton";
+import "./Articles.css";
 
 export const Articles = ({ json, isDraft }) => {
   const searchParams = useSearchParams();

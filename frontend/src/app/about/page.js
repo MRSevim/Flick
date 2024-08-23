@@ -1,6 +1,7 @@
 import Link from "next/link";
 import links from "@/utils/Links";
 import { envVariables } from "@/utils/HelperFuncs";
+import "./About.css";
 
 export const metadata = {
   title: "About",

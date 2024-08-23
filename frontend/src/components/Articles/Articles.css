@@ -1,0 +1,8 @@
+.no-articles-background {
+  z-index: -1;
+  object-fit: cover;
+  object-position: center;
+}
+.h-400 {
+  height: 400px;
+}

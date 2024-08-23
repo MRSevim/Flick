@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Slider = ({ children, itemLength }) => {
-  let sliderLength;
-  if (typeof window !== "undefined") {
-    sliderLength =
-      window.innerWidth > 991 ? Math.round(itemLength / 2) : itemLength;
-  }
+  const [sliderLength, setSliderLength] = useState(null);
+
+  useEffect(() => {
+    setSliderLength(
+      window.innerWidth > 991 ? Math.round(itemLength / 2) : itemLength
+    );
+  }, []);
+
   const [sliderIndex, setSliderIndex] = useState(0);
+  console.log(sliderIndex, sliderLength);
   const goLeft = () => {
     if (sliderIndex > 0) {
       setSliderIndex((prev) => prev - 1);
@@ -17,11 +21,15 @@ export const Slider = ({ children, itemLength }) => {
       setSliderIndex((prev) => prev + 1);
     }
   };
+
   return (
     <div className="position-relative overflow-hidden">
       <div
-        style={{ right: sliderIndex * 100 + "%" }}
-        className="d-flex position-relative slider "
+        style={{
+          right: sliderIndex * 100 + "%",
+          transition: "right 0.5s ease-in-out",
+        }}
+        className="d-flex position-relative"
       >
         {children}
       </div>

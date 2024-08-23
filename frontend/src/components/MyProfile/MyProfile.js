@@ -90,7 +90,7 @@ export const MyProfile = ({ json }) => {
     <div className="container">
       <div className="row mb-3 d-flex justify-content-center align-items-start">
         <div className="col col-12 col-lg-3 d-flex flex-column align-items-center mb-2 me-3">
-          <Image src={user?.image} classes={"profile-img"} />
+          <Image src={user?.image} classes="profile-img rounded-circle" />
           <div className="d-flex justify-content-center my-3">
             {
               <RemoveImageButton

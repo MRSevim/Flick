@@ -1,4 +1,5 @@
 import Image from "next/image";
+import "./NotFound.css";
 
 export const NotFound = () => {
   return (

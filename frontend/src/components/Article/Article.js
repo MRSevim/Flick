@@ -12,6 +12,7 @@ import { jost } from "../ArticleCardBody";
 import { CommentSection } from "./CommentSection";
 import { SimilarArticles } from "./SimilarArticles";
 import { Share } from "./Share";
+import "./Article.css";
 
 export const Article = ({ json, similar, error }) => {
   const [user] = useUserContext();
