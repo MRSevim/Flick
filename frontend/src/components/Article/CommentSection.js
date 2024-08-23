@@ -114,12 +114,10 @@ export const CommentSection = ({ article }) => {
         <div className="border border-4 my-2 p-2" key={comment._id}>
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
-              <div className="mx-2" style={{ width: "50px", height: "50px" }}>
-                <Image
-                  src={comment.user.image}
-                  classes={"profile-img-mini mw-100 mh-100"}
-                />
-              </div>
+              <Image
+                src={comment.user.image}
+                classes={"mx-2 profile-img-mini mw-100 mh-100"}
+              />
               <Link
                 className="unstyled-link"
                 href={links.publicUser(comment.user._id)}
