@@ -6,6 +6,7 @@ export const Image = ({ src, classes = "" }) => {
     return;
   }
   let modifiedSource, width, height, sizes;
+  let newClasses = classes;
   const alt = classes.includes("profile-img") ? "profile" : "featured";
 
   if (classes.includes("profile-img-mini")) {
@@ -14,6 +15,7 @@ export const Image = ({ src, classes = "" }) => {
   } else if (classes.includes("profile-img")) {
     width = "200";
     height = "200";
+    newClasses = newClasses + " rounded-circle";
   } else if (classes.includes("featured-image-mini")) {
     width = "0";
     height = "200";
@@ -48,7 +50,7 @@ export const Image = ({ src, classes = "" }) => {
       src={modifiedSource || src}
       alt={alt}
       sizes={sizes}
-      className={classes}
+      className={newClasses}
     />
   );
 };

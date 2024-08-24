@@ -65,7 +65,7 @@ export const User = ({ json }) => {
       <div className="row">
         <div className="col col-12 col-lg-4">
           <div className="d-flex justify-content-center">
-            <Image src={user?.image} classes={"profile-img"} />
+            <Image src={user?.image} classes="profile-img" />
           </div>
           <div className="text-center">
             <h1 className="fw-bold text-wrap text-break"> {user.username}</h1>
