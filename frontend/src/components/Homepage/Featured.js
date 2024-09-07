@@ -18,7 +18,7 @@ export const Featured = ({ json, error }) => {
 
   if (articles.length) {
     return (
-      <div className="mt-3">
+      <div className="my-4">
         <h1 className="d-flex justify-content-center">Featured Articles</h1>
         <Slider itemLength={articles.length}>
           {articles.map((article) => {
