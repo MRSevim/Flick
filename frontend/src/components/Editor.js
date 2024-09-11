@@ -24,7 +24,10 @@ export const Editor = ({ initialContent, onInit, handleEditorChange }) => {
         height: 600,
         content_style:
           "code{background-color: #0b5351 !important; color:white!important}body { font-family: 'Jost', sans-serif; color:#092327;" +
-          (darkMode ? "background-color:#092327 !important;color:#fff}" : "} "),
+          (darkMode
+            ? "background-color:#092327 !important;color:#fff}"
+            : "} ") +
+          (darkMode ? "a{color:#fff}" : "a{color:#092327}"),
         plugins: [
           "fullscreen",
           "advlist",
