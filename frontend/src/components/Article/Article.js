@@ -26,7 +26,6 @@ export const Article = ({ json, similar, error }) => {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col col-12 col-lg-2">
-          <h3 className="">Sections</h3>
           <ArticleSections refProp={ref} />
         </div>
         <div className="article col col-12 col-lg-8">

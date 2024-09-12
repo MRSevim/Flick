@@ -167,7 +167,8 @@ export const ArticleSections = ({ refProp }) => {
   }
 
   return (
-    <div>
+    <div className="py-3 sticky-lg-top">
+      <h3 className="">Sections</h3>
       {sections?.length > 0 ? (
         <div>
           {sections.map((section) => {
@@ -196,7 +197,7 @@ export const ArticleSections = ({ refProp }) => {
                 >
                   {section.node.nodeName.substring(1)}.
                   {section.node.innerText.substring(0, 15)}
-                  ...
+                  {section.node.innerText.length > 15 && "..."}
                 </a>
               </div>
             );
