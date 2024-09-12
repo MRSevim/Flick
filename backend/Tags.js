@@ -17,5 +17,6 @@ const Tags = [
   "Education",
   "Business",
   "Religion",
+  "Life In General",
 ];
 module.exports = Tags;

@@ -108,4 +108,5 @@ export const Tags = [
   "Education",
   "Business",
   "Religion",
+  "Life In General",
 ];
