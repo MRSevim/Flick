@@ -85,7 +85,7 @@ export const CommentSection = ({ article }) => {
 
   return (
     <div className="my-3">
-      <h2 className="mb-2">Comments</h2>
+      {(user || comments.length > 0) && <h2 className="mb-2">Comments</h2>}
       {user && (
         <>
           <form onSubmit={submit}>
