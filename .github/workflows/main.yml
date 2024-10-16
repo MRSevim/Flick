@@ -13,11 +13,15 @@ jobs:
 
     steps:
     - name: Set up SSH agent
-      uses: webfactory/ssh-agent@v0.8.1
+      uses: appleboy/ssh-action@master
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+        cd apps/flick-backend/backend 
+        git pull origin main
+        npm i 
+        pm2 restart all
 
-    - name: Deploy on VPS
-      run: |
-        ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} 
-        "cd apps/flick-backend/backend && git pull origin main && npm i && pm2 restart all"
