@@ -1,0 +1,23 @@
+name: Deploy Backend to VPS
+
+on:
+  push:
+    branches:
+      - main  # Trigger only on pushes to the 'main' branch
+    paths:
+      - 'backend/**'  # Trigger only if files in the 'backend' directory are changed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up SSH agent
+      uses: webfactory/ssh-agent@v0.8.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy on VPS
+      run: |
+        ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} 
+        "cd /path/to/your/project && git pull origin main && pm2 restart all || pm2 start npm --name 'my-backend-app' -- start"
