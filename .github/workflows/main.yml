@@ -20,4 +20,4 @@ jobs:
     - name: Deploy on VPS
       run: |
         ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} 
-        "cd /path/to/your/project && git pull origin main && pm2 restart all || pm2 start npm --name 'my-backend-app' -- start"
+        "cd /path/to/your/project && git pull origin main && pm2 restart all"
