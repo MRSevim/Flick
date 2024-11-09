@@ -35,7 +35,7 @@ app.use("/api/email", emailRoutes);
 app.use("/api/pms", privateMessageRoutes);
 
 app.get("/", (req, res) => {
-  res.send("APP IS RUNNING! trigger?");
+  res.send("APP IS RUNNING!");
 });
 
 app.get("/api", (req, res) => {
