@@ -5,7 +5,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import links from "@/utils/Links";
 import { Image } from "@/components/Image";
 import { useSearchAll } from "@/hooks/UseSearchAll";
-import Paper from "@mui/material/Paper";
 
 export const SearchBar = () => {
   const router = useRouter();
