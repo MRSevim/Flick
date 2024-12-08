@@ -5,11 +5,11 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const envVariables = require("../envVariables");
+const emailQueue = require("../worker");
 
 const {
   generateToken,
   generateVerificationToken,
-  sendEmail,
   getDecodedOAuthJwtGoogle,
 } = require("../helpers");
 
@@ -96,9 +96,12 @@ const signupUser = async (req, res, next) => {
     // create a token
     const token = generateVerificationToken(user._id);
 
-    //send email
-    await sendEmail("email-verification", email, username, next, {
-      token,
+    // Add email-sending task to the queue
+    emailQueue.add({
+      type: "email-verification",
+      email,
+      username,
+      info: { token },
     });
 
     res.status(201).json({
@@ -325,9 +328,13 @@ const updateUserProfile = async (req, res, next) => {
         // create a token
         const token = generateVerificationToken(user._id);
 
-        //send email
-
-        await sendEmail("email-verification", email, username, next, { token });
+        // Add email-sending task to the queue
+        emailQueue.add({
+          type: "email-verification",
+          email,
+          username,
+          info: { token },
+        });
 
         message =
           "Profile updated. A verification email has been sent to your new email adress to verify it";
@@ -479,9 +486,12 @@ const banUser = async (req, res, next) => {
 
     await targetUser.deleteOne();
 
-    //send email
-    await sendEmail("ban-user", targetUser.email, targetUser.username, next, {
-      reasonOfBan,
+    // Add email-sending task to the queue
+    emailQueue.add({
+      type: "ban-user",
+      email: targetUser.email,
+      username: targetUser.username,
+      info: { reasonOfBan },
     });
 
     const bannedUser = await Banned.create({

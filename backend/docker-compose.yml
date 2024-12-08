@@ -1,0 +1,38 @@
+name: flick-articles-backend
+
+services:
+  mongo:
+    image: mongo:8.0.3
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - flick-backend
+  redis:
+    image: redis:7.4.1
+    container_name: redis_dev
+    volumes:
+      - redis_data:/data
+    networks:
+      - flick-backend
+    depends_on:
+      - api
+      - mongo
+  api:
+    build:
+      context: ./
+      target: production
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - 5000:5000
+    networks:
+      - flick-backend
+    depends_on:
+      - mongo
+
+volumes:
+  redis_data:
+  mongo_data:
+networks:
+  flick-backend:
+    driver: bridge

@@ -22,5 +22,4 @@ jobs:
           script: |
             cd apps/flick-backend/backend 
             git pull origin main
-            npm i 
-            pm2 restart server
+            sudo docker-compose up

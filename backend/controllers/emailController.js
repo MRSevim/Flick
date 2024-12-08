@@ -1,6 +1,6 @@
 const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const { generateVerificationToken, sendEmail } = require("../helpers");
+const { generateVerificationToken } = require("../helpers");
 const crypto = require("crypto");
 const envVariables = require("../envVariables");
 
@@ -25,7 +25,13 @@ const verifyEmail = async (req, res, next) => {
         user.email = user.newEmail;
         user.newEmail = "";
       }
-      await sendEmail("verified", user.email, user.username, next);
+
+      // Add email-sending task to the queue
+      emailQueue.add({
+        type: "verified",
+        email: user.email,
+        username: user.username,
+      });
 
       const updatedUser = await user.save();
       res.status(200).json({
@@ -69,8 +75,14 @@ const sendResetPasswordEmail = async (req, res, next) => {
 
     await user.save();
 
-    await sendEmail("password-reset", email, user.username, next, {
-      password,
+    // Add email-sending task to the queue
+    emailQueue.add({
+      type: "password-reset",
+      email,
+      username: user.username,
+      info: {
+        password,
+      },
     });
 
     res.status(200).json({
@@ -110,8 +122,14 @@ const sendVerificationEmail = async (req, res, next) => {
 
     const token = generateVerificationToken(user._id);
 
-    await sendEmail("email-verification", email, user.username, next, {
-      token,
+    // Add email-sending task to the queue
+    emailQueue.add({
+      type: "email-verification",
+      email,
+      username: user.username,
+      info: {
+        token,
+      },
     });
 
     res.status(200).json({

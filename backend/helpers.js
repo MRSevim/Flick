@@ -30,7 +30,7 @@ const generateVerificationToken = (userId) => {
   });
   return token;
 };
-const sendEmail = async (type, email, username, next, info) => {
+const sendEmail = async (type, email, username, info) => {
   const client = new OAuth2Client(
     envVariables.emailClientId,
     envVariables.emailClientSecret
@@ -63,17 +63,14 @@ const sendEmail = async (type, email, username, next, info) => {
     subject = "Your account has been banned";
     html = htmls.banned(username, info.reasonOfBan);
   }
-  try {
-    // send mail with defined transport object
-    const info = await transporter.sendMail({
-      from: `"${envVariables.websiteName}" <${envVariables.email}>`, // sender address
-      to: email, // list of receivers
-      subject, // Subject line
-      html, // html body
-    });
-  } catch (error) {
-    next(error);
-  }
+
+  // send mail with defined transport object
+  return transporter.sendMail({
+    from: `"${envVariables.websiteName}" <${envVariables.email}>`, // sender address
+    to: email, // list of receivers
+    subject, // Subject line
+    html, // html body
+  });
 };
 
 /**
