@@ -1,4 +1,4 @@
-name: flick-articles-backend
+name: flick-articles-backend-dev
 
 services:
   mongo:
@@ -11,7 +11,6 @@ services:
       - flick-backend
   redis:
     image: redis:7.4.1
-    container_name: redis_dev
     volumes:
       - redis_data:/data
     networks:
