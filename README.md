@@ -10,11 +10,10 @@ If you want to run this app on your machine, do the following steps
 
 ```bash
 cd ./backend
-npm install
-npm run dev
+npm run docker
 ```
 
-Then your backend should be live at localhost:5000
+Then your backend should be live at localhost:5000 (docker needs to be installed on your system for this to work)
 
 - In a seperate terminal, from root directory run:
 
