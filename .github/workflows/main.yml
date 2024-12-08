@@ -22,4 +22,4 @@ jobs:
           script: |
             cd apps/flick-backend/backend 
             git pull origin main
-            docker compose up -d
+            docker compose up -d --build
