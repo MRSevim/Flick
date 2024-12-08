@@ -22,4 +22,4 @@ RUN npm ci --only=production
 
 COPY . .
 
-CMD ["npm", "run" ,"start"]
+CMD ["node","server.js"]
