@@ -58,7 +58,7 @@ export function HomePage({ children }) {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="container mt-3">
         {children}
         <h1 className="text-center"> Some Questions You Might Ask</h1>
         <div className="accordion" id="accordionFlick">

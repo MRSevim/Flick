@@ -5,6 +5,7 @@ const envVariables = {
   encryptionKey: process.env.ENCRYPTION_KEY,
   port: process.env.PORT,
   mongoUri: process.env.MONGO_URI,
+  redisUri: process.env.REDIS_URI,
   jwtSecret: process.env.JWT_SECRET,
   email: process.env.EMAIL,
   emailClientId: process.env.EMAIL_CLIENT_ID,

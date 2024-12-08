@@ -1,5 +1,6 @@
 const Bull = require("bull");
-const emailQueue = new Bull("emailQueue");
+const envVariables = require("./envVariables");
+const emailQueue = new Bull("emailQueue", envVariables.redisUri);
 const { sendEmail } = require("./helpers");
 
 emailQueue.process(async (job) => {
