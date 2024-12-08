@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { generateVerificationToken } = require("../helpers");
 const crypto = require("crypto");
 const envVariables = require("../envVariables");
+const emailQueue = require("../worker");
 
 const verifyEmail = async (req, res, next) => {
   try {
