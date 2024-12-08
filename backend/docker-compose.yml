@@ -13,7 +13,6 @@ services:
     networks:
       - flick-backend
     depends_on:
-      - api
       - mongo
   api:
     build:
@@ -26,6 +25,7 @@ services:
     networks:
       - flick-backend
     depends_on:
+      - redis
       - mongo
 
 volumes:
