@@ -36,7 +36,7 @@ const sendEmail = async (type, email, username, info) => {
     envVariables.emailClientSecret
   );
   client.setCredentials({ refresh_token: envVariables.emailRefreshToken });
-  const accessToken = client.getAccessToken();
+  const accessToken = await client.getAccessToken();
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -64,13 +64,20 @@ const sendEmail = async (type, email, username, info) => {
     html = htmls.banned(username, info.reasonOfBan);
   }
 
-  // send mail with defined transport object
-  return transporter.sendMail({
-    from: `"${envVariables.websiteName}" <${envVariables.email}>`, // sender address
-    to: email, // list of receivers
-    subject, // Subject line
-    html, // html body
-  });
+  // Send email using the transporter
+  try {
+    const info = await transporter.sendMail({
+      from: `"${envVariables.websiteName}" <${envVariables.email}>`,
+      to: email,
+      subject,
+      html,
+    });
+    console.log(`Email sent to ${email} for type: ${type}`);
+    return info;
+  } catch (error) {
+    console.error(`Failed to send email to ${email}: ${error.message}`);
+    throw error; // Rethrow error for proper handling in the worker
+  }
 };
 
 /**

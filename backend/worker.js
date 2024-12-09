@@ -15,12 +15,11 @@ const emailWorker = new Worker(
   "emailQueue",
   async (job) => {
     const { type, email, username, info } = job.data;
-    console.log("queue works");
+
     try {
       await sendEmail(type, email, username, info);
-      console.log(`Email sent to ${email} for type: ${type}`);
     } catch (error) {
-      console.error(`Failed to send email to ${email}: ${error.message}`);
+      console.error(` ${error.message}`);
     }
   },
   connection
