@@ -40,9 +40,6 @@ const sendEmail = async (type, email, username, info) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
-    tls: {
-      ciphers: "SSLv3",
-    },
     auth: {
       type: "OAuth2",
       user: envVariables.email,
@@ -70,14 +67,13 @@ const sendEmail = async (type, email, username, info) => {
 
   // Send email using the transporter
   try {
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"${envVariables.websiteName}" <${envVariables.email}>`,
       to: email,
       subject,
       html,
     });
     console.log(`Email sent to ${email} for type: ${type}`);
-    return info;
   } catch (error) {
     console.error(`Failed to send email to ${email}: ${error.message}`);
     throw error; // Rethrow error for proper handling in the worker
