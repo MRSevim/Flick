@@ -28,7 +28,7 @@ const verifyEmail = async (req, res, next) => {
       }
 
       // Add email-sending task to the queue
-      emailQueue.add({
+      emailQueue.add("email", {
         type: "verified",
         email: user.email,
         username: user.username,
@@ -77,7 +77,7 @@ const sendResetPasswordEmail = async (req, res, next) => {
     await user.save();
 
     // Add email-sending task to the queue
-    emailQueue.add({
+    emailQueue.add("email", {
       type: "password-reset",
       email,
       username: user.username,
@@ -124,7 +124,7 @@ const sendVerificationEmail = async (req, res, next) => {
     const token = generateVerificationToken(user._id);
 
     // Add email-sending task to the queue
-    emailQueue.add({
+    emailQueue.add("email", {
       type: "email-verification",
       email,
       username: user.username,

@@ -97,7 +97,7 @@ const signupUser = async (req, res, next) => {
     const token = generateVerificationToken(user._id);
 
     // Add email-sending task to the queue
-    emailQueue.add({
+    emailQueue.add("email", {
       type: "email-verification",
       email,
       username,
@@ -329,7 +329,7 @@ const updateUserProfile = async (req, res, next) => {
         const token = generateVerificationToken(user._id);
 
         // Add email-sending task to the queue
-        emailQueue.add({
+        emailQueue.add("email", {
           type: "email-verification",
           email,
           username,
@@ -487,7 +487,7 @@ const banUser = async (req, res, next) => {
     await targetUser.deleteOne();
 
     // Add email-sending task to the queue
-    emailQueue.add({
+    emailQueue.add("email", {
       type: "ban-user",
       email: targetUser.email,
       username: targetUser.username,
