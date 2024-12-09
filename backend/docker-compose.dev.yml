@@ -2,6 +2,7 @@ name: flick-articles-backend-dev
 
 services:
   mongo:
+    restart: unless-stopped
     image: mongo:8.0.3
     ports:
       - 27017:27017
@@ -10,6 +11,7 @@ services:
     networks:
       - flick-backend
   redis:
+    restart: unless-stopped
     image: redis:7.4.1
     volumes:
       - redis_data:/data
