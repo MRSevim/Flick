@@ -37,7 +37,7 @@ const sendEmail = async (type, email, username, info) => {
   );
   client.setCredentials({ refresh_token: envVariables.emailRefreshToken });
   const accessToken = await client.getAccessToken();
-
+  console.log(accessToken);
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -49,6 +49,7 @@ const sendEmail = async (type, email, username, info) => {
       accessToken,
     },
   });
+  console.log(transporter);
   let subject, html;
   if (type === "email-verification") {
     subject = "Verify your email adress";

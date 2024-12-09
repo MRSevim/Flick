@@ -19,7 +19,7 @@ const emailWorker = new Worker(
     try {
       await sendEmail(type, email, username, info);
     } catch (error) {
-      console.error(` ${error.message}`);
+      console.error(`${error.message}`);
     }
   },
   connection
