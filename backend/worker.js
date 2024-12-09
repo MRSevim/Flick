@@ -1,6 +1,8 @@
 const Bull = require("bull");
 const envVariables = require("./envVariables");
-const emailQueue = new Bull("emailQueue", envVariables.redisUri);
+const emailQueue = new Bull("emailQueue", {
+  redis: { port: 6379, host: "redis" },
+});
 const { sendEmail } = require("./helpers");
 
 emailQueue.process(async (job) => {
