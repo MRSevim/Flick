@@ -66,7 +66,27 @@ const sendEmail = async (type, email, username, info) => {
   }
 
   // Send email using the transporter
-  try {
+  await new Promise((resolve, reject) => {
+    transporter.sendMail(
+      {
+        from: `"${envVariables.websiteName}" <${envVariables.email}>`,
+        to: email,
+        subject,
+        html,
+      },
+      (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+          /*           throw err;
+           */
+        } else {
+          resolve(info);
+        }
+      }
+    );
+  });
+  /*   try {
     const info = await transporter.sendMail({
       from: `"${envVariables.websiteName}" <${envVariables.email}>`,
       to: email,
@@ -78,7 +98,7 @@ const sendEmail = async (type, email, username, info) => {
   } catch (error) {
     console.error(`Failed to send email to ${email}: ${error.message}`);
     throw error; // Rethrow error for proper handling in the worker
-  }
+  } */
 };
 
 /**
