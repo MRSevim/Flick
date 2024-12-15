@@ -42,14 +42,16 @@ export const DeleteButton = ({ article, deleteManyLoading, classes }) => {
         }));
         const isDraft = article.isDraft === "true";
         const partialPathName = getFirstPartOfPath(pathname);
-        if (partialPathName === "article") {
-          router.push(links.allArticles(user._id));
-        }
-        if (partialPathName === "edit") {
-          if (isDraft) {
-            router.push(links.allDrafts(user._id));
-          } else {
+        if (ownArticle) {
+          if (partialPathName === "article") {
             router.push(links.allArticles(user._id));
+          }
+          if (partialPathName === "edit") {
+            if (isDraft) {
+              router.push(links.allDrafts(user._id));
+            } else {
+              router.push(links.allArticles(user._id));
+            }
           }
         }
       }
