@@ -122,11 +122,11 @@ export const Notifications = ({ json, error }) => {
                       notification.action === "comment" ||
                       notification.action === "release") && (
                       <>
-                        {notification.users[0].username && (
+                        {notification.users[0]?.username && (
                           <Link
-                            href={links.publicUser(notification.users[0]._id)}
+                            href={links.publicUser(notification.users[0]?._id)}
                           >
-                            {notification.users[0].username}
+                            {notification.users[0]?.username}
                           </Link>
                         )}
                         {notification.users.length > 1 && (
