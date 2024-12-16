@@ -130,7 +130,7 @@ export const User = ({ json }) => {
                 className="bg-secondary rounded text-white m-2 p-2"
                 key={article._id}
               >
-                <li>
+                <li className="unstyled-list">
                   <span className="line-right">
                     {" "}
                     <LikeButton

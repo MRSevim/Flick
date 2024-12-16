@@ -384,31 +384,6 @@ const deleteUser = async (req, res, next) => {
         throw new Error("Incorrect password");
       }
     }
-    await User.updateMany(
-      {},
-      { $pull: { followers: user._id, following: user._id } }
-    );
-
-    await User.updateMany(
-      { "notifications.user": user._id }, // Find users with notifications by the user
-      { $pull: { notifications: { user: user._id } } } // Remove notifications made by the user
-    );
-
-    const userLikeIds = await Like.find({ user: user._id });
-
-    await Like.deleteMany({ user: user._id });
-
-    await Article.updateMany(
-      { likes: { $in: userLikeIds } }, // Find articles with likes by the user
-      { $pull: { likes: { $in: userLikeIds } } } // Remove the like IDs from the likes array
-    );
-
-    await Article.deleteMany({ user: user._id });
-
-    await Article.updateMany(
-      { "comments.user": user._id }, // Find articles with comments by the user
-      { $pull: { comments: { user: user._id } } } // Remove comments made by the user
-    );
 
     await user.deleteOne();
 
@@ -457,32 +432,6 @@ const banUser = async (req, res, next) => {
         "You cannot ban yourself. Try deleting your account if you wanna remove yourself from the website"
       );
     }
-
-    await User.updateMany(
-      {},
-      { $pull: { followers: targetUser._id, following: targetUser._id } }
-    );
-
-    await User.updateMany(
-      { "notifications.user": targetUser._id }, // Find users with notifications by the user
-      { $pull: { notifications: { user: targetUser._id } } } // Remove notifications made by the user
-    );
-
-    const userLikeIds = await Like.find({ user: targetUser._id });
-
-    await Like.deleteMany({ user: targetUser._id });
-
-    await Article.updateMany(
-      { likes: { $in: userLikeIds } }, // Find articles with likes by the user
-      { $pull: { likes: { $in: userLikeIds } } } // Remove the like IDs from the likes array
-    );
-
-    await Article.deleteMany({ user: targetUser._id });
-
-    await Article.updateMany(
-      { "comments.user": targetUser._id }, // Find articles with comments by the user
-      { $pull: { comments: { user: targetUser._id } } } // Remove comments made by the user
-    );
 
     await targetUser.deleteOne();
 

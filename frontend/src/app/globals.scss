@@ -48,6 +48,9 @@ $form-check-input-checked-bg-color: $secondary;
   text-decoration: none;
   color: var(--color-info);
 }
+.unstyled-list {
+  list-style: none;
+}
 .hovered-link:hover {
   text-decoration: underline;
 }

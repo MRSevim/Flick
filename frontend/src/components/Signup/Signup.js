@@ -9,6 +9,10 @@ import { useDarkModeContext } from "@/contexts/DarkModeContext";
 import { SendVerificationEmailButton } from "../SendVerificationEmailButton";
 import { signupCall } from "@/utils/ApiCalls/UserApiFunctions";
 import { useState } from "react";
+import { GoogleLoginComp } from "../GoogleLoginComp";
+import { RememberMeToggler } from "../RememberMeToggler";
+import { useUserContext } from "@/contexts/UserContext";
+import { useRouter } from "next/navigation";
 
 const initialState = { error: "", successMessage: "" };
 
@@ -19,7 +23,23 @@ export const SignUp = () => {
   const [darkMode] = useDarkModeContext();
   const handleSubmit = signupCall.bind(null, token);
   const [state, formAction] = useFormState(handleSubmit, initialState);
+  const [error, setError] = useState(null);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [, setUser] = useUserContext();
+  const router = useRouter();
 
+  const handleBefore = () => {
+    setError(null);
+  };
+  const handleAfter = async (error, user) => {
+    if (error) {
+      setError(error);
+      return;
+    }
+
+    setUser(user, rememberMe, true);
+    router.push(links.homepage);
+  };
   return (
     <div className="container pb-4">
       <div className=" d-flex justify-content-center">
@@ -95,6 +115,17 @@ export const SignUp = () => {
             </label>
           </div>
           <SubmitButton />
+          <GoogleLoginComp
+            handleBefore={handleBefore}
+            handleAfter={handleAfter}
+            rememberMe={rememberMe}
+          />
+          <div className="mt-2">
+            <RememberMeToggler
+              rememberMe={rememberMe}
+              setRememberMe={setRememberMe}
+            />
+          </div>
           <p className="text-center mt-3">
             Already have an account?
             <Link href={links.login}>
@@ -108,7 +139,9 @@ export const SignUp = () => {
               </button>
             </Link>
           </p>
-          {state.error && <Popup message={state.error} type="danger" />}
+          {state.error && (
+            <Popup message={state.error || error} type="danger" />
+          )}
           {state.successMessage && (
             <>
               <Popup message={state.successMessage} type="success" />

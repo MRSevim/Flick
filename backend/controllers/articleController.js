@@ -90,7 +90,6 @@ const getArticle = (isDraft) => {
             select: "username image",
           },
         });
-
       if (!article) {
         res.status(404);
         throw new Error("Article is not found");

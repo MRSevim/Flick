@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const envVariables = require("../envVariables");
+const { Like, Article } = require("./articleModel");
 
 const userSchema = new mongoose.Schema(
   {
@@ -256,6 +257,44 @@ userSchema.pre("save", async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+});
+
+userSchema.pre("deleteOne", async function (next) {
+  const userId = this.getQuery()._id; // Get the ID of the user being deleted
+  if (userId) {
+    await User.updateMany(
+      {},
+      { $pull: { followers: userId, following: userId } }
+    );
+
+    // Remove `userId` from `users` array in each notification
+    await User.updateMany(
+      { "notifications.users": userId },
+      { $pull: { "notifications.$[].users": userId } }
+    );
+
+    // Remove notifications with empty `users` arrays
+    await User.updateMany(
+      { "notifications.users": { $size: 0 } }, // Match notifications with empty `users` arrays
+      { $pull: { notifications: { users: { $size: 0 } } } } // Remove the notification itself
+    );
+    const userLikeIds = await Like.find({ user: userId });
+
+    await Like.deleteMany({ user: userId });
+
+    await Article.updateMany(
+      { likes: { $in: userLikeIds } }, // Find articles with likes by the user
+      { $pull: { likes: { $in: userLikeIds } } } // Remove the like IDs from the likes array
+    );
+
+    await Article.updateMany(
+      { "comments.user": userId }, // Find articles with comments by the user
+      { $pull: { comments: { user: userId } } } // Remove comments made by the user
+    );
+
+    await Article.deleteMany({ user: userId });
+  }
+  next();
 });
 
 const User = mongoose.model("User", userSchema);

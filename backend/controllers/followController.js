@@ -101,22 +101,23 @@ const followUser = async (req, res, next) => {
         return id.toString() !== user._id.toString();
       });
 
-      if (existingNotification) {
-        if (existingNotification.users.includes(user._id)) {
-          if (existingNotification.users.length === 1) {
-            followedUser.notifications = followedUser.notifications.filter(
-              (notification) => {
-                return (
-                  notification._id.toString() !==
-                  existingNotification._id.toString()
-                );
-              }
-            );
-          } else {
-            existingNotification.users = existingNotification.users.filter(
-              (id) => id.toString() !== user._id.toString()
-            );
-          }
+      if (
+        existingNotification &&
+        existingNotification.users.includes(user._id)
+      ) {
+        if (existingNotification.users.length === 1) {
+          followedUser.notifications = followedUser.notifications.filter(
+            (notification) => {
+              return (
+                notification._id.toString() !==
+                existingNotification._id.toString()
+              );
+            }
+          );
+        } else {
+          existingNotification.users = existingNotification.users.filter(
+            (id) => id.toString() !== user._id.toString()
+          );
         }
       }
 

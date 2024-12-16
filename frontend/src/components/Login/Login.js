@@ -1,6 +1,5 @@
 "use client";
 import { useUserContext } from "@/contexts/UserContext";
-import { GoogleLogin } from "@react-oauth/google";
 import classNames from "classnames";
 import links from "@/utils/Links";
 import Link from "next/link";
@@ -12,6 +11,8 @@ import { useFormState } from "react-dom";
 import { loginCall } from "@/utils/ApiCalls/UserApiFunctionsOnClient";
 import { useState } from "react";
 import { addLightOutlineBtn } from "@/utils/HelperFuncs";
+import { GoogleLoginComp } from "../GoogleLoginComp";
+import { RememberMeToggler } from "../RememberMeToggler";
 
 export const Login = ({ onHideModal, children, type }) => {
   const [darkMode] = useDarkModeContext();
@@ -35,7 +36,7 @@ export const Login = ({ onHideModal, children, type }) => {
     if (onHideModal) {
       onHideModal();
     }
-    setUser(user, rememberMe, "login" && !onHideModal);
+    setUser(user, rememberMe, !onHideModal);
     if (!onHideModal) {
       router.push(links.homepage);
     }
@@ -56,19 +57,6 @@ export const Login = ({ onHideModal, children, type }) => {
   };
 
   const [, formAction] = useFormState(handleSubmit, "");
-
-  const handleGoogleLogin = async (credential) => {
-    handleBefore();
-    const { error, user } = await loginCall(
-      {
-        isGoogleLogin: true,
-        googleCredential: credential,
-        rememberMe,
-      },
-      null
-    );
-    handleAfter(error, user);
-  };
 
   return (
     <div className="container">
@@ -110,18 +98,11 @@ export const Login = ({ onHideModal, children, type }) => {
             type="submit"
             value="Login"
           />
-          <div className="form-check mb-2">
-            <label className="form-check-label">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-              Remember me
-            </label>
-          </div>
-          <p className="text-center">
+          <RememberMeToggler
+            rememberMe={rememberMe}
+            setRememberMe={setRememberMe}
+          />
+          <p className="text-center mb-0">
             By logging in, you agree to our{" "}
             <Link
               href={links.tocAndPrivacyPolicy}
@@ -131,16 +112,11 @@ export const Login = ({ onHideModal, children, type }) => {
               Terms of Conditions (ToC) and Privacy Policy
             </Link>
           </p>
-          <div className="d-flex justify-content-center">
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                handleGoogleLogin(credentialResponse.credential);
-              }}
-              onError={() => {
-                console.log("Failed logging in with Google");
-              }}
-            />
-          </div>
+          <GoogleLoginComp
+            handleBefore={handleBefore}
+            handleAfter={handleAfter}
+            rememberMe={rememberMe}
+          />
           <p className="text-center mt-3">
             Don't have an account?
             <Link href={links.signup()}>
