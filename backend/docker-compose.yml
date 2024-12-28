@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - 127.0.0.1:${PORT}:${PORT}
+      - 127.0.0.1:${PORT}:${PORT} # Bind the port to localhost only
     networks:
       - flick-backend
     depends_on:
