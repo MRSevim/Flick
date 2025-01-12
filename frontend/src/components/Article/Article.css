@@ -9,3 +9,6 @@
   margin-right: auto;
   height: auto;
 }
+.featured-img {
+  max-height: 500px;
+}
