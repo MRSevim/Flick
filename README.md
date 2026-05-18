@@ -1,6 +1,6 @@
 # Flick Articles
 
-These are the codes for the website [Flick Articles](https://www.flickarticles.com/). Project is made with React (Nextjs) in the frontend and Nodejs (Express) and Mongodb (Mongoose) in the backend.
+These are the codes for the website Flick Articles. Project is made with React (Nextjs) in the frontend and Nodejs (Express) and Mongodb (Mongoose) in the backend.
 
 ## Running development servers
 
